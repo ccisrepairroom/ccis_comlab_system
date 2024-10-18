@@ -1,0 +1,10 @@
+composer update
+npm install
+php artisan migrate
+php artisan shield:install
+php artisan key:generate
+npm run dev
+php artisan storage:link
+
+--add storage/app/public/request_form/request_form.pdf
+serve

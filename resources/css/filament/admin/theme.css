@@ -1,0 +1,14 @@
+@import '/vendor/filament/filament/resources/css/theme.css';
+
+@config 'tailwind.config.js';
+
+.fi-in-image
+{
+    @apply flex justify-center items-center gap-x-2.5;
+}
+
+.fi-in-entry-wrp-label span
+{
+    @apply font-bold;
+}
+

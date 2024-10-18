@@ -1,0 +1,6 @@
+1. Import and Export Excel
+2. Equipment monitoring & Facility
+3. Reports Chart
+4. Change equipment columns from csv headers
+5. Filtering columns
+6. Status // Working, For Repair, For Replacement, Lost, For disposal, disposed, borrowed.

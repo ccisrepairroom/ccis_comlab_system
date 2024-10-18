@@ -1,0 +1,18 @@
+.fixed-size-image {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.fixed-size-image img {
+    width: 100%;
+    height: auto;
+    cursor: zoom-in;
+    transition: transform 0.3s ease;
+}
+
+.fixed-size-image img.zoomed {
+    transform: scale(2); /* Adjust the zoom level as needed */
+    cursor: zoom-out;
+}

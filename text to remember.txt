@@ -1,0 +1,147 @@
+composer require livewire/livewire
+Remove-Item -Path .git/index.lock
+composer require maatwebsite/excel
+//php artisan make:export BorrowExport --model=Borrow
+
+//vendor/src/panel/auth/login.php
+
+composer require barryvdh/laravel-debugbar --dev
+php artisan vendor:publish --provider="Barryvdh\Debugbar\ServiceProvider"
+
+//in app.php, debug bool, change to true
+//make sure app_debug is true too in env
+//reload homepage
+//https://github.com/barryvdh/laravel-debugbar
+
+//making import
+php artisan make:import CategoryImport
+//copy the code in import and the list
+//import action and classes
+
+//export
+use Illuminate\Database\Eloquent\Builder; for latest
+protected function getTableQuery(): ?Builder
+    {
+        // Get the base query and order it by the latest created_at field
+        return parent::getTableQuery()->latest('created_at');
+    }
+*use Filament\Tables\Actions\ExportBulkAction; 
+    
+//write code after public function Tables
+//return the bulk action in the last
+//    public static function table(Tables\Table $table): Tables\Table
+
+
+export true
+**
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+**
+public static function table(Tables\Table $table): Tables\Table
+    
+{
+        $user = auth()->user();
+        $isPanelUser = $user && $user->hasRole('panel_user');
+
+         // Define the bulk actions array
+         $bulkActions = [
+            Tables\Actions\DeleteBulkAction::make(),
+            //Tables\Actions\ExportBulkAction::make()
+
+         ];
+                 // Conditionally add ExportBulkAction
+
+            if (!$isPanelUser) {
+                $bulkActions[] = ExportBulkAction::make();
+            }
+            return $table
+            ->query(Category::with('user'))
+            ->columns([
+    
+         
+                    Tables\Columns\TextColumn::make('description')
+                        ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
+                        ->searchable()
+                        ->sortable(),
+
+**insert after actions and filters
+->bulkActions([
+                Tables\Actions\BulkActionGroup::make($bulkActions)
+                    ->label('Actions')
+            ]);
+            }
+
+
+**********making tab
+
+
+********widget
+php artisan make:filament-widget TestWidget
+
+**typeof chart
+**resource, just skip
+*admin panel
+
+-- in return
+Stat::make('New Users', Users::count())
+->description('New users that joined')
+->descriptionIcon('heroicon-m-users',IconPosition )
+->chart([1,3,5,10,20])
+-<color('success')
+--import user model
+--use Filament\Support\Enums\IconPosition::Before;
+--use filament\widgets\StatsOverviewWidget as BaseWidget;
+*8register widget in admin panel
+Widgets\FilamentInfoWidget or AccountWidget::class
+**import wifget aldo inadmin panel
+
+**making resource
+--create migration, model, resource, 
+
+**laravel logs:
+--goto:https://github.com/spatie/laravel-activitylog
+composer require spatie/laravel-activitylog
+php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="activitylog-migrations"
+php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="activitylog-config"
+php artisan migrate
+**activity_log is seen in db
+--goto:https://spatie.be/docs/laravel-activitylog/v4/introduction
+
+
+
+***widget filters
+
+
+
+view stock: Tables\Actions\ViewAction::make('ViewStockMonitoring')
+                        ->label('View Stock Records')
+                        ->icon('heroicon-o-presentation-chart-bar')
+                        ->color('info')
+                        ->modalHeading('Stock Monitoring Records')
+                        ->modalcontent(function ($record) {
+                            // Retrieve stock history
+                            $stockHistory = \App\Models\StockMonitoring::where('equipment_id', $record->id)
+                                ->with('user') // Assuming 'monitored_by' is related to the 'users' table
+                                ->orderBy('deducted_at', 'desc')
+                                ->get();
+                    
+                            // Debugging output
+                            if ($stockHistory->isEmpty()) {
+                                \Log::info("No stock history found for equipment ID: " . $record->id);
+                            } else {
+                                \Log::info("Stock history retrieved for equipment ID: " . $record->id);
+                            }
+                    
+                            return view('filament.resources.stock-monitoring-modal', [
+                                'stockHistory' => $stockHistory,
+                            ]);
+                        }),
+
+
+
+******making print pdf in dashboard
+composer require barryvdh/laravel-dompdf
+// Create a Route for PDF Generation
+//Define a route in your web.php for generating the PDF.
+
+****export to word:
+composer require phpoffice/phpword
