@@ -29,6 +29,11 @@ class RequestListResource extends Resource
     protected static ?string $navigationLabel = 'Request List';
    protected static ?int $navigationSort = 3;
 
+   public static function getSlug(): string
+    {
+        return 'request-list'; 
+    }
+
     public static function getNavigationBadge(): ?string
     {
         // Check if the user is authenticated and has the 'panel_user' role

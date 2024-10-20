@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\EquipmentSummaryResource\Pages;
+use App\Filament\Resources\EquipmentMonitoringResource\Pages;
 use App\Models\EquipmentMonitoring;
 use App\Models\StockMonitoring;
 
@@ -20,7 +20,7 @@ use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
 
-class EquipmentSummaryResource extends Resource
+class EquipmentMonitoringResource extends Resource
 {
     protected static ?string $model = Equipment::class;
 
@@ -29,6 +29,10 @@ class EquipmentSummaryResource extends Resource
     protected static ?string $navigationLabel = 'Equipment Monitoring';
     protected static ?int $navigationSort = 2;
 
+    public static function getSlug(): string
+    {
+        return 'equipment-monitoring'; 
+    }
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
@@ -447,8 +451,8 @@ class EquipmentSummaryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListEquipmentSummaries::route('/'),
-            'create' => Pages\CreateEquipmentSummary::route('/create'),
+            'index' => Pages\ListEquipmentMonitorings::route('/'),
+            'create' => Pages\CreateEquipmentMonitoring::route('/create'),
         ];
     }
 }

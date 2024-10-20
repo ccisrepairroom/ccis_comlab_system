@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\FacilitySummaryResource\Pages;
-use App\Filament\Resources\FacilitySummaryResource\RelationManagers;
+use App\Filament\Resources\FacilityMonitoringResource\Pages;
+use App\Filament\Resources\FacilityMonitoringResource\RelationManagers;
 use App\Models\Facility;
 use App\Models\User;
 use App\Models\Critical;
@@ -19,14 +19,19 @@ use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Actions\Action;
 
-class FacilitySummaryResource extends Resource
+class FacilityMonitoringResource extends Resource
 {
     protected static ?string $model = Facility::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Monitoring';
+   protected static ?string $navigationGroup = 'Monitoring';
     protected static ?string $navigationLabel = 'Facility Monitoring';
     protected static ?int $navigationSort = 2;
+
+    public static function getSlug(): string
+    {
+        return 'facility-monitoring'; 
+    }
 
     public static function getNavigationBadge(): ?string
     {
@@ -172,8 +177,8 @@ class FacilitySummaryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFacilitySummaries::route('/'),
-            'create' => Pages\CreateFacilitySummary::route('/create'),
+            'index' => Pages\ListFacilityMonitorings::route('/'),
+            'create' => Pages\CreateFacilityMonitoring::route('/create'),
             //'edit' => Pages\EditFacilitySummary::route('/{record}/edit'),
         ];
     }
