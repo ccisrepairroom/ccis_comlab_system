@@ -170,8 +170,8 @@ class EquipmentSummaryResource extends Resource
                         ->color('primary')
                         ->requiresConfirmation()
                         ->modalIcon('heroicon-o-check')
-                        ->modalHeading('Add to Monitoring')
-                        ->modalDescription('Confirm to add selected items to your Monitoring')
+                        ->modalHeading('Update Equipment Status')
+                        ->modalDescription('Confirm to update equipment status')
                         ->form(function (Forms\Form $form, $record) {
                             return $form
                                 ->schema([
@@ -269,7 +269,7 @@ class EquipmentSummaryResource extends Resource
                             Notification::make()
                                 ->success()
                                 ->title('Success')
-                                ->body('Selected items have been added to your monitoring.')
+                                ->body('Status of the selected item/s have been updated.')
                                 ->send();
                         }),
 
