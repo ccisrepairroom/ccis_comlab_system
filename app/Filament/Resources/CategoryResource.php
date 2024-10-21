@@ -18,7 +18,6 @@ class CategoryResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-funnel';
     protected static ?string $navigationGroup = 'Classification';
     protected static ?int $navigationSort = 1;
-    protected static ?string  $recordTitleAttribute = 'description';
 
     public static function getNavigationBadge(): ?string
     {
