@@ -148,5 +148,4 @@ composer require phpoffice/phpword
 
 
 
-**global search 
-https://filamentphp.com/plugins/charrafimed-global-search-modal
+
