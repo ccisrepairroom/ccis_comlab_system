@@ -11,11 +11,14 @@ use Filament\Forms\Components\FileUpload;
 use Maatwebsite\Excel\Facades\Excel;
 use Filament\Notifications\Notification;
 use Filament\Resources\Components\Tab;
+use App\Models\Facility;
+
 
 
 class ListFacilities extends ListRecords
 {
     protected static string $resource = FacilityResource::class;
+
 
     protected function getHeaderActions(): array
     {
@@ -54,30 +57,55 @@ class ListFacilities extends ListRecords
     {
         return [];
     }
+    protected function getAllFacilityCount(): int
+    {
+        return Facility::count();
+    }
+    protected function getFirstFloorFacilityCount(): int
+    {
+        return Facility::where('floor_level', '1st Floor')->count();
+    }
+    protected function getSecondFloorFacilityCount(): int
+    {
+        return Facility::where('floor_level', '2nd Floor')->count();
+    }
+    protected function getThirdFloorFacilityCount(): int
+    {
+        return Facility::where('floor_level', '3rd Floor')->count();
+    }
+    protected function getFourthFloorFacilityCount(): int
+    {
+        return Facility::where('floor_level', '4th Floor')->count();
+    }
 
     public function getTabs(): array
     {
         return [
             Tab::make('All')
+                ->badge($this->getAllFacilityCount())
                 ->modifyQueryUsing(function ($query) {
                     return $query->orderBy('floor_level', 'asc');; // No filtering, display all records
                 }),
             Tab::make('1st Floor')
+                ->badge($this->getFirstFloorFacilityCount())
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('floor_level', '1st Floor')
                     ->orderBy('facility_type');
                 }),
             Tab::make('2nd Floor')
+                ->badge($this->getSecondFloorFacilityCount())
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('floor_level', '2nd Floor')
                     ->orderBy('facility_type');
                 }),
             Tab::make('3rd Floor')
+                ->badge($this->getThirdFloorFacilityCount())
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('floor_level', '3rd Floor')
                     ->orderBy('facility_type');
                 }),
             Tab::make('4th Floor')
+                ->badge($this->getFourthFloorFacilityCount())
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('floor_level', '4th Floor')
                     ->orderBy('facility_type');

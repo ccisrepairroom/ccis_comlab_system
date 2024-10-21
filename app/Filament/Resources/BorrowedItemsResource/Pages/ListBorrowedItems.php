@@ -9,6 +9,8 @@ use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\Components\Tab;
+use App\Models\Borroweditems;
+
 
 class ListBorrowedItems extends ListRecords
 {
@@ -27,16 +29,31 @@ class ListBorrowedItems extends ListRecords
         return parent::getTableQuery()
             ->orderBy('created_at', 'desc'); // Order by the latest entries first
     }
+    protected function getAllBorrowedCount(): int
+    {
+        return BorrowedItems::count();
+    }
+    protected function getUnreturnedBorrowedCount(): int
+    {
+        return BorrowedItems::where('status', 'Unreturned')->count();
+    }
+    protected function getReturnedBorrowedCount(): int
+    {
+        return BorrowedItems::where('status', 'Returned')->count();
+    }
 
     public function getTabs(): array
     {
         return array_merge(
             [
                 Tab::make('All')
+                    ->badge($this->getAllBorrowedCount())
                     ->modifyQueryUsing(fn($query) => $query),
                 Tab::make('Returned')
+                    ->badge($this->getReturnedBorrowedCount())
                     ->modifyQueryUsing(fn($query) => $query->where('status', 'Returned')),
                 Tab::make('Unreturned')
+                    ->badge($this->getUnreturnedBorrowedCount())
                     ->modifyQueryUsing(fn($query) => $query->where('status', 'Unreturned')),
             ]
         );
