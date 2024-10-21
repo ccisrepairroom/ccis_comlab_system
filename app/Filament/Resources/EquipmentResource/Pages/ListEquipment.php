@@ -112,9 +112,11 @@ class ListEquipment extends ListRecords
                     return $query->where('status', 'Disposed') ->orderBy('created_at', 'desc');
                 }),
             Tab::make('Borrowed')
-                ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', 'Unreturned') ->orderBy('created_at', 'desc');
-                }),
+            ->modifyQueryUsing(function ($query) {
+                return $query->whereHas('borrowedItems', function ($borrowedQuery) {
+                    $borrowedQuery->where('status', 'Unreturned');
+                })->orderBy('created_at', 'desc');
+            }),
         ];
     }
 }

@@ -81,5 +81,9 @@ class Equipment extends Model
     {
         return Carbon::parse($value)->timezone('Asia/Manila')->format('F d, Y h:i A');
     }
-  
+    public function borrowedItems()
+    {
+        return $this->hasMany(BorrowedItems::class);
+    }
+    
 }
