@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Section;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Illuminate\Database\Eloquent\Model;
 
 
 class UserResource extends Resource
@@ -31,7 +32,16 @@ class UserResource extends Resource
     {
         return static::getModel()::count();
     }
-
+    protected static ?string $recordTitleAttribute = 'name';
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        \Log::info($record);
+        
+        return [
+            //'Name' => $record->name ?? 'Unknown', 
+            'Email' => $record->email ?? 'Unknown', 
+        ];
+    }
     public static function form(Form $form): Form
     {
         return $form
