@@ -23,6 +23,7 @@ class CategoryResource extends Resource
     {
         return static::getModel()::count();
     }
+    protected static ?string $recordTitleAttribute = 'description';
 
     public static function form(Form $form): Form
     {

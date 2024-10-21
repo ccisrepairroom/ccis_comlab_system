@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Illuminate\Database\Eloquent\Collection;
 use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Model;
 
 class EquipmentResource extends Resource
 {
@@ -40,6 +41,29 @@ class EquipmentResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
+    }
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        \Log::info($record);
+        
+        return [
+            'Unit No.' => $record->unit_no ?? 'Unknown', 
+            'Description' => $record->description ?? 'Unknown', 
+            'Category' => $record->category->description ?? 'N/A', 
+            'Facility' => $record->facility->name ?? 'N/A',
+            'Serial No.' => $record->serial_no ?? 'N/A', 
+            'Control No.' => $record->control_no ?? 'N/A', 
+            'Property No.' => $record->property_no ?? 'N/A', 
+            'Person Liable' => $record->person_liable ?? 'N/A', 
+            'Date Acquired' => $record->date_acquired ?? 'N/A', 
+            'Remarks' => $record->remarks ?? 'N/A', 
+            
+        ];
+    }
+    public static function getGloballySearchableAttributes(): array
+    {
+        return['description','serial_no','category.description','facility.name',
+        'serial_no','control_no','property_no','person_liable','date_acquired','remarks'];
     }
 
     public static function form(Form $form): Form

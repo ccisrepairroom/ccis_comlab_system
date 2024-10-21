@@ -33,14 +33,19 @@ class UserResource extends Resource
         return static::getModel()::count();
     }
     protected static ?string $recordTitleAttribute = 'name';
+
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         \Log::info($record);
         
         return [
-            //'Name' => $record->name ?? 'Unknown', 
+            'Name' => $record->name ?? 'Unknown', 
             'Email' => $record->email ?? 'Unknown', 
         ];
+    }
+    public static function getGloballySearchableAttributes(): array
+    {
+        return['name','email'];
     }
     public static function form(Form $form): Form
     {
