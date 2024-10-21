@@ -4,12 +4,9 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category;
 use App\Models\User;
-
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-
-
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,6 +24,7 @@ class CategoryResource extends Resource
     {
         return static::getModel()::count();
     }
+    protected static ?string $recordTitleAttribute = 'description';
 
     public static function form(Form $form): Form
     {

@@ -24,10 +24,21 @@ class StockUnitResource extends Resource
     protected static ?string $navigationGroup = 'Classification';
     protected static ?int $navigationSort = 1;
 
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
+    protected static ?string $recordTitleAttribute = 'description';
+    /*public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        \Log::info($record);
+        
+        return [
+            'Name' => $record->name ?? 'Unknown', 
+            'Email' => $record->email ?? 'Unknown', 
+        ];
+    }*/
 
     public static function form(Form $form): Form
     {

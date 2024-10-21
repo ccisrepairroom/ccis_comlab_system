@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Illuminate\Database\Eloquent\Collection;
 use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Model;
 
 class EquipmentResource extends Resource
 {
@@ -41,6 +42,29 @@ class EquipmentResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
+    }
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        \Log::info($record);
+        
+        return [
+            'Unit No.' => $record->unit_no ?? 'Unknown', 
+            'Description' => $record->description ?? 'Unknown', 
+            'Category' => $record->category->description ?? 'N/A', 
+            'Facility' => $record->facility->name ?? 'N/A',
+            'Serial No.' => $record->serial_no ?? 'N/A', 
+            'Control No.' => $record->control_no ?? 'N/A', 
+            'Property No.' => $record->property_no ?? 'N/A', 
+            'Person Liable' => $record->person_liable ?? 'N/A', 
+            'Date Acquired' => $record->date_acquired ?? 'N/A', 
+            'Remarks' => $record->remarks ?? 'N/A', 
+            
+        ];
+    }
+    public static function getGloballySearchableAttributes(): array
+    {
+        return['description','serial_no','category.description','facility.name',
+        'serial_no','control_no','property_no','person_liable','date_acquired','remarks'];
     }
 
     public static function form(Form $form): Form
@@ -65,12 +89,29 @@ class EquipmentResource extends Resource
                                     ->maxLength(255),
                                 Forms\Components\Select::make('facility_id')
                                     ->relationship('facility', 'name')
-                                    ->required()
-                                    ->required(),
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('name')
+                                        ->label('Create Facility')
+                                        ->placeholder('Facility Name Displayed On The Door (e.g., CL1, CL2)')
+                                        ->required()
+                                        ->maxLength(255)
+                                    ]),
+                                       
+                                   
                                 Forms\Components\Select::make('category_id')
                                     ->relationship('category', 'description')
-                                    ->required()
-                                    ->required(),
+
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('description')
+                                        ->label('Create Category')
+                                        ->required()
+                                        ->maxLength(255)
+                                       
+                                    ]),
+                                    
+                                    
+                                 
+                                    
                                 Forms\Components\Select::make('status')
                                     ->options([
                                         'Working' => 'Working',
@@ -82,6 +123,8 @@ class EquipmentResource extends Resource
                                     ])
                                     ->native(false)
                                     ->required(),
+                               
+                                 
                                 Forms\Components\TextInput::make('date_acquired')
                                     ->label('Date Acquired')
                                     ->placeholder('Refer to the equipment sticker.')
@@ -117,7 +160,14 @@ class EquipmentResource extends Resource
                                     ->options(array_combine(range(1, 1000), range(1, 1000))),
                                 Forms\Components\Select::make('stock_unit_id')
                                     ->label('Stock Unit')
-                                    ->relationship('stockUnit', 'description'),
+                                    ->relationship('stockUnit', 'description')
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('description')
+                                        ->label('Create Stock Unit')
+                                        ->required()
+                                        ->maxLength(255),
+                                    ]),
+                                       
                                 Forms\Components\Select::make('restocking_point')
                                     ->label('Restocking Point')
                                     ->options(array_combine(range(1, 1000), range(1, 1000))),
