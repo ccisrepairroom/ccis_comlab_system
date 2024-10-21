@@ -145,19 +145,18 @@ class EquipmentResource extends Resource
     ->icon('heroicon-o-shopping-cart')
     ->action(function (Collection $records) {
         $facilityId = Facility::first()->id;
-        $notAdded = []; // Array to hold equipment that cannot be added
-        $unreturned = []; // Array to hold unreturned equipment notifications
+        $notAdded = [];
+        $unreturned = [];
+        $successfullyAdded = false; // Track if any item was successfully added
 
         foreach ($records as $record) {
-            // Check if the equipment status is 'Working'
             if ($record->status === 'Working') {
-                // Check if there is an unreturned borrowed item
                 $latestBorrowedItem = BorrowedItems::where('equipment_id', $record->id)
                     ->orderBy('created_at', 'desc')
                     ->first();
 
                 if ($latestBorrowedItem && $latestBorrowedItem->status === 'Unreturned') {
-                    $unreturned[] = $record->description; // Collect descriptions of unreturned items
+                    $unreturned[] = $record->description;
                 } else {
                     RequestList::updateOrCreate(
                         [
@@ -166,9 +165,10 @@ class EquipmentResource extends Resource
                             'facility_id' => $facilityId,
                         ]
                     );
+                    $successfullyAdded = true; // Mark as successfully added
                 }
             } else {
-                $notAdded[] = $record->description; // Collect descriptions of non-working items
+                $notAdded[] = $record->description;
             }
         }
 
@@ -188,7 +188,10 @@ class EquipmentResource extends Resource
                 ->body('The following items are still borrowed and unreturned: ' . implode(', ', $unreturned))
                 ->warning()
                 ->send();
-        } else {
+        }
+
+        // Send success notification only if at least one item was added
+        if ($successfullyAdded) {
             Notification::make()
                 ->success()
                 ->title('Success')
