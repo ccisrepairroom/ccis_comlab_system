@@ -145,3 +145,8 @@ composer require barryvdh/laravel-dompdf
 
 ****export to word:
 composer require phpoffice/phpword
+
+
+
+**global search 
+https://filamentphp.com/plugins/charrafimed-global-search-modal

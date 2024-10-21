@@ -31,7 +31,8 @@ class EquipmentResource extends Resource
     public static ?string $slug = 'equipment';
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
-
+    protected static ?string  $recordTitleAttribute = 'description';
+    
     public function query(): Builder
     {
         return Equipment::with('stockUnit');
