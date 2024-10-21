@@ -9,6 +9,7 @@ use App\Models\Facility;
 //use App\Models\BorrowList;
 use App\Models\RequestList;
 use App\Models\StockUnit;
+use App\Models\BorrowedItems;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -145,17 +146,27 @@ class EquipmentResource extends Resource
     ->action(function (Collection $records) {
         $facilityId = Facility::first()->id;
         $notAdded = []; // Array to hold equipment that cannot be added
+        $unreturned = []; // Array to hold unreturned equipment notifications
 
         foreach ($records as $record) {
             // Check if the equipment status is 'Working'
             if ($record->status === 'Working') {
-                RequestList::updateOrCreate(
-                    [
-                        'user_id' => auth()->id(),
-                        'equipment_id' => $record->id,
-                        'facility_id' => $facilityId,
-                    ]
-                );
+                // Check if there is an unreturned borrowed item
+                $latestBorrowedItem = BorrowedItems::where('equipment_id', $record->id)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+
+                if ($latestBorrowedItem && $latestBorrowedItem->status === 'Unreturned') {
+                    $unreturned[] = $record->description; // Collect descriptions of unreturned items
+                } else {
+                    RequestList::updateOrCreate(
+                        [
+                            'user_id' => auth()->id(),
+                            'equipment_id' => $record->id,
+                            'facility_id' => $facilityId,
+                        ]
+                    );
+                }
             } else {
                 $notAdded[] = $record->description; // Collect descriptions of non-working items
             }
@@ -167,6 +178,15 @@ class EquipmentResource extends Resource
                 ->title('Items Not Added')
                 ->body('The following items cannot be added to the request list because they are no longer working: ' . implode(', ', $notAdded))
                 ->danger()
+                ->send();
+        }
+
+        // Notification for unreturned items
+        if (!empty($unreturned)) {
+            Notification::make()
+                ->title('Unreturned Items')
+                ->body('The following items are still borrowed and unreturned: ' . implode(', ', $unreturned))
+                ->warning()
                 ->send();
         } else {
             Notification::make()

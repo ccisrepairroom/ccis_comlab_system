@@ -178,7 +178,7 @@ class RequestListResource extends Resource
                                     'start_date_and_time_of_use' => $data['start_date_and_time_of_use'],
                                     'end_date_and_time_of_use' => $data['end_date_and_time_of_use'],
                                     'expected_return_date' => $data['expected_return_date'],
-                                    'received_by' => $data['received_by'],
+                                 
                                     'college_department_office' => $data['college_department_office'],
                                     'borrowed_date' => now(),
                                     'remarks' => '',
