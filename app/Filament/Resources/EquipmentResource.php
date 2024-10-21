@@ -140,32 +140,47 @@ class EquipmentResource extends Resource
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
             Tables\Actions\BulkAction::make('add_to_request_list')
-                ->label('Add to Request List')
-                ->icon('heroicon-o-shopping-cart')
-                ->action(function (Collection $records) {
-                    foreach ($records as $record) {
-                        $facilityId = Facility::first()->id;
+    ->label('Add to Request List')
+    ->icon('heroicon-o-shopping-cart')
+    ->action(function (Collection $records) {
+        $facilityId = Facility::first()->id;
+        $notAdded = []; // Array to hold equipment that cannot be added
 
-                        RequestList::updateOrCreate(
-                            [
-                                'user_id' => auth()->id(),
-                                'equipment_id' => $record->id,
-                                'facility_id' => $facilityId,
-                            ]
-                        );
-                    }
+        foreach ($records as $record) {
+            // Check if the equipment status is 'Working'
+            if ($record->status === 'Working') {
+                RequestList::updateOrCreate(
+                    [
+                        'user_id' => auth()->id(),
+                        'equipment_id' => $record->id,
+                        'facility_id' => $facilityId,
+                    ]
+                );
+            } else {
+                $notAdded[] = $record->description; // Collect descriptions of non-working items
+            }
+        }
 
-                    Notification::make()
-                        ->success()
-                        ->title('Success')
-                        ->body('Selected item/s have been added to your request list.')
-                        ->send();
-                })
-                ->color('primary')
-                ->requiresConfirmation()
-                ->modalIcon('heroicon-o-check')
-                ->modalHeading('Add to Request List')
-                ->modalDescription('Confirm to add selected item/s to your request list'),
+        // Notification for non-working items
+        if (!empty($notAdded)) {
+            Notification::make()
+                ->title('Items Not Added')
+                ->body('The following items cannot be added to the request list because they are no longer working: ' . implode(', ', $notAdded))
+                ->danger()
+                ->send();
+        } else {
+            Notification::make()
+                ->success()
+                ->title('Success')
+                ->body('Selected items have been added to your request list.')
+                ->send();
+        }
+    })
+    ->color('primary')
+    ->requiresConfirmation()
+    ->modalIcon('heroicon-o-check')
+    ->modalHeading('Add to Request List')
+    ->modalDescription('Confirm to add selected items to your request list'),
         ];
 
         // Conditionally add ExportBulkAction
