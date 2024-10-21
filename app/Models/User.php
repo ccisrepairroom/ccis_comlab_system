@@ -84,4 +84,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function countUsersByRole(string $roleName): int
+    {
+        return User::role($roleName)->count();
+    }
 }
