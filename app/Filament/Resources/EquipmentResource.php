@@ -88,12 +88,29 @@ class EquipmentResource extends Resource
                                     ->maxLength(255),
                                 Forms\Components\Select::make('facility_id')
                                     ->relationship('facility', 'name')
-                                    ->required()
-                                    ->required(),
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('name')
+                                        ->label('Create Facility')
+                                        ->placeholder('Facility Name Displayed On The Door (e.g., CL1, CL2)')
+                                        ->required()
+                                        ->maxLength(255)
+                                    ]),
+                                       
+                                   
                                 Forms\Components\Select::make('category_id')
                                     ->relationship('category', 'description')
-                                    ->required()
-                                    ->required(),
+
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('description')
+                                        ->label('Create Category')
+                                        ->required()
+                                        ->maxLength(255)
+                                       
+                                    ]),
+                                    
+                                    
+                                 
+                                    
                                 Forms\Components\Select::make('status')
                                     ->options([
                                         'Working' => 'Working',
@@ -105,6 +122,8 @@ class EquipmentResource extends Resource
                                     ])
                                     ->native(false)
                                     ->required(),
+                               
+                                 
                                 Forms\Components\TextInput::make('date_acquired')
                                     ->label('Date Acquired')
                                     ->placeholder('Refer to the equipment sticker.')
@@ -140,7 +159,14 @@ class EquipmentResource extends Resource
                                     ->options(array_combine(range(1, 1000), range(1, 1000))),
                                 Forms\Components\Select::make('stock_unit_id')
                                     ->label('Stock Unit')
-                                    ->relationship('stockUnit', 'description'),
+                                    ->relationship('stockUnit', 'description')
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('description')
+                                        ->label('Create Stock Unit')
+                                        ->required()
+                                        ->maxLength(255),
+                                    ]),
+                                       
                                 Forms\Components\Select::make('restocking_point')
                                     ->label('Restocking Point')
                                     ->options(array_combine(range(1, 1000), range(1, 1000))),
