@@ -23,6 +23,7 @@ use Filament\Infolists\Components\TextEntry;
 use Illuminate\Database\Eloquent\Collection;
 use Filament\Notifications\Notification;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Illuminate\Database\Eloquent\Model;
 
 class FacilityResource extends Resource
 {
@@ -33,6 +34,27 @@ class FacilityResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
+    }
+    protected static ?string $recordTitleAttribute = 'name';
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        \Log::info($record);
+        
+        return [
+            'Name' => $record->name ?? 'Unknown', 
+            'Connection Type' => $record->connection_type ?? 'Unknown', 
+            'Facility Type' => $record->facility_type ?? 'N/A', 
+            'Cooling Tools' => $record->cooling_tools ?? 'N/A',
+            'Floor Level' => $record->floor_level?? 'N/A', 
+            'Building' => $record->building ?? 'N/A', 
+            
+            
+        ];
+    }
+    public static function getGloballySearchableAttributes(): array
+    {
+        return['name','connection_type','facility_type','cooling_tools',
+        'floor_level','building'];
     }
 
     public static function form(Form $form): Form
