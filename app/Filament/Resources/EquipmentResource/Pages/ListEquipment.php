@@ -11,6 +11,9 @@ use Filament\Forms\Components\FileUpload;
 use Maatwebsite\Excel\Facades\Excel;
 use Filament\Notifications\Notification;
 use Filament\Resources\Components\Tab;
+use App\Models\Equipment;
+use App\Models\Borroweditems;
+
 
 class ListEquipment extends ListRecords
 {
@@ -55,6 +58,39 @@ class ListEquipment extends ListRecords
     {
         return [];
     }
+    protected function getAllEquipmentCount(): int
+    {
+        return Equipment::count();
+    }
+    protected function getWorkingEquipmentCount(): int
+    {
+        return Equipment::where('status', 'Working')->count();
+    }
+    protected function getForRepairEquipmentCount(): int
+    {
+        return Equipment::where('status', 'For Repair')->count();
+    }
+    protected function getForReplacementEquipmentCount(): int
+    {
+        return Equipment::where('status', 'For Replacement')->count();
+    }
+    protected function getLostEquipmentCount(): int
+    {
+        return Equipment::where('status', 'Lost')->count();
+    }
+    protected function getForDisposalEquipmentCount(): int
+    {
+        return Equipment::where('status', 'For Disposal')->count();
+    }
+    protected function getDisposedEquipmentCount(): int
+    {
+        return Equipment::where('status', 'Disposed')->count();
+    }
+    protected function getBorrowedAndUnreturnedEquipmentCount(): int
+    {
+        return BorrowedItems::where('status', 'Unreturned')->count();
+    }
+
 
     public function getTabs(): array
     {
@@ -80,6 +116,7 @@ class ListEquipment extends ListRecords
 */
 
             Tab::make('All')
+                ->badge($this->getAllEquipmentCount())
                 ->modifyQueryUsing(function ($query) {
                     return $query  ->orderBy('facility_id', 'asc') // No filtering, display all records
                     //->orderBy('unit_no' , 'desc')
@@ -88,31 +125,38 @@ class ListEquipment extends ListRecords
                 }),
 
             Tab::make('Working')
+                 ->badge($this->getWorkingEquipmentCount())
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('status', 'Working') ->orderBy('created_at', 'desc');
                 }),
             Tab::make('For Repair')
+                ->badge($this->getForRepairEquipmentCount())
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('status', 'For Repair') ->orderBy('created_at', 'desc');
                 }),
             Tab::make('For Replacement')
+                ->badge($this->getForReplacementEquipmentCount())
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('status', 'For Replacement') ->orderBy('created_at', 'desc');
                 }),
             Tab::make('Lost')
+                ->badge($this->getLostEquipmentCount())
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('status', 'Lost') ->orderBy('created_at', 'desc');
                 }),
             Tab::make('For Disposal')
+                ->badge($this->getForDisposalEquipmentCount())
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('status', 'For Disposal') ->orderBy('created_at', 'desc');
                 }),
             Tab::make('Disposed')
+                ->badge($this->getDisposedEquipmentCount())
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('status', 'Disposed') ->orderBy('created_at', 'desc');
                 }),
             Tab::make('Borrowed and Unreturned')
-            ->modifyQueryUsing(function ($query) {
+                ->badge($this->getBorrowedAndUnreturnedEquipmentCount())
+                ->modifyQueryUsing(function ($query) {
                 return $query->whereHas('borrowedItems', function ($borrowedQuery) {
                     $borrowedQuery->where('status', 'Unreturned');
                 })->orderBy('created_at', 'desc');

@@ -245,8 +245,6 @@ class EquipmentResource extends Resource
                         'Lost' => 'danger',
                         'For Disposal' => 'primary',
                         'Disposed' => 'danger',
-                        'Borrowed' => 'indigo',
-                        'Excess' => 'gray',
                         default => 'secondary',  
 
                     }),
