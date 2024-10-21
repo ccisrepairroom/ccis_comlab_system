@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,15 +12,15 @@ return new class extends Migration
     {
         Schema::create('facilities', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('connection_type')->nullable();
-            $table->string('facility_type')->nullable();
-            $table->string('cooling_tools')->nullable();
-            $table->string('floor_level')->nullable();
-            $table->string('building')->default('HIRAYA');
-            $table->string('remarks')->nullable();
-            $table->string('facility_img')->nullable();
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->string('name')->nullable()->index('fac_name');
+            $table->string('connection_type')->nullable()->index('fac_connection_type');
+            $table->string('facility_type')->nullable()->index('fac_facility_type');
+            $table->string('cooling_tools')->nullable()->index('fac_cooling_tools');
+            $table->string('floor_level')->nullable()->index('fac_floor_level');
+            $table->string('building')->default('HIRAYA')->index('fac_building');
+            $table->string('remarks')->nullable()->index('fac_remarks');
+            $table->string('facility_img')->nullable()->index('fac_facility_img');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->index('fac_user_id');
             $table->timestamps();
         });
     }

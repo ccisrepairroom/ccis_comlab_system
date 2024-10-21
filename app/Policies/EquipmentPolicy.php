@@ -15,7 +15,7 @@ class EquipmentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_equipment::summary');
+        return $user->can('view_any_equipment::monitoring');
     }
 
     /**
@@ -23,7 +23,7 @@ class EquipmentPolicy
      */
     public function view(User $user, Equipment $equipment): bool
     {
-        return $user->can('view_equipment::summary');
+        return $user->can('view_equipment::monitoring');
     }
 
     /**
@@ -31,7 +31,7 @@ class EquipmentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_equipment::summary');
+        return $user->can('create_equipment::monitoring');
     }
 
     /**
@@ -39,7 +39,7 @@ class EquipmentPolicy
      */
     public function update(User $user, Equipment $equipment): bool
     {
-        return $user->can('update_equipment::summary');
+        return $user->can('update_equipment::monitoring');
     }
 
     /**
@@ -47,7 +47,7 @@ class EquipmentPolicy
      */
     public function delete(User $user, Equipment $equipment): bool
     {
-        return $user->can('delete_equipment::summary');
+        return $user->can('delete_equipment::monitoring');
     }
 
     /**
@@ -55,7 +55,7 @@ class EquipmentPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_equipment::summary');
+        return $user->can('delete_any_equipment::monitoring');
     }
 
     /**
@@ -63,7 +63,7 @@ class EquipmentPolicy
      */
     public function forceDelete(User $user, Equipment $equipment): bool
     {
-        return $user->can('force_delete_equipment::summary');
+        return $user->can('force_delete_equipment::monitoring');
     }
 
     /**
@@ -71,7 +71,7 @@ class EquipmentPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_equipment::summary');
+        return $user->can('force_delete_any_equipment::monitoring');
     }
 
     /**
@@ -79,7 +79,7 @@ class EquipmentPolicy
      */
     public function restore(User $user, Equipment $equipment): bool
     {
-        return $user->can('restore_equipment::summary');
+        return $user->can('restore_equipment::monitoring');
     }
 
     /**
@@ -87,7 +87,7 @@ class EquipmentPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_equipment::summary');
+        return $user->can('restore_any_equipment::monitoring');
     }
 
     /**
@@ -95,7 +95,7 @@ class EquipmentPolicy
      */
     public function replicate(User $user, Equipment $equipment): bool
     {
-        return $user->can('replicate_equipment::summary');
+        return $user->can('replicate_equipment::monitoring');
     }
 
     /**
@@ -103,6 +103,6 @@ class EquipmentPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_equipment::summary');
+        return $user->can('reorder_equipment::monitoring');
     }
 }

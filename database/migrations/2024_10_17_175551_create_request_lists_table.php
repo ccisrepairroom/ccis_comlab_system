@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('request_lists', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            //$table->foreignId('equipment_id')->nullable()->change()->constrained()->onDelete('cascade');           
-            $table->foreignId('equipment_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('facility_id')->constrained()->onDelete('cascade');
-            $table->date('date')->nullable();
-            $table->string('purpose')->nullable();
-            $table->string('start_date_and_time_of_use')->nullable();
-            $table->string('end_date_and_time_of_use')->nullable();
-            $table->string('expected_return_date')->nullable();
-            $table->string('college_department_office')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->index('reqlist_user_id');
+            $table->foreignId('equipment_id')->nullable()->constrained()->onDelete('cascade')->index('reqlist_equipment_id');
+            $table->foreignId('facility_id')->constrained()->onDelete('cascade')->index('reqlist_facility_id');
+            $table->date('date')->nullable()->index('reqlist_date');
+            $table->string('purpose')->nullable()->index('reqlist_purpose');
+            $table->string('start_date_and_time_of_use')->nullable()->index('reqlist_start_time');
+            $table->string('end_date_and_time_of_use')->nullable()->index('reqlist_end_time');
+            $table->string('expected_return_date')->nullable()->index('reqlist_return_date');
+            $table->string('college_department_office')->nullable()->index('reqlist_department');
             $table->timestamps();
         });
     }

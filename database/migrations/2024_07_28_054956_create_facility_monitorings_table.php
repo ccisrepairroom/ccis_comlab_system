@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('facility_monitorings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('facility_id')->constrained()->onDelete('cascade');
-            $table->foreignId('monitored_by')->constrained('users')->onDelete('cascade');
-            $table->string('monitored_date')->nullable();
-            $table->string('remarks')->nullable();
-            // $table->string('facility_img')->nullable();
+            $table->foreignId('facility_id')->constrained()->onDelete('cascade')->index('facmon_facility_id');
+            $table->foreignId('monitored_by')->constrained('users')->onDelete('cascade')->index('facmon_monitored_by');
+            $table->string('monitored_date')->nullable()->index('facmon_monitored_date');
+            $table->string('remarks')->nullable()->index('facmon_remarks');
             $table->timestamps();
         });
     }
 
-     /**
+    /**
      * Reverse the migrations.
      */
     public function down(): void
