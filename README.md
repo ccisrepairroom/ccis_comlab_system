@@ -1,4 +1,4 @@
-Run the ff. command
+<b>Run the ff. command</b>
 
 composer update
 npm install
