@@ -22,7 +22,7 @@ class EquipmentCountPerFacility extends ChartWidget
         $startDate = $this->filters['startDate'] ?? null;
         $endDate = $this->filters['endDate'] ?? null;
 
-        // Fetch all categories and their equipment counts within the date range
+        // Fetch all facilities and their equipment counts within the date range
         $facilities = Facility::withCount(['equipment' => function ($query) use ($startDate, $endDate) {
             if ($startDate) {
                 $query->whereDate('created_at', '>=', Carbon::parse($startDate));
@@ -32,10 +32,10 @@ class EquipmentCountPerFacility extends ChartWidget
             }
         }])->get();
 
-        // Create an array to hold category descriptions and their equipment counts
+        // Create an array to hold facility descriptions and their equipment counts
         $facilityData = [];
 
-        // Populate the category data array
+        // Populate the facility data array
         foreach ($facilities as $facility) {
             $facilityData[] = [
                 'description' => $facility->name,
@@ -43,7 +43,7 @@ class EquipmentCountPerFacility extends ChartWidget
             ];
         }
 
-        // Sort the category data by equipment count in descending order
+        // Sort the facility data by equipment count in descending order
         usort($facilityData, function ($a, $b) {
             return $b['count'] <=> $a['count']; // Sort descending
         });
@@ -52,15 +52,24 @@ class EquipmentCountPerFacility extends ChartWidget
         $labels = array_column($facilityData, 'description');
         $data = array_column($facilityData, 'count');
 
+        // ROY G. BIV colors
+        $colors = ['#FFCC80', '#FF9800', '#F57C00', '#FFC107', '#FFEB3B', '#FFD700', '#795548'];
+
+        // Assign colors to each data point
+        $backgroundColors = [];
+        foreach ($data as $index => $count) {
+            $backgroundColors[] = $colors[$index % count($colors)]; // Cycle through ROY G. BIV
+        }
+
         return [
             'datasets' => [
                 [
                     'label' => "Equipment Count",
                     'data' => $data,
-                    'backgroundColor' => '#d87e0a', // Customize bar color
+                    'backgroundColor' => $backgroundColors, // Use dynamic colors
                 ],
             ],
-            'labels' => $labels, // Use sorted category descriptions as labels
+            'labels' => $labels, // Use sorted facility descriptions as labels
         ];
     }
 

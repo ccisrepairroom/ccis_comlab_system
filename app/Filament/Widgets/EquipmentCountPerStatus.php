@@ -33,12 +33,21 @@ class EquipmentCountPerStatus extends ChartWidget
         $labels = $statusCounts->pluck('status')->toArray();
         $data = $statusCounts->pluck('count')->toArray();
 
+        // ROY G. BIV colors
+        $colors = ['#2da905', '#b3d809', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3'];
+
+        // Assign colors to each data point
+        $backgroundColors = [];
+        foreach ($data as $index => $count) {
+            $backgroundColors[] = $colors[$index % count($colors)]; // Cycle through ROY G. BIV
+        }
+
         return [
             'datasets' => [
                 [
                     'label' => "Equipment Count",
                     'data' => $data,
-                    'backgroundColor' => '#ffa000', // Customize bar color
+                    'backgroundColor' => $backgroundColors, // Use dynamic colors
                 ],
             ],
             'labels' => $labels, // Use status labels
