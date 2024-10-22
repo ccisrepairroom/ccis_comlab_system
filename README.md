@@ -1,16 +1,16 @@
 <b>Run the ff. command</b>
 
 composer update<br>
-npm install
-npm run build
-cp .env.example .env
-php artisan migrate
-php artisan key:generate
-rm public/storage
-php artisan storage:link
-php artisan serve
-npm run dev
-php artisan shield:install
-php artisan make:filament-user
-php artisan optimize:clear
-php artisan icons:cache
+npm install <br>
+npm run build <br>
+cp .env.example .env <br>
+php artisan migrate <br>
+php artisan key:generate <br>
+rm public/storage <br>
+php artisan storage:link <br>
+php artisan serve <br>
+npm run dev <br>
+php artisan shield:install <br>
+php artisan make:filament-user <br>
+php artisan optimize:clear <br>
+php artisan icons:cache <br>
