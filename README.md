@@ -1,6 +1,6 @@
 <b>Run the ff. command</b>
 
-composer update
+composer update<br>
 npm install
 npm run build
 cp .env.example .env
