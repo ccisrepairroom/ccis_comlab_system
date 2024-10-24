@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('item')->nullable()->index('supandman_item_index'); 
             $table->integer('quantity')->nullable()->index('supandman_quantity_index');
             $table->string('stocking_point')->nullable()->index('supandman_stocking_point_index');
-            $table->string('location')->nullable()->index('supandman_location_index'); 
             $table->foreignId('stock_unit_id')->nullable()->constrained()->onDelete('cascade')->index('supandman_stock_unit_id_index');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->index('supandman_user_id_index'); 
+            $table->foreignId('facility_id')->nullable()->constrained()->onDelete('cascade')->index('supandman_facility_id_index');
             $table->timestamps(); 
         });
     }

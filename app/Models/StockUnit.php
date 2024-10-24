@@ -14,4 +14,8 @@ class StockUnit extends Model
 {
     return $this->belongsTo(User::class);
 }
+public function suppliesAndMaterials()
+{
+    return $this->hasMany(SuppliesAndMaterials::class, 'stock_unit_id');
+}
 }

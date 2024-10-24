@@ -12,17 +12,17 @@ class SuppliesAndMaterials extends Model
         'item',
         'quantity',
         'stocking_point',
+        'location',
         'stock_unit_id',
-        'facility_id',
         'user_id',
         'created_at'
     ];
 
 
     public function stockUnit()
-{
-    return $this->belongsTo(StockUnit::class, 'stock_unit_id');
-}
+    {
+        return $this->belongsTo(StockUnit::class, 'stock_unit_id');
+    }
     public function user()
     {
         return $this->belongsTo(User::class);
