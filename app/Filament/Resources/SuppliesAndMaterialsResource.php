@@ -17,13 +17,14 @@ class SuppliesAndMaterialsResource extends Resource
 {
     protected static ?string $model = SuppliesAndMaterials::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-archive-box';
+    protected static ?string $navigationGroup = 'Supplies And Materials';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                
             ]);
     }
 

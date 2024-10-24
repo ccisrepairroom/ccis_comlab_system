@@ -21,7 +21,7 @@ class StockUnitResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-swatch';
 
-    protected static ?string $navigationGroup = 'Classification';
+    protected static ?string $navigationGroup = 'Supplies And Materials';
     protected static ?int $navigationSort = 1;
 
 
