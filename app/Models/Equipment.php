@@ -28,6 +28,7 @@ class Equipment extends Model
     protected $guarded = [];
 
     protected $fillable = [
+        'source_of_fund',
         'unit_no',
         'description',
         'specifications',
@@ -40,6 +41,7 @@ class Equipment extends Model
         'amount',
         'estimated_life',
         'item_no',
+        'po_number',
         'property_no',
         'control_no',
         'serial_no',

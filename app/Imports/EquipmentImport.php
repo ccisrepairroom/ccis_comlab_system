@@ -54,6 +54,7 @@ class EquipmentImport implements ToModel, WithHeadingRow
 
     // Define essential fields to check
     $essentialFields = [
+        'source_of_fund',
         'unit_no',
         'description',
         'specifications',
@@ -65,6 +66,7 @@ class EquipmentImport implements ToModel, WithHeadingRow
         'amount',
         'estimated_life',
         'item_no',
+        'po_number',
         'property_no',
         'control_no',
         'serial_no',
