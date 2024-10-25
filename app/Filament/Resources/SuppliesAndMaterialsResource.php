@@ -3,19 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\SuppliesAndMaterialsResource\Pages;
-use App\Filament\Resources\SuppliesAndMaterialsResource;
 use App\Models\SuppliesAndMaterials;
-use App\Models\StockUnit;
-use App\Models\Facility;
-use App\Models\User;
-
+use App\Models\SuppliesCart; 
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Notification; // Import Notification
+use Illuminate\Support\Facades\Notification;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class SuppliesAndMaterialsResource extends Resource
@@ -79,59 +75,10 @@ class SuppliesAndMaterialsResource extends Resource
         $user = auth()->user();
         $isPanelUser = $user && $user->hasRole('panel_user');
 
-        // Define the bulk actions array
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
-            Tables\Actions\BulkAction::make('add_to_supplies_cart')
-                ->label('Add to Supplies Cart')
-                ->icon('heroicon-o-shopping-cart')
-                ->action(function (Collection $records) {
-                    $notAdded = [];
-                    $successfullyAdded = false;
-
-                    foreach ($records as $record) {
-                        if ($record->quantity <= 0) {
-                            // If quantity is 0, add to not added list
-                            $notAdded[] = $record->item;
-                            continue; // Skip adding this item
-                        }
-
-                        // Logic to add the item to the cart (replace this with actual cart logic)
-                        $added = addToCart($record); // Placeholder for your actual logic
-
-                        if ($added) {
-                            $successfullyAdded = true; // At least one item was successfully added
-                        } else {
-                            $notAdded[] = $record->item; // Keep track of items that couldn't be added
-                        }
-                    }
-
-                    // Notification for out of stock items
-                    if (!empty($notAdded)) {
-                        Notification::make()
-                            ->title('Items Not Added')
-                            ->body('The following items cannot be added to the cart because they are out of stock: ' . implode(', ', $notAdded))
-                            ->danger()
-                            ->send();
-                    }
-
-                    // Send success notification only if at least one item was added
-                    if ($successfullyAdded) {
-                        Notification::make()
-                            ->success()
-                            ->title('Success')
-                            ->body('Selected items have been successfully added to your cart.')
-                            ->send();
-                    }
-                })
-                ->color('primary')
-                ->requiresConfirmation()
-                ->modalIcon('heroicon-o-check')
-                ->modalHeading('Add to Supplies Cart')
-                ->modalDescription('Confirm to add selected supplies and materials to your supplies cart'),
         ];
 
-        // Conditionally add ExportBulkAction
         if (!$isPanelUser) {
             $bulkActions[] = ExportBulkAction::make();
         }
@@ -141,51 +88,81 @@ class SuppliesAndMaterialsResource extends Resource
                 Tables\Columns\TextColumn::make('item')
                     ->label('Item')
                     ->searchable()
-                    ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('quantity')
                     ->searchable()
-                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable()
-                    ->formatStateUsing(function ($record) {
-                        $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
-                        return "{$record->stocking_point} {$stockUnitDescription}";
-                    })
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('stocking_point')
                     ->searchable()
                     ->sortable()
-                    ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('facility.name')
                     ->label('Location')
                     ->searchable()
-                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                
             ])
-            ->filters([
-                // Define your filters here
-            ])
-            ->recordUrl(function ($record) {
-                //return Pages\ViewSupplies::getUrl([$record->id]);
-            })
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make($bulkActions)
-                    ->label('Actions'),
+                Tables\Actions\BulkActionGroup::make(array_merge($bulkActions, [
+                    Tables\Actions\BulkAction::make('add_to_supplies_cart')
+                        ->label('Add to Supplies Cart')
+                        ->icon('heroicon-o-shopping-bag')
+                        ->color('primary')
+                        ->requiresConfirmation()
+                        ->modalIcon('heroicon-o-check')
+                        ->modalHeading('Add to Supplies Cart')
+                        ->modalDescription('Confirm to add selected item/s to your supplies cart.')
+                        ->form(function (Collection $records) {
+                            $availableStock = $records->sum('quantity');
+                            return [
+                                Forms\Components\TextInput::make('quantity_requested')
+                                    ->label('Quantity Requested')
+                                    ->required()
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->hint("Available stock: {$availableStock}"),
+                            ];
+                        })
+                        ->action(function (array $data, Collection $records) {
+                            foreach ($records as $record) {
+                                if ($data['quantity_requested'] > $record->quantity) {
+                                    Notification::make()
+                                        ->danger()
+                                        ->title('Error')
+                                        ->body('Requested quantity exceeds available stock.')
+                                        ->send();
+                                    return;
+                                }
+
+                                // Create the SuppliesCart record
+                                SuppliesCart::create([
+                                    'user_id' => auth()->id(),
+                                    'supplies_and_materials_id' => $record->id,
+                                    'facility_id' => $record->facility_id,
+                                    'available_quantity' => $record->quantity, // Copy available quantity
+                                    'quantity_requested' => $data['quantity_requested'],
+                                    'action_date' => now(), // Use current date as action date
+                                ]);
+                            }
+
+                            Notification::make()
+                                ->success()
+                                ->title('Success')
+                                ->body('Selected item/s have been added to your supplies cart.')
+                                ->send();
+                        }),
+                ]))
             ]);
     }
 
     public static function getRelations(): array
     {
-        return [
-            // Define your relations here
-        ];
+        return [];
     }
 
     public static function getPages(): array
@@ -194,7 +171,6 @@ class SuppliesAndMaterialsResource extends Resource
             'index' => Pages\ListSuppliesAndMaterials::route('/'),
             'create' => Pages\CreateSuppliesAndMaterials::route('/create'),
             'edit' => Pages\EditSuppliesAndMaterials::route('/{record}/edit'),
-            //'view' => Pages\ViewSupplies::route('/{record}'),
         ];
     }
 }

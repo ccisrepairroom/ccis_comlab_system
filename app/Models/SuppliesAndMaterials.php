@@ -31,6 +31,10 @@ class SuppliesAndMaterials extends Model
     {
         return $this->belongsTo(Facility::class);
     }
+    public function supplies_cart()
+    {
+        return $this->belongsTo(SuppliesCart::class);
+    }
 
 
 }

@@ -11,10 +11,10 @@ class Category extends Model
 
     protected $fillable = ['description'];
 
-public function user()
+/*public function user()
 {
     return $this->belongsTo(User::class);
-}
+}*/
 public function equipment()
     {
         return $this->hasMany(Equipment::class, 'category_id');

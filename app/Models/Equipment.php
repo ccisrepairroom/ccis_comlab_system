@@ -69,11 +69,11 @@ class Equipment extends Model
         return $this->belongsTo(Facility::class);
     }
 
-    public function stockUnit()
+    /*public function stockUnit()
     {
         return $this->belongsTo(StockUnit::class, 'stock_unit_id');
     }
-
+*/
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->timezone('Asia/Manila')->format('F d, Y h:i A');

@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\StockUnitResource\Pages;
 use App\Filament\Resources\StockUnitResource\RelationManagers;
 use App\Models\StockUnit;
+use App\Models\SuppliesCart;
+
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -22,7 +24,7 @@ class StockUnitResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-swatch';
 
     protected static ?string $navigationGroup = 'Supplies And Materials';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
 
     public static function getNavigationBadge(): ?string
