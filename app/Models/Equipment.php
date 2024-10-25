@@ -43,11 +43,11 @@ class Equipment extends Model
         'property_no',
         'control_no',
         'serial_no',
-        'no_of_stocks',
-        'restocking_point',
+        //'no_of_stocks',
+        //'restocking_point',
         'person_liable',
         'remarks',
-        'stock_unit_id',
+        //'stock_unit_id',
         'name',
         'availability'
     ];

@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Equipment;
+use App\Models\SuppliesAndMaterials;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class EquipmentPolicy
+class SuppliesAndMaterialsPolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class EquipmentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_equipment');
+        return $user->can('view_any_supplies::and::materials');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Equipment $equipment): bool
+    public function view(User $user, SuppliesAndMaterials $suppliesAndMaterials): bool
     {
-        return $user->can('view_equipment');
+        return $user->can('view_supplies::and::materials');
     }
 
     /**
@@ -31,23 +31,23 @@ class EquipmentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_equipment');
+        return $user->can('create_supplies::and::materials');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Equipment $equipment): bool
+    public function update(User $user, SuppliesAndMaterials $suppliesAndMaterials): bool
     {
-        return $user->can('update_equipment');
+        return $user->can('update_supplies::and::materials');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Equipment $equipment): bool
+    public function delete(User $user, SuppliesAndMaterials $suppliesAndMaterials): bool
     {
-        return $user->can('delete_equipment');
+        return $user->can('delete_supplies::and::materials');
     }
 
     /**
@@ -55,15 +55,15 @@ class EquipmentPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_equipment');
+        return $user->can('delete_any_supplies::and::materials');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, Equipment $equipment): bool
+    public function forceDelete(User $user, SuppliesAndMaterials $suppliesAndMaterials): bool
     {
-        return $user->can('force_delete_equipment');
+        return $user->can('force_delete_supplies::and::materials');
     }
 
     /**
@@ -71,15 +71,15 @@ class EquipmentPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_equipment');
+        return $user->can('force_delete_any_supplies::and::materials');
     }
 
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, Equipment $equipment): bool
+    public function restore(User $user, SuppliesAndMaterials $suppliesAndMaterials): bool
     {
-        return $user->can('restore_equipment');
+        return $user->can('restore_supplies::and::materials');
     }
 
     /**
@@ -87,15 +87,15 @@ class EquipmentPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_equipment');
+        return $user->can('restore_any_supplies::and::materials');
     }
 
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, Equipment $equipment): bool
+    public function replicate(User $user, SuppliesAndMaterials $suppliesAndMaterials): bool
     {
-        return $user->can('replicate_equipment');
+        return $user->can('replicate_supplies::and::materials');
     }
 
     /**
@@ -103,6 +103,6 @@ class EquipmentPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_equipment');
+        return $user->can('reorder_supplies::and::materials');
     }
 }

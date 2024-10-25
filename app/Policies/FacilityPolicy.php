@@ -15,7 +15,7 @@ class FacilityPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_facility::monitoring');
+        return $user->can('view_any_facility');
     }
 
     /**
@@ -23,7 +23,7 @@ class FacilityPolicy
      */
     public function view(User $user, Facility $facility): bool
     {
-        return $user->can('view_facility::monitoring');
+        return $user->can('view_facility');
     }
 
     /**
@@ -31,7 +31,7 @@ class FacilityPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_facility::monitoring');
+        return $user->can('create_facility');
     }
 
     /**
@@ -39,7 +39,7 @@ class FacilityPolicy
      */
     public function update(User $user, Facility $facility): bool
     {
-        return $user->can('update_facility::monitoring');
+        return $user->can('update_facility');
     }
 
     /**
@@ -47,7 +47,7 @@ class FacilityPolicy
      */
     public function delete(User $user, Facility $facility): bool
     {
-        return $user->can('delete_facility::monitoring');
+        return $user->can('delete_facility');
     }
 
     /**
@@ -55,7 +55,7 @@ class FacilityPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_facility::monitoring');
+        return $user->can('delete_any_facility');
     }
 
     /**
@@ -63,7 +63,7 @@ class FacilityPolicy
      */
     public function forceDelete(User $user, Facility $facility): bool
     {
-        return $user->can('force_delete_facility::monitoring');
+        return $user->can('force_delete_facility');
     }
 
     /**
@@ -71,7 +71,7 @@ class FacilityPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_facility::monitoring');
+        return $user->can('force_delete_any_facility');
     }
 
     /**
@@ -79,7 +79,7 @@ class FacilityPolicy
      */
     public function restore(User $user, Facility $facility): bool
     {
-        return $user->can('restore_facility::monitoring');
+        return $user->can('restore_facility');
     }
 
     /**
@@ -87,7 +87,7 @@ class FacilityPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_facility::monitoring');
+        return $user->can('restore_any_facility');
     }
 
     /**
@@ -95,7 +95,7 @@ class FacilityPolicy
      */
     public function replicate(User $user, Facility $facility): bool
     {
-        return $user->can('replicate_facility::monitoring');
+        return $user->can('replicate_facility');
     }
 
     /**
@@ -103,6 +103,6 @@ class FacilityPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_facility::monitoring');
+        return $user->can('reorder_facility');
     }
 }

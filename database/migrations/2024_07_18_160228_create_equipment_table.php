@@ -28,10 +28,10 @@ return new class extends Migration
             $table->string('property_no')->nullable()->index('equip_property_no');
             $table->string('control_no')->nullable()->index('equip_control_no');
             $table->string('serial_no')->nullable()->index('equip_serial_no');
-            $table->string('no_of_stocks')->nullable()->index('equip_no_of_stocks');
-            $table->string('restocking_point')->nullable()->index('equip_restocking_point');
-            $table->unsignedBigInteger('stock_unit_id')->nullable()->index('equip_stock_unit_id');
-            $table->foreign('stock_unit_id')->references('id')->on('stock_units')->onDelete('cascade');
+            //$table->string('no_of_stocks')->nullable()->index('equip_no_of_stocks');
+            //$table->string('restocking_point')->nullable()->index('equip_restocking_point');
+            //$table->unsignedBigInteger('stock_unit_id')->nullable()->index('equip_stock_unit_id');
+            //$table->foreign('stock_unit_id')->references('id')->on('stock_units')->onDelete('cascade');
             $table->string('person_liable')->nullable()->index('equip_person_liable');
             $table->string('remarks')->nullable()->index('equip_remarks');
             $table->timestamps();

@@ -333,7 +333,7 @@ class EquipmentResource extends Resource
                     ->searchable()
                     ->label('Serial No.')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('no_of_stocks')
+                /*Tables\Columns\TextColumn::make('no_of_stocks')
                     ->label('No. of Stocks')
                     ->searchable()
                     ->sortable()
@@ -341,13 +341,13 @@ class EquipmentResource extends Resource
                         $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
                         return "{$record->no_of_stocks} {$stockUnitDescription}";
                     })
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true),*/
                 /*Tables\Columns\TextColumn::make('stockUnit.description')
                     ->label("Stock Unit")
                     ->searchable()
                     ->sortable(),
                     //->toggleable(isToggledHiddenByDefault: true),*/
-                Tables\Columns\TextColumn::make('restocking_point')
+                /*Tables\Columns\TextColumn::make('restocking_point')
                     ->searchable()
                     ->sortable()
 
@@ -355,7 +355,7 @@ class EquipmentResource extends Resource
                         $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
                         return "{$record->restocking_point} {$stockUnitDescription}";
                     })                    
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true),*/
                 Tables\Columns\TextColumn::make('person_liable')
                     ->searchable()
                     ->sortable()

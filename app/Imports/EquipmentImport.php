@@ -22,11 +22,11 @@ class EquipmentImport implements ToModel, WithHeadingRow
     // Trim and retrieve related models
     $facilityName = trim($row['facility_id'] ?? '');
     $categoryDescription = trim($row['category_id'] ?? '');
-    $stockUnitDescription = trim($row['stock_unit_id'] ?? '');
+    //$stockUnitDescription = trim($row['stock_unit_id'] ?? '');
 
     $facility = $facilityName ? Facility::firstOrCreate(['name' => $facilityName], ['name' => $facilityName]) : null;
     $category = $categoryDescription ? Category::firstOrCreate(['description' => $categoryDescription], ['description' => $categoryDescription]) : null;
-    $stock_unit = $stockUnitDescription ? StockUnit::firstOrCreate(['description' => $stockUnitDescription], ['description' => $stockUnitDescription]) : null;
+    //$stock_unit = $stockUnitDescription ? StockUnit::firstOrCreate(['description' => $stockUnitDescription], ['description' => $stockUnitDescription]) : null;
 
     // Prepare data array with null checks
     $data = [
@@ -44,9 +44,9 @@ class EquipmentImport implements ToModel, WithHeadingRow
         'property_no' => $row['property_no'] ?? null,
         'control_no' => $row['control_no'] ?? null,
         'serial_no' => $row['serial_no'] ?? null,
-        'no_of_stocks' => $row['no_of_stocks'] ?? null,
-        'restocking_point' => $row['restocking_point'] ?? null,
-        'stock_unit_id' => $stock_unit ? $stock_unit->id : null,
+        //'no_of_stocks' => $row['no_of_stocks'] ?? null,
+        //'restocking_point' => $row['restocking_point'] ?? null,
+        //'stock_unit_id' => $stock_unit ? $stock_unit->id : null,
         'person_liable' => $row['person_liable'] ?? null,
         'user_id' => $userId ?? null, 
         'remarks' => $row['remarks'] ?? null,
@@ -68,9 +68,9 @@ class EquipmentImport implements ToModel, WithHeadingRow
         'property_no',
         'control_no',
         'serial_no',
-        'no_of_stocks',
-        'restocking_point',
-        'stock_unit_id',
+        //'no_of_stocks',
+        //'restocking_point',
+        //'stock_unit_id',
         'person_liable',
         'remarks',
     ];
