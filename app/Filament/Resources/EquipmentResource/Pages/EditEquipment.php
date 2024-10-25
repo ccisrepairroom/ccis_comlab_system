@@ -10,12 +10,12 @@ class EditEquipment extends EditRecord
 {
     protected static string $resource = EquipmentResource::class;
 
-    protected function getHeaderActions(): array
+   /* protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make(),
         ];
-    }
+    }*/
 
     protected function getRedirectUrl(): string
     {

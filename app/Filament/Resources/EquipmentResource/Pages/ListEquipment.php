@@ -115,7 +115,7 @@ class ListEquipment extends ListRecords
 }),
 */
 
-            Tab::make('All')
+            Tab::make('All Equipment')
                 ->badge($this->getAllEquipmentCount())
                 ->modifyQueryUsing(function ($query) {
                     return $query  ->orderBy('facility_id', 'asc') // No filtering, display all records
@@ -124,7 +124,7 @@ class ListEquipment extends ListRecords
 
                 }),
 
-            Tab::make('Working')
+            /*Tab::make('Working')
                  ->badge($this->getWorkingEquipmentCount())
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('status', 'Working') ->orderBy('created_at', 'desc');
@@ -153,8 +153,8 @@ class ListEquipment extends ListRecords
                 ->badge($this->getDisposedEquipmentCount())
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('status', 'Disposed') ->orderBy('created_at', 'desc');
-                }),
-            Tab::make('Borrowed and Unreturned')
+                }),*/
+            Tab::make('Borrowed Items')
                 ->badge($this->getBorrowedAndUnreturnedEquipmentCount())
                 ->modifyQueryUsing(function ($query) {
                 return $query->whereHas('borrowedItems', function ($borrowedQuery) {

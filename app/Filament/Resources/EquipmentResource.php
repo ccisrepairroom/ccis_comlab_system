@@ -6,6 +6,10 @@ use App\Filament\Resources\EquipmentResource\Pages;
 use App\Filament\Resources\EquipmentResource\RelationManagers;
 use App\Models\Equipment;
 use App\Models\Facility;
+use App\Models\User;
+use App\Models\EquipmentMonitoring;
+
+
 //use App\Models\BorrowList;
 use App\Models\RequestList;
 use App\Models\StockUnit;
@@ -404,21 +408,106 @@ class EquipmentResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),*/
                 
-            ])
-            ->filters([
-                // Define your filters here
-            ])
-            ->recordUrl(function ($record) {
-                return Pages\ViewEquipment::getUrl([$record->id]);
-            })
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make($bulkActions)
-                    ->label('Actions')
-                // ->icon('heroicon-o-cog'), // Optional: You can set an icon for the group
-            ]);
+                ])
+
+            
+                ->filters([])
+                /*->recordUrl(function ($record) {
+                    return Pages\ViewEquipment::getUrl([$record->id]);
+                })*/
+                ->actions([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ActionGroup::make([
+                        Tables\Actions\ViewAction::make('view_monitoring')
+                            ->label('View Equipment Records')
+                            ->icon('heroicon-o-presentation-chart-line')
+                            ->color('info')
+                            ->modalHeading('Monitoring Records')
+                            ->modalContent(function ($record) {
+                                $equipmentId = $record->id;
+                                $monitorings = EquipmentMonitoring::with('equipment.facility', 'user')
+                                    ->where('equipment_id', $equipmentId)
+                                    ->get();
+                                return view('filament.resources.equipment-monitoring-modal', [
+                                    'monitorings' => $monitorings,
+                                ]);
+                            }),
+                        Tables\Actions\Action::make('Update Status')
+                            ->icon('heroicon-o-plus')
+                            ->color('primary')
+                            ->requiresConfirmation()
+                            ->modalIcon('heroicon-o-check')
+                            ->modalHeading('Update Equipment Status')
+                            ->modalDescription('Confirm to update equipment status')
+                            ->form(function (Forms\Form $form, $record) {
+                                return $form->schema([
+                                    Forms\Components\Select::make('monitored_by')
+                                        ->label('Monitored By')
+                                        ->options(User::all()->pluck('name', 'id'))
+                                        ->default(auth()->user()->id)
+                                        ->disabled()
+                                        ->required(),
+                                    Forms\Components\DatePicker::make('monitored_date')
+                                        ->label('Monitoring Date')
+                                        ->required()
+                                        ->default(now())
+                                        ->format('Y-m-d'),
+                                    Forms\Components\Select::make('status')
+                                        ->required()
+                                        ->options([
+                                            'Working' => 'Working',
+                                            'For Repair' => 'For Repair',
+                                            'For Replacement' => 'For Replacement',
+                                            'Lost' => 'Lost',
+                                            'For Disposal' => 'For Disposal',
+                                            'Disposed' => 'Disposed',
+                                            'Borrowed' => 'Borrowed',
+                                        ])
+                                        ->default($record->status)
+                                        ->native(false),
+                                    Forms\Components\Select::make('facility_id')
+                                        ->label('New Assigned Facility')
+                                        ->relationship('facility', 'name')
+                                        ->default($record->facility_id)
+                                        ->required(),
+                                    Forms\Components\TextInput::make('remarks')
+                                        ->default($record->remarks)
+                                        ->formatStateUsing(fn($state) => strip_tags($state))
+                                        ->label('Remarks'),
+                                ]);
+                            })
+                            ->action(function (array $data, $record) {
+                                $data['equipment_id'] = $record->id;
+                
+                                if (empty($data['monitored_by'])) {
+                                    $data['monitored_by'] = auth()->user()->id;
+                                }
+                
+                                if (empty($data['monitored_date'])) {
+                                    $data['monitored_date'] = now()->format('Y-m-d');
+                                }
+                
+                                EquipmentMonitoring::create($data);
+                
+                                $record->update([
+                                    'status' => $data['status'],
+                                    'facility_id' => $data['facility_id'],
+                                    'remarks' => $data['remarks'],
+                                ]);
+                
+                                Notification::make()
+                                    ->success()
+                                    ->title('Success')
+                                    ->body('Status of the selected item/s have been updated.')
+                                    ->send();
+                            }),
+                    ]),
+                ])
+                ->bulkActions([
+                    Tables\Actions\BulkActionGroup::make($bulkActions)
+                        ->label('Actions')
+                ]);
+                
     }
 
 
@@ -440,7 +529,7 @@ class EquipmentResource extends Resource
         return [
             'index' => Pages\ListEquipment::route('/'),
             'create' => Pages\CreateEquipment::route('/create'),
-            'view' => Pages\ViewEquipment::route('/{record}'),
+            //'view' => Pages\ViewEquipment::route('/{record}'),
             'edit' => Pages\EditEquipment::route('/{record}/edit'),
         ];
     }
