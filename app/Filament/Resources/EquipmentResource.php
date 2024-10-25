@@ -204,6 +204,7 @@ class EquipmentResource extends Resource
         // Define the bulk actions array
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
+            //Tables\Actions\EditBulkAction::make(),
             Tables\Actions\BulkAction::make('add_to_request_list')
     ->label('Add to Request List')
     ->icon('heroicon-o-shopping-cart')
@@ -273,6 +274,7 @@ class EquipmentResource extends Resource
         // Conditionally add ExportBulkAction
         if (!$isPanelUser) {
             $bulkActions[] = ExportBulkAction::make();
+            
         }
 
         return $table
@@ -530,7 +532,7 @@ class EquipmentResource extends Resource
             'index' => Pages\ListEquipment::route('/'),
             'create' => Pages\CreateEquipment::route('/create'),
             //'view' => Pages\ViewEquipment::route('/{record}'),
-            'edit' => Pages\EditEquipment::route('/{record}/edit'),
+            //'edit' => Pages\EditEquipment::route('/{record}/edit'),
         ];
     }
 }

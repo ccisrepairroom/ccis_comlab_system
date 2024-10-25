@@ -62,7 +62,45 @@ class ListEquipment extends ListRecords
     {
         return Equipment::count();
     }
-    protected function getWorkingEquipmentCount(): int
+
+    /*protected function getTableColumns(): array
+    {
+        return [
+            // Define your columns here
+            Tables\Columns\TextColumn::make('source_of_fund')->label('Source of Fund'),
+            Tables\Columns\TextColumn::make('description')->label('Description'),
+            // ... Add other columns as necessary
+
+        ];
+    }
+    protected function getTableRowAction(): array
+    {
+        return [
+            Actions\Action::make('view_monitoring')
+                ->label('View Monitoring Records')
+                ->icon('heroicon-o-presentation-chart-line')
+                ->color('info')
+                ->action(function ($record) {
+                    $this->showMonitoringRecordsModal($record);
+                }),
+        ];
+    }
+
+    protected function showMonitoringRecordsModal($record)
+    {
+        $equipmentId = $record->id;
+        $monitorings = EquipmentMonitoring::with('equipment.facility', 'user')
+            ->where('equipment_id', $equipmentId)
+            ->get();
+
+        return view('filament.resources.equipment-monitoring-modal', [
+            'monitorings' => $monitorings,
+        ]);
+    }*/
+
+
+
+    /*protected function getWorkingEquipmentCount(): int
     {
         return Equipment::where('status', 'Working')->count();
     }
@@ -85,7 +123,7 @@ class ListEquipment extends ListRecords
     protected function getDisposedEquipmentCount(): int
     {
         return Equipment::where('status', 'Disposed')->count();
-    }
+    }*/
     protected function getBorrowedAndUnreturnedEquipmentCount(): int
     {
         return BorrowedItems::where('status', 'Unreturned')->count();
