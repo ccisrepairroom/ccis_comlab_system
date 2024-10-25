@@ -3,9 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FacilityResource\Pages;
-use App\Filament\Resources\FacilityResource\RelationManagers;
 use App\Models\Facility;
 use App\Models\Equipment;
+use App\Models\FacilityMonitoring;
+use App\Models\User;
+use App\Models\BorrowList;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,49 +15,22 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Grid;
-use Filament\Infolists\Infolist;
-use App\Models\BorrowList;
-use App\Models\User;
-use Filament\Forms\FormsComponent;
-use Filament\Infolists\Components\ImageEntry;
-use Filament\Infolists\Components;
-use Filament\Infolists\Components\TextEntry;
-use Illuminate\Database\Eloquent\Collection;
 use Filament\Notifications\Notification;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class FacilityResource extends Resource
 {
     protected static ?string $model = Facility::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
+
     protected static ?string $recordTitleAttribute = 'name';
-    public static function getGlobalSearchResultDetails(Model $record): array
-    {
-        \Log::info($record);
-        
-        return [
-            'Name' => $record->name ?? 'Unknown', 
-            'Connection Type' => $record->connection_type ?? 'Unknown', 
-            'Facility Type' => $record->facility_type ?? 'N/A', 
-            'Cooling Tools' => $record->cooling_tools ?? 'N/A',
-            'Floor Level' => $record->floor_level?? 'N/A', 
-            'Building' => $record->building ?? 'N/A', 
-            
-            
-        ];
-    }
-    public static function getGloballySearchableAttributes(): array
-    {
-        return['name','connection_type','facility_type','cooling_tools',
-        'floor_level','building'];
-    }
 
     public static function form(Form $form): Form
     {
@@ -124,14 +99,11 @@ class FacilityResource extends Resource
                             ->disk('public')
                             ->directory('facility'),
                     ]),
-                    
                 Section::make('Remarks')
                     ->schema([
                         Forms\Components\RichEditor::make('remarks')
                             ->placeholder('Anything that describes the facility (e.g., Computer Laboratory with space for 30 students)')
-                            ->disableToolbarButtons([
-                                'attachFiles'
-                            ])
+                            ->disableToolbarButtons(['attachFiles']),
                     ]),
             ]);
     }
@@ -141,7 +113,7 @@ class FacilityResource extends Resource
         $user = auth()->user();
         $isPanelUser = $user && $user->hasRole('panel_user');
 
-        // Define the bulk actions array
+        // Define bulk actions
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
             Tables\Actions\BulkAction::make('add_to_borrow_list')
@@ -152,10 +124,9 @@ class FacilityResource extends Resource
                         BorrowList::updateOrCreate(
                             [
                                 'user_id' => auth()->id(),
-                                'facility_id' => $record->id, // Correctly reference the facility ID here
-                                ]
-                            );
-                        
+                                'facility_id' => $record->id,
+                            ]
+                        );
                     }
 
                     Notification::make()
@@ -171,13 +142,12 @@ class FacilityResource extends Resource
                 ->modalDescription('Confirm to add selected facilities to your borrow lists'),
         ];
 
-        // Conditionally add ExportBulkAction
         if (!$isPanelUser) {
             $bulkActions[] = ExportBulkAction::make();
         }
 
         return $table
-        ->query(Facility::with('user'))
+            ->query(Facility::with('user'))
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Name')
@@ -204,22 +174,14 @@ class FacilityResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->formatStateUsing(function ($state) {
-                        // Format the date and time
                         return $state ? $state->format('F j, Y h:i A') : null;
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
-                
             ])
-            ->filters([
-                // Your filters here
-            ])
-            ->recordUrl(function ($record) {
-                return Pages\ViewFacility::getUrl([$record->id]);
-            })
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make()->color('warning'),
-                    Tables\Actions\Action::make('viewEquipment')
+                    Tables\Actions\ViewAction::make('viewEquipment')
                         ->label('View Equipment')
                         ->icon('heroicon-o-cog')
                         ->color('success')
@@ -229,57 +191,82 @@ class FacilityResource extends Resource
                         ->modalHeading('Equipment List')
                         ->modalContent(function ($record) {
                             $equipment = Equipment::where('facility_id', $record->id)->paginate(100);
-
                             return view('filament.resources.facility-equipment-modal', [
                                 'equipment' => $equipment,
                             ]);
+                        }),
+                    Tables\Actions\ViewAction::make('view_monitoring')
+                        ->label('View Records')
+                        ->icon('heroicon-o-presentation-chart-line')
+                        ->color('info')
+                        ->modalHeading('Monitoring Records')
+                        ->modalContent(function ($record) {
+                            $facilityId = $record->id;
+                            $monitorings = FacilityMonitoring::where('facility_id', $facilityId)->with('user')->get();
+                            return view('filament.resources.facility-monitoring-modal', [
+                                'monitorings' => $monitorings,
+                            ]);
+                        }),
+                    Tables\Actions\Action::make('update_status')
+                        ->label('Update Status')
+                        ->icon('heroicon-o-plus')
+                        ->color('primary')
+                        ->requiresConfirmation()
+                        ->modalIcon('heroicon-o-check')
+                        ->modalHeading('Add to Monitoring')
+                        ->modalDescription('Confirm to add selected items to your Monitoring')
+                        ->form(function (Forms\Form $form, $record) {
+                            return $form->schema([
+                                Forms\Components\Select::make('monitored_by')
+                                    ->label('Monitored By')
+                                    ->options(User::all()->pluck('name', 'id'))
+                                    ->default(auth()->user()->id)
+                                    ->disabled()
+                                    ->required(),
+                                Forms\Components\DatePicker::make('monitored_date')
+                                    ->label('Monitoring Date')
+                                    ->required()
+                                    ->default(now())
+                                    ->disabled()
+                                    ->format('Y-m-d'),
+                                Forms\Components\TextInput::make('remarks')
+                                    ->default($record->remarks)
+                                    ->formatStateUsing(fn($state) => strip_tags($state))
+                                    ->label('Remarks'),
+                            ]);
+                        })
+                        ->action(function (array $data, $record) {
+                            $data['facility_id'] = $record->id;
+
+                            if (empty($data['monitored_by'])) {
+                                $data['monitored_by'] = auth()->user()->id;
+                            }
+
+                            if (empty($data['monitored_date'])) {
+                                $data['monitored_date'] = now()->format('Y-m-d');
+                            }
+
+                            FacilityMonitoring::create($data);
+
+                            Facility::where('id', $record->id)
+                                ->update(['remarks' => $data['remarks']]);
+
+                            Notification::make()
+                                ->success()
+                                ->title('Success')
+                                ->body('Selected items have been added to your monitoring.')
+                                ->send();
                         }),
                 ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make($bulkActions)
-                    ->label('Actions')
-            ]);
-    }
-
-
-    public static function infolist(Infolist $infolist): Infolist
-    {
-        return $infolist
-            ->schema([
-                ImageEntry::make('facility_img')
-                    ->label('Image')
-                    ->columnSpanFull()
-                    ->width(400)
-                    ->height(400),
-                      
-                Components\Grid::make([
-                    'default'   => 3,
-                    'sm'        => 4,
-                    'md'        => 6,
-                ])
-                    ->schema([
-                        TextEntry::make('name')
-                        ->extraAttributes(['class' => 'text-center']),
-                        TextEntry::make('connection_type')
-                        ->extraAttributes(['class' => 'text-center']),
-                        TextEntry::make('cooling_tools')
-                        ->extraAttributes(['class' => 'text-center']),
-                        TextEntry::make('floor_level')
-                        ->extraAttributes(['class' => 'text-center']),
-                        TextEntry::make('building')
-                        ->extraAttributes(['class' => 'text-center']),
-                        TextEntry::make('remarks')
-                        ->extraAttributes(['class' => 'text-center'])
-                            ->html(),
-                    ])
-
+                    ->label('Actions'),
             ]);
     }
 
     public static function create(array $data)
     {
-        // Check if the facility already exists
         if (Facility::where('name', $data['name'])->exists()) {
             Notification::make()
                 ->title('Duplicate Facility')
@@ -289,7 +276,6 @@ class FacilityResource extends Resource
             return;
         }
 
-        // If it doesn't exist, create a new facility
         Facility::create($data);
 
         Notification::make()
@@ -299,19 +285,12 @@ class FacilityResource extends Resource
             ->send();
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListFacilities::route('/'),
             'create' => Pages\CreateFacility::route('/create'),
-            'view' => Pages\ViewFacility::route('/{record}'),
+           // 'view' => Pages\ViewFacility::route('/{record}'),
             'edit' => Pages\EditFacility::route('/{record}/edit'),
         ];
     }
