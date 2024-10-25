@@ -64,8 +64,8 @@ class SuppliesAndMaterialsResource extends Resource
                                     ->relationship('facility', 'name')
                                     ->createOptionForm([
                                         Forms\Components\TextInput::make('name')
-                                            ->label('Create Facility')
-                                            ->placeholder('Facility Name Displayed On The Door (e.g., CL1, CL2)')
+                                            ->label('Create Location')
+                                            ->placeholder('Enter the facility where an item is located ')
                                             ->required()
                                             ->maxLength(255),
                                     ]),
