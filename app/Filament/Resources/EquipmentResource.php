@@ -48,6 +48,7 @@ class EquipmentResource extends Resource
         \Log::info($record);
         
         return [
+            'Source of Fund' => $record->source_of_fund ?? 'Unknown', 
             'Unit No.' => $record->unit_no ?? 'Unknown', 
             'Description' => $record->description ?? 'Unknown', 
             'Category' => $record->category->description ?? 'N/A', 
@@ -63,7 +64,7 @@ class EquipmentResource extends Resource
     }
     public static function getGloballySearchableAttributes(): array
     {
-        return['description','serial_no','category.description','facility.name',
+        return['source_of_fund','description','serial_no','category.description','facility.name',
         'serial_no','control_no','property_no','person_liable','date_acquired','remarks'];
     }
 
@@ -75,7 +76,11 @@ class EquipmentResource extends Resource
                     ->schema([
                         Forms\Components\Grid::make(3)
                             ->schema([
-                               
+
+                                Forms\Components\TextInput::make('source_of_fund')
+                                    ->placeholder('Refer to the inventory source of fund')
+                                    ->label('Source of Fund')
+                                    ->maxLength(255),
                                 Forms\Components\TextInput::make('unit_no')
                                     ->placeholder('Set number pasted on the Comlab table.')
                                     ->label('Unit Number')
@@ -143,6 +148,10 @@ class EquipmentResource extends Resource
                                     ->label('Item Number')
                                     ->placeholder('Refer to the Equipment sticker.')
                                     ->maxLength(255),
+                                Forms\Components\TextInput::make('po_mumber')
+                                    ->label('PO Number')
+                                    ->placeholder('Refer to the Equipment sticker.')
+                                    ->maxLength(255),
                                 Forms\Components\TextInput::make('property_no')
                                     ->label('Property Number')
                                     ->placeholder('Refer to the Equipment sticker.')
@@ -155,7 +164,7 @@ class EquipmentResource extends Resource
                                     ->label('Serial Number')
                                     ->placeholder('Refer to the Equipment sticker.')
                                     ->maxLength(255),
-                                Forms\Components\Select::make('no_of_stocks')
+                                /*Forms\Components\Select::make('no_of_stocks')
                                     ->label('No. of Stocks')
                                     ->options(array_combine(range(1, 1000), range(1, 1000))),
                                 Forms\Components\Select::make('stock_unit_id')
@@ -170,7 +179,7 @@ class EquipmentResource extends Resource
                                        
                                 Forms\Components\Select::make('restocking_point')
                                     ->label('Restocking Point')
-                                    ->options(array_combine(range(1, 1000), range(1, 1000))),
+                                    ->options(array_combine(range(1, 1000), range(1, 1000))),*/
                                 Forms\Components\TextInput::make('person_liable')
                                     ->label('Person Liable')
                                     ->placeholder('Refer to the Equipment sticker.')
@@ -264,15 +273,23 @@ class EquipmentResource extends Resource
 
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('source_of_fund')
+                    ->label('Source Of Fund')
+                    ->searchable()
+                    ->formatStateUsing(fn (string $state): string => mb_strtoupper($state))
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('unit_no')
                     ->label('Unit No.')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('specifications')
                     ->searchable()
                     ->sortable()
@@ -281,10 +298,12 @@ class EquipmentResource extends Resource
                 Tables\Columns\TextColumn::make('facility.name')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('category.description')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->searchable()
@@ -298,7 +317,8 @@ class EquipmentResource extends Resource
                         'Disposed' => 'danger',
                         default => 'secondary',  
 
-                    }),
+                    })
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('date_acquired')
                     ->searchable()
                     ->sortable()
@@ -321,18 +341,26 @@ class EquipmentResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('po_number')
+                    ->searchable()
+                    ->label('PO Number')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('property_no')
                     ->searchable()
                     ->label('Property No.')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('control_no')
                     ->searchable()
                     ->label('Control No.')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('serial_no')
                     ->searchable()
                     ->label('Serial No.')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 /*Tables\Columns\TextColumn::make('no_of_stocks')
                     ->label('No. of Stocks')
                     ->searchable()
@@ -364,7 +392,8 @@ class EquipmentResource extends Resource
                 Tables\Columns\TextColumn::make('remarks')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->sortable()

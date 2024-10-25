@@ -30,6 +30,7 @@ class EquipmentImport implements ToModel, WithHeadingRow
 
     // Prepare data array with null checks
     $data = [
+        'source_of_fund' => $row['source_of_fund'] ?? null,
         'unit_no' => $row['unit_no'] ?? null,
         'description' => $row['description'] ?? null,
         'specifications' => $row['specifications'] ?? null,
@@ -41,6 +42,7 @@ class EquipmentImport implements ToModel, WithHeadingRow
         'amount' => $row['amount'] ?? null,
         'estimated_life' => $row['estimated_life'] ?? null,
         'item_no' => $row['item_no'] ?? null,
+        'po_number' => $row['po_number'] ?? null,
         'property_no' => $row['property_no'] ?? null,
         'control_no' => $row['control_no'] ?? null,
         'serial_no' => $row['serial_no'] ?? null,
