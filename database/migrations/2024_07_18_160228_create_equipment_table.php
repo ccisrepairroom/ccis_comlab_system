@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('unit_no')->nullable()->index('equip_unit_no');
             $table->string('brand_name')->nullable()->index('equip_brand_name');
-            $table->string('description')->nullable()->index('equip_description');
+            $table->text('description')->nullable()->index('equip_description');
             $table->foreignId('facility_id')->nullable()->constrained()->onDelete('cascade')->index('equip_facility_id');
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade')->index('equip_category_id');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->index('equip_user_id');
