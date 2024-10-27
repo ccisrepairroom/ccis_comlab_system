@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('equipment', function (Blueprint $table) {
             $table->id();
-            $table->string('source_of_fund')->nullable()->index('equip_source_of_fund');
             $table->string('unit_no')->nullable()->index('equip_unit_no');
+            $table->string('brand_name')->nullable()->index('equip_brand_name');
             $table->string('description')->nullable()->index('equip_description');
-            $table->string('specifications')->nullable()->index('equip_specifications');
             $table->foreignId('facility_id')->nullable()->constrained()->onDelete('cascade')->index('equip_facility_id');
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade')->index('equip_category_id');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->index('equip_user_id');

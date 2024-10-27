@@ -81,19 +81,16 @@ class EquipmentResource extends Resource
                         Forms\Components\Grid::make(3)
                             ->schema([
 
-                                Forms\Components\TextInput::make('source_of_fund')
-                                    ->placeholder('Refer to the inventory source of fund')
-                                    ->label('Source of Fund')
-                                    ->maxLength(255),
+                               
                                 Forms\Components\TextInput::make('unit_no')
                                     ->placeholder('Set number pasted on the Comlab table.')
                                     ->label('Unit Number')
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('description')
+                                Forms\Components\TextInput::make('brand_name')
                                     ->placeholder('Brand Name of Equipment')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('specifications')
+                                Forms\Components\TextInput::make('description')
                                     ->placeholder('specifications, e.g., dimensions, weight, power')
                                     ->maxLength(255),
                                 Forms\Components\Select::make('facility_id')
@@ -279,24 +276,19 @@ class EquipmentResource extends Resource
 
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('source_of_fund')
-                    ->label('Source Of Fund')
-                    ->searchable()
-                    ->formatStateUsing(fn (string $state): string => mb_strtoupper($state))
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                
                 Tables\Columns\TextColumn::make('unit_no')
                     ->label('Unit No.')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('description')
+                Tables\Columns\TextColumn::make('brand_name')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('specifications')
+                Tables\Columns\TextColumn::make('description')
                     ->searchable()
                     ->sortable()
                     ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
