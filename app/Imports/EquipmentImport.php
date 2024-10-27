@@ -30,10 +30,10 @@ class EquipmentImport implements ToModel, WithHeadingRow
 
     // Prepare data array with null checks
     $data = [
-        'source_of_fund' => $row['source_of_fund'] ?? null,
+       
         'unit_no' => $row['unit_no'] ?? null,
+        'brand_name' => $row['brand_name'] ?? null,
         'description' => $row['description'] ?? null,
-        'specifications' => $row['specifications'] ?? null,
         'facility_id' => $facility ? $facility->id : null,
         'category_id' => $category ? $category->id : null,
         'status' => $row['status'] ?? null,
@@ -56,10 +56,9 @@ class EquipmentImport implements ToModel, WithHeadingRow
 
     // Define essential fields to check
     $essentialFields = [
-        'source_of_fund',
         'unit_no',
+        'brand_name',
         'description',
-        'specifications',
         'facility_id',
         'category_id',
         'status',

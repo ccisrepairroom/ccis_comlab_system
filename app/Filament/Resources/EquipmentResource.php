@@ -284,6 +284,7 @@ class EquipmentResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('brand_name')
+                    ->label('Brand Name')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable()
