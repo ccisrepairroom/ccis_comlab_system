@@ -16,4 +16,13 @@ class EditSuppliesAndMaterials extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+    public function getTitle(): string
+    {
+        return 'Edit ' . ($this->record->item ?? 'Edit Supplies and Materials'); 
+        
+    }
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }

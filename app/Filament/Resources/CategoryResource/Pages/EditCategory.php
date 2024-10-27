@@ -21,4 +21,13 @@ class EditCategory extends EditRecord
     {
         return $this->getResource()::getUrl('index');
     }
+    public function getTitle(): string
+    {
+        return 'Edit ' . ($this->record->description ?? 'Edit Category'); 
+        
+    }
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }

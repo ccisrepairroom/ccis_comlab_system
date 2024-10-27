@@ -21,4 +21,13 @@ class EditUser extends EditRecord
     {
         return $this->getResource()::getUrl('index');
     }
+    public function getTitle(): string
+    {
+        return 'Edit ' . ($this->record->name ?? 'Edit User'); 
+        
+    }
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }
