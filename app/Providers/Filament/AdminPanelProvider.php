@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+//use Pboivin\FilamentPeek\Tables\Actions\ListPreviewAction;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -50,7 +51,8 @@ class AdminPanelProvider extends PanelProvider
                 //Pages\Dashboard::class,
             //])
             ->plugins([
-                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                //FilamentPeekPlugin::make()
                 // \EightyNine\Approvals\ApprovalPlugin::make(),
 
             ])

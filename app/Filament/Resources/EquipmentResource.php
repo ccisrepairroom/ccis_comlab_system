@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+//use Pboivin\FilamentPeek\Tables\Actions\ListPreviewAction;
 use App\Filament\Resources\EquipmentResource\Pages;
 use App\Filament\Resources\EquipmentResource\RelationManagers;
 use App\Models\Equipment;
@@ -227,9 +228,6 @@ class EquipmentResource extends Resource
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()
                     ->sortable()
-                    ->formatStateUsing(fn (string $state): string => 
-                    implode(' ', array_slice(explode(' ', ucwords(strtolower($state))), 0, 3)) . '...'
-                        )
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('facility.name')
                     ->searchable()
@@ -350,6 +348,7 @@ class EquipmentResource extends Resource
                 ->actions([
                    
                     Tables\Actions\ActionGroup::make([
+                       // ListPreviewAction::make(),
                         Tables\Actions\EditAction::make(),
                         Tables\Actions\ViewAction::make('view_monitoring')
                             ->label('View Equipment Records')

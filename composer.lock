@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c9c9a050400a57ffe8eea6ee01a51939",
+    "content-hash": "4640245b7e245a14203319b0db90bae0",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -4682,21 +4682,21 @@
         },
         {
             "name": "pboivin/filament-peek",
-            "version": "v2.0.0",
+            "version": "v2.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pboivin/filament-peek.git",
-                "reference": "1768fceb61d35cfa8bd3752408bc7d829028126a"
+                "reference": "b76eda85906a96393cb492401fc7dd1af2b44a19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pboivin/filament-peek/zipball/1768fceb61d35cfa8bd3752408bc7d829028126a",
-                "reference": "1768fceb61d35cfa8bd3752408bc7d829028126a",
+                "url": "https://api.github.com/repos/pboivin/filament-peek/zipball/b76eda85906a96393cb492401fc7dd1af2b44a19",
+                "reference": "b76eda85906a96393cb492401fc7dd1af2b44a19",
                 "shasum": ""
             },
             "require": {
                 "filament/filament": "^3.0",
-                "illuminate/contracts": "^10.0",
+                "illuminate/contracts": "^10.0 || ^11.0",
                 "php": "^8.1",
                 "spatie/laravel-package-tools": "^1.15"
             },
@@ -4711,7 +4711,8 @@
                 "phpstan/extension-installer": "^1.1",
                 "phpstan/phpstan-deprecation-rules": "^1.0",
                 "phpstan/phpstan-phpunit": "^1.0",
-                "spatie/invade": "^1.1"
+                "spatie/invade": "^1.1",
+                "symfony/polyfill-php82": "^1.28"
             },
             "type": "library",
             "extra": {
@@ -4749,9 +4750,9 @@
             ],
             "support": {
                 "issues": "https://github.com/pboivin/filament-peek/issues",
-                "source": "https://github.com/pboivin/filament-peek/tree/v2.0.0"
+                "source": "https://github.com/pboivin/filament-peek/tree/v2.2.10"
             },
-            "time": "2023-08-31T15:43:14+00:00"
+            "time": "2024-10-15T17:06:37+00:00"
         },
         {
             "name": "phpoffice/math",
