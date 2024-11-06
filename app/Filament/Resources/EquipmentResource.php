@@ -53,8 +53,9 @@ class EquipmentResource extends Resource
         \Log::info($record);
         
         return [
-            'Source of Fund' => $record->source_of_fund ?? 'Unknown', 
+            'PO Number' => $record->po_number ?? 'Unknown', 
             'Unit No.' => $record->unit_no ?? 'Unknown', 
+            'Brand Name' => $record->brand_name ?? 'Unknown',
             'Description' => $record->description ?? 'Unknown', 
             'Category' => $record->category->description ?? 'N/A', 
             'Facility' => $record->facility->name ?? 'N/A',
@@ -69,7 +70,7 @@ class EquipmentResource extends Resource
     }
     public static function getGloballySearchableAttributes(): array
     {
-        return['source_of_fund','description','serial_no','category.description','facility.name',
+        return['po_number','brand_name','description','serial_no','category.description','facility.name',
         'serial_no','control_no','property_no','person_liable','date_acquired','remarks'];
     }
 
@@ -277,22 +278,26 @@ class EquipmentResource extends Resource
 
         return $table
             ->columns([
-               
+                Tables\Columns\TextColumn::make('po_number')
+                    ->searchable()
+                    ->label('PO Number')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('unit_no')
                     ->label('Unit No.')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('description')
+                Tables\Columns\TextColumn::make('brand_name')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('specifications')
+                Tables\Columns\TextColumn::make('description')
                     ->searchable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable()
-                    ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('facility.name')
                     ->searchable()
@@ -338,11 +343,6 @@ class EquipmentResource extends Resource
                 Tables\Columns\TextColumn::make('item_no')
                     ->label('Item No.')
                     ->searchable()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('po_number')
-                    ->searchable()
-                    ->label('PO Number')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('property_no')
@@ -413,14 +413,55 @@ class EquipmentResource extends Resource
                     //->searchable ()
                     SelectFilter::make('Facility')
                     ->relationship('facility','name'),
-                    SelectFilter::make('PO Number')
+                    SelectFilter::make('po_number')
                     ->label('PO Number')
                     ->options(
                         Equipment::query()
                             ->whereNotNull('po_number') // Filter out null values
                             ->pluck('po_number', 'po_number')
                             ->toArray()
-                    )
+                    ),
+                    SelectFilter::make('person_liable')
+                    ->label('Person Liable')
+                    ->options(
+                        Equipment::query()
+                            ->whereNotNull('person_liable') // Filter out null values
+                            ->pluck('person_liable', 'person_liable')
+                            ->toArray()
+                    ),
+                    SelectFilter::make('unit_no')
+                    ->label('Unit No.')
+                    ->options(
+                        Equipment::query()
+                            ->whereNotNull('unit_no') // Filter out null values
+                            ->pluck('unit_no', 'unit_no')
+                            ->toArray()
+                    ),
+                    SelectFilter::make('status')
+                    ->label('Status')
+                    ->options(
+                        Equipment::query()
+                            ->whereNotNull('status') // Filter out null values
+                            ->pluck('status', 'status')
+                            ->toArray()
+                    ),
+                    SelectFilter::make('date_acquired')
+                    ->label('Date Aquired')
+                    ->options(
+                        Equipment::query()
+                            ->whereNotNull('date_acquired') // Filter out null values
+                            ->pluck('date_acquired', 'date_acquired')
+                            ->toArray()
+                    ),
+                    SelectFilter::make('supplier')
+                    ->label('Supplier')
+                    ->options(
+                        Equipment::query()
+                            ->whereNotNull('supplier') // Filter out null values
+                            ->pluck('supplier', 'supplier')
+                            ->toArray()
+                    ), 
+                     
                     
                 ])
                 /*->recordUrl(function ($record) {

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('po_number')->nullable()->index('equip_po_number');
             $table->string('unit_no')->nullable()->index('equip_unit_no');
             $table->string('brand_name')->nullable()->index('equip_brand_name');
-            $table->string('description')->nullable()->index('equip_description');
+            $table->text('description')->nullable()->index('equip_description');
             $table->foreignId('facility_id')->nullable()->constrained()->onDelete('cascade')->index('equip_facility_id');
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade')->index('equip_category_id');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->index('equip_user_id');
@@ -34,7 +34,7 @@ return new class extends Migration
             //$table->unsignedBigInteger('stock_unit_id')->nullable()->index('equip_stock_unit_id');
             //$table->foreign('stock_unit_id')->references('id')->on('stock_units')->onDelete('cascade');
             $table->string('person_liable')->nullable()->index('equip_person_liable');
-            $table->string('remarks')->nullable()->index('equip_remarks');
+            $table->text('remarks')->nullable()->index('equip_remarks');
             $table->timestamps();
         });
     }
