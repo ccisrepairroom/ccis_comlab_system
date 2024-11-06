@@ -204,6 +204,76 @@ class EquipmentResource extends Resource
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
             //Tables\Actions\EditBulkAction::make(),
+            Tables\Actions\BulkAction::make('Update Status')
+            ->icon('heroicon-o-plus')
+            ->color('primary')
+            ->requiresConfirmation()
+            ->modalIcon('heroicon-o-check')
+            ->modalHeading('Update Equipment Status')
+            ->modalDescription('Confirm to update equipment status')
+            ->form(function (Forms\Form $form, $record) {
+                return $form->schema([
+                    Forms\Components\Select::make('monitored_by')
+                        ->label('Monitored By')
+                        ->options(User::all()->pluck('name', 'id'))
+                        ->default(auth()->user()->id)
+                        ->disabled()
+                        ->required(),
+                    Forms\Components\DatePicker::make('monitored_date')
+                        ->label('Monitoring Date')
+                        ->required()
+                        ->default(now())
+                        ->format('Y-m-d'),
+                    Forms\Components\Select::make('status')
+                        ->required()
+                        ->options([
+                            'Working' => 'Working',
+                            'For Repair' => 'For Repair',
+                            'For Replacement' => 'For Replacement',
+                            'Lost' => 'Lost',
+                            'For Disposal' => 'For Disposal',
+                            'Disposed' => 'Disposed',
+                            'Borrowed' => 'Borrowed',
+                        ])
+                        ->default($record->status)
+                        ->native(false),
+                    Forms\Components\Select::make('facility_id')
+                        ->label('New Assigned Facility')
+                        ->relationship('facility', 'name')
+                        ->default($record->facility_id)
+                        ->required(),
+                    Forms\Components\TextInput::make('remarks')
+                        ->default($record->remarks)
+                        ->formatStateUsing(fn($state) => strip_tags($state))
+                        ->label('Remarks'),
+                ]);
+            })
+            ->action(function (array $data, $record) {
+                $data['equipment_id'] = $record->id;
+
+                if (empty($data['monitored_by'])) {
+                    $data['monitored_by'] = auth()->user()->id;
+                }
+
+                if (empty($data['monitored_date'])) {
+                    $data['monitored_date'] = now()->format('Y-m-d');
+                }
+
+                EquipmentMonitoring::create($data);
+
+                $record->update([
+                    'status' => $data['status'],
+                    'facility_id' => $data['facility_id'],
+                    'remarks' => $data['remarks'],
+                ]);
+
+                Notification::make()
+                    ->success()
+                    ->title('Success')
+                    ->body('Status of the selected item/s have been updated.')
+                    ->send();
+            }),
+    
             Tables\Actions\BulkAction::make('add_to_request_list')
     ->label('Add to Request List')
     ->icon('heroicon-o-shopping-cart')
@@ -484,14 +554,14 @@ class EquipmentResource extends Resource
                                     'monitorings' => $monitorings,
                                 ]);
                             }),
-                        Tables\Actions\Action::make('Update Status')
+                        /*Tables\Actions\BulkAction::make('Update Status')
                             ->icon('heroicon-o-plus')
                             ->color('primary')
                             ->requiresConfirmation()
                             ->modalIcon('heroicon-o-check')
                             ->modalHeading('Update Equipment Status')
                             ->modalDescription('Confirm to update equipment status')
-                            ->form(function (Forms\Form $form, $record) {
+                            ->form(function (Forms\Form $form) {
                                 return $form->schema([
                                     Forms\Components\Select::make('monitored_by')
                                         ->label('Monitored By')
@@ -515,44 +585,56 @@ class EquipmentResource extends Resource
                                             'Disposed' => 'Disposed',
                                             'Borrowed' => 'Borrowed',
                                         ])
-                                        ->default($record->status)
                                         ->native(false),
                                     Forms\Components\Select::make('facility_id')
                                         ->label('New Assigned Facility')
                                         ->relationship('facility', 'name')
-                                        ->default($record->facility_id)
                                         ->required(),
                                     Forms\Components\TextInput::make('remarks')
-                                        ->default($record->remarks)
-                                        ->formatStateUsing(fn($state) => strip_tags($state))
                                         ->label('Remarks'),
                                 ]);
                             })
-                            ->action(function (array $data, $record) {
-                                $data['equipment_id'] = $record->id;
-                
-                                if (empty($data['monitored_by'])) {
-                                    $data['monitored_by'] = auth()->user()->id;
+                            ->action(function (array $data, Collection $records) {
+                                // Ensure proper handling of the bulk action
+                                $successfullyUpdated = false;
+
+                                foreach ($records as $record) {
+                                    // Make sure data has default values or fallbacks
+                                    $data['monitored_by'] = $data['monitored_by'] ?? auth()->user()->id;
+                                    $data['monitored_date'] = $data['monitored_date'] ?? now()->format('Y-m-d');
+
+                                    // Create the monitoring record for the equipment
+                                    EquipmentMonitoring::create([
+                                        'equipment_id' => $record->id,
+                                        'monitored_by' => $data['monitored_by'],
+                                        'monitored_date' => $data['monitored_date'],
+                                        'status' => $data['status'],
+                                        'facility_id' => $data['facility_id'],
+                                        'remarks' => $data['remarks'],
+                                    ]);
+
+                                    // Update the equipment record
+                                    $record->update([
+                                        'status' => $data['status'],
+                                        'facility_id' => $data['facility_id'],
+                                        'remarks' => $data['remarks'],
+                                    ]);
+
+                                    $successfullyUpdated = true;
                                 }
-                
-                                if (empty($data['monitored_date'])) {
-                                    $data['monitored_date'] = now()->format('Y-m-d');
+
+                                // Notify success
+                                if ($successfullyUpdated) {
+                                    Notification::make()
+                                        ->success()
+                                        ->title('Success')
+                                        ->body('Status of the selected item(s) have been updated.')
+                                        ->send();
                                 }
-                
-                                EquipmentMonitoring::create($data);
-                
-                                $record->update([
-                                    'status' => $data['status'],
-                                    'facility_id' => $data['facility_id'],
-                                    'remarks' => $data['remarks'],
-                                ]);
-                
-                                Notification::make()
-                                    ->success()
-                                    ->title('Success')
-                                    ->body('Status of the selected item/s have been updated.')
-                                    ->send();
                             }),
+                        */
+                        
+
                     ]),
                 ])
                 ->bulkActions([

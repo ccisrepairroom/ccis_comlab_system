@@ -19,15 +19,25 @@ class ListEquipment extends ListRecords
 {
     protected static string $resource = EquipmentResource::class;
 
+  
+
     protected function getHeaderActions(): array
     {
         $user = auth()->user(); // Retrieve the currently authenticated user
         $isPanelUser = $user->hasRole('panel_user'); // Check if the user has the 'panel_user' role
 
         $actions = [
+           
+            Actions\Action::make('downloadRequestForm')
+                ->label('Download Request Form')
+                //->icon('heroicon-o-download')
+                ->color('primary')
+                ->url(asset('storage/request_form/request_form.pdf'))
+                ->openUrlInNewTab(),
             Actions\CreateAction::make()
                 ->label('Create'),
         ];
+        
 
         if (!$isPanelUser) {
             // Only add the import action if the user is not a panel_user
@@ -49,6 +59,7 @@ class ListEquipment extends ListRecords
                         ->send();
                 });
         }
+        
 
         return $actions;
     }
@@ -62,6 +73,7 @@ class ListEquipment extends ListRecords
     {
         return Equipment::count();
     }
+    
 
     /*protected function getTableColumns(): array
     {

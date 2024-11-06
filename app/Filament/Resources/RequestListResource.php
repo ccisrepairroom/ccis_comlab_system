@@ -226,9 +226,18 @@ class RequestListResource extends Resource
                     ->label('Created By')
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),
-               
-                Tables\Columns\TextColumn::make('equipment.description')
+                Tables\Columns\TextColumn::make('equipment.po_number')
+                    ->label('PO Number')
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.brand_name')
                     ->label('Equipment')
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.description')
+                    ->label('Description')
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),

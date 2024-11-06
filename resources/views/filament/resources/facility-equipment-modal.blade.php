@@ -10,9 +10,10 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead>
                 <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PO Number</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Number</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Brand Name</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Specifications</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Property Number</th>
@@ -23,9 +24,10 @@
             <tbody class="bg-white divide-y divide-gray-200">
                 @foreach($equipment as $item)
                     <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $item->po_number }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $item->unit_no }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $item->brand_name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $item->description }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $item->specifications }}</td>
                         <td class="px-6 py-4 whitespace-nowrap"
                             style="color: {{ $item->status === 'Working' ? 'green' : 
                                              ($item->status === 'For Repair' ? 'orange' : 

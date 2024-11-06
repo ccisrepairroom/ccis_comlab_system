@@ -19,6 +19,8 @@ use Filament\Notifications\Notification;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Filters\SelectFilter;
+
 
 class FacilityResource extends Resource
 {
@@ -94,7 +96,7 @@ class FacilityResource extends Resource
                         Forms\Components\FileUpload::make('facility_img')
                             ->image()
                             ->label('Facility Image')
-                            ->required()
+                            //->required()
                             ->imageEditor()
                             ->disk('public')
                             ->directory('facility'),
@@ -178,11 +180,21 @@ class FacilityResource extends Resource
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->filters([
+                SelectFilter::make('floor_level')
+                    ->label('Floor Level')
+                    ->options(
+                        Facility::query()
+                            ->whereNotNull('floor_level') // Filter out null values
+                            ->pluck('floor_level', 'floor_level')
+                            ->toArray()
+                    )
+            ])
             ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make()->color('warning'),
-                    Tables\Actions\ViewAction::make('viewEquipment')
-                        ->label('View Equipment')
+                      
+                    
+                    Tables\Actions\ViewAction::make('viewFacilityEquipment')
+                        ->label('View Facility Equipment')
                         ->icon('heroicon-o-cog')
                         ->color('success')
                         ->modalSubmitAction(false)
@@ -196,7 +208,7 @@ class FacilityResource extends Resource
                             ]);
                         }),
                     Tables\Actions\ViewAction::make('view_monitoring')
-                        ->label('View Records')
+                        ->label('View Facility Records')
                         ->icon('heroicon-o-presentation-chart-line')
                         ->color('info')
                         ->modalHeading('Monitoring Records')
@@ -207,6 +219,9 @@ class FacilityResource extends Resource
                                 'monitorings' => $monitorings,
                             ]);
                         }),
+                    Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()->color('warning'),
+
                     Tables\Actions\Action::make('update_status')
                         ->label('Update Status')
                         ->icon('heroicon-o-plus')
