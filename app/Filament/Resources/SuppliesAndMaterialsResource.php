@@ -30,7 +30,7 @@ class SuppliesAndMaterialsResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Equipment Details')
+                Forms\Components\Section::make('')
                     ->schema([
                         Forms\Components\Grid::make(3)
                             ->schema([

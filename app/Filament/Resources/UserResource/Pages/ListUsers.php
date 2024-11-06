@@ -49,4 +49,8 @@ class ListUsers extends ListRecords
     {
         return ucwords(str_replace('_', ' ', $label)); // Replace underscores with spaces and capitalize
     }
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }

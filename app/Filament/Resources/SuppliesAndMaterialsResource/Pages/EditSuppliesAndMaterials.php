@@ -16,4 +16,13 @@ class EditSuppliesAndMaterials extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+    protected function getRedirectUrl(): string
+    {
+        return SuppliesAndMaterialsResource::getUrl('index'); // Redirect to the index page after creation
+    }
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
+
 }

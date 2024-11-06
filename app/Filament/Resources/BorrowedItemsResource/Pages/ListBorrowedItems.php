@@ -58,4 +58,8 @@ class ListBorrowedItems extends ListRecords
             ]
         );
     }
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }

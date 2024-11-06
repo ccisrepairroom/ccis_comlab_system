@@ -14,4 +14,8 @@ class CreateFacility extends CreateRecord
     {
         return $this->getResource()::getUrl('index');
     }
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }

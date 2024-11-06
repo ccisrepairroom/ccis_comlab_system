@@ -13,4 +13,8 @@ class CreateSuppliesAndMaterials extends CreateRecord
     {
         return SuppliesAndMaterialsResource::getUrl('index'); // Redirect to the index page after creation
     }
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }

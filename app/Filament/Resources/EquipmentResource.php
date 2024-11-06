@@ -275,70 +275,70 @@ class EquipmentResource extends Resource
             }),
     
             Tables\Actions\BulkAction::make('add_to_request_list')
-    ->label('Add to Request List')
-    ->icon('heroicon-o-shopping-cart')
-    ->action(function (Collection $records) {
-        $facilityId = Facility::first()->id;
-        $notAdded = [];
-        $unreturned = [];
-        $successfullyAdded = false; // Track if any item was successfully added
+            ->label('Add to Request List')
+            ->icon('heroicon-o-shopping-cart')
+            ->action(function (Collection $records) {
+                $facilityId = Facility::first()->id;
+                $notAdded = [];
+                $unreturned = [];
+                $successfullyAdded = false; // Track if any item was successfully added
 
-        foreach ($records as $record) {
-            if ($record->status === 'Working') {
-                $latestBorrowedItem = BorrowedItems::where('equipment_id', $record->id)
-                    ->orderBy('created_at', 'desc')
-                    ->first();
+                foreach ($records as $record) {
+                    if ($record->status === 'Working') {
+                        $latestBorrowedItem = BorrowedItems::where('equipment_id', $record->id)
+                            ->orderBy('created_at', 'desc')
+                            ->first();
 
-                if ($latestBorrowedItem && $latestBorrowedItem->status === 'Unreturned') {
-                    $unreturned[] = $record->description;
-                } else {
-                    RequestList::updateOrCreate(
-                        [
-                            'user_id' => auth()->id(),
-                            'equipment_id' => $record->id,
-                            'facility_id' => $facilityId,
-                        ]
-                    );
-                    $successfullyAdded = true; // Mark as successfully added
+                        if ($latestBorrowedItem && $latestBorrowedItem->status === 'Unreturned') {
+                            $unreturned[] = $record->description;
+                        } else {
+                            RequestList::updateOrCreate(
+                                [
+                                    'user_id' => auth()->id(),
+                                    'equipment_id' => $record->id,
+                                    'facility_id' => $facilityId,
+                                ]
+                            );
+                            $successfullyAdded = true; // Mark as successfully added
+                        }
+                    } else {
+                        $notAdded[] = $record->description;
+                    }
                 }
-            } else {
-                $notAdded[] = $record->description;
-            }
-        }
 
-        // Notification for non-working items
-        if (!empty($notAdded)) {
-            Notification::make()
-                ->title('Items Not Added')
-                ->body('The following items cannot be added to the request list because they are no longer working: ' . implode(', ', $notAdded))
-                ->danger()
-                ->send();
-        }
+                // Notification for non-working items
+                if (!empty($notAdded)) {
+                    Notification::make()
+                        ->title('Items Not Added')
+                        ->body('The following items cannot be added to the request list because they are no longer working: ' . implode(', ', $notAdded))
+                        ->danger()
+                        ->send();
+                }
 
-        // Notification for unreturned items
-        if (!empty($unreturned)) {
-            Notification::make()
-                ->title('Unreturned Items')
-                ->body('The following items are still borrowed and unreturned: ' . implode(', ', $unreturned))
-                ->warning()
-                ->send();
-        }
+                // Notification for unreturned items
+                if (!empty($unreturned)) {
+                    Notification::make()
+                        ->title('Unreturned Items')
+                        ->body('The following items are still borrowed and unreturned: ' . implode(', ', $unreturned))
+                        ->warning()
+                        ->send();
+                }
 
-        // Send success notification only if at least one item was added
-        if ($successfullyAdded) {
-            Notification::make()
-                ->success()
-                ->title('Success')
-                ->body('Selected items have been added to your request list.')
-                ->send();
-        }
-    })
-    ->color('primary')
-    ->requiresConfirmation()
-    ->modalIcon('heroicon-o-check')
-    ->modalHeading('Add to Request List')
-    ->modalDescription('Confirm to add selected items to your request list'),
-        ];
+                // Send success notification only if at least one item was added
+                if ($successfullyAdded) {
+                    Notification::make()
+                        ->success()
+                        ->title('Success')
+                        ->body('Selected items have been added to your request list.')
+                        ->send();
+                }
+            })
+            ->color('primary')
+            ->requiresConfirmation()
+            ->modalIcon('heroicon-o-check')
+            ->modalHeading('Add to Request List')
+            ->modalDescription('Confirm to add selected items to your request list'),
+                ];
 
         // Conditionally add ExportBulkAction
         if (!$isPanelUser) {
@@ -554,85 +554,7 @@ class EquipmentResource extends Resource
                                     'monitorings' => $monitorings,
                                 ]);
                             }),
-                        /*Tables\Actions\BulkAction::make('Update Status')
-                            ->icon('heroicon-o-plus')
-                            ->color('primary')
-                            ->requiresConfirmation()
-                            ->modalIcon('heroicon-o-check')
-                            ->modalHeading('Update Equipment Status')
-                            ->modalDescription('Confirm to update equipment status')
-                            ->form(function (Forms\Form $form) {
-                                return $form->schema([
-                                    Forms\Components\Select::make('monitored_by')
-                                        ->label('Monitored By')
-                                        ->options(User::all()->pluck('name', 'id'))
-                                        ->default(auth()->user()->id)
-                                        ->disabled()
-                                        ->required(),
-                                    Forms\Components\DatePicker::make('monitored_date')
-                                        ->label('Monitoring Date')
-                                        ->required()
-                                        ->default(now())
-                                        ->format('Y-m-d'),
-                                    Forms\Components\Select::make('status')
-                                        ->required()
-                                        ->options([
-                                            'Working' => 'Working',
-                                            'For Repair' => 'For Repair',
-                                            'For Replacement' => 'For Replacement',
-                                            'Lost' => 'Lost',
-                                            'For Disposal' => 'For Disposal',
-                                            'Disposed' => 'Disposed',
-                                            'Borrowed' => 'Borrowed',
-                                        ])
-                                        ->native(false),
-                                    Forms\Components\Select::make('facility_id')
-                                        ->label('New Assigned Facility')
-                                        ->relationship('facility', 'name')
-                                        ->required(),
-                                    Forms\Components\TextInput::make('remarks')
-                                        ->label('Remarks'),
-                                ]);
-                            })
-                            ->action(function (array $data, Collection $records) {
-                                // Ensure proper handling of the bulk action
-                                $successfullyUpdated = false;
-
-                                foreach ($records as $record) {
-                                    // Make sure data has default values or fallbacks
-                                    $data['monitored_by'] = $data['monitored_by'] ?? auth()->user()->id;
-                                    $data['monitored_date'] = $data['monitored_date'] ?? now()->format('Y-m-d');
-
-                                    // Create the monitoring record for the equipment
-                                    EquipmentMonitoring::create([
-                                        'equipment_id' => $record->id,
-                                        'monitored_by' => $data['monitored_by'],
-                                        'monitored_date' => $data['monitored_date'],
-                                        'status' => $data['status'],
-                                        'facility_id' => $data['facility_id'],
-                                        'remarks' => $data['remarks'],
-                                    ]);
-
-                                    // Update the equipment record
-                                    $record->update([
-                                        'status' => $data['status'],
-                                        'facility_id' => $data['facility_id'],
-                                        'remarks' => $data['remarks'],
-                                    ]);
-
-                                    $successfullyUpdated = true;
-                                }
-
-                                // Notify success
-                                if ($successfullyUpdated) {
-                                    Notification::make()
-                                        ->success()
-                                        ->title('Success')
-                                        ->body('Status of the selected item(s) have been updated.')
-                                        ->send();
-                                }
-                            }),
-                        */
+                       
                         
 
                     ]),

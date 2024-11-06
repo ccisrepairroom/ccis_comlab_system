@@ -36,4 +36,8 @@ class ListRequestList extends ListRecords
     //     ];
     // }
     }
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }

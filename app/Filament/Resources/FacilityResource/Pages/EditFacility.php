@@ -21,4 +21,8 @@ class EditFacility extends EditRecord
     {
         return $this->getResource()::getUrl('index');
     }
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }
