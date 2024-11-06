@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('equipment', function (Blueprint $table) {
             $table->id();
-            $table->string('source_of_fund')->nullable()->index('equip_source_of_fund');
+            $table->string('po_number')->nullable()->index('equip_po_number');
             $table->string('unit_no')->nullable()->index('equip_unit_no');
+            $table->string('brand_name')->nullable()->index('equip_brand_name');
             $table->string('description')->nullable()->index('equip_description');
-            $table->string('specifications')->nullable()->index('equip_specifications');
             $table->foreignId('facility_id')->nullable()->constrained()->onDelete('cascade')->index('equip_facility_id');
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade')->index('equip_category_id');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->index('equip_user_id');
@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('supplier')->nullable()->index('equip_supplier');
             $table->string('amount')->nullable()->index('equip_amount');
             $table->string('estimated_life')->nullable()->index('equip_estimated_life');
-            $table->string('po_number')->nullable()->index('equip_po_number');
             $table->string('item_no')->nullable()->index('equip_item_no');
             $table->string('property_no')->nullable()->index('equip_property_no');
             $table->string('control_no')->nullable()->index('equip_control_no');

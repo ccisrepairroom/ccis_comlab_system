@@ -8,8 +8,6 @@ use App\Models\Equipment;
 use App\Models\Facility;
 use App\Models\User;
 use App\Models\EquipmentMonitoring;
-
-
 //use App\Models\BorrowList;
 use App\Models\RequestList;
 use App\Models\StockUnit;
@@ -25,6 +23,7 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Illuminate\Database\Eloquent\Collection;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Filters\SelectFilter;
 
 class EquipmentResource extends Resource
 {
@@ -37,6 +36,8 @@ class EquipmentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
     protected static ?string  $recordTitleAttribute = 'description';
+
+    
     
     public function query(): Builder
     {
@@ -81,21 +82,21 @@ class EquipmentResource extends Resource
                         Forms\Components\Grid::make(3)
                             ->schema([
 
-                                Forms\Components\TextInput::make('source_of_fund')
-                                    ->placeholder('Refer to the inventory source of fund')
-                                    ->label('Source of Fund')
+                                Forms\Components\TextInput::make('po_mumber')
+                                    ->label('PO Number')
+                                    ->placeholder('Refer to the Equipment sticker.')
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('unit_no')
                                     ->placeholder('Set number pasted on the Comlab table.')
                                     ->label('Unit Number')
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('description')
+                                Forms\Components\TextInput::make('brand_name')
                                     ->placeholder('Brand Name of Equipment')
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('specifications')
-                                    ->placeholder('specifications, e.g., dimensions, weight, power')
-                                    ->maxLength(255),
+                                    ->required(),
+                                    
+                                Forms\Components\TextInput::make('description')
+                                    ->placeholder('Description, e.g., dimensions, weight, power'),
+                                   
                                 Forms\Components\Select::make('facility_id')
                                     ->relationship('facility', 'name')
                                     ->createOptionForm([
@@ -152,10 +153,7 @@ class EquipmentResource extends Resource
                                     ->label('Item Number')
                                     ->placeholder('Refer to the Equipment sticker.')
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('po_mumber')
-                                    ->label('PO Number')
-                                    ->placeholder('Refer to the Equipment sticker.')
-                                    ->maxLength(255),
+                               
                                 Forms\Components\TextInput::make('property_no')
                                     ->label('Property Number')
                                     ->placeholder('Refer to the Equipment sticker.')
@@ -279,12 +277,7 @@ class EquipmentResource extends Resource
 
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('source_of_fund')
-                    ->label('Source Of Fund')
-                    ->searchable()
-                    ->formatStateUsing(fn (string $state): string => mb_strtoupper($state))
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+               
                 Tables\Columns\TextColumn::make('unit_no')
                     ->label('Unit No.')
                     ->searchable()
@@ -413,7 +406,23 @@ class EquipmentResource extends Resource
                 ])
 
             
-                ->filters([])
+                ->filters([
+                    SelectFilter::make('Category')
+                    ->relationship('category','description'),
+                    
+                    //->searchable ()
+                    SelectFilter::make('Facility')
+                    ->relationship('facility','name'),
+                    SelectFilter::make('PO Number')
+                    ->label('PO Number')
+                    ->options(
+                        Equipment::query()
+                            ->whereNotNull('po_number') // Filter out null values
+                            ->pluck('po_number', 'po_number')
+                            ->toArray()
+                    )
+                    
+                ])
                 /*->recordUrl(function ($record) {
                     return Pages\ViewEquipment::getUrl([$record->id]);
                 })*/
