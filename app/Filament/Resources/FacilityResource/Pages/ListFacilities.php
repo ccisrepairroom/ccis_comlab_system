@@ -12,6 +12,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use Filament\Notifications\Notification;
 use Filament\Resources\Components\Tab;
 use App\Models\Facility;
+use Illuminate\Database\Eloquent\Builder;
+
 
 
 
@@ -76,6 +78,11 @@ class ListFacilities extends ListRecords
     protected function getFourthFloorFacilityCount(): int
     {
         return Facility::where('floor_level', '4th Floor')->count();
+    }
+    protected function getTableQuery(): ?Builder
+    {
+        // Get the base query and order it by the latest created_at field
+        return parent::getTableQuery()->latest('created_at');
     }
 
     public function getTabs(): array

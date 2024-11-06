@@ -166,6 +166,10 @@ class FacilityResource extends Resource
                     ->label('Floor Level')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('cooling_tools')
+                    ->label('Cooling Tools')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('building')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('remarks')
@@ -188,7 +192,31 @@ class FacilityResource extends Resource
                             ->whereNotNull('floor_level') // Filter out null values
                             ->pluck('floor_level', 'floor_level')
                             ->toArray()
-                    )
+                    ),
+                    SelectFilter::make('facility_type')
+                    ->label('Facility Type')
+                    ->options(
+                        Facility::query()
+                            ->whereNotNull('facility_type') // Filter out null values
+                            ->pluck('facility_type', 'facility_type')
+                            ->toArray()
+                    ),
+                    SelectFilter::make('connection_type')
+                    ->label('Connection Type')
+                    ->options(
+                        Facility::query()
+                            ->whereNotNull('connection_type') // Filter out null values
+                            ->pluck('connection_type', 'connection_type')
+                            ->toArray()
+                    ),
+                    SelectFilter::make('cooling_tools')
+                    ->label('Cooling Tools')
+                    ->options(
+                        Facility::query()
+                            ->whereNotNull('cooling_tools') // Filter out null values
+                            ->pluck('cooling_tools', 'cooling_tools')
+                            ->toArray()
+                    ),
             ])
             ->actions([
                       
