@@ -155,6 +155,7 @@ class FacilityResource extends Resource
                     ->label('Name')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('connection_type')
                     ->searchable(),

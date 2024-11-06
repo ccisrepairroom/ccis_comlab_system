@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('equipment', function (Blueprint $table) {
             $table->id();
+<<<<<<< HEAD:database/migrations/2024_11_06_130413_equipment.php
             $table->string('po_number')->nullable()->index('equip_po_number');
+=======
+>>>>>>> 96372de888e3390641465bcceb865ca09bae25c8:database/migrations/2024_07_18_160228_create_equipment_table.php
             $table->string('unit_no')->nullable()->index('equip_unit_no');
             $table->string('brand_name')->nullable()->index('equip_brand_name');
             $table->text('description')->nullable()->index('equip_description');

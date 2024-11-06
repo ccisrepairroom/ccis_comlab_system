@@ -21,4 +21,13 @@ class EditStockUnit extends EditRecord
     {
         return $this->getResource()::getUrl('index');
     }
+    public function getTitle(): string
+    {
+        return 'Edit ' . ($this->record->description ?? 'Edit Stock Unit'); 
+        
+    }
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }

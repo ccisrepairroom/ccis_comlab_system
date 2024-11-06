@@ -5,22 +5,27 @@ namespace App\Imports;
 use App\Models\Facility;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Illuminate\Support\Collection;
 
 class FacilityImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
-        $facilityName = trim($row['name'] ?? '');
-
-        // Check if the category with the description already exists
-        $existingFacility = Facility::where('name', $facilityName)->first();
-
-        // If the category already exists, skip insertion
-        if ($existingFacility) {
+        // Check if the row has any meaningful data before processing
+        if (empty(array_filter($row, fn($value) => !is_null($value) && $value !== ''))) {
+            // Skip insertion if the row is entirely empty
             return null;
         }
-        // Prepare data array with null checks
+
+        // Check if a facility with the same name already exists, if name is provided
+        if (!empty($row['name'])) {
+            $existingFacility = Facility::where('name', $row['name'])->first();
+            if ($existingFacility) {
+                // Skip insertion if a facility with the same name already exists
+                return null;
+            }
+        }
+
+        // Map available columns to the Facility model
         $data = [
             'name' => $row['name'] ?? null,
             'connection_type' => $row['connection_type'] ?? null,
@@ -29,25 +34,13 @@ class FacilityImport implements ToModel, WithHeadingRow
             'floor_level' => $row['floor_level'] ?? null,
             'building' => $row['building'] ?? null,
             'remarks' => $row['remarks'] ?? null,
-            'user_id' => $userId ?? null, 
-
+            'user_id' => $row['user_id'] ?? null,
         ];
 
-        // Check if the row has any meaningful data before processing
-        if (!array_filter($data, fn($value) => !is_null($value) && $value !== '')) {
-            // If the row is blank, return null to skip insertion
-            return null;
-        }
+        // Filter out any keys where the value is null, keeping only provided data
+        $data = array_filter($data, fn($value) => !is_null($value) && $value !== '');
 
-        // Check if a facility with the same name already exists
-        $existingFacility = Facility::where('name', $data['name'])->first();
-
-        if ($existingFacility) {
-            // If a facility with the same name already exists, skip insertion
-            return null;
-        }
-
-        // If no duplicate is found, create a new Facility instance
-        return new Facility($data);
+        // If there's at least one non-null column, create a new Facility instance
+        return !empty($data) ? new Facility($data) : null;
     }
 }

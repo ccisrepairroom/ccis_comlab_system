@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+//use Pboivin\FilamentPeek\Tables\Actions\ListPreviewAction;
 use App\Filament\Resources\EquipmentResource\Pages;
 use App\Filament\Resources\EquipmentResource\RelationManagers;
 use App\Models\Equipment;
@@ -83,21 +84,18 @@ class EquipmentResource extends Resource
                         Forms\Components\Grid::make(3)
                             ->schema([
 
-                                Forms\Components\TextInput::make('po_mumber')
-                                    ->label('PO Number')
-                                    ->placeholder('Refer to the Equipment sticker.')
-                                    ->maxLength(255),
+                               
                                 Forms\Components\TextInput::make('unit_no')
                                     ->placeholder('Set number pasted on the Comlab table.')
                                     ->label('Unit Number')
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('brand_name')
                                     ->placeholder('Brand Name of Equipment')
-                                    ->required(),
-                                    
+                                    ->required()
+                                    ->maxLength(255),
                                 Forms\Components\TextInput::make('description')
-                                    ->placeholder('Description, e.g., dimensions, weight, power'),
-                                   
+                                    ->placeholder('specifications, e.g., dimensions, weight, power')
+                                    ->maxLength(255),
                                 Forms\Components\Select::make('facility_id')
                                     ->relationship('facility', 'name')
                                     ->createOptionForm([
@@ -194,165 +192,26 @@ class EquipmentResource extends Resource
                     ]),
             ]);
     }
-
     public static function table(Table $table): Table
     {
         $user = auth()->user();
         $isPanelUser = $user && $user->hasRole('panel_user');
-
+    
         // Define the bulk actions array
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
             //Tables\Actions\EditBulkAction::make(),
-            Tables\Actions\BulkAction::make('Update Status')
-            ->icon('heroicon-o-plus')
-            ->color('primary')
-            ->requiresConfirmation()
-            ->modalIcon('heroicon-o-check')
-            ->modalHeading('Update Equipment Status')
-            ->modalDescription('Confirm to update equipment status')
-            ->form(function (Forms\Form $form, $record) {
-                return $form->schema([
-                    Forms\Components\Select::make('monitored_by')
-                        ->label('Monitored By')
-                        ->options(User::all()->pluck('name', 'id'))
-                        ->default(auth()->user()->id)
-                        ->disabled()
-                        ->required(),
-                    Forms\Components\DatePicker::make('monitored_date')
-                        ->label('Monitoring Date')
-                        ->required()
-                        ->default(now())
-                        ->format('Y-m-d'),
-                    Forms\Components\Select::make('status')
-                        ->required()
-                        ->options([
-                            'Working' => 'Working',
-                            'For Repair' => 'For Repair',
-                            'For Replacement' => 'For Replacement',
-                            'Lost' => 'Lost',
-                            'For Disposal' => 'For Disposal',
-                            'Disposed' => 'Disposed',
-                            'Borrowed' => 'Borrowed',
-                        ])
-                        ->default($record->status)
-                        ->native(false),
-                    Forms\Components\Select::make('facility_id')
-                        ->label('New Assigned Facility')
-                        ->relationship('facility', 'name')
-                        ->default($record->facility_id)
-                        ->required(),
-                    Forms\Components\TextInput::make('remarks')
-                        ->default($record->remarks)
-                        ->formatStateUsing(fn($state) => strip_tags($state))
-                        ->label('Remarks'),
-                ]);
-            })
-            ->action(function (array $data, $record) {
-                $data['equipment_id'] = $record->id;
-
-                if (empty($data['monitored_by'])) {
-                    $data['monitored_by'] = auth()->user()->id;
-                }
-
-                if (empty($data['monitored_date'])) {
-                    $data['monitored_date'] = now()->format('Y-m-d');
-                }
-
-                EquipmentMonitoring::create($data);
-
-                $record->update([
-                    'status' => $data['status'],
-                    'facility_id' => $data['facility_id'],
-                    'remarks' => $data['remarks'],
-                ]);
-
-                Notification::make()
-                    ->success()
-                    ->title('Success')
-                    ->body('Status of the selected item/s have been updated.')
-                    ->send();
-            }),
+        ];
     
-            Tables\Actions\BulkAction::make('add_to_request_list')
-            ->label('Add to Request List')
-            ->icon('heroicon-o-shopping-cart')
-            ->action(function (Collection $records) {
-                $facilityId = Facility::first()->id;
-                $notAdded = [];
-                $unreturned = [];
-                $successfullyAdded = false; // Track if any item was successfully added
-
-                foreach ($records as $record) {
-                    if ($record->status === 'Working') {
-                        $latestBorrowedItem = BorrowedItems::where('equipment_id', $record->id)
-                            ->orderBy('created_at', 'desc')
-                            ->first();
-
-                        if ($latestBorrowedItem && $latestBorrowedItem->status === 'Unreturned') {
-                            $unreturned[] = $record->description;
-                        } else {
-                            RequestList::updateOrCreate(
-                                [
-                                    'user_id' => auth()->id(),
-                                    'equipment_id' => $record->id,
-                                    'facility_id' => $facilityId,
-                                ]
-                            );
-                            $successfullyAdded = true; // Mark as successfully added
-                        }
-                    } else {
-                        $notAdded[] = $record->description;
-                    }
-                }
-
-                // Notification for non-working items
-                if (!empty($notAdded)) {
-                    Notification::make()
-                        ->title('Items Not Added')
-                        ->body('The following items cannot be added to the request list because they are no longer working: ' . implode(', ', $notAdded))
-                        ->danger()
-                        ->send();
-                }
-
-                // Notification for unreturned items
-                if (!empty($unreturned)) {
-                    Notification::make()
-                        ->title('Unreturned Items')
-                        ->body('The following items are still borrowed and unreturned: ' . implode(', ', $unreturned))
-                        ->warning()
-                        ->send();
-                }
-
-                // Send success notification only if at least one item was added
-                if ($successfullyAdded) {
-                    Notification::make()
-                        ->success()
-                        ->title('Success')
-                        ->body('Selected items have been added to your request list.')
-                        ->send();
-                }
-            })
-            ->color('primary')
-            ->requiresConfirmation()
-            ->modalIcon('heroicon-o-check')
-            ->modalHeading('Add to Request List')
-            ->modalDescription('Confirm to add selected items to your request list'),
-                ];
-
         // Conditionally add ExportBulkAction
         if (!$isPanelUser) {
             $bulkActions[] = ExportBulkAction::make();
-            
         }
-
+    
+       
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('po_number')
-                    ->searchable()
-                    ->label('PO Number')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                
                 Tables\Columns\TextColumn::make('unit_no')
                     ->label('Unit No.')
                     ->searchable()
@@ -360,6 +219,7 @@ class EquipmentResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('brand_name')
+                    ->label('Brand Name')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable()
@@ -538,8 +398,10 @@ class EquipmentResource extends Resource
                     return Pages\ViewEquipment::getUrl([$record->id]);
                 })*/
                 ->actions([
-                    Tables\Actions\EditAction::make(),
+                   
                     Tables\Actions\ActionGroup::make([
+                       // ListPreviewAction::make(),
+                        Tables\Actions\EditAction::make(),
                         Tables\Actions\ViewAction::make('view_monitoring')
                             ->label('View Equipment Records')
                             ->icon('heroicon-o-presentation-chart-line')
@@ -586,7 +448,7 @@ class EquipmentResource extends Resource
             'index' => Pages\ListEquipment::route('/'),
             'create' => Pages\CreateEquipment::route('/create'),
             //'view' => Pages\ViewEquipment::route('/{record}'),
-            //'edit' => Pages\EditEquipment::route('/{record}/edit'),
+            'edit' => Pages\EditEquipment::route('/{record}/edit'),
         ];
     }
 }

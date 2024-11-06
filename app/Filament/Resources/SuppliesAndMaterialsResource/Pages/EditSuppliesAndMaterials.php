@@ -16,13 +16,23 @@ class EditSuppliesAndMaterials extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+<<<<<<< HEAD
     protected function getRedirectUrl(): string
     {
         return SuppliesAndMaterialsResource::getUrl('index'); // Redirect to the index page after creation
+=======
+    public function getTitle(): string
+    {
+        return 'Edit ' . ($this->record->item ?? 'Edit Supplies and Materials'); 
+        
+>>>>>>> 96372de888e3390641465bcceb865ca09bae25c8
     }
     public function getBreadcrumbs(): array
     {
         return [];
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 96372de888e3390641465bcceb865ca09bae25c8
 }

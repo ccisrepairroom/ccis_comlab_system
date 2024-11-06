@@ -21,6 +21,14 @@ class EditFacility extends EditRecord
     {
         return $this->getResource()::getUrl('index');
     }
+<<<<<<< HEAD
+=======
+    public function getTitle(): string
+    {
+        return 'Edit ' . ($this->record->name ?? 'Edit Facility'); 
+        
+    }
+>>>>>>> 96372de888e3390641465bcceb865ca09bae25c8
     public function getBreadcrumbs(): array
     {
         return [];
