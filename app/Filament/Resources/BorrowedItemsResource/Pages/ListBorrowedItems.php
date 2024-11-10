@@ -1,22 +1,22 @@
 <?php
 
 
-namespace App\Filament\Resources\BorroweditemsResource\Pages;
+namespace App\Filament\Resources\BorrowedItemsResource\Pages;
 
-use App\Filament\Resources\BorroweditemsResource;
+use App\Filament\Resources\BorrowedItemsResource;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\Components\Tab;
-use App\Models\Borroweditems;
+use App\Models\BorrowedItems;
 
 
 class ListBorrowedItems extends ListRecords
 {
     use \EightyNine\Approvals\Traits\HasApprovalHeaderActions;
     
-    protected static string $resource = BorroweditemsResource::class;
+    protected static string $resource = BorrowedItemsResource::class;
     protected ?string $heading = 'Borrowed Items';
 
     protected function getHeaderActions(): array
