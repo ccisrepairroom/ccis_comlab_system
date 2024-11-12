@@ -243,7 +243,7 @@ class EquipmentResource extends Resource
                     if (count($unreturnedItems) > 0) {
                         Notification::make()
                             ->warning()
-                            ->title('Error')
+                            ->title('Cannot be Added')
                             ->body(implode(', ', $unreturnedItems) . '  is/are unreturned and cannot be added to the request list.')
                             ->send();
                     }
