@@ -208,26 +208,34 @@ class EquipmentResource extends Resource
                 ->action(function (Collection $records) {
                     $added = false; // Flag to track if any items were successfully added
                     $unreturnedItems = []; // Array to track unreturned items
-            
+                    $nonWorkingItems = []; // Array to track non-working items
+                
                     foreach ($records as $record) {
                         // Get the equipment ID
                         $equipmentId = $record->id;
-            
+                
                         // Check if the equipment is currently borrowed and has a status of "unreturned"
                         $borrowedItem = BorrowedItems::where('equipment_id', $equipmentId)
                             ->where('status', 'unreturned')
                             ->first();
-            
+                
                         if ($borrowedItem) {
                             // Track unreturned items
-                            $unreturnedItems[] = $record->brand_name;  // Assuming 'name' is a field on the equipment record
+                            $unreturnedItems[] = $record->brand_name;  // Assuming 'brand_name' is a field on the equipment record
                             continue; // Skip this record and proceed with the next one
                         }
-            
-                        // If the equipment is not unreturned, add it to the request list
+                
+                        // Check if the equipment status is "working"
+                        if  (strtolower($record->status) !== 'working'){
+                            // Track non-working items
+                            $nonWorkingItems[] = $record->brand_name;  // Assuming 'brand_name' is a field on the equipment record
+                            continue; // Skip this record if not working
+                        }
+                        
+                        // If the equipment is not unreturned and is working, add it to the request list
                         $categoryId = $record->category_id; 
                         $facilityId = $record->facility_id; 
-            
+                
                         RequestList::updateOrCreate(
                             [
                                 'user_id' => auth()->id(),
@@ -235,19 +243,28 @@ class EquipmentResource extends Resource
                                 'facility_id' => $facilityId,
                             ]
                         );
-            
+                
                         $added = true; // Mark that we added at least one item
                     }
-            
+                
                     // Notify for unreturned items first
                     if (count($unreturnedItems) > 0) {
                         Notification::make()
                             ->warning()
                             ->title('Cannot be Added')
-                            ->body(implode(', ', $unreturnedItems) . '  is/are unreturned and cannot be added to the request list.')
+                            ->body(implode(', ', $unreturnedItems) . ' are unreturned and cannot be added to the request list.')
                             ->send();
                     }
-            
+                
+                    // Notify for non-working items
+                    if (count($nonWorkingItems) > 0) {
+                        Notification::make()
+                            ->warning()
+                            ->title('Cannot be Added')
+                            ->body(implode(', ', $nonWorkingItems) . ' are not working and cannot be added to the request list.')
+                            ->send();
+                    }
+                
                     // Only send success notification if any item was successfully added
                     if ($added) {
                         Notification::make()
@@ -262,6 +279,7 @@ class EquipmentResource extends Resource
                 ->modalIcon('heroicon-o-check')
                 ->modalHeading('Add to Request List')
                 ->modalDescription('Confirm to add selected items to your request list'),
+                
         
         ];
     
