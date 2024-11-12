@@ -45,6 +45,7 @@ class FacilityResource extends Resource
                                 Forms\Components\TextInput::make('name')
                                     ->placeholder('Facility Name Displayed On The Door (e.g., CL1, CL2)')
                                     ->required()
+                                    ->unique('facilities','name')
                                     ->maxLength(255),
                                 Forms\Components\Select::make('connection_type')
                                     ->options([
@@ -248,8 +249,10 @@ class FacilityResource extends Resource
                                 'monitorings' => $monitorings,
                             ]);
                         }),
+                    Tables\Actions\EditAction::make(),
+
                     Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make()->color('warning'),
+                    //Tables\Actions\EditAction::make()->color('warning'),
 
                     Tables\Actions\Action::make('update_status')
                         ->label('Update Status')

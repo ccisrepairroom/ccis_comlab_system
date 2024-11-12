@@ -8,6 +8,11 @@ use Filament\Resources\Pages\ListRecords;
 use Spatie\Permission\Models\Role; 
 use App\Models\User;
 use Filament\Resources\Components\Tab;
+use Filament\Actions\Action;
+use App\Imports\UserImport;
+use Filament\Forms\Components\FileUpload;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class ListUsers extends ListRecords
 {
@@ -15,9 +20,38 @@ class ListUsers extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [
-            Actions\CreateAction::make(),
+        $user = auth()->user(); // Retrieve the currently authenticated user
+        $isPanelUser = $user->hasRole('panel_user'); // Check if the user has the 'panel_user' role
+
+        $actions = [
+            Actions\CreateAction::make()
+            ->label('Create'),
         ];
+        if (!$isPanelUser) {
+            // Only add the import action if the user is not a panel_user
+            $actions[] = Action::make('importUsers')
+                ->label('Import')
+                ->color('success')
+                ->button()
+                ->form([
+                    FileUpload::make('attachment'),
+                ])
+                ->action(function (array $data) {
+                    $file = public_path('storage/' . $data['attachment']);
+
+                    Excel::import(new UserImport, $file);
+
+                    Notification::make()
+                        ->title('Users Imported')
+                        ->success()
+                        ->send();
+                });
+        }
+        
+
+        return $actions;
+    
+
     }
 
     public function getTabs(): array

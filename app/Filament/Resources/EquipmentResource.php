@@ -493,9 +493,10 @@ class EquipmentResource extends Resource
                             'monitorings' => $monitorings,
                         ]);
                     }),
+                    Tables\Actions\EditAction::make(),
                     Tables\Actions\ActionGroup::make([
                        // ListPreviewAction::make(),
-                        Tables\Actions\EditAction::make(),
+                        
                        
 
                             Tables\Actions\Action::make('Update Status')

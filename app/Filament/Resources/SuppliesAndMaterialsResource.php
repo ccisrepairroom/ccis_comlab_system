@@ -38,6 +38,7 @@ class SuppliesAndMaterialsResource extends Resource
                                     ->placeholder('Name of an item')
                                     ->label('Item')
                                     ->required()
+                                    ->unique('supplies_and_materials', 'item')   
                                     ->maxLength(255),
                                 Forms\Components\Select::make('quantity')
                                     ->required()
@@ -100,7 +101,7 @@ class SuppliesAndMaterialsResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('item')
-                    ->label('Item')
+                    ->label('Item')                
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
