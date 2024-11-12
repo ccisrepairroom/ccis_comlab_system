@@ -159,23 +159,30 @@ class FacilityResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('connection_type')
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('facility_type')
                     ->label('Facility Type')
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('floor_level')
                     ->label('Floor Level')
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('cooling_tools')
                     ->label('Cooling Tools')
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('building')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+
                 Tables\Columns\TextColumn::make('remarks')
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->formatStateUsing(fn (string $state): string => strip_tags($state))
                     ->html(),
                 Tables\Columns\TextColumn::make('created_at')
