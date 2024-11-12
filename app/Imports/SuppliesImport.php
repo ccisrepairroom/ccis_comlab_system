@@ -27,7 +27,7 @@ public function model(array $row){
     $stockUnitDescription = trim($row['stock_unit_id'] ?? '');
 
     $facility = $facilityName ? Facility::firstOrCreate(['name' => $facilityName], ['name' => $facilityName]) : null;
-    $stockUnit = $stockUnitDescription ? StockUnit::firstOrCreate(['description' => $stockUnitDescription], ['description' => $stockUnitDescription]) : null;
+    $stockunit = $stockUnitDescription ? StockUnit::firstOrCreate(['description' => $stockUnitDescription], ['description' => $stockUnitDescription]) : null;
 
 // Prepare data array with null checks
 $data = [
@@ -35,7 +35,7 @@ $data = [
         'quantity' => $row['quantity'] ?? null,
         'stocking_point' => $row['stocking_point'] ?? null,
         'facility_id' => $facility ? $facility->id : null,
-        'stock_unit_id' => $stock_unit ? $stock_unit->id : null,
+        'stock_unit_id' => $stockunit  ? $stockunit ->id : null,
         'remarks' => $row['remarks'] ?? null,
 
     ];
