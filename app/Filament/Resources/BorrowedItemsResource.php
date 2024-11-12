@@ -127,7 +127,7 @@ class BorrowedItemsResource extends Resource
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('equipment.description')
+                Tables\Columns\TextColumn::make('equipment.brand_name')
                     ->label('Requested Equipment')
                     ->searchable()
                     ->sortable()

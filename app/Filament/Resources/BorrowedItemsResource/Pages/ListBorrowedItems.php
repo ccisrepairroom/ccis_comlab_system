@@ -24,11 +24,7 @@ class ListBorrowedItems extends ListRecords
         return [];
     }
 
-    protected function getTableQuery(): ?Builder
-    {
-        return parent::getTableQuery()
-            ->orderBy('created_at', 'desc'); // Order by the latest entries first
-    }
+  
     protected function getAllBorrowedCount(): int
     {
         return BorrowedItems::count();

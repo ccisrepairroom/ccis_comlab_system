@@ -261,7 +261,7 @@ class RequestListResource extends Resource
                     ->badge()
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false)
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match (strtolower($state)) {
                         'Working' => 'success',
                         'For Repair' => 'warning',
                         'For Replacement' => 'primary',
@@ -269,6 +269,7 @@ class RequestListResource extends Resource
                         'For Disposal' => 'primary',
                         'Disposed' => 'danger',
                         'Borrowed' => 'indigo',
+                        default => 'default', 
                     }),
                 Tables\Columns\TextColumn::make('equipment.control_no')
                     ->label('Control Number')

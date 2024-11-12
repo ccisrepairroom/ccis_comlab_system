@@ -7,7 +7,7 @@ use App\Models\Facility;
 use App\Models\Equipment;
 use App\Models\FacilityMonitoring;
 use App\Models\User;
-use App\Models\BorrowList;
+use App\Models\RequestList;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -118,12 +118,12 @@ class FacilityResource extends Resource
         // Define bulk actions
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
-            Tables\Actions\BulkAction::make('add_to_borrow_list')
-                ->label('Add to Borrow Lists')
+            Tables\Actions\BulkAction::make('add_to_Request_list')
+                ->label('Add to Request List')
                 ->icon('heroicon-o-shopping-cart')
                 ->action(function (Collection $records) {
                     foreach ($records as $record) {
-                        BorrowList::updateOrCreate(
+                        RequestList::updateOrCreate(
                             [
                                 'user_id' => auth()->id(),
                                 'facility_id' => $record->id,
@@ -134,14 +134,14 @@ class FacilityResource extends Resource
                     Notification::make()
                         ->success()
                         ->title('Success')
-                        ->body('Selected facilities have been added to your borrow lists.')
+                        ->body('Selected facilities have been added to your request list.')
                         ->send();
                 })
                 ->color('primary')
                 ->requiresConfirmation()
                 ->modalIcon('heroicon-o-check')
-                ->modalHeading('Add to Borrow Lists')
-                ->modalDescription('Confirm to add selected facilities to your borrow lists'),
+                ->modalHeading('Add to Request List')
+                ->modalDescription('Confirm to add selected facilities to your request list'),
         ];
 
         if (!$isPanelUser) {

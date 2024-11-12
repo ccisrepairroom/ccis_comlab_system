@@ -208,8 +208,8 @@ class EquipmentResource extends Resource
                 ->action(function (Collection $records) {
                     foreach ($records as $record) {
 
-                        $facilityId = $record->facility_id;
-
+                        $categoryId = $record->category_id; 
+                        $facilityId = $record->facility_id; 
                         $equipmentId = Equipment::first()->id;
 
                         RequestList::updateOrCreate(
