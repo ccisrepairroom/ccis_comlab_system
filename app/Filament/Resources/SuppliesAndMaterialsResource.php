@@ -45,18 +45,32 @@ class SuppliesAndMaterialsResource extends Resource
                                     ->label('Quantity'),
                                 Forms\Components\Select::make('stocking_point')
                                     ->options(array_combine(range(1, 1000), range(1, 1000)))
-                                    ->label('Stocking Point'),
+                                    ->label('Stocking Point')
+                                    ->afterStateUpdated(function (callable $set, $state, $get) {
+                                        // Get the values of quantity and stocking_point
+                                        $quantity = $get('quantity');
+                                        
+                                        // Check if stocking_point exceeds quantity
+                                        if ($state > $quantity) {
+                                            // Set error message if stocking_point exceeds quantity
+                                            $set('stocking_point', null);  // Optionally reset the stocking_point
+                                            throw new \Exception('Stocking Point cannot exceed Quantity.');
+                                        }
+                                    }),
                                 Forms\Components\Select::make('stock_unit_id')
                                     ->label('Stock Unit')
+                                    ->required()
                                     ->relationship('stockUnit', 'description')
                                     ->createOptionForm([
                                         Forms\Components\TextInput::make('description')
                                             ->label('Create Stock Unit')
+                                            ->placeholder('E.g., Tray, Carton, Box, etc.')
                                             ->required()
                                             ->maxLength(255),
                                     ]),
                                 Forms\Components\Select::make('facility_id')
                                     ->label('Location')
+                                    ->required()
                                     ->relationship('facility', 'name')
                                     ->createOptionForm([
                                         Forms\Components\TextInput::make('name')
