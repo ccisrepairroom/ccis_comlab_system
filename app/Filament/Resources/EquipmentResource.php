@@ -206,26 +206,56 @@ class EquipmentResource extends Resource
                 ->label('Add to Request List')
                 ->icon('heroicon-o-shopping-cart')
                 ->action(function (Collection $records) {
+                    $added = false; // Flag to track if any items were successfully added
+                    $unreturnedItems = []; // Array to track unreturned items
+            
                     foreach ($records as $record) {
-
+                        // Get the equipment ID
+                        $equipmentId = $record->id;
+            
+                        // Check if the equipment is currently borrowed and has a status of "unreturned"
+                        $borrowedItem = BorrowedItems::where('equipment_id', $equipmentId)
+                            ->where('status', 'unreturned')
+                            ->first();
+            
+                        if ($borrowedItem) {
+                            // Track unreturned items
+                            $unreturnedItems[] = $record->brand_name;  // Assuming 'name' is a field on the equipment record
+                            continue; // Skip this record and proceed with the next one
+                        }
+            
+                        // If the equipment is not unreturned, add it to the request list
                         $categoryId = $record->category_id; 
                         $facilityId = $record->facility_id; 
-                        $equipmentId = Equipment::first()->id;
-
+            
                         RequestList::updateOrCreate(
                             [
                                 'user_id' => auth()->id(),
-                                'equipment_id' => $record->id,
+                                'equipment_id' => $equipmentId,
                                 'facility_id' => $facilityId,
                             ]
                         );
+            
+                        $added = true; // Mark that we added at least one item
                     }
-
-                    Notification::make()
-                        ->success()
-                        ->title('Success')
-                        ->body('Selected items have been added to your request list.')
-                        ->send();
+            
+                    // Notify for unreturned items first
+                    if (count($unreturnedItems) > 0) {
+                        Notification::make()
+                            ->warning()
+                            ->title('Error')
+                            ->body(implode(', ', $unreturnedItems) . '  is/are unreturned and cannot be added to the request list.')
+                            ->send();
+                    }
+            
+                    // Only send success notification if any item was successfully added
+                    if ($added) {
+                        Notification::make()
+                            ->success()
+                            ->title('Success')
+                            ->body('Selected items have been added to your request list.')
+                            ->send();
+                    }
                 })
                 ->color('primary')
                 ->requiresConfirmation()

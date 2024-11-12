@@ -298,6 +298,7 @@ class RequestListResource extends Resource
             ->actions($actions) // Apply the filtered actions
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('approve')
                         ->label('Approve')
                         ->icon('heroicon-o-arrow-right')
