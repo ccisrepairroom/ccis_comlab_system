@@ -13,6 +13,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Components\Tab;
 use App\Models\Facility;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables;
 
 
 
@@ -21,6 +22,7 @@ class ListFacilities extends ListRecords
 {
     protected static string $resource = FacilityResource::class;
 
+   
 
     protected function getHeaderActions(): array
     {
@@ -120,6 +122,15 @@ class ListFacilities extends ListRecords
             
         ];
     }
+    protected function getTableActions(): array
+    {
+        return []; // This disables any default row actions (such as view)
+    }
+
+
+
+    
+   
 }
 
 

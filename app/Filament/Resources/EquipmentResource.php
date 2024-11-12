@@ -7,6 +7,7 @@ use App\Filament\Resources\EquipmentResource\Pages;
 use App\Filament\Resources\EquipmentResource\RelationManagers;
 use App\Models\Equipment;
 use App\Models\Facility;
+use App\Models\Category;
 use App\Models\User;
 use App\Models\EquipmentMonitoring;
 //use App\Models\BorrowList;
@@ -94,7 +95,7 @@ class EquipmentResource extends Resource
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('description')
-                                    ->placeholder('specifications, e.g., dimensions, weight, power')
+                                    ->placeholder('Specifications, e.g., dimensions, weight, power')
                                     ->maxLength(255),
                                 Forms\Components\Select::make('facility_id')
                                     ->relationship('facility', 'name')
@@ -109,10 +110,10 @@ class EquipmentResource extends Resource
                                    
                                 Forms\Components\Select::make('category_id')
                                     ->relationship('category', 'description')
-
                                     ->createOptionForm([
                                         Forms\Components\TextInput::make('description')
                                         ->label('Create Category')
+                                        ->placeholder('E.g., Monitor, System Unit, AVR/UPS, etc.')
                                         ->required()
                                         ->maxLength(255)
                                        
@@ -201,6 +202,37 @@ class EquipmentResource extends Resource
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
             //Tables\Actions\EditBulkAction::make(),
+            Tables\Actions\BulkAction::make('add_to_request_list')
+                ->label('Add to Request List')
+                ->icon('heroicon-o-shopping-cart')
+                ->action(function (Collection $records) {
+                    foreach ($records as $record) {
+
+                        $facilityId = $record->facility_id;
+
+                        $equipmentId = Equipment::first()->id;
+
+                        RequestList::updateOrCreate(
+                            [
+                                'user_id' => auth()->id(),
+                                'equipment_id' => $record->id,
+                                'facility_id' => $facilityId,
+                            ]
+                        );
+                    }
+
+                    Notification::make()
+                        ->success()
+                        ->title('Success')
+                        ->body('Selected items have been added to your request list.')
+                        ->send();
+                })
+                ->color('primary')
+                ->requiresConfirmation()
+                ->modalIcon('heroicon-o-check')
+                ->modalHeading('Add to Request List')
+                ->modalDescription('Confirm to add selected items to your request list'),
+        
         ];
     
         // Conditionally add ExportBulkAction
@@ -337,12 +369,7 @@ class EquipmentResource extends Resource
 
             
                 ->filters([
-                    SelectFilter::make('Category')
-                    ->relationship('category','description'),
-                    
-                    //->searchable ()
-                    SelectFilter::make('Facility')
-                    ->relationship('facility','name'),
+                   
                     SelectFilter::make('po_number')
                     ->label('PO Number')
                     ->options(
@@ -351,6 +378,12 @@ class EquipmentResource extends Resource
                             ->pluck('po_number', 'po_number')
                             ->toArray()
                     ),
+                    SelectFilter::make('Category')
+                    ->relationship('category','description'),
+                    
+                    //->searchable ()
+                    SelectFilter::make('Facility')
+                    ->relationship('facility','name'),
                     SelectFilter::make('person_liable')
                     ->label('Person Liable')
                     ->options(
