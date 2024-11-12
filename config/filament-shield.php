@@ -28,6 +28,10 @@ return [
         'enabled' => true,
         'name' => 'panel_user',
     ],
+    'Admin' => [
+            'enabled' => true,
+            'name' => 'admin',
+    ],
 
 
     'permission_prefixes' => [
@@ -65,6 +69,7 @@ return [
 
     'exclude' => [
         'enabled' => true,
+        'resources' => [],
 
         'pages' => [
             'Dashboard',
@@ -78,7 +83,7 @@ return [
     ],
 
     'discovery' => [
-        'discover_all_resources' => false,
+        'discover_all_resources' => true,
         'discover_all_widgets' => false,
         'discover_all_pages' => false,
     ],

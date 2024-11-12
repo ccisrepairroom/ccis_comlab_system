@@ -32,7 +32,7 @@ class ListEquipment extends ListRecords
                 ->label('Download Request Form')
                 //->icon('heroicon-o-download')
                 ->color('primary')
-                ->url(route('download.request.form'))
+                ->url(asset('storage/request_form/request_form.pdf'))
                 ->openUrlInNewTab(),
             Actions\CreateAction::make()
                 ->label('Create'),

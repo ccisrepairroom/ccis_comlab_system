@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\AdminUser\Resources\EquipmentResource\Pages;
+namespace App\Filament\Resources\EquipmentResource\Pages;
 
-use App\Filament\AdminUser\Resources\EquipmentResource;
+use App\Filament\Resources\EquipmentResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
@@ -12,6 +12,10 @@ class CreateEquipment extends CreateRecord
 
     protected function getRedirectUrl(): string
     {
-        return $this->previousUrl ?? $this->getResource()::getUrl('index');
+        return $this->getResource()::getUrl('index');
+    }
+    public function getBreadcrumbs(): array
+    {
+        return [];
     }
 }

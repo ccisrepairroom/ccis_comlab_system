@@ -8,3 +8,8 @@ php artisan storage:link
 
 --add storage/app/public/request_form/request_form.pdf
 serve
+
+
+Get-ExecutionPolicy -List
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+

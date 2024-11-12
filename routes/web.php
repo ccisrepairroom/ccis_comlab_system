@@ -19,6 +19,18 @@ use App\Http\Controllers\MonitoringController;
 Route::get('/', function () {
     return redirect('admin/login');
 });
+Route::get('download-request-form', function () {
+    // Define the path to the file stored in the 'app/Filament/Resources/request_form'
+    $filePath = app_path('Filament/Resources/request_form/request_form.pdf');
+
+    // Check if the file exists and return it for download
+    if (file_exists($filePath)) {
+        return Response::download($filePath);
+    } else {
+        abort(404, 'File not found.');
+    }
+})->name('download.request.form');
+
 /*
 Route::get('/dashboard', function () {
     return view('dashboard');
