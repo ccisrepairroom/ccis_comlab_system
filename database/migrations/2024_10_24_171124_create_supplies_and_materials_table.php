@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('stock_unit_id')->nullable()->constrained()->onDelete('cascade')->index('supandman_stock_unit_id_index');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->index('supandman_user_id_index'); 
             $table->foreignId('facility_id')->nullable()->constrained()->onDelete('cascade')->index('supandman_facility_id_index');
+            $table->text('remarks')->nullable()->index('supandman_remarks_index');
+
             $table->timestamps(); 
         });
     }
