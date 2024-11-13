@@ -61,19 +61,22 @@ class TotalUserWidget extends BaseWidget
 
         return [
             Stat::make('Total Users', $currentTotalUsers)
-                ->chart($userChartData)
+                //->chart($userChartData)
+                ->chart([1,2,3,7,3])
                 ->description("{$userIncrease} New users that joined")
                 ->descriptionIcon('heroicon-m-user-plus')
                 ->color('success'),
 
             Stat::make('Borrowed Items Last 7 Days', $totalBorrowRecords)
-                ->chart($borrowChartData)
+                //->chart($borrowChartData)
+                ->chart([1,2,3,7,3])
                 ->description('Borrowed items over the last 7 days')
                 ->descriptionIcon('heroicon-m-calendar')
                 ->color('info'),
             Stat::make('Total Borrowed Today', $totalBorrowedToday)
                 ->description('Borrowed items today')
                 ->descriptionIcon('heroicon-m-inbox-arrow-down')
+                ->chart([1,2,3,7,3])                
                 ->color('primary'),
         ];
     }

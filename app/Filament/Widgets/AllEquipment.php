@@ -32,6 +32,7 @@ class AllEquipment extends BaseWidget
             )
             ->description('Total Equipment')
             ->descriptionIcon('heroicon-m-cube', IconPosition::After)
+            ->chart([1,2,3,7,3])
             ->color('success'),
             
             Stat::make(
@@ -43,6 +44,7 @@ class AllEquipment extends BaseWidget
                 )
                 ->description('Total Facilities')
                 ->descriptionIcon('heroicon-m-building-office-2', IconPosition::After)
+                ->chart([1,2,3,7,3])
                 ->color('info'),
 
                 Stat::make(
@@ -53,6 +55,7 @@ class AllEquipment extends BaseWidget
                 )
                 ->description('Total Equipment Categories')
                 ->descriptionIcon('heroicon-m-funnel', IconPosition::After)
+                ->chart([1,2,3,7,3])
                 ->color('primary'),
         ];
 
