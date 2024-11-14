@@ -11,9 +11,11 @@ class SuppliesAndMaterials extends Model
     protected $fillable = [
         'item',
         'quantity',
+        'category_id',
         'stocking_point',
         'stock_unit_id',
         'facility_id',
+        'category_id',
         'user_id',
         'item_img',
         'remarks',
@@ -22,9 +24,9 @@ class SuppliesAndMaterials extends Model
 
 
     public function stockUnit()
-{
-    return $this->belongsTo(StockUnit::class, 'stock_unit_id');
-}
+    {
+        return $this->belongsTo(StockUnit::class, 'stock_unit_id');
+    }
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -37,6 +39,11 @@ class SuppliesAndMaterials extends Model
     {
         return $this->belongsTo(SuppliesCart::class);
     }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
 
 
 }

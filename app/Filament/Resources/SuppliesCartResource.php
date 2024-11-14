@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SuppliesCartResource\Pages;
 use App\Models\SuppliesCart;
-use App\Models\SuppliesAndMaterials; // Include the SuppliesAndMaterials model
+use App\Models\SuppliesAndMaterials; 
+use App\Models\Category;
+use App\Models\StockUnit;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -31,8 +33,12 @@ class SuppliesCartResource extends Resource
                 Forms\Components\TextInput::make('user_id')
                     ->label('User ID')
                     ->required()
-                    ->maxLength(255)
-                    ->hidden(), // Optionally hide if you handle this automatically
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('requested_by')
+                    ->label('Requested_by')
+                    ->required()
+                    ->maxLength(255),
+                    
                 Forms\Components\TextInput::make('supplies_and_materials_id')
                     ->label('Supplies and Materials ID')
                     ->required()
@@ -55,23 +61,33 @@ class SuppliesCartResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->query(SuppliesCart::with('stockUnit'))
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
-                    ->label('User ID')
+                Tables\Columns\TextColumn::make('requested_by')
+                    ->label('Requested By')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('supplies_and_materials_id')
-                    ->label('Supplies and Materials ID')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('available_quantity')
-                    ->label('Available Quantity')
+                Tables\Columns\TextColumn::make('supplies_and_materials.item')
+                    ->label('Item')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('quantity_requested')
                     ->label('Quantity Requested')
                     ->searchable()
+                    ->formatStateUsing(function ($record) {
+                        $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
+                        return "{$record->quantity_requested} {$stockUnitDescription}";
+                    })
                     ->sortable(),
+                Tables\Columns\TextColumn::make('available_quantity')
+                    ->label('Available Quantity')
+                    ->searchable()
+                    ->formatStateUsing(function ($record) {
+                        $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
+                        return "{$record->available_quantity} {$stockUnitDescription}";
+                    })
+                    ->sortable(),
+                
                 Tables\Columns\TextColumn::make('action_date')
                     ->label('Action Date')
                     ->searchable()

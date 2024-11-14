@@ -20,7 +20,8 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->index('supandman_user_id_index'); 
             $table->foreignId('facility_id')->nullable()->constrained()->onDelete('cascade')->index('supandman_facility_id_index');
             $table->text('remarks')->nullable()->index('supandman_remarks_index');
-            $table->string('item_img')->nullable()->index('supandman_item_img');
+            //$table->string('item_img')->nullable()->index('supandman_item_img');
+            $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade')->index('supcart_category_id');
             $table->timestamps(); 
         });
     }

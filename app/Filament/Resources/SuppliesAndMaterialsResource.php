@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SuppliesAndMaterialsResource\Pages;
 use App\Models\SuppliesAndMaterials;
 use App\Models\SuppliesCart; 
+use App\Models\Category; 
+use App\Models\StockUnit; 
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -49,6 +51,16 @@ class SuppliesAndMaterialsResource extends Resource
                                         column: 'item', 
                                         ignoreRecord: true
                                     ),
+                                Forms\Components\Select::make('category_id')
+                                    ->relationship('category', 'description')
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('description')
+                                        ->label('Create Category')
+                                        ->placeholder('E.g., Monitor, System Unit, AVR/UPS, etc.')
+                                        ->required()
+                                        ->maxLength(255)
+                                       
+                                    ]),
                                 Forms\Components\Select::make('quantity')
                                     ->required()
                                     ->options(array_combine(range(1, 1000), range(1, 1000)))
@@ -67,7 +79,7 @@ class SuppliesAndMaterialsResource extends Resource
                                         $set('stocking_point', null);  // Optionally reset the stocking_point
                                         Notification::make()
                                             ->danger()
-                                            ->title('Error')
+                                            ->title('Try Again')
                                             ->body('Stocking Point cannot exceed Quantity.')
                                             ->send();
                                     }
@@ -131,17 +143,34 @@ class SuppliesAndMaterialsResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('category.description')  
+                    ->label('Category')  
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 
                 Tables\Columns\TextColumn::make('quantity')
                     ->searchable()
                     ->sortable()
+                    ->formatStateUsing(function ($record) {
+                        $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
+                        return "{$record->quantity} {$stockUnitDescription}";
+                    })
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('stocking_point')
                     ->searchable()
                     ->sortable()
+                    ->formatStateUsing(function ($record) {
+                        $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
+                        return "{$record->quantity} {$stockUnitDescription}";
+                    })
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('facility.name')
                     ->label('Location')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('remarks')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
@@ -150,54 +179,70 @@ class SuppliesAndMaterialsResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make(array_merge($bulkActions, [
-                    Tables\Actions\BulkAction::make('add_to_supplies_cart')
-                        ->label('Add to Supplies Cart')
-                        ->icon('heroicon-o-shopping-bag')
-                        ->color('primary')
-                        ->requiresConfirmation()
-                        ->modalIcon('heroicon-o-check')
-                        ->modalHeading('Add to Supplies Cart')
-                        ->modalDescription('Confirm to add selected item/s to your supplies cart.')
-                        ->form(function (Collection $records) {
-                            $availableStock = $records->sum('quantity');
-                            return [
-                                Forms\Components\TextInput::make('quantity_requested')
-                                    ->label('Quantity Requested')
-                                    ->required()
-                                    ->numeric()
-                                    ->minValue(1)
-                                    ->hint("Available stock: {$availableStock}"),
-                            ];
-                        })
-                        ->action(function (array $data, Collection $records) {
-                            foreach ($records as $record) {
-                                if ($data['quantity_requested'] > $record->quantity) {
-                                    Notification::make()
-                                        ->danger()
-                                        ->title('Error')
-                                        ->body('Requested quantity exceeds available stock.')
-                                        ->send();
-                                    return;
-                                }
-
-                                // Create the SuppliesCart record
-                                SuppliesCart::create([
-                                    'user_id' => auth()->id(),
-                                    'supplies_and_materials_id' => $record->id,
-                                    'facility_id' => $record->facility_id,
-                                    'available_quantity' => $record->quantity, // Copy available quantity
-                                    'quantity_requested' => $data['quantity_requested'],
-                                    'action_date' => now(), // Use current date as action date
-                                ]);
-                            }
-
+                Tables\Actions\BulkAction::make('add_to_supplies_cart')
+                ->label('Add to Supplies Cart')
+                ->icon('heroicon-o-shopping-bag')
+                ->color('primary')
+                ->requiresConfirmation()
+                ->modalIcon('heroicon-o-check')
+                ->modalHeading('Add to Supplies Cart')
+                ->modalDescription('Confirm to add selected item/s to your supplies cart.')
+                ->form(function (Collection $records) {
+                    $availableStock = $records->sum('quantity');
+                    return [
+                        Forms\Components\TextInput::make('requested_by')
+                            ->label('Requested By:'),
+                        Forms\Components\TextInput::make('quantity_requested')
+                            ->label('Quantity Requested')
+                            ->required()
+                            ->numeric()
+                            ->minValue(1)
+                            ->hint("Available stock: {$availableStock}"),
+                    ];
+                    
+                })
+                ->action(function (array $data, Collection $records) {
+                    foreach ($records as $record) {
+                        // Check if requested quantity is available
+                        if ($data['quantity_requested'] > $record->quantity) {
                             Notification::make()
-                                ->success()
-                                ->title('Success')
-                                ->body('Selected item/s have been added to your supplies cart.')
+                                ->danger()
+                                ->title('Try Again')
+                                ->body('Requested quantity exceeds available stock.')
                                 ->send();
-                        }),
+                            return;
+                        }
+                
+                        // Create the SuppliesCart record with the requested_by field from $data
+                        SuppliesCart::create([
+                            'user_id' => auth()->id(),
+                            'requested_by' => $data['requested_by'], // This is where the value is passed
+                            'supplies_and_materials_id' => $record->id,
+                            'facility_id' => $record->facility_id,
+                            'category_id' => $record->category_id,
+                            'stock_unit_id' => $record->stock_unit_id,
+                            'available_quantity' => $record->quantity, // Copy available quantity
+                            'quantity_requested' => $data['quantity_requested'],
+                            'action_date' => now(), // Use current date as action date
+                        ]);
+                
+                        // Deduct the requested quantity from available stock
+                        $record->quantity -= $data['quantity_requested'];
+                        $record->save(); // Save the updated stock quantity
+                    }
+                
+                    Notification::make()
+                        ->success()
+                        ->title('Success')
+                        ->body('Selected item/s have been added to your supplies cart and stock has been updated.')
+                        ->send();
+                }),
+                
+             
+                
+                
+                Tables\Actions\BulkActionGroup::make(array_merge($bulkActions, [
+                   
                 ]))
             ]);
     }

@@ -18,6 +18,7 @@ return new class extends Migration
         Schema::create('supplies_cart', function (Blueprint $table) {
             $table->id(); // Primary key
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->index('supcart_user_id_index')->nullable(); // Foreign key for users
+            $table->string('requested_by')->nullable()->index('supcart_requested_by_index');
             $table->foreignId('facility_id')->constrained()->onDelete('cascade')->index('supcart_facility_id_index')->nullable();
             //$table->string('office_entity')->index('supcart_office_entity')->nullable(); // Text input for office/entity
             //$table->string('requested_by')->index('supcart_requested_by')->nullable();
@@ -27,6 +28,8 @@ return new class extends Migration
             $table->integer('quantity_requested')->index('supcart_quantity_requested')->nullable(); // Quantity added/deducted
             //$table->string('deducted_added_by')->index('supcart_deducted_added_by')->nullable(); // User who deducted/added the stock
             $table->date('action_date')->index('supcart_action_date')->nullable(); // Date of the action
+            $table->foreignId('stock_unit_id')->nullable()->constrained()->onDelete('cascade')->index('supcart_stock_unit_id_index');
+            $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade')->index('supcart_category_id');
             $table->timestamps(); // Created at and updated at timestamps
             
         });

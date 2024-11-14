@@ -11,11 +11,13 @@ class SuppliesCart extends Model
     protected $table = 'supplies_cart';
     protected $fillable = [
         'user_id',
+        'requested_by',
         'facility_id',
         'supplies_and_materials_id',
         'available_quantity',
         'quantity_requested',
         'action_date',
+        'stock_unit_id'
         
     ];
     public function supplies_and_materials()
@@ -32,5 +34,14 @@ class SuppliesCart extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+    public function stockUnit()
+    {
+        return $this->belongsTo(StockUnit::class, 'stock_unit_id');
+    }
+
 
 }
