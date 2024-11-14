@@ -33,7 +33,7 @@ class SuppliesCartImport implements ToModel, WithHeadingRow
     // Prepare data array with null checks
 $data = [
         'requested_by' => $row['requested_by'] ?? null,
-        'user_id' => $user ? $user->id : null,
+        //'user_id' => $user ? $user->id : null,
         'supplies_and_materials_id' => $supplies_and_materials ? $supplies_and_materials->id : null,
         'facility_id' => $facility ? $facility->id : null,
         'available_quantity' => $row['available_quantity'] ?? null,
@@ -47,7 +47,7 @@ $data = [
     // Define essential fields to check
     $essentialFields = [
          'requested_by',
-         'user_id',
+         //'user_id',
          'supplies_and_materials_id',
          'facility_id' ,
          'available_quantity',

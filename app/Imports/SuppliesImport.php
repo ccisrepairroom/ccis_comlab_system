@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\Importable;
 use App\Models\SuppliesAndMaterials;
 use App\Models\Facility;
+use App\Models\Category;
 use App\Models\StockUnit;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -25,9 +26,13 @@ public function model(array $row){
     // Trim and retrieve related models
     $facilityName = trim($row['facility_id'] ?? '');
     $stockUnitDescription = trim($row['stock_unit_id'] ?? '');
+    $categoryDescription = trim($row['category_id'] ?? '');
+
 
     $facility = $facilityName ? Facility::firstOrCreate(['name' => $facilityName], ['name' => $facilityName]) : null;
     $stockunit = $stockUnitDescription ? StockUnit::firstOrCreate(['description' => $stockUnitDescription], ['description' => $stockUnitDescription]) : null;
+    $category = $categoryDescription ? Category::firstOrCreate(['description' => $categoryDescription], ['description' => $categoryDescription]) : null;
+
 
 // Prepare data array with null checks
 $data = [
@@ -35,6 +40,9 @@ $data = [
         'quantity' => $row['quantity'] ?? null,
         'stocking_point' => $row['stocking_point'] ?? null,
         'facility_id' => $facility ? $facility->id : null,
+        'facility_id' => $this->getFacilityId($row['location']) ?? null,
+        'category_id' => $facility ? $facility->id : null,
+        'category_id' => $this->getCategoryId($row['category']) ?? null,
         'stock_unit_id' => $stockunit  ? $stockunit ->id : null,
         'remarks' => $row['remarks'] ?? null,
 
@@ -64,4 +72,35 @@ $data = [
         // Create and return new Equipment instance if the row has data
         return new SuppliesAndMaterials($data);
         }
-    }
+
+          /**
+     * Get Facility ID based on the location provided in the row
+     *
+     * @param string|null $location
+     * @return int|null
+     */
+        public function getFacilityId($location)
+        {
+            // Check if location exists, else return null
+            if (!$location) {
+                return null;
+            }
+
+            // Lookup the facility by location, or return null if not found
+            $facility = Facility::where('name', $location)->first();
+            return $facility ? $facility->id : null;
+        }
+
+        public function getCategoryId($category)
+        {
+            // Check if location exists, else return null
+            if (!$category) {
+                return null;
+            }
+
+            // Lookup the facility by location, or return null if not found
+            $category = Category::where('description', $category)->first();
+            return $category ? $category->id : null;
+        }
+}
+    
