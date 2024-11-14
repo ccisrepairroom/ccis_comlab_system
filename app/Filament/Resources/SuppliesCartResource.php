@@ -23,6 +23,8 @@ class SuppliesCartResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
     protected static ?string $navigationGroup = 'Supplies And Materials';
+    protected static ?string $navigationLabel = 'Supplies Cart';
+
     protected static ?int $navigationSort = 2;
 
     public static function getNavigationBadge(): ?string
@@ -112,6 +114,11 @@ class SuppliesCartResource extends Resource
                         return "{$record->available_quantity} {$stockUnitDescription}";
                     })
                     ->sortable(),
+                Tables\Columns\TextColumn::make('remarks')  
+                    ->label('Remarks')  
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('action_date')
                     ->label('Date Requested')
                     ->searchable()

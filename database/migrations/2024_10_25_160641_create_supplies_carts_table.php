@@ -30,6 +30,7 @@ return new class extends Migration
             $table->date('action_date')->index('supcart_action_date')->nullable(); // Date of the action
             $table->foreignId('stock_unit_id')->nullable()->constrained()->onDelete('cascade')->index('supcart_stock_unit_id_index');
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade')->index('supcart_category_id');
+            $table->text('remarks')->nullable()->index('supcart_remarks_index');
             $table->timestamps(); // Created at and updated at timestamps
             
         });

@@ -146,6 +146,7 @@ class SuppliesAndMaterialsResource extends Resource
                     $availableStock = $records->sum('quantity');
                     return [
                         Forms\Components\TextInput::make('requested_by')
+                            ->required()
                             ->label('Requested By:'),
                         Forms\Components\TextInput::make('quantity_requested')
                             ->label('Quantity Requested')
@@ -153,9 +154,13 @@ class SuppliesAndMaterialsResource extends Resource
                             ->numeric()
                             ->minValue(1)
                             ->hint("Available stock: {$availableStock}"),
+                        Forms\Components\TextInput::make('remarks')
+                            ->label('Remarks'),
                     ];
+
                     
                 })
+                
                 ->action(function (array $data, Collection $records) {
                     foreach ($records as $record) {
                         // Check if requested quantity is available
@@ -178,6 +183,7 @@ class SuppliesAndMaterialsResource extends Resource
                             'stock_unit_id' => $record->stock_unit_id,
                             'available_quantity' => $record->quantity, // Copy available quantity
                             'quantity_requested' => $data['quantity_requested'],
+                            'remarks' => $data['remarks'],
                             'action_date' => now(), // Use current date as action date
                         ]);
                 
@@ -189,7 +195,7 @@ class SuppliesAndMaterialsResource extends Resource
                     Notification::make()
                         ->success()
                         ->title('Success')
-                        ->body('Selected item/s have been added to your supplies cart and stock has been updated.')
+                        ->body('Selected item/s have been added to your supplies cart.')
                         ->send();
                 }),
         ];
