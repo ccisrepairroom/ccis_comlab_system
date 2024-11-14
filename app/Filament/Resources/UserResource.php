@@ -3,8 +3,10 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -14,10 +16,82 @@ use Filament\Tables\Actions\Action;
 use Illuminate\Support\Facades\Storage;
 use League\Csv\Writer;
 use Filament\Tables\Actions\BulkAction;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Section;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+    protected static ?string $navigationGroup = 'User Management';
 
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?int $navigationSort = 5;
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        \Log::info($record);
+        
+        return [
+            'Name' => $record->name ?? 'Unknown', 
+            'Email' => $record->email ?? 'Unknown', 
+        ];
+    }
+    public static function getGloballySearchableAttributes(): array
+    {
+        return['name','email'];
+    }
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Section::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            //->unique('users', 'name')
+                            //->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
+
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->unique(ignoreRecord: true),
+                        Forms\Components\Select::make('roles')
+                            ->relationship('roles', 'name')
+                            ->preload()
+                            ->searchable(),
+                        Forms\Components\TextInput::make('password')
+                            ->password()
+                            ->required()
+                            ->revealable()
+                            ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                            //->hiddenOn('edit')
+                    ])
+            ]);
+    }
+
+
+    public static function afterSave(Model $record, array $data): void
+        {
+            // If there are roles to assign, sync them
+            if (isset($data['roles'])) {
+                $record->roles()->sync($data['roles']); // This will attach the selected roles to the user
+            }
+
+            // If the password was provided, it will be updated during the save process
+            if (isset($data['password']) && $data['password']) {
+                $record->password = Hash::make($data['password']); // Ensure password is hashed
+                $record->save();
+            }
+        }
     public static function table(Tables\Table $table): Tables\Table
     {
         $user = auth()->user();
@@ -27,11 +101,12 @@ class UserResource extends Resource
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
         ];
+    
 
         // Conditionally add ExportBulkAction
         if (!$isPanelUser) {
             $bulkActions[] = BulkAction::make('export')
-                ->label('Export Users')
+                ->label('Export')
                 ->icon('heroicon-o-arrow-down')
                 ->action(function () {
                     // Fetch users with roles

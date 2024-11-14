@@ -4,14 +4,62 @@ namespace App\Imports;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\Importable;
+use App\Models\User;
+use App\Models\Role;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use App\Filament\Resources\UserResource\Pages\Notification;
 
-class UserImport implements ToCollection
+
+class UserImport implements ToModel, WithHeadingRow
 {
+    use Importable;
+
     /**
-    * @param Collection $collection
-    */
-    public function collection(Collection $collection)
-    {
-        //
-    }
+     * @param array $row
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function model(array $row){
+        $userId = auth()->id(); 
+        // Trim and retrieve related models
+        $roleName = trim($row['role_id'] ?? '');
+    
+        $role = $roleName ? Roles::firstOrCreate(['name' => $roleName], ['name' => $roleName]) : null;
+    
+    // Prepare data array with null checks
+$data = [
+    'name' => $row['name'] ?? null,
+    'email' => $row['email'] ?? null,
+    'role' => $row['role'] ?? null,
+    'password' => $row['password'] ?? null,
+    'created_at' => $row['created_at'] ?? null,
+    
+];
+ 
+    // Define essential fields to check
+    $essentialFields = [
+        'name',
+        'email',
+        'role' ,
+        'password',
+        'created_at',
+      
+
+
+       ];
+       // Extract only the essential fields
+       $filteredData = array_intersect_key($data, array_flip($essentialFields));
+
+       // Check if any of the essential fields have meaningful data
+       if (!array_filter($filteredData, fn($value) => !is_null($value) && $value !== '')) {
+           // If the row is blank, return null to skip insertion
+           return null;
+       }
+
+       // Create and return new Equipment instance if the row has data
+       return new User($data);
+       }
+
+
 }

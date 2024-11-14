@@ -12,7 +12,7 @@ use Filament\Actions\Action;
 use App\Imports\UserImport;
 use Filament\Forms\Components\FileUpload;
 use Maatwebsite\Excel\Facades\Excel;
-
+use Filament\Notifications\Notification;
 
 class ListUsers extends ListRecords
 {
@@ -27,7 +27,7 @@ class ListUsers extends ListRecords
             Actions\CreateAction::make()
             ->label('Create'),
         ];
-        if (!$isPanelUser) {
+        /*if (!$isPanelUser) {
             // Only add the import action if the user is not a panel_user
             $actions[] = Action::make('importUsers')
                 ->label('Import')
@@ -46,7 +46,7 @@ class ListUsers extends ListRecords
                         ->success()
                         ->send();
                 });
-        }
+        }*/
         
 
         return $actions;
