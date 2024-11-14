@@ -71,7 +71,7 @@ class UserResource extends Resource
                             ->required()
                             ->revealable()
                             ->dehydrateStateUsing(fn($state) => Hash::make($state))
-                            ->hiddenOn('edit')
+                            //->hiddenOn('edit')
                     ])
             ]);
     }
@@ -99,21 +99,29 @@ class UserResource extends Resource
 
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('roles.name')->label('Role')
                     ->formatStateUsing(fn($state): string => Str::headline($state))
                     ->colors(['info'])
                     ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->badge(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->formatStateUsing(function ($state) {
                         // Format the date and time
                         return $state ? $state->format('F j, Y h:i A') : null;
                     })
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('password')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
             ])
             ->filters([
