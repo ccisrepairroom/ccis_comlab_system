@@ -20,13 +20,10 @@ class ListSuppliesCarts extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        $user = auth()->user(); // Retrieve the currently authenticated user
-        $isPanelUser = $user->hasRole('panel_user'); // Check if the user has the 'panel_user' role
+        $user = auth()->user();
+        $isSuperAdmin = $user->hasRole('super_admin'); // Check if the user has the 'super_admin' role
 
-       
-    
-        if (!$isPanelUser) {
-            // Only add the import action if the user is not a panel_user
+        if ($isSuperAdmin) {
             $actions[] = Action::make('importSuppliesCart')
                 ->label('Import')
                 ->color('success')
@@ -34,10 +31,11 @@ class ListSuppliesCarts extends ListRecords
                 ->form([
                     FileUpload::make('attachment'),
                 ])
-                ->action(function (array $data) {
+                ->action(function (array $data) use ($user) {
                     $file = public_path('storage/' . $data['attachment']);
 
-                    Excel::import(new SuppliesCartImport, $file);
+                    // Pass authenticated user's ID to SuppliesCartImport
+                    Excel::import(new SuppliesCartImport($user->id), $file);
 
                     Notification::make()
                         ->title('Supplies Cart Imported')
@@ -45,11 +43,10 @@ class ListSuppliesCarts extends ListRecords
                         ->send();
                 });
         }
-        
 
         return $actions;
     }
-    
+
     public function getBreadcrumbs(): array
     {
         return [];
@@ -57,8 +54,6 @@ class ListSuppliesCarts extends ListRecords
 
     protected function getTableQuery(): ?Builder
     {
-        // Get the base query and order it by the latest created_at field
         return parent::getTableQuery()->latest('created_at');
     }
-    
 }

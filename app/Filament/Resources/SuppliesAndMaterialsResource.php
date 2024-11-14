@@ -65,14 +65,18 @@ class SuppliesAndMaterialsResource extends Resource
                                         ->maxLength(255)
                                        
                                     ]),
-                                Forms\Components\Select::make('quantity')
+                                Forms\Components\TextInput::make('quantity')
                                     ->required()
-                                    ->options(array_combine(range(1, 1000), range(1, 1000)))
+                                    ->numeric()
+                                    ->minValue(1)
+                                    //->options(array_combine(range(1, 1000), range(1, 1000)))
                                     ->label('Quantity'),
-                                Forms\Components\Select::make('stocking_point')
-                                ->options(array_combine(range(1, 1000), range(1, 1000)))
-                                ->label('Stocking Point')
-                                ->reactive()
+                                Forms\Components\TextInput::make('stocking_point')
+                                    //->options(array_combine(range(1, 1000), range(1, 1000)))
+                                    ->label('Stocking Point')
+                                    ->numeric()
+                                    ->minValue(0)
+                                    ->reactive()
                                 ->afterStateUpdated(function (callable $set, $state, $get) {
                                     // Get the values of quantity and stocking_point
                                     $quantity = $get('quantity');
@@ -184,7 +188,7 @@ class SuppliesAndMaterialsResource extends Resource
                             'available_quantity' => $record->quantity, // Copy available quantity
                             'quantity_requested' => $data['quantity_requested'],
                             'remarks' => $data['remarks'],
-                            'action_date' => now(), // Use current date as action date
+                            'date_requested' => now(), // Use current date as action date
                         ]);
                 
                         // Deduct the requested quantity from available stock

@@ -16,7 +16,7 @@ class SuppliesCart extends Model
         'supplies_and_materials_id',
         'available_quantity',
         'quantity_requested',
-        'action_date',
+        'date_requested',
         'stock_unit_id',
         'remarks',
 

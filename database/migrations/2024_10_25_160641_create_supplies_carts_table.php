@@ -27,9 +27,9 @@ return new class extends Migration
             //$table->enum('stock_action', ['deducted', 'added'])->index('supcart_stock_action')->nullable(); // Stock action (deducted/added)
             $table->integer('quantity_requested')->index('supcart_quantity_requested')->nullable(); // Quantity added/deducted
             //$table->string('deducted_added_by')->index('supcart_deducted_added_by')->nullable(); // User who deducted/added the stock
-            $table->date('action_date')->index('supcart_action_date')->nullable(); // Date of the action
+            $table->dateTime('date_requested')->index('supcart_date_requested')->nullable(); // Date of the action
             $table->foreignId('stock_unit_id')->nullable()->constrained()->onDelete('cascade')->index('supcart_stock_unit_id_index');
-            $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade')->index('supcart_category_id');
+            $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade')->index('supcart_category_id_index');
             $table->text('remarks')->nullable()->index('supcart_remarks_index');
             $table->timestamps(); // Created at and updated at timestamps
             

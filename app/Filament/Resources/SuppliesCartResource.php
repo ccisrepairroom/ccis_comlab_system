@@ -53,7 +53,7 @@ class SuppliesCartResource extends Resource
                     ->label('Quantity Requested')
                     ->required()
                     ->numeric(),
-                Forms\Components\DateTimePicker::make('action_date')
+                Forms\Components\DateTimePicker::make('date_requested')
                     ->label('Action Date')
                     ->required(),
             ]);
@@ -119,7 +119,7 @@ class SuppliesCartResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('action_date')
+                Tables\Columns\TextColumn::make('date_requested')
                     ->label('Date Requested')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false)

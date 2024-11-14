@@ -34,14 +34,20 @@ public function model(array $row){
     $category = $categoryDescription ? Category::firstOrCreate(['description' => $categoryDescription], ['description' => $categoryDescription]) : null;
 
 
-// Prepare data array with null checks
-$data = [
+     // Prepare data array with null checks and type casting
+     $quantity = isset($row['quantity']) ? (is_numeric($row['quantity']) ? (int) $row['quantity'] : null) : null;
+     // Ensure stocking_point is a valid numeric value, otherwise set it to null
+    $stockingPoint = isset($row['stocking_point']) ? (is_numeric($row['stocking_point']) ? (int) $row['stocking_point'] : null) : null;
+
+
+    // Prepare data array with null checks
+    $data = [
         'item' => $row['item'] ?? null,
-        'quantity' => $row['quantity'] ?? null,
-        'stocking_point' => $row['stocking_point'] ?? null,
-        'facility_id' => $facility ? $facility->id : null,
+        'quantity' => $quantity,
+        'stocking_point' => $stockingPoint,
+        //'facility_id' => $facility ? $facility->id : null,
         'facility_id' => $this->getFacilityId($row['location']) ?? null,
-        'category_id' => $facility ? $facility->id : null,
+        //'category_id' => $facility ? $facility->id : null,
         'category_id' => $this->getCategoryId($row['category']) ?? null,
         'stock_unit_id' => $stockunit  ? $stockunit ->id : null,
         'remarks' => $row['remarks'] ?? null,
@@ -54,6 +60,7 @@ $data = [
          'quantity',
          'stocking_point' ,
          'facility_id',
+         'category_id',
          'stock_unit_id',
          'remarks',
 
