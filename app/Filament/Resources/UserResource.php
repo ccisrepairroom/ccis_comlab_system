@@ -55,7 +55,7 @@ class UserResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()
-                            ->unique('users', 'name')
+                            //->unique('users', 'name')
                             //->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
 
                             ->maxLength(255),

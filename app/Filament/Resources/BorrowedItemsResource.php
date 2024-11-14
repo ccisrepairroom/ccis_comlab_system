@@ -159,14 +159,15 @@ class BorrowedItemsResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: false)
 
                     ->searchable()
-                    ->color(fn(string $state): string => match ($state) {
-                        'Working' => 'success',
-                        'For Repair' => 'warning',
-                        'For Replacement' => 'primary',
-                        'Lost' => 'danger',
-                        'For Disposal' => 'primary',
-                        'Disposed' => 'danger',
-                        'Borrowed' => 'indigo',
+                    ->color(fn(string $state): string => match (strtolower($state)) {
+                        'working' => 'success',
+                        'for repair' => 'warning',
+                        'for replacement' => 'primary',
+                        'lost' => 'danger',
+                        'for disposal' => 'primary',
+                        'disposed' => 'danger',
+                        'borrowed' => 'indigo',
+                        default=>'default',
                     }),
                 Tables\Columns\TextColumn::make('equipment.control_no')
                     ->label('Control Number')

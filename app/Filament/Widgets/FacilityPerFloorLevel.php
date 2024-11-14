@@ -9,14 +9,13 @@ use Illuminate\Database\Eloquent\Builder;
 
 class FacilityPerFloorLevel extends BaseWidget
 {
-    protected static ?string $heading = 'CCIS Facilities ';
+    protected static ?string $heading = 'CCIS Facilities';
     protected int | string | array $columnSpan = 3;
-
 
     protected function getTableQuery(): Builder
     {
-        // Return the query for retrieving facilities data
-        return Facility::query();
+        // Ensure that the query returns a valid Builder instance
+        return Facility::query(); // Optional: Add where conditions if needed
     }
 
     protected function getTableColumns(): array
@@ -42,5 +41,12 @@ class FacilityPerFloorLevel extends BaseWidget
                 ->sortable()
                 ->searchable(),
         ];
+    }
+
+    // Optional: Override initializeTable if needed
+    protected function initializeTable()
+    {
+        // Custom table initialization logic (if needed)
+        parent::initializeTable();
     }
 }

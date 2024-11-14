@@ -52,7 +52,8 @@ class ForDisposal extends ChartWidget
         // Extract sorted labels and data
         $labels = array_column($categoryData, 'description');
         $data = array_column($categoryData, 'count');
-
+    
+       
         return [
             'datasets' => [
                 [

@@ -10,12 +10,7 @@ class EditSuppliesAndMaterials extends EditRecord
 {
     protected static string $resource = SuppliesAndMaterialsResource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
+    
     public function getTitle(): string
     {
         return 'Edit ' . ($this->record->item ?? 'Edit Supplies and Materials'); 
@@ -25,4 +20,9 @@ class EditSuppliesAndMaterials extends EditRecord
     {
         return [];
     }
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
 }

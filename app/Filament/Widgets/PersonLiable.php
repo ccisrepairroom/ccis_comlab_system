@@ -19,17 +19,16 @@ class PersonLiable extends BaseWidget
     // Ensure each record has a unique key
     public function getTableRecordKey($record): string
     {
-        // Use person_liable as a unique key for this example, or you can use any other field that is unique per record
-        return $record->person_liable ?? ''; // Ensure that the key is a string
+        return $record->person_liable ?? ''; // Ensure the key is a string
     }
 
     protected function getTableQuery(): Builder
     {
-        // Get start and end dates from the page filters
+        // Get start and end dates from page filters
         $startDate = $this->filters['startDate'] ?? null;
         $endDate = $this->filters['endDate'] ?? null;
 
-        // Return a query builder for counting equipment grouped by person_liable, filtered by date_acquired
+        // Query with optional date filters
         return Equipment::query()
             ->when($startDate, function (Builder $query) use ($startDate) {
                 $query->whereDate('date_acquired', '>=', Carbon::parse($startDate));
@@ -37,7 +36,7 @@ class PersonLiable extends BaseWidget
             ->when($endDate, function (Builder $query) use ($endDate) {
                 $query->whereDate('date_acquired', '<=', Carbon::parse($endDate));
             })
-            ->selectRaw('person_liable, COUNT(*) as count')
+            ->selectRaw('person_liable, COUNT(*) as equipment_count') // Update alias
             ->groupBy('person_liable');
     }
 
@@ -48,7 +47,7 @@ class PersonLiable extends BaseWidget
                 ->label('Person Liable')
                 ->sortable()
                 ->searchable(),
-            Tables\Columns\TextColumn::make('count')
+            Tables\Columns\TextColumn::make('equipment_count') // Use the alias for count
                 ->label('Equipment Count')
                 ->sortable(),
         ];

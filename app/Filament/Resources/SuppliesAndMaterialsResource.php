@@ -11,8 +11,13 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Notification;
+use Filament\Notifications\Notification;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\Select;
+use Illuminate\Validation\Rule;
+
 
 class SuppliesAndMaterialsResource extends Resource
 {
@@ -38,26 +43,36 @@ class SuppliesAndMaterialsResource extends Resource
                                     ->placeholder('Name of an item')
                                     ->label('Item')
                                     ->required()
-                                    ->unique('supplies_and_materials', 'item')   
-                                    ->maxLength(255),
+                                    ->maxLength(255)
+                                    ->unique(
+                                        table: 'supplies_and_materials', 
+                                        column: 'item', 
+                                        ignoreRecord: true
+                                    ),
                                 Forms\Components\Select::make('quantity')
                                     ->required()
                                     ->options(array_combine(range(1, 1000), range(1, 1000)))
                                     ->label('Quantity'),
                                 Forms\Components\Select::make('stocking_point')
-                                    ->options(array_combine(range(1, 1000), range(1, 1000)))
-                                    ->label('Stocking Point')
-                                    ->afterStateUpdated(function (callable $set, $state, $get) {
-                                        // Get the values of quantity and stocking_point
-                                        $quantity = $get('quantity');
-                                        
-                                        // Check if stocking_point exceeds quantity
-                                        if ($state > $quantity) {
-                                            // Set error message if stocking_point exceeds quantity
-                                            $set('stocking_point', null);  // Optionally reset the stocking_point
-                                            throw new \Exception('Stocking Point cannot exceed Quantity.');
-                                        }
-                                    }),
+                                ->options(array_combine(range(1, 1000), range(1, 1000)))
+                                ->label('Stocking Point')
+                                ->reactive()
+                                ->afterStateUpdated(function (callable $set, $state, $get) {
+                                    // Get the values of quantity and stocking_point
+                                    $quantity = $get('quantity');
+                                    
+                                    // Check if stocking_point exceeds quantity
+                                    if ($state > $quantity) {
+                                        // Set error message if stocking_point exceeds quantity
+                                        $set('stocking_point', null);  // Optionally reset the stocking_point
+                                        Notification::make()
+                                            ->danger()
+                                            ->title('Error')
+                                            ->body('Stocking Point cannot exceed Quantity.')
+                                            ->send();
+                                    }
+                                }),
+                            
                                 Forms\Components\Select::make('stock_unit_id')
                                     ->label('Stock Unit')
                                     ->required()
@@ -80,6 +95,17 @@ class SuppliesAndMaterialsResource extends Resource
                                             ->required()
                                             ->maxLength(255),
                                     ]),
+                                    Forms\Components\TextInput::make('remarks')
+                                    ->label('Remarks'),
+                                    /*Forms\Components\FileUpload::make('item_img')
+                                    ->label('Item Image')
+                                    ->preserveFilenames()
+                                    ->multiple()
+                                    ->imageEditor()
+                                    ->disk('public')
+                                    ->directory('supplies_and_materials'),*/
+                                            
+                                    
                             ]),
                     ]),
             ]);
@@ -105,6 +131,7 @@ class SuppliesAndMaterialsResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
+                
                 Tables\Columns\TextColumn::make('quantity')
                     ->searchable()
                     ->sortable()

@@ -15,6 +15,8 @@ class SuppliesAndMaterials extends Model
         'stock_unit_id',
         'facility_id',
         'user_id',
+        'item_img',
+        'remarks',
         'created_at'
     ];
 

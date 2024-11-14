@@ -66,7 +66,7 @@ class Dashboard extends \Filament\Pages\Dashboard
         ])->columns(3);
     }
 
-    public function exportToWord()
+    /*public function exportToWord()
     {
         $phpWord = new PhpWord();
         $section = $phpWord->addSection();
@@ -95,5 +95,5 @@ class Dashboard extends \Filament\Pages\Dashboard
                 ->action('exportToWord')  // Link this to the export function
                 ->icon('heroicon-o-document-arrow-down')
         ];
-    }
+    }*/
 }
