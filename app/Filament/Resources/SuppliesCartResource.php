@@ -12,6 +12,10 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class SuppliesCartResource extends Resource
 {
@@ -66,14 +70,17 @@ class SuppliesCartResource extends Resource
                 Tables\Columns\TextColumn::make('requested_by')
                     ->label('Requested By')
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('supplies_and_materials.item')
                     ->label('Item')
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('quantity_requested')
                     ->label('Quantity Requested')
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->formatStateUsing(function ($record) {
                         $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
                         return "{$record->quantity_requested} {$stockUnitDescription}";
@@ -82,6 +89,7 @@ class SuppliesCartResource extends Resource
                 Tables\Columns\TextColumn::make('available_quantity')
                     ->label('Available Quantity')
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->formatStateUsing(function ($record) {
                         $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
                         return "{$record->available_quantity} {$stockUnitDescription}";
@@ -89,13 +97,35 @@ class SuppliesCartResource extends Resource
                     ->sortable(),
                 
                 Tables\Columns\TextColumn::make('action_date')
-                    ->label('Action Date')
-                    ->searchable()
-                    ->sortable(),
+                ->label('Date Requested')
+                ->searchable()
+                ->toggleable(isToggledHiddenByDefault: false)
+                ->formatStateUsing(fn ($state) => 
+                    \Carbon\Carbon::parse($state ?: now()) 
+                        ->timezone('Asia/Manila')
+                        ->format('F j, Y') 
+                )
+                ->sortable(),
             ])
             ->filters([
-                // Add any necessary filters
+                    /*SelectFilter::make('item')
+                    ->label('Item')
+                    ->options(
+                        SuppliesAndMaterials::query()
+                            ->whereNotNull('item') // Filter out null values
+                            ->pluck('item', 'item')
+                            ->toArray()
+                    ),*/
+                    SelectFilter::make('Category')
+                    ->relationship('category','description'),
+                    
+                    //->searchable ()
+                    SelectFilter::make('Facility')
+                    ->relationship('facility','name'),
+                   
+                    
             ])
+           
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

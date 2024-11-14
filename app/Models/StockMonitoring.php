@@ -37,4 +37,13 @@ class StockMonitoring extends Model
     {
         return $this->belongsTo(User::class, 'monitored_by');
     }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+    public function stockUnit()
+    {
+        return $this->belongsTo(StockUnit::class, 'stock_unit_id');
+    }
+
 }

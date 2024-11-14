@@ -19,6 +19,10 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\Select;
 use Illuminate\Validation\Rule;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+
 
 
 class SuppliesAndMaterialsResource extends Resource
@@ -130,56 +134,7 @@ class SuppliesAndMaterialsResource extends Resource
 
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
-        ];
-
-        if (!$isPanelUser) {
-            $bulkActions[] = ExportBulkAction::make();
-        }
-
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('item')
-                    ->label('Item')                
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('category.description')  
-                    ->label('Category')  
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                
-                Tables\Columns\TextColumn::make('quantity')
-                    ->searchable()
-                    ->sortable()
-                    ->formatStateUsing(function ($record) {
-                        $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
-                        return "{$record->quantity} {$stockUnitDescription}";
-                    })
-                    ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('stocking_point')
-                    ->searchable()
-                    ->sortable()
-                    ->formatStateUsing(function ($record) {
-                        $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
-                        return "{$record->quantity} {$stockUnitDescription}";
-                    })
-                    ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('facility.name')
-                    ->label('Location')
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('remarks')
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkAction::make('add_to_supplies_cart')
+            Tables\Actions\BulkAction::make('add_to_supplies_cart')
                 ->label('Add to Supplies Cart')
                 ->icon('heroicon-o-shopping-bag')
                 ->color('primary')
@@ -237,13 +192,79 @@ class SuppliesAndMaterialsResource extends Resource
                         ->body('Selected item/s have been added to your supplies cart and stock has been updated.')
                         ->send();
                 }),
+        ];
+
+        if (!$isPanelUser) {
+            $bulkActions[] = ExportBulkAction::make();
+        }
+
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('item')
+                    ->label('Item')                
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('category.description')  
+                    ->label('Category')  
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 
-             
-                
-                
+                Tables\Columns\TextColumn::make('quantity')
+                    ->searchable()
+                    ->sortable()
+                    ->formatStateUsing(function ($record) {
+                        $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
+                        return "{$record->quantity} {$stockUnitDescription}";
+                    })
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('stocking_point')
+                    ->searchable()
+                    ->sortable()
+                    ->formatStateUsing(function ($record) {
+                        $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
+                        return "{$record->stocking_point} {$stockUnitDescription}";
+                    })
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('facility.name')
+                    ->label('Location')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('remarks')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+            ])
+            ->filters([
+                    SelectFilter::make('item')
+                    ->label('Item')
+                    ->options(
+                        SuppliesAndMaterials::query()
+                            ->whereNotNull('item') // Filter out null values
+                            ->pluck('item', 'item')
+                            ->toArray()
+                    ),
+                    SelectFilter::make('Category')
+                    ->relationship('category','description'),
+                    
+                    //->searchable ()
+                    SelectFilter::make('Facility')
+                    ->relationship('facility','name'),
+                    
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+               
+
                 Tables\Actions\BulkActionGroup::make(array_merge($bulkActions, [
+
                    
                 ]))
+                ->label('Actions') 
             ]);
     }
 
