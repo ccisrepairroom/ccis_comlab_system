@@ -93,7 +93,14 @@ class ListSuppliesAndMaterials extends ListRecords
             Tab::make('All Supplies And Materials')
                 ->badge($this->getAllSuppliesCount()),
             Tab::make('Critical Stocks')
-                ->badge($this->getCriticalStocksCount()), // Add badge count for Critical Stocks
+                ->badge($this->getCriticalStocksCount()) // Add badge count for Critical Stocks
+                ->modifyQueryUsing(function ($query) {
+                    // Modify the query to return only critical supplies where quantity <= stocking_point
+                    return $query->whereColumn('quantity', '<=', 'stocking_point')
+                        ->where('quantity', '>=', 0) // Ensure quantity is not negative
+                        ->whereNotNull('quantity') // Ensure quantity is not null
+                        ->whereNotNull('stocking_point'); // Ensure stocking point is not null
+                }),
         ];
     }
 }
