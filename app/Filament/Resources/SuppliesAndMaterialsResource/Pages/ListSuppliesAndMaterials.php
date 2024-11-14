@@ -56,7 +56,26 @@ class ListSuppliesAndMaterials extends ListRecords
 
         return $actions;
     }
-    
+    protected function getAllSuppliesCount(): int
+    {
+        return SuppliesAndMaterials::count();
+    }
+    protected function getCriticalStocksCount(): int
+    {
+        // Fetch supplies where quantity is less than or equal to the stocking point
+        // Add a condition to ensure no null or negative quantities
+        $criticalStocks = SuppliesAndMaterials::whereColumn('quantity', '<=', 'stocking_point')
+            ->where('quantity', '>=', 0) // Ensure quantity is not negative
+            ->whereNotNull('quantity') // Ensure quantity is not null
+            ->whereNotNull('stocking_point') // Ensure stocking point is not null
+            ->get();
+
+        // Debugging: log the critical items to the error log for inspection
+        \Log::debug('Critical Stocks: ', $criticalStocks->toArray());
+
+        return $criticalStocks->count();
+    }
+
     public function getBreadcrumbs(): array
     {
         return [];
@@ -67,5 +86,14 @@ class ListSuppliesAndMaterials extends ListRecords
         // Get the base query and order it by the latest created_at field
         return parent::getTableQuery()->latest('created_at');
     }
-    
+
+    public function getTabs(): array
+    {
+        return [
+            Tab::make('All Supplies And Materials')
+                ->badge($this->getAllSuppliesCount()),
+            Tab::make('Critical Stocks')
+                ->badge($this->getCriticalStocksCount()), // Add badge count for Critical Stocks
+        ];
+    }
 }

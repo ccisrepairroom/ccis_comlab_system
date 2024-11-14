@@ -207,10 +207,12 @@ class ListEquipment extends ListRecords
             Tab::make('Borrowed Items')
                 ->badge($this->getBorrowedAndUnreturnedEquipmentCount())
                 ->modifyQueryUsing(function ($query) {
-                return $query->whereHas('borrowedItems', function ($borrowedQuery) {
-                    $borrowedQuery->where('status', 'Unreturned');
-                })->orderBy('created_at', 'desc');
-            }),
+                    // Modify the query to return only critical supplies where quantity <= stocking_point
+                    return $query->whereColumn('quantity', '<=', 'stocking_point')
+                        ->where('quantity', '>=', 0) // Ensure quantity is not negative
+                        ->whereNotNull('quantity') // Ensure quantity is not null
+                        ->whereNotNull('stocking_point'); // Ensure stocking point is not null
+                }),
         ];
     }
 }
