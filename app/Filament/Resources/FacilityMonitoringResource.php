@@ -21,7 +21,7 @@ class FacilityMonitoringResource extends Resource
 {
     protected static ?string $model = FacilityMonitoring::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-archive-box';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
     protected static ?string $navigationGroup = 'Monitoring Archive';
     protected static ?string $navigationLabel = 'Facility Monitoring';
 
@@ -45,21 +45,24 @@ class FacilityMonitoringResource extends Resource
                 ->with(['facility', 'user']) 
                 )
             ->columns([
-                Tables\Columns\TextColumn::make('facility.name')
-                ->sortable()
-                ->searchable()
-                ->toggleable(isToggledHiddenByDefault: false)
-                ->sortable(),
-                Tables\Columns\TextColumn::make('user.name')
-                ->sortable()
-                ->searchable()
-                ->toggleable(isToggledHiddenByDefault: false)
-                ->sortable(),
                 Tables\Columns\TextColumn::make('monitored_date')
                 ->sortable()
                 ->searchable()
                 ->toggleable(isToggledHiddenByDefault: false)
                 ->formatStateUsing(fn($state) => \Carbon\Carbon::parse($state)->format('F j, Y'))
+                ->sortable(),
+                
+                Tables\Columns\TextColumn::make('user.name')
+                ->label('Monitored By')
+                ->sortable()
+                ->searchable()
+                ->toggleable(isToggledHiddenByDefault: false)
+                ->sortable(),
+            
+                Tables\Columns\TextColumn::make('facility.name')
+                ->sortable()
+                ->searchable()
+                ->toggleable(isToggledHiddenByDefault: false)
                 ->sortable(),
                 Tables\Columns\TextColumn::make('remarks')
                 ->sortable()
