@@ -77,6 +77,7 @@ class SuppliesAndMaterialsResource extends Resource
                                     ->label('Stocking Point')
                                     ->numeric()
                                     ->minValue(0)
+                                    ->required()
                                     ->reactive()
                                 ->afterStateUpdated(function (callable $set, $state, $get) {
                                     // Get the values of quantity and stocking_point
@@ -280,88 +281,116 @@ class SuppliesAndMaterialsResource extends Resource
                     //->searchable ()
                     SelectFilter::make('Facility')
                     ->relationship('facility','name'),
+                    SelectFilter::make('supplier')
+                    ->label('Supplier')
+                    ->options(
+                        SuppliesAndMaterials::query()
+                            ->whereNotNull('supplier') // Filter out null values
+                            ->pluck('supplier', 'supplier')
+                            ->toArray()
+                    ),
+                    SelectFilter::make('date_acquired')
+                    ->label('Date Acquired')
+                    ->options(
+                        SuppliesAndMaterials::query()
+                            ->whereNotNull('date_acquired') // Filter out null values
+                            ->pluck('date_acquired', 'date_acquired')
+                            ->toArray()
+                    ),
                     
             ])
             ->actions([
                 
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('AddStock')
-                ->icon('heroicon-o-pencil')
-                ->color('warning')
-                ->requiresConfirmation()
-                ->modalIcon('heroicon-o-pencil')
-                ->modalHeading('Add Stock')
-                ->modalDescription('Enter the quantity to adjust stocks.')
-                ->form(function (Forms\Form $form, $record) {
-                    return $form->schema([
-                        Forms\Components\Select::make('monitored_by')
-                                            ->label('Monitored By')
-                                            ->options(User::all()->pluck('name', 'id'))
-                                            ->default(auth()->user()->id)
-                                            ->disabled()
-                                            ->required(),
-                        Forms\Components\DatePicker::make('monitored_date')
-                                            ->label('Monitoring Date')
-                                            ->required()
-                                            ->disabled()
-                                            ->default(now())
-                                            ->format('Y-m-d'),
-                        /*Forms\Components\Select::make('action_type')
-                            ->label('Action Type')
-                            ->options([
-                                'add' => 'Add Stock',
-                                'deduct' => 'Deduct Stock',
-                            ])
-                            ->required(),*/
-                        Forms\Components\TextInput::make('quantity_to_add')
-                            ->label('Quantity to Add')
-                            ->required()
-                            ->numeric()
-                            ->minValue(1)
-                            ->maxValue($record->quantity + 100) // Adjust maxValue for adding
-                            ->hint("Available stock: {$record->quantity}")
-                            ->required(),
-                        Forms\Components\TextInput::make('supplier')
-                            ->label('Supplier'),
-                           
+                    ->icon('heroicon-o-pencil')
+                    ->color('warning')
+                    ->requiresConfirmation()
+                    ->modalIcon('heroicon-o-pencil')
+                    ->modalHeading('Add Stock')
+                    ->modalDescription('Enter the quantity to adjust stocks.')
+                    ->form(function (Forms\Form $form, $record) {
+                        return $form->schema([
+                            Forms\Components\Select::make('monitored_by')
+                                ->label('Monitored By')
+                                ->options(User::all()->pluck('name', 'id'))
+                                ->default(auth()->user()->id)
+                                ->disabled()
+                                ->required(),
+                            Forms\Components\Select::make('supplies_and_materials_id')
+                                ->label('Item')
+                                ->options(SuppliesAndMaterials::all()->pluck('item', 'id'))
+                                ->default(SuppliesAndMaterials::first()->id) 
+                                ->disabled(),
                             
-                    ]);
-                })
-                ->action(function (array $data, $record) {
-                    if ($data['action_type'] === 'deduct') {
-                        $newStock = $record->no_of_stocks - $data['quantity'];
-                        if ($newStock < 0) {
-                            Notification::make()
-                                ->danger()
-                                ->title('Error')
-                                ->body('Insufficient stock. Cannot deduct more than available stock.')
-                                ->send();
-                            return;
+                            Forms\Components\DatePicker::make('monitored_date')
+                                ->label('Monitoring Date')
+                                ->required()
+                                ->reactive()
+                                ->afterStateUpdated(function ($set, $state) {
+                                    // Optionally, you can validate or format it here
+                                    $set('date_acquired', \Carbon\Carbon::parse($state)->format('M-d-y'));
+                                }),
+                            Forms\Components\Select::make('current_quantity')
+                                ->label('Current Quantity')
+                                ->default(function ($get) use ($record) {
+                                    $item = SuppliesAndMaterials::find($record->supplies_and_materials_id);
+                                    return $item ? $item->quantity : 0; // Return 0 if no item found
+                                })
+                                ->hidden()
+                                ->disabled(),
+                            
+                            
+                            Forms\Components\TextInput::make('quantity_to_add')
+                                ->label('Quantity to Add')
+                                ->required()
+                                ->numeric()
+                                ->minValue(1)
+                                ->maxValue($record->quantity + 100) // Adjust maxValue for adding
+                                ->hint("Current Stock: {$record->quantity}")
+                                ->required(),
+                            Forms\Components\TextInput::make('supplier')
+                                ->label('Supplier'),
+                        ]);
+                    })
+                    ->action(function (array $data, $record) {
+                        $monitoredDate = $data['monitored_date'] ?? now()->format('M-d-y');
+                        // Use quantity_to_add to adjust stock
+                        $newStock = $record->quantity + $data['quantity_to_add'];
+
+                        // Check if quantity is sufficient for deduction, if applicable
+                        if ($data['quantity_to_add'] < 0) {
+                            $newStock = $record->quantity + $data['quantity_to_add']; // deducting
+                            if ($newStock < 0) {
+                                Notification::make()
+                                    ->danger()
+                                    ->title('Error')
+                                    ->body('Insufficient stock. Cannot deduct more than available stock.')
+                                    ->send();
+                                return;
+                            }
                         }
-                    } else {
-                        $newStock = $record->no_of_stocks + $data['quantity'];
-                    }
-            
-                    \App\Models\StockMonitoring::create([
-                        'equipment_id' => $record->id,
-                        'facility_id' => $record->facility_id,
-                        'monitored_by' => auth()->user()->id,
-                        'no_of_stocks' => $record->no_of_stocks,
-                        'no_of_stocks_deducted' => $data['action_type'] === 'deduct' ? $data['quantity'] : 0,
-                        'no_of_stocks_added' => $data['action_type'] === 'add' ? $data['quantity'] : 0,
-                        'stocks_left' => $newStock,
-                        'deducted_at' => $data['action_type'] === 'deduct' ? now() : null,
-                        'added_at' => $data['action_type'] === 'add' ? now() : null,
-                    ]);
-            
-                    $record->update(['no_of_stocks' => $newStock]);
-            
-                    Notification::make()
-                        ->success()
-                        ->title('Stock Adjusted')
-                        ->body('Stock has been successfully adjusted.')
-                        ->send();
-                }),
+
+                        \App\Models\StockMonitoring::create([
+                            'supplies_and_materials_id' => $record->supplies_and_materials_id ?? $record->id,
+                            'facility_id' => $record->facility_id,
+                            'monitored_by' => auth()->user()->id,
+                            'current_quantity' => $record->quantity,
+                            'quantity_to_add' => $data['quantity_to_add'],
+                            'new_quantity' => $newStock,
+                            'supplier' => $data['supplier'],
+                            'monitored_date' => $data['monitored_date'],
+                        ]);
+
+                        $record->update(['quantity' => $newStock]);
+
+                        Notification::make()
+                            ->success()
+                            ->title('Stock Adjusted')
+                            ->body('Stock quantity for this item has been successfully adjusted.')
+                            ->send();
+                    }),
+
             ])
             ->bulkActions([
                

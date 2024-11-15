@@ -59,6 +59,11 @@ class SuppliesAndMaterials extends Model
         // If it's not numeric, parse it as a normal date
         return Carbon::parse($value)->timezone('Asia/Manila')->format('M-d-y');
     }
+    public function stockMonitoring()
+    {
+        return $this->belongsTo(StockMonitoring::class, 'stock_monitoring_id');
+    }
+
 
 
 

@@ -45,5 +45,9 @@ class StockMonitoring extends Model
     {
         return $this->belongsTo(StockUnit::class, 'stock_unit_id');
     }
+    public function suppliesAndMaterials()
+    {
+        return $this->belongsTo(SuppliesAndMaterials::class, 'supplies_and_materials_id');
+    }
 
 }
