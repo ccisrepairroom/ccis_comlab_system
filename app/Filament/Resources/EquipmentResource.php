@@ -27,6 +27,7 @@ use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Filters\SelectFilter;
 
+
 class EquipmentResource extends Resource
 {
     protected static ?string $model = Equipment::class;

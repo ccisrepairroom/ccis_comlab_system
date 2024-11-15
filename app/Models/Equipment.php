@@ -87,16 +87,16 @@ class Equipment extends Model
         return $this->hasMany(BorrowedItems::class);
     }
     public function getDateAcquiredAttribute($value)
-{
-    // Check if the value is numeric (Excel-style date)
-    if (is_numeric($value)) {
-        // Convert the numeric date (Excel date) to a proper date format
-        $excelStartDate = Carbon::createFromFormat('Y-m-d', '1900-01-01');
-        $date = $excelStartDate->addDays($value - 2); // Adjust for Excel's leap year bug
-        return $date->timezone('Asia/Manila')->format('M-d-y');
-    }
+    {
+        // Check if the value is numeric (Excel-style date)
+        if (is_numeric($value)) {
+            // Convert the numeric date (Excel date) to a proper date format
+            $excelStartDate = Carbon::createFromFormat('Y-m-d', '1900-01-01');
+            $date = $excelStartDate->addDays($value - 2); // Adjust for Excel's leap year bug
+            return $date->timezone('Asia/Manila')->format('M-d-y');
+        }
 
-    // If it's not numeric, parse it as a normal date
-    return Carbon::parse($value)->timezone('Asia/Manila')->format('M-d-y');
-}
+        // If it's not numeric, parse it as a normal date
+        return Carbon::parse($value)->timezone('Asia/Manila')->format('M-d-y');
+    }
 }

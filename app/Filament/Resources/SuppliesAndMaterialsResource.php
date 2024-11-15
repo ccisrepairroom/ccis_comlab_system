@@ -116,7 +116,16 @@ class SuppliesAndMaterialsResource extends Resource
                                             ->required()
                                             ->maxLength(255),
                                     ]),
-                                    Forms\Components\TextInput::make('remarks')
+                                
+                                Forms\Components\TextInput::make('date_acquired')
+                                    ->label('Date Acquired')
+                                    ->placeholder('Refer to the item sticker.')
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('supplier')
+                                    ->label('Supplier')
+                                    ->placeholder('Refer to the item sticker.')
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('remarks')
                                     ->label('Remarks'),
                                     /*Forms\Components\FileUpload::make('item_img')
                                     ->label('Item Image')
@@ -243,6 +252,14 @@ class SuppliesAndMaterialsResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('supplier')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('date_acquired')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('remarks')
                     ->searchable()
                     ->sortable()
