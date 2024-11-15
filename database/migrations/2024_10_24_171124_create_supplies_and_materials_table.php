@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('stock_unit_id')->nullable()->constrained()->onDelete('cascade')->index('supandman_stock_unit_id_index');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->index('supandman_user_id_index'); 
             $table->foreignId('facility_id')->nullable()->constrained()->onDelete('cascade')->index('supandman_facility_id_index');
+            $table->string('supplier')->nullable()->index('supandman_supplier_index');
+            $table->string('date_acquired')->default(now()->format('M-d-y'))->nullable()->index('supandman_date_acquired_index');
             $table->text('remarks')->nullable()->index('supandman_remarks_index');
             //$table->string('item_img')->nullable()->index('supandman_item_img');
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade')->index('supcart_category_id');

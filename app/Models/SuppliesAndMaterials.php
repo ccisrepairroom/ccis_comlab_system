@@ -43,6 +43,10 @@ class SuppliesAndMaterials extends Model
     {
         return $this->belongsTo(Category::class);
     }
+    public function getDateAcquiredAttribute($value)
+    {
+        return Carbon::parse($value)->timezone('Asia/Manila')->format('M-d-y');
+    }
 
 
 

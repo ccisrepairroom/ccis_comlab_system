@@ -10,14 +10,14 @@ class StockMonitoring extends Model
     use HasFactory;
 
     protected $fillable = [
-        'equipment_id',
+        'supplies_and_materials_id',
         'facility_id',
         'monitored_by',
-        'available_stock',
-        'action_type',
-        'stock_quantity',
-        'new_stock',
-        'created_at',
+        'current_quantity',
+        'quantity_to_add',
+        'new_quantity',
+        'supplier',
+        'monitored_date',
     ];
 
     /**
