@@ -67,6 +67,10 @@ class Equipment extends Model
     {
         return $this->belongsTo(Facility::class);
     }
+    public function equipmentMonitoring()
+    {
+        return $this->hasMany(EquipmentMonitoring::class);
+    }
 
     /*public function stockUnit()
     {

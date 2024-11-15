@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Equipment;
+use App\Models\Category;
+use App\Models\Facility;
+
+
 
 class EquipmentMonitoring extends Model
 {
@@ -21,14 +25,19 @@ class EquipmentMonitoring extends Model
         'remarks',
     ];
 
+    
     public function equipment()
     {
-        return $this->belongsTo(Equipment::class);
+        return $this->belongsTo(Equipment::class); 
     }
 
     public function facility()
     {
         return $this->belongsTo(Facility::class);
+    }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function user()

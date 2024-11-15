@@ -87,6 +87,10 @@ class EquipmentResource extends Resource
                             ->schema([
 
                                
+                                Forms\Components\TextInput::make('po_number')
+                                    ->placeholder('Refer to the inventory sticker.')
+                                    ->label('PO Number')
+                                    ->maxLength(255),
                                 Forms\Components\TextInput::make('unit_no')
                                     ->placeholder('Set number pasted on the Comlab table.')
                                     ->label('Unit Number')
@@ -292,7 +296,12 @@ class EquipmentResource extends Resource
        
         return $table
             ->columns([
-                
+                Tables\Columns\TextColumn::make('po_number')
+                    ->label('PO Number')
+                    ->searchable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('unit_no')
                     ->label('Unit No.')
                     ->searchable()
@@ -425,6 +434,14 @@ class EquipmentResource extends Resource
                         Equipment::query()
                             ->whereNotNull('po_number') // Filter out null values
                             ->pluck('po_number', 'po_number')
+                            ->toArray()
+                    ),
+                    SelectFilter::make('brand_name')
+                    ->label('Brand Name')
+                    ->options(
+                        Equipment::query()
+                            ->whereNotNull('brand_name') // Filter out null values
+                            ->pluck('brand_name', 'brand_name')
                             ->toArray()
                     ),
                     SelectFilter::make('Category')
