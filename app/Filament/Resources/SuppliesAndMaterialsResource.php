@@ -7,6 +7,7 @@ use App\Models\SuppliesAndMaterials;
 use App\Models\SuppliesCart; 
 use App\Models\Category; 
 use App\Models\StockUnit; 
+use App\Models\StockMonitoring; 
 use App\Models\User; 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -107,7 +108,7 @@ class SuppliesAndMaterialsResource extends Resource
                                             ->maxLength(255),
                                     ]),
                                 Forms\Components\Select::make('facility_id')
-                                    ->label('Location')
+                                    ->label('Facility')
                                     ->required()
                                     ->relationship('facility', 'name')
                                     ->createOptionForm([
@@ -249,7 +250,7 @@ class SuppliesAndMaterialsResource extends Resource
                     })
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('facility.name')
-                    ->label('Location')
+                    ->label('Facility')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
@@ -258,6 +259,7 @@ class SuppliesAndMaterialsResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('date_acquired')
+                    ->label('Date Acquired')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
