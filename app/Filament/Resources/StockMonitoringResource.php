@@ -12,13 +12,22 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class StockMonitoringResource extends Resource
 {
     protected static ?string $model = StockMonitoring::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Supplies And Materials';
+    protected static ?string $navigationIcon = 'heroicon-o-archive-box';
+    protected static ?string $navigationGroup = 'Monitoring Archive';
+    protected static ?string $navigationLabel = 'Stock Monitoring';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 
     public static function form(\Filament\Forms\Form $form): \Filament\Forms\Form
     {
@@ -90,7 +99,28 @@ class StockMonitoringResource extends Resource
                 
             ])
             ->filters([
-                // Optional filters, if needed
+                SelectFilter::make('monitored_date')
+                    ->label('Date Monitored')
+                    ->options(
+                        StockMonitoring::query()
+                            ->whereNotNull('monitored_date') // Filter out null values
+                            ->pluck('monitored_date', 'monitored_date')
+                            ->mapWithKeys(function ($date) {
+                                // Format date using Carbon
+                                return [$date => \Carbon\Carbon::parse($date)->format('F j, Y')];
+                            })
+                            ->toArray()
+                    ),
+                SelectFilter::make('item')
+                    ->label('Item')
+                    ->options(
+                        SuppliesAndMaterials::query()
+                            ->whereNotNull('item') // Filter out null values
+                            ->pluck('item', 'item')
+                            ->toArray()
+                    ),
+                    SelectFilter::make('Monitored By')
+                    ->relationship('user','name'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
