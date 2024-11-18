@@ -34,6 +34,7 @@ class UserResource extends Resource
     {
         return static::getModel()::count();
     }
+    
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function getGlobalSearchResultDetails(Model $record): array
