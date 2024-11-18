@@ -7,6 +7,9 @@ use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -19,8 +22,9 @@ use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\Section;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Illuminate\Validation\Rules\Password;
+use Filament\Tables\Columns\TextInputColumn;
 
 class UserResource extends Resource
 {
@@ -64,7 +68,8 @@ class UserResource extends Resource
                             ->maxLength(255),
                         Forms\Components\TextInput::make('email')
                             ->email()
-                            ->unique(ignoreRecord: true),
+                            //->unique(ignoreRecord: true)
+                            ->default(null),
                         Forms\Components\Select::make('roles')
                             ->relationship('roles', 'name')
                             ->preload()
@@ -72,11 +77,34 @@ class UserResource extends Resource
                         Forms\Components\TextInput::make('password')
                             ->password()
                             //->required()
-                            ->required(fn (?User $record) => $record === null)
+                            ->required()
+                            //(fn (?User $record) => $record === null)
                             ->revealable()
                             ->dehydrateStateUsing(fn($state) => Hash::make($state))
-                            //->hiddenOn('edit')
+                            ->visible(fn ($livewire) =>$livewire instanceof Pages\CreateUser)
+                            //->rule(Password::default ())
+                            ->hiddenOn('edit'),
+                    ]),
+                    Section::make('User New Password')->schema([
+                        
+                        Forms\Components\TextInput::make('password')
+                            ->password()
+                            ->nullable()
+                            //->required()
+                            //->required()
+                            //(fn (?User $record) => $record === null)
+                            ->revealable()
+                            //->dehydrateStateUsing(fn($state) => Hash::make($state))
+                            ->visible(fn ($livewire) =>$livewire instanceof EditUser)
+                            ->rule(Password::default ())
+                            ->hiddenOn('edit'),
+                            TextInput::make('new_password_confirmation')
+                            ->password()
+                            ->same('new_password')
+                            ->requiredWith('new_password')
+                            ->revealable(),
                     ])
+                    
             ]);
     }
 
