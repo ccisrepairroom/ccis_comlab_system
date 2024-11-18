@@ -21,8 +21,9 @@ class StockMonitoringResource extends Resource
     protected static ?string $model = StockMonitoring::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-archive-box';
-    protected static ?string $navigationGroup = 'Monitoring Archive';
+    protected static ?string $navigationGroup = 'Monitoring History';
     protected static ?string $navigationLabel = 'Stock Monitoring';
+    protected static ?int $navigationSort = 7;
 
     public static function getNavigationBadge(): ?string
     {

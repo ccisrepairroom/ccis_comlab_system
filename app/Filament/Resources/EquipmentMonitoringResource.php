@@ -23,8 +23,9 @@ class EquipmentMonitoringResource extends Resource
     protected static ?string $model = EquipmentMonitoring::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
-    protected static ?string $navigationGroup = 'Monitoring Archive';
+    protected static ?string $navigationGroup = 'Monitoring History';
     protected static ?string $navigationLabel = 'Equipment Monitoring';
+    protected static ?int $navigationSort = 5;
 
     public static function getNavigationBadge(): ?string
     {

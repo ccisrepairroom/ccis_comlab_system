@@ -22,8 +22,9 @@ class FacilityMonitoringResource extends Resource
     protected static ?string $model = FacilityMonitoring::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
-    protected static ?string $navigationGroup = 'Monitoring Archive';
+    protected static ?string $navigationGroup = 'Monitoring History';
     protected static ?string $navigationLabel = 'Facility Monitoring';
+    protected static ?int $navigationSort = 6;
 
     public static function getNavigationBadge(): ?string
     {
