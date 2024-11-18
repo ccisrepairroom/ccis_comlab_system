@@ -10,10 +10,14 @@ class ListFacilityMonitorings extends ListRecords
 {
     protected static string $resource = FacilityMonitoringResource::class;
 
-    protected function getHeaderActions(): array
+    /*protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),
         ];
+    }*/
+    public function getBreadcrumbs(): array
+    {
+        return [];
     }
 }

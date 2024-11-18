@@ -9,4 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateStockMonitoring extends CreateRecord
 {
     protected static string $resource = StockMonitoringResource::class;
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }

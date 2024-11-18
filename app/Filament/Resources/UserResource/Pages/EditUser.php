@@ -30,4 +30,13 @@ class EditUser extends EditRecord
     {
         return [];
     }
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        // Handle password hashing during editing
+        if (isset($data['password']) && $data['password']) {
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        return $data;
+    }
 }

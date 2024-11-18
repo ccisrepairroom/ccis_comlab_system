@@ -156,7 +156,7 @@ class EquipmentMonitoringResource extends Resource
     {
         return [
             'index' => Pages\ListEquipmentMonitorings::route('/'),
-            'create' => Pages\CreateEquipmentMonitoring::route('/create'),
+            //'create' => Pages\CreateEquipmentMonitoring::route('/create'),
             'edit' => Pages\EditEquipmentMonitoring::route('/{record}/edit'),
         ];
     }

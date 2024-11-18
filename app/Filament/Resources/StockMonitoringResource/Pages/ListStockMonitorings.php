@@ -10,10 +10,14 @@ class ListStockMonitorings extends ListRecords
 {
     protected static string $resource = StockMonitoringResource::class;
 
-    protected function getHeaderActions(): array
+    /*protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),
         ];
+    }*/
+    public function getBreadcrumbs(): array
+    {
+        return [];
     }
 }

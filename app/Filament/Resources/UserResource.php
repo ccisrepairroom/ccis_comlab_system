@@ -71,7 +71,8 @@ class UserResource extends Resource
                             ->searchable(),
                         Forms\Components\TextInput::make('password')
                             ->password()
-                            ->required()
+                            //->required()
+                            ->required(fn (?User $record) => $record === null)
                             ->revealable()
                             ->dehydrateStateUsing(fn($state) => Hash::make($state))
                             //->hiddenOn('edit')
@@ -157,7 +158,7 @@ class UserResource extends Resource
                     ->badge(),
                 Tables\Columns\TextColumn::make('password')
                     ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true)  // Keep it hidden by default but it will be included in the export
+                    ->toggleable(isToggledHiddenByDefault: true)  
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()

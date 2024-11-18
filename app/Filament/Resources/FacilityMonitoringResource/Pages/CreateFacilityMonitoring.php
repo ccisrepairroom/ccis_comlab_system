@@ -9,4 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateFacilityMonitoring extends CreateRecord
 {
     protected static string $resource = FacilityMonitoringResource::class;
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }
