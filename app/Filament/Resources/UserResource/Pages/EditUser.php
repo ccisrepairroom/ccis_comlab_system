@@ -30,7 +30,7 @@ class EditUser extends EditRecord
     {
         return [];
     }
-    protected function mutateFormDataBeforeSave(array $data): array
+    /*protected function mutateFormDataBeforeSave(array $data): array
     {
         // Handle password hashing during editing
         if (isset($data['password']) && $data['password']) {
@@ -38,5 +38,5 @@ class EditUser extends EditRecord
         }
 
         return $data;
-    }
+    }*/
 }

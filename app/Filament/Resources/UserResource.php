@@ -67,9 +67,9 @@ class UserResource extends Resource
 
                             ->maxLength(255),
                         Forms\Components\TextInput::make('email')
-                            ->email()
+                            ->email(),
                             //->unique(ignoreRecord: true)
-                            ->default(null),
+                            //->default(null),
                         Forms\Components\Select::make('roles')
                             ->relationship('roles', 'name')
                             ->preload()
@@ -93,14 +93,14 @@ class UserResource extends Resource
                             //->required()
                             //->required()
                             //(fn (?User $record) => $record === null)
-                            ->revealable()
+                            ->revealable(),
                             //->dehydrateStateUsing(fn($state) => Hash::make($state))
-                            ->visible(fn ($livewire) =>$livewire instanceof EditUser)
-                            ->rule(Password::default ())
-                            ->hiddenOn('edit'),
+                            //->visible(fn ($livewire) =>$livewire instanceof EditUser)
+                            //->rule(Password::default ()),
+                            //->hiddenOn('edit'),
                             TextInput::make('new_password_confirmation')
                             ->password()
-                            ->same('new_password')
+                            ->same('password')
                             ->requiredWith('new_password')
                             ->revealable(),
                     ])
