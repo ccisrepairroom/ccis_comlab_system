@@ -133,11 +133,14 @@ class EquipmentMonitoringResource extends Resource
                         })
                         ->toArray()
                 ),
-                SelectFilter::make('Monitored By')
+                SelectFilter::make('monitored_by')
+                    ->label('Monitored By')
                     ->relationship('user','name'),
+                
+              
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                //Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -158,7 +161,7 @@ class EquipmentMonitoringResource extends Resource
         return [
             'index' => Pages\ListEquipmentMonitorings::route('/'),
             //'create' => Pages\CreateEquipmentMonitoring::route('/create'),
-            'edit' => Pages\EditEquipmentMonitoring::route('/{record}/edit'),
+            //'edit' => Pages\EditEquipmentMonitoring::route('/{record}/edit'),
         ];
     }
 }
