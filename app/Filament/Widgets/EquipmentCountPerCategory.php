@@ -59,6 +59,12 @@ class EquipmentCountPerCategory extends ChartWidget
         } else {
             // Handle division by zero
             $maxCount = max($data);
+
+            // Handle case where maxCount is zero
+            if ($maxCount == 0) {
+                $maxCount = 1; // Set a fallback value, so division by zero doesn't occur
+            }
+            
             $backgroundColor = array_map(function ($count) use ($maxCount) {
                 $opacity = 0.3 + (0.7 * $count / $maxCount); // Adjust darkness based on count
                 return "rgba(244, 176, 40, $opacity)"; // Yellow-orange with varying opacity

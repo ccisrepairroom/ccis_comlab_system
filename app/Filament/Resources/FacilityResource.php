@@ -244,7 +244,7 @@ class FacilityResource extends Resource
                                 'equipment' => $equipment,
                             ]);
                         }),
-                    Tables\Actions\ViewAction::make('view_monitoring')
+                    /*Tables\Actions\ViewAction::make('view_monitoring')
                         ->label('View Facility Records')
                         ->icon('heroicon-o-presentation-chart-line')
                         ->color('info')
@@ -255,7 +255,7 @@ class FacilityResource extends Resource
                             return view('filament.resources.facility-monitoring-modal', [
                                 'monitorings' => $monitorings,
                             ]);
-                        }),
+                        }),*/
                     Tables\Actions\EditAction::make(),
 
                     Tables\Actions\ActionGroup::make([

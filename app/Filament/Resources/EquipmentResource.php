@@ -497,7 +497,7 @@ class EquipmentResource extends Resource
                     return Pages\ViewEquipment::getUrl([$record->id]);
                 })*/
                 ->actions([
-                    Tables\Actions\ViewAction::make('view_monitoring')
+                    /*Tables\Actions\ViewAction::make('view_monitoring')
                     ->label('View Equipment Records')
                     ->icon('heroicon-o-presentation-chart-line')
                     ->color('info')
@@ -510,7 +510,7 @@ class EquipmentResource extends Resource
                         return view('filament.resources.equipment-monitoring-modal', [
                             'monitorings' => $monitorings,
                         ]);
-                    }),
+                    }),*/
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\ActionGroup::make([
                        // ListPreviewAction::make(),

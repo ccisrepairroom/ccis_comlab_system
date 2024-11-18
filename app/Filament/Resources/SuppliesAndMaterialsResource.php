@@ -328,6 +328,7 @@ class SuppliesAndMaterialsResource extends Resource
                             Forms\Components\DatePicker::make('monitored_date')
                                 ->label('Monitoring Date')
                                 ->required()
+                                ->default(now())
                                 ->reactive()
                                 ->afterStateUpdated(function ($set, $state) {
                                     // Optionally, you can validate or format it here
@@ -392,8 +393,10 @@ class SuppliesAndMaterialsResource extends Resource
                             ->body('Stock quantity for this item has been successfully adjusted.')
                             ->send();
                     }),
-
+                   
+                
             ])
+            
             ->bulkActions([
                
 

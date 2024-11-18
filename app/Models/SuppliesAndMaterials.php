@@ -61,7 +61,7 @@ class SuppliesAndMaterials extends Model
     }
     public function stockMonitoring()
     {
-        return $this->belongsTo(StockMonitoring::class, 'stock_monitoring_id');
+        return $this->hasMany(StockMonitoring::class, 'stock_monitoring_id');
     }
 
 
