@@ -201,8 +201,8 @@ class EquipmentResource extends Resource
     public static function table(Table $table): Table
     {
         $user = auth()->user();
-        $isPanelUser = $user && $user->hasRole('panel_user');
-    
+        $isPublic = $user && $user->hasRole('public');
+       
         // Define the bulk actions array
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
@@ -289,9 +289,10 @@ class EquipmentResource extends Resource
         ];
     
         // Conditionally add ExportBulkAction
-        if (!$isPanelUser) {
+        if (!$isPublic) {
             $bulkActions[] = ExportBulkAction::make();
         }
+        
     
        
         return $table
@@ -638,6 +639,7 @@ class EquipmentResource extends Resource
                     ]),
                 ])
                 ->bulkActions([
+
                     Tables\Actions\BulkActionGroup::make($bulkActions)
                         ->label('Actions')
                 ]);
