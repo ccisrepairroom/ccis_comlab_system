@@ -92,7 +92,8 @@ class UserResource extends Resource
                             ->password()
                             //->same('password')                          
                             ->requiredWith('password')
-                            ->revealable(),
+                            ->revealable()
+                            ->visible(fn ($livewire) =>$livewire instanceof Pages\CreateUser),
                     ]),
                     Section::make('User New Password')->schema([
                         
@@ -112,6 +113,7 @@ class UserResource extends Resource
                             //->same('password')                          
                             ->requiredWith('new_password')
                             ->revealable(),
+                         
                     ])
                     ->visible(fn ($livewire) => $livewire instanceof Pages\EditUser),
                     
