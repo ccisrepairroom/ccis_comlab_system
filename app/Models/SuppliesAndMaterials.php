@@ -20,6 +20,7 @@ class SuppliesAndMaterials extends Model
         'facility_id',
         'category_id',
         'user_id',
+        'supplier',
         'item_img',
         'remarks',
         'created_at'

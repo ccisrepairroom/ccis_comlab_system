@@ -46,10 +46,11 @@ public function model(array $row){
         'quantity' => $quantity,
         'stocking_point' => $stockingPoint,
         //'facility_id' => $facility ? $facility->id : null,
-        'facility_id' => $this->getFacilityId($row['location']) ?? null,
+        'facility_id' => $this->getFacilityId($row['facility']) ?? null,
         //'category_id' => $facility ? $facility->id : null,
         'category_id' => $this->getCategoryId($row['category']) ?? null,
-        'stock_unit_id' => $stockunit  ? $stockunit ->id : null,
+        'stock_unit_id' => $this->getStockUnitId($row['stock_unit']) ?? null,
+        'supplier' => $row['supplier'] ?? null,
         'remarks' => $row['remarks'] ?? null,
 
     ];
@@ -62,6 +63,7 @@ public function model(array $row){
          'facility_id',
          'category_id',
          'stock_unit_id',
+        'supplier',
          'remarks',
 
 
@@ -108,6 +110,17 @@ public function model(array $row){
             // Lookup the facility by location, or return null if not found
             $category = Category::where('description', $category)->first();
             return $category ? $category->id : null;
+        }
+        public function getStockUnitId($stockunit)
+        {
+            // Check if location exists, else return null
+            if (!$stockunit) {
+                return null;
+            }
+
+            // Lookup the facility by location, or return null if not found
+            $stockunit = StockUnit::where('description', $stockunit)->first();
+            return $stockunit ? $stockunit->id : null;
         }
 }
     

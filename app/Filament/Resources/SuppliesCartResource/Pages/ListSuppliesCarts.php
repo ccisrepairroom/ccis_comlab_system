@@ -18,7 +18,7 @@ class ListSuppliesCarts extends ListRecords
 {
     protected static string $resource = SuppliesCartResource::class;
 
-    protected function getHeaderActions(): array
+    /*protected function getHeaderActions(): array
     {
         $user = auth()->user();
         $isSuperAdmin = $user->hasRole('super_admin'); // Check if the user has the 'super_admin' role
@@ -45,7 +45,7 @@ class ListSuppliesCarts extends ListRecords
         }
 
         return $actions;
-    }
+    }*/
 
     public function getBreadcrumbs(): array
     {

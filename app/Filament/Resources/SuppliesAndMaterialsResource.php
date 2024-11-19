@@ -236,18 +236,23 @@ class SuppliesAndMaterialsResource extends Resource
                 Tables\Columns\TextColumn::make('quantity')
                     ->searchable()
                     ->sortable()
-                    ->formatStateUsing(function ($record) {
+                    /*->formatStateUsing(function ($record) {
                         $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
                         return "{$record->quantity} {$stockUnitDescription}";
-                    })
+                    })*/
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('stocking_point')
                     ->searchable()
                     ->sortable()
-                    ->formatStateUsing(function ($record) {
+                    /*->formatStateUsing(function ($record) {
                         $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
                         return "{$record->stocking_point} {$stockUnitDescription}";
-                    })
+                    })*/
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('stockunit.description')
+                    ->label('Stock Unit')
+                    ->searchable()
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('facility.name')
                     ->label('Facility')
@@ -353,7 +358,8 @@ class SuppliesAndMaterialsResource extends Resource
                                 ->hint("Current Stock: {$record->quantity}")
                                 ->required(),
                             Forms\Components\TextInput::make('supplier')
-                                ->label('Supplier'),
+                                ->label('Supplier')
+                                ->default($record->supplier)
                         ]);
                     })
                     ->action(function (array $data, $record) {

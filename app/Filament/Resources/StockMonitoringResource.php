@@ -92,6 +92,15 @@ class StockMonitoringResource extends Resource
                 ->searchable()
                 ->toggleable(isToggledHiddenByDefault: false)
                 ->sortable(),
+                Tables\Columns\TextColumn::make('suppliesAndMaterials.stockunit.description')
+                ->label('Stock Unit')
+                ->sortable()
+                ->searchable()
+                ->toggleable(isToggledHiddenByDefault: false)
+                /*->options(function ($record) {
+                    return SuppliesAndMaterials::pluck('item', 'id');  
+                })*/
+                ->sortable(),
                 Tables\Columns\TextColumn::make('supplier')
                 ->sortable()
                 ->searchable()
