@@ -14,7 +14,7 @@ class PersonLiable extends BaseWidget
     use InteractsWithPageFilters;
 
     protected static ?string $heading = 'Equipment Count by Person Liable';
-    protected int | string | array $columnSpan = "full";
+    protected int | string | array $columnSpan = 3;
 
     // Ensure each record has a unique key
     public function getTableRecordKey($record): string
@@ -25,32 +25,34 @@ class PersonLiable extends BaseWidget
 
     protected function getTableQuery(): Builder
     {
+        
         // Get start and end dates from the page filters
         $startDate = $this->filters['startDate'] ?? null;
         $endDate = $this->filters['endDate'] ?? null;
-
-        // Return a query builder for counting equipment grouped by person_liable, filtered by date_acquired
         return Equipment::query()
-            ->when($startDate, function (Builder $query) use ($startDate) {
-                $query->whereDate('date_acquired', '>=', Carbon::parse($startDate));
-            })
-            ->when($endDate, function (Builder $query) use ($endDate) {
-                $query->whereDate('date_acquired', '<=', Carbon::parse($endDate));
-            })
-            ->selectRaw('person_liable, COUNT(*) as count')
-            ->groupBy('person_liable');
+        ->when($startDate, function (Builder $query) use ($startDate) {
+            // Apply the start date filter
+            $query->whereDate('date_acquired', '>=', Carbon::parse($startDate));
+        })
+        ->when($endDate, function (Builder $query) use ($endDate) {
+            // Apply the end date filter
+            $query->whereDate('date_acquired', '<=', Carbon::parse($endDate));
+        })
+        ->selectRaw('person_liable, COUNT(*) as count')  // Count the equipment per person_liable
+        ->groupBy('person_liable');  // Group by person_liable
     }
-
     protected function getTableColumns(): array
     {
         return [
             Tables\Columns\TextColumn::make('person_liable')
-                ->label('Person Liable')
-                ->sortable()
-                ->searchable(),
-            Tables\Columns\TextColumn::make('count')
-                ->label('Equipment Count')
-                ->sortable(),
-        ];
+            ->label('Person Liable')
+            ->sortable()
+            ->searchable(),
+
+        // Display the count of equipment assigned to each person
+        Tables\Columns\TextColumn::make('count')
+            ->label('Equipment Count')
+            ->sortable(),
+    ];
     }
 }

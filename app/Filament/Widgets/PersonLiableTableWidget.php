@@ -2,18 +2,20 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Widgets\TableWidget as BaseWidget;
+namespace App\Filament\Resources\AdminResource\Widgets;
 use Filament\Tables;
+use Filament\Tables\Table;
+use Filament\Widgets\TableWidget as BaseWidget;
 use App\Models\Equipment;
 use Illuminate\Support\Carbon;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Illuminate\Database\Eloquent\Builder;
 
-class PersonLiable extends BaseWidget
+class PersonLiableTableWidget  extends BaseWidget
 {
     use InteractsWithPageFilters;
 
-    protected static ?string $heading = 'Equipment Count by Person Liable';
+    protected static ?string $heading = 'Equipment Count Person Liable';
     protected int | string | array $columnSpan = 3;
 
     // Ensure each record has a unique key
@@ -47,12 +49,9 @@ class PersonLiable extends BaseWidget
             Tables\Columns\TextColumn::make('person_liable')
                 ->label('Person Liable')
                 ->sortable()
-                ->toggleable(isToggledHiddenByDefault: false)
                 ->searchable(),
             Tables\Columns\TextColumn::make('count')
                 ->label('Equipment Count')
-                ->getStateUsing(fn ($record) => $record->count)
-                ->toggleable(isToggledHiddenByDefault: false)
                 ->sortable(),
         ];
     }
