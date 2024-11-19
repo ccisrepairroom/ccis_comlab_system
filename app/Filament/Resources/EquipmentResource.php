@@ -303,7 +303,7 @@ class EquipmentResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('unit_no')
-                    ->label('Unit No.')
+                    ->label('Unit Number')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->sortable()
@@ -361,23 +361,23 @@ class EquipmentResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('item_no')
-                    ->label('Item No.')
+                    ->label('Item Number')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('property_no')
                     ->searchable()
-                    ->label('Property No.')
+                    ->label('Property Number')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('control_no')
                     ->searchable()
-                    ->label('Control No.')
+                    ->label('Control Number')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('serial_no')
                     ->searchable()
-                    ->label('Serial No.')
+                    ->label('Serial Number')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 /*Tables\Columns\TextColumn::make('no_of_stocks')
