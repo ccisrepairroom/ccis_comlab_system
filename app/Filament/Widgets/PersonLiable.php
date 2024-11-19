@@ -38,9 +38,9 @@ class PersonLiable extends BaseWidget
             // Apply the end date filter
             $query->whereDate('date_acquired', '<=', Carbon::parse($endDate));
         })
-        ->selectRaw('person_liable, COUNT(*) as count')  // Count the equipment per person_liable
-        ->groupBy('person_liable');  // Group by person_liable
-    }
+        ->selectRaw('person_liable, COUNT(*) as equipment_count')  // Use a different alias for clarity
+        ->groupBy('person_liable');
+}
     protected function getTableColumns(): array
     {
         return [
@@ -50,9 +50,10 @@ class PersonLiable extends BaseWidget
             ->searchable(),
 
         // Display the count of equipment assigned to each person
-        Tables\Columns\TextColumn::make('count')
+        Tables\Columns\TextColumn::make('equipment_count')
             ->label('Equipment Count')
-            ->sortable(),
+            
+         
     ];
     }
 }
