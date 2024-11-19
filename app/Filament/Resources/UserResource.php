@@ -62,28 +62,37 @@ class UserResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()
+                            ->default(null)
                             //->unique('users', 'name')
                             //->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
 
                             ->maxLength(255),
                         Forms\Components\TextInput::make('email')
-                            ->email(),
-                            //->unique(ignoreRecord: true)
-                            //->default(null),
+                            ->email()
+                            ->rules([
+                                'regex:/^[a-zA-Z0-9._%+-]+@ccis\.edu\.ph$/'
+                            ])
+                            ->placeholder('Must end with @ccis.edu.ph (e.g., @ccis.edu.ph)')
+                            ->default('@ccis.edu.ph'),
                         Forms\Components\Select::make('roles')
                             ->relationship('roles', 'name')
                             ->preload()
+                            ->default([])
                             ->searchable(),
-                        Forms\Components\TextInput::make('password')
+                        Forms\Components\TextInput::make('password')->confirmed()
                             ->password()
-                            //->required()
                             ->required()
-                            //(fn (?User $record) => $record === null)
                             ->revealable()
+                            //->default(fn($record) => $record->password)  
                             ->dehydrateStateUsing(fn($state) => Hash::make($state))
-                            ->visible(fn ($livewire) =>$livewire instanceof Pages\CreateUser)
+                            ->visible(fn ($livewire) =>$livewire instanceof Pages\CreateUser),
                             //->rule(Password::default ())
-                            ->hiddenOn('edit'),
+                            //->hiddenOn('edit'),
+                        Forms\Components\TextInput::make('password_confirmation')
+                            ->password()
+                            //->same('password')                          
+                            ->requiredWith('password')
+                            ->revealable(),
                     ]),
                     Section::make('User New Password')->schema([
                         
@@ -100,10 +109,11 @@ class UserResource extends Resource
                             //->hiddenOn('edit'),
                             TextInput::make('new_password_confirmation')
                             ->password()
-                            ->same('password')
+                            //->same('password')                          
                             ->requiredWith('new_password')
                             ->revealable(),
                     ])
+                    ->visible(fn ($livewire) => $livewire instanceof Pages\EditUser),
                     
             ]);
     }

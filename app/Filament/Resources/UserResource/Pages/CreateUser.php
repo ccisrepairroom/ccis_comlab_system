@@ -18,5 +18,10 @@ class CreateUser extends CreateRecord
     {
         return [];
     }
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        // Return an empty array to reset all fields to their default states
+        return [];
+    }
     
 }
