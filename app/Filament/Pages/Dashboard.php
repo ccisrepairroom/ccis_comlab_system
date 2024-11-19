@@ -20,7 +20,9 @@ use App\Filament\Widgets\EquipmentCountPerFacility;
 use App\Filament\Widgets\ForDisposal;
 use App\Filament\Widgets\Disposed;
 use App\Filament\Widgets\PersonLiable;
+use App\Filament\Widgets\EquipmentCountPerPersonLiable;
 use App\Filament\Widgets\FacilityPerFloorLevel;
+
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 
@@ -42,8 +44,9 @@ class Dashboard extends \Filament\Pages\Dashboard
             EquipmentCountPerFacility::class,
             ForDisposal::class,
             Disposed::class,
+            //EquipmentCountPerPersonLiable::class,
             //acilityPerFloorLevel::class,
-            //PersonLiable::class,
+            PersonLiable::class,
             //AllFacility::class,
            // AllCategory::class,
             // AllFacilities::class,   

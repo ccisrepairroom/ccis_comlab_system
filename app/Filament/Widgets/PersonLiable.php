@@ -14,7 +14,7 @@ class PersonLiable extends BaseWidget
     use InteractsWithPageFilters;
 
     protected static ?string $heading = 'Equipment Count by Person Liable';
-    protected int | string | array $columnSpan = 3;
+    protected int | string | array $columnSpan = "full";
 
     // Ensure each record has a unique key
     public function getTableRecordKey($record): string
