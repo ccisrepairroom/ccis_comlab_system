@@ -489,6 +489,14 @@ class EquipmentResource extends Resource
                             ->whereNotNull('supplier') // Filter out null values
                             ->pluck('supplier', 'supplier')
                             ->toArray()
+                    ),
+                    SelectFilter::make('description')
+                    ->label('Description')
+                    ->options(
+                        Equipment::query()
+                            ->whereNotNull('description') // Filter out null values
+                            ->pluck('description', 'description')
+                            ->toArray()
                     ), 
                      
                     

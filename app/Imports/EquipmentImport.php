@@ -31,21 +31,22 @@ class EquipmentImport implements ToModel, WithHeadingRow
     // Prepare data array with null checks
     $data = [
        
-        'unit_no' => $row['unit_no'] ?? null,
+        'unit_no' => $row['unit_number'] ?? null,
         'brand_name' => $row['brand_name'] ?? null,
         'description' => $row['description'] ?? null,
-        'facility_id' => $facility ? $facility->id : null,
-        'category_id' => $category ? $category->id : null,
+        'facility_id' => $this->getFacilityId($row['facility']) ?? null,
+        //'facility_id' => $facility ? $facility->id : null,
+        'category_id' =>  $this->getCategoryId($row['category']) ?? null,
         'status' => $row['status'] ?? null,
         'date_acquired' => $row['date_acquired'] ?? null,
         'supplier' => $row['supplier'] ?? null,
         'amount' => $row['amount'] ?? null,
         'estimated_life' => $row['estimated_life'] ?? null,
-        'item_no' => $row['item_no'] ?? null,
+        'item_no' => $row['item_number'] ?? null,
         'po_number' => $row['po_number'] ?? null,
-        'property_no' => $row['property_no'] ?? null,
-        'control_no' => $row['control_no'] ?? null,
-        'serial_no' => $row['serial_no'] ?? null,
+        'property_no' => $row['property_number'] ?? null,
+        'control_no' => $row['control_number'] ?? null,
+        'serial_no' => $row['serial_number'] ?? null,
         //'no_of_stocks' => $row['no_of_stocks'] ?? null,
         //'restocking_point' => $row['restocking_point'] ?? null,
         //'stock_unit_id' => $stock_unit ? $stock_unit->id : null,
@@ -57,6 +58,7 @@ class EquipmentImport implements ToModel, WithHeadingRow
     // Define essential fields to check
     $essentialFields = [
         'unit_no',
+        'description',
         'brand_name',
         'description',
         'facility_id',
@@ -90,4 +92,27 @@ class EquipmentImport implements ToModel, WithHeadingRow
     // Create and return new Equipment instance if the row has data
     return new Equipment($data);
 }
-}
+    public function getFacilityId($location)
+    {
+        // Check if location exists, else return null
+        if (!$location) {
+            return null;
+        }
+
+        // Lookup the facility by location, or return null if not found
+        $facility = Facility::where('name', $location)->first();
+        return $facility ? $facility->id : null;
+    }
+
+    public function getCategoryId($category)
+    {
+        // Check if location exists, else return null
+        if (!$category) {
+            return null;
+        }
+
+        // Lookup the facility by location, or return null if not found
+        $category = Category::where('description', $category)->first();
+        return $category ? $category->id : null;
+    }
+    }
