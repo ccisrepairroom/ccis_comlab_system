@@ -121,7 +121,7 @@ class SuppliesAndMaterialsResource extends Resource
                                 
                                 Forms\Components\TextInput::make('date_acquired')
                                     ->label('Date Acquired')
-                                    ->placeholder('Refer to the item sticker.')
+                                    ->placeholder('mm-dd-yy. E.g., 01-28-24')
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('supplier')
                                     ->label('Supplier')
