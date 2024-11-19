@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ListRecords;
 class ListEquipmentMonitorings extends ListRecords
 {
     protected static string $resource = EquipmentMonitoringResource::class;
+    protected ?string $heading = 'Equipment Monitoring History';
 
     /*protected function getHeaderActions(): array
     {
@@ -20,4 +21,5 @@ class ListEquipmentMonitorings extends ListRecords
     {
         return [];
     }
+    
 }

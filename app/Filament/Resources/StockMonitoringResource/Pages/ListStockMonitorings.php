@@ -20,4 +20,6 @@ class ListStockMonitorings extends ListRecords
     {
         return [];
     }
+    protected ?string $heading = 'Stock Monitoring History';
+
 }

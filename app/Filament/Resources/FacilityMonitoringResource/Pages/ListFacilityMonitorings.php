@@ -20,4 +20,6 @@ class ListFacilityMonitorings extends ListRecords
     {
         return [];
     }
+    protected ?string $heading = 'Facility Monitoring History';
+
 }
