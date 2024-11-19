@@ -33,8 +33,10 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
-            ->login( )
+            ->path('ccis_comlab_system')
+            //->path('admin')
+            //->login( )
+            ->login()
             ->brandName('CCIS ComLab System')
             ->favicon(asset('images/ccis.png'))
             ->sidebarFullyCollapsibleOnDesktop()

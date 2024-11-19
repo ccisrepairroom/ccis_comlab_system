@@ -17,7 +17,7 @@ use App\Http\Controllers\MonitoringController;
 */
 
 Route::get('/', function () {
-    return redirect('admin/login');
+    return redirect('ccis_comlab_system/login');
 });
 Route::get('download-request-form', function () {
     // Define the path to the file stored in the 'app/Filament/Resources/request_form'
