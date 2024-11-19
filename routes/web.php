@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MonitoringController;
+use Filament\Facades\Filament;
 
 
 /*
@@ -31,6 +32,12 @@ Route::get('download-request-form', function () {
     }
 })->name('download.request.form');
 
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('ccis_comlab_system')->group(function () {
+       
+    });
+});
 /*
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -45,4 +52,4 @@ Route::middleware('auth')->group(function () {
 
 
 
-//require __DIR__ . '/auth.php';
+require __DIR__ . '/auth.php';

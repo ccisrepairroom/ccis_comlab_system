@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Filament\Pages;
+use Filament\Pages\Page;
 
 use Filament\Pages\Actions\Action; 
 use Filament\Forms\Components\Toggle;
@@ -30,6 +31,7 @@ use PhpOffice\PhpWord\IOFactory;
 
 class Dashboard extends \Filament\Pages\Dashboard
 {
+    
     use HasFiltersForm;
 
     public int | string | array $columnSpan = 3;
