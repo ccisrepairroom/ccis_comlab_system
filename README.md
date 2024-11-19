@@ -5,6 +5,7 @@ npm install <br>
 npm run build <br>
 cp .env.example .env <br>
 php artisan migrate <br>
+php artisan migrate:fresh --seed <br>
 php artisan key:generate <br>
 rm public/storage <br>
 php artisan storage:link <br>

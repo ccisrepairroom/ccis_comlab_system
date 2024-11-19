@@ -154,3 +154,8 @@ composer require filament/spatie-laravel-media-library-plugin:"^2.0"
 php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="medialibrary-migrations"
 php artisan migrate
 --go to the supp and materials model, add has media trait
+
+**seeders
+
+php artisan make:seeder Role seeder
+--goto seeder--got ot databseseeder
