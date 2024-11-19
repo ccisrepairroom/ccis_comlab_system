@@ -15,6 +15,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+
 
 class StockMonitoringResource extends Resource
 {
@@ -40,6 +42,20 @@ class StockMonitoringResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $user = auth()->user();
+        $isPanelUser = $user && $user->hasRole('panel_user');
+
+        
+        // Define the bulk actions array
+        $bulkActions = [
+            Tables\Actions\DeleteBulkAction::make()
+        ];
+         // Conditionally add ExportBulkAction
+         if (!$isPanelUser) {
+            $bulkActions[] = ExportBulkAction::make();
+        }
+        
+
         return $table
         ->query(StockMonitoring::query()->with('suppliesAndMaterials')) // This pulls all records from the stock_monitorings table
             ->columns([
@@ -137,10 +153,9 @@ class StockMonitoringResource extends Resource
                 
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-
+               Tables\Actions\BulkActionGroup::make($bulkActions)
+                ->label('Actions')
+                
             ]);
     }
 

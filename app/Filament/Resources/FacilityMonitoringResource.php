@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Filters\SelectFilter;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+
 
 class FacilityMonitoringResource extends Resource
 {
@@ -41,6 +43,19 @@ class FacilityMonitoringResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $user = auth()->user();
+        $isPanelUser = $user && $user->hasRole('panel_user');
+
+        
+        // Define the bulk actions array
+        $bulkActions = [
+            Tables\Actions\DeleteBulkAction::make()
+        ];
+         // Conditionally add ExportBulkAction
+         if (!$isPanelUser) {
+            $bulkActions[] = ExportBulkAction::make();
+        }
+
         return $table
                 ->query(FacilityMonitoring::query()
                 ->with(['facility', 'user']) 
@@ -93,9 +108,9 @@ class FacilityMonitoringResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                 Tables\Actions\BulkActionGroup::make($bulkActions)
+                ->label('Actions')
+                
             ]);
     }
 
