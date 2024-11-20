@@ -145,8 +145,9 @@ class SuppliesAndMaterialsResource extends Resource
 
     public static function table(Table $table): Table
     {
+       
         $user = auth()->user();
-        $isPanelUser = $user && $user->hasRole('panel_user');
+        $isPublic = $user && $user->hasRole('public');
 
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
@@ -216,7 +217,7 @@ class SuppliesAndMaterialsResource extends Resource
                 }),
         ];
 
-        if (!$isPanelUser) {
+        if (!$isPublic) {
             $bulkActions[] = ExportBulkAction::make();
         }
 
@@ -398,7 +399,8 @@ class SuppliesAndMaterialsResource extends Resource
                             ->title('Stock Adjusted')
                             ->body('Stock quantity for this item has been successfully adjusted.')
                             ->send();
-                    }),
+                    })
+                    ->hidden(fn () => $isPublic),
                    
                 
             ])
