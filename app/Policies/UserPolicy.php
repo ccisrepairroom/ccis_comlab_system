@@ -42,7 +42,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_user');
+        return $user->hasRole(['super_admin','admin']);
     }
 
     /**
@@ -53,7 +53,8 @@ class UserPolicy
      */
     public function update(User $user): bool
     {
-        return $user->can('update_user');
+        //return $user->can('update_user');
+        return $user->hasRole('super_admin');
     }
 
     /**
