@@ -24,7 +24,8 @@ class RequestListPolicy
      */
     public function view(User $user, RequestList $requestList): bool
     {
-        return $user->can('view_request::list');
+        //return $user->can('view_request::list');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -48,7 +49,8 @@ class RequestListPolicy
      */
     public function delete(User $user, RequestList $requestList): bool
     {
-        return $user->can('delete_request::list');
+        //return $user->can('delete_request::list');
+        return $user->hasRole(['super_admin','admin','staff','public']);
     }
 
     /**
@@ -56,7 +58,8 @@ class RequestListPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_request::list');
+        //return $user->can('delete_any_request::list');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -64,7 +67,8 @@ class RequestListPolicy
      */
     public function forceDelete(User $user, RequestList $requestList): bool
     {
-        return $user->can('force_delete_request::list');
+        //return $user->can('force_delete_request::list');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -72,7 +76,8 @@ class RequestListPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_request::list');
+        //return $user->can('force_delete_any_request::list');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**

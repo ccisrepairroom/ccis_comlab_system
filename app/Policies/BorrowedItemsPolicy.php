@@ -23,7 +23,8 @@ class BorrowedItemsPolicy
      */
     public function view(User $user, BorrowedItems $borrowedItems): bool
     {
-        return $user->can('view_borrowed::items');
+        //return $user->can('view_borrowed::items');
+        return $user->hasRole(['super_admin','admin','staff','public']);
     }
 
     /**
@@ -55,7 +56,8 @@ class BorrowedItemsPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_borrowed::items');
+        //return $user->can('delete_any_borrowed::items');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -63,7 +65,8 @@ class BorrowedItemsPolicy
      */
     public function forceDelete(User $user, BorrowedItems $borrowedItems): bool
     {
-        return $user->can('force_delete_borrowed::items');
+        //return $user->can('force_delete_borrowed::items');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -71,7 +74,8 @@ class BorrowedItemsPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_borrowed::items');
+        //return $user->can('force_delete_any_borrowed::items');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
