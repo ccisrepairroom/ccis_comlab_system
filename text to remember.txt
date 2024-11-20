@@ -159,3 +159,29 @@ php artisan migrate
 
 php artisan make:seeder Role seeder
 --goto seeder--got ot databseseeder
+
+
+**hiding disableToolbarButtons
+
+-- public static function table(Tables\Table $table): Tables\Table
+    {
+        $user = auth()->user();
+        $isPublic = $user && $user->hasRole('public');
+
+--go to export
+-- if (!$isPublic) {
+            $bulkActions[] = ExportBulkAction::make();
+        }
+
+--go to ->actions
+
+--                Notification::make()
+                                    ->success()
+                                    ->title('Success')
+                                    ->body('Status of the selected item/s have been updated.')
+                                    ->send();
+                            })
+                       
+                            ->hidden(fn () => $isPublic),
+
+                    ]),

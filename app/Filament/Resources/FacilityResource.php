@@ -114,7 +114,7 @@ class FacilityResource extends Resource
     public static function table(Tables\Table $table): Tables\Table
     {
         $user = auth()->user();
-        $isPanelUser = $user && $user->hasRole('panel_user');
+        $isPublic = $user && $user->hasRole('public');
 
         // Define bulk actions
         $bulkActions = [
@@ -145,7 +145,7 @@ class FacilityResource extends Resource
                 ->modalDescription('Confirm to add selected facilities to your request list'),
         ];
 
-        if (!$isPanelUser) {
+        if (!$isPublic) {
             $bulkActions[] = ExportBulkAction::make();
         }
 
@@ -310,7 +310,9 @@ class FacilityResource extends Resource
                                 ->title('Success')
                                 ->body('Selected items have been added to your monitoring.')
                                 ->send();
-                        }),
+                        })
+                        ->hidden(fn () => $isPublic),
+                        
                 ])
             ])
             ->bulkActions([
