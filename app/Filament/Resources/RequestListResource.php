@@ -72,13 +72,11 @@ class RequestListResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $user = auth()->user(); // Retrieve the currently authenticated user
-        $isPanelUser = $user ? $user->hasRole('panel_user') : false; // Check if the user has the 'panel_user' role safely
-
-        $actions = [];
+        $user = auth()->user();
+        $isPublic = $user && $user->hasRole('public');
 
         // Add EditAction only if the user is not a panel_user
-        if (!$isPanelUser) {
+        if (!$isPublic) {
             $actions[] = Tables\Actions\EditAction::make();
         }
 
@@ -207,6 +205,7 @@ class RequestListResource extends Resource
                                 ->send();
                         }
                     })
+                    ->hidden(fn () => $isPublic)
                     ->color('success'),
             ])->label('Actions') // Optional: You can label the action group
         ];
@@ -262,13 +261,13 @@ class RequestListResource extends Resource
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->color(fn(string $state): string => match (strtolower($state)) {
-                        'Working' => 'success',
-                        'For Repair' => 'warning',
-                        'For Replacement' => 'primary',
-                        'Lost' => 'danger',
-                        'For Disposal' => 'primary',
-                        'Disposed' => 'danger',
-                        'Borrowed' => 'indigo',
+                        'working' => 'success',
+                        'for repair' => 'warning',
+                        'for replacement' => 'primary',
+                        'lost' => 'danger',
+                        'for disposal' => 'primary',
+                        'disposed' => 'danger',
+                        'borrowed' => 'indigo',
                         default => 'default', 
                     }),
                 Tables\Columns\TextColumn::make('equipment.control_no')
@@ -410,6 +409,7 @@ class RequestListResource extends Resource
                                     ->send();
                             }
                         })
+                        ->hidden(fn () => $isPublic)
                         ->color('success')
                         ->requiresConfirmation()
                         ->modalIcon('heroicon-o-check')
