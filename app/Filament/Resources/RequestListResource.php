@@ -16,6 +16,8 @@ use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Filters\SelectFilter;
 
 
 class RequestListResource extends Resource
@@ -221,6 +223,11 @@ class RequestListResource extends Resource
                 }
             })
             ->columns([
+                Tables\Columns\TextColumn::make('created_at')
+                ->label('Requested at')
+                ->toggleable(isToggledHiddenByDefault: false)
+                ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A'))
+                ->searchable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Created By')
                     ->toggleable(isToggledHiddenByDefault: false)
@@ -290,10 +297,29 @@ class RequestListResource extends Resource
                     ->label('Person_liable')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
+                
             ])
             ->filters([
-                // Your filters here
-            ])
+                SelectFilter::make('created_at')
+                    ->label('Requested at')
+                    ->options(
+                        RequestList::query()
+                            ->whereNotNull('created_at') // Filter out null values
+                            ->pluck('created_at') // Get only the 'created_at' values
+                            ->map(function ($date) {
+                                // Format date using Carbon
+                                return \Carbon\Carbon::parse($date)->format('F j, Y');
+                            })
+                            ->unique() // Ensure unique values
+                            ->toArray()
+                    ),
+                    SelectFilter::make('User')
+                    ->label('Created By')
+                    ->relationship('user','name'),
+                
+                   
+                    
+                ])
             ->actions($actions) // Apply the filtered actions
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

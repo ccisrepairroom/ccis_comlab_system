@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Filters\SelectFilter;
 
 
 class BorrowedItemsResource extends Resource
@@ -152,7 +154,7 @@ class BorrowedItemsResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: false)
 
                     ->searchable(),
-                Tables\Columns\TextColumn::make('equipment.status')
+                /*Tables\Columns\TextColumn::make('equipment.status')
                     ->label('Status')
                     ->sortable()
                     ->badge()
@@ -168,7 +170,7 @@ class BorrowedItemsResource extends Resource
                         'disposed' => 'danger',
                         'borrowed' => 'indigo',
                         default=>'default',
-                    }),
+                    }),*/
                 Tables\Columns\TextColumn::make('equipment.control_no')
                     ->label('Control Number')
                     ->sortable()
@@ -242,7 +244,36 @@ class BorrowedItemsResource extends Resource
                 // \EightyNine\Approvals\Tables\Columns\ApprovalStatusColumn::make("approvalStatus.status"),
             ])
             ->filters([
-                //
+                SelectFilter::make('borrowed_date')
+                ->label('Date Borrowed')
+                ->options(
+                    BorrowedItems::query()
+                        ->whereNotNull('borrowed_date') // Filter out null values
+                        ->pluck('borrowed_date', 'borrowed_date')
+                        ->mapWithKeys(function ($date) {
+                            // Format date using Carbon
+                            return [$date => \Carbon\Carbon::parse($date)->format('F j, Y')];
+                        })
+                        ->toArray()
+                ),
+                SelectFilter::make('borrowed_by ')
+                ->label(' Borrowed By')
+                ->options(
+                    BorrowedItems::query()
+                        ->whereNotNull('borrowed_by') // Filter out null values
+                        ->pluck('borrowed_by', 'borrowed_by')
+                        
+                        ->toArray()
+                ),
+                SelectFilter::make('status ')
+                ->label(' Availability')
+                ->options(
+                    BorrowedItems::query()
+                        ->whereNotNull('status') // Filter out null values
+                        ->pluck('status', 'status')
+                        
+                        ->toArray()
+                ),
             ])
             ->actions([
                 // ...\EightyNine\Approvals\Tables\Actions\ApprovalActions::make(

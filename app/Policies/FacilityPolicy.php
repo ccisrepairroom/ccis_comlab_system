@@ -31,7 +31,8 @@ class FacilityPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_facility');
+        //return $user->can('create_facility');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -39,7 +40,8 @@ class FacilityPolicy
      */
     public function update(User $user, Facility $facility): bool
     {
-        return $user->can('update_facility');
+        //return $user->can('update_facility');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -47,7 +49,8 @@ class FacilityPolicy
      */
     public function delete(User $user, Facility $facility): bool
     {
-        return $user->can('delete_facility');
+        //return $user->can('delete_facility');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -55,7 +58,8 @@ class FacilityPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_facility');
+        //return $user->can('delete_any_facility');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -63,7 +67,8 @@ class FacilityPolicy
      */
     public function forceDelete(User $user, Facility $facility): bool
     {
-        return $user->can('force_delete_facility');
+        //return $user->can('force_delete_facility');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -71,7 +76,8 @@ class FacilityPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_facility');
+        //return $user->can('force_delete_any_facility');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -79,7 +85,8 @@ class FacilityPolicy
      */
     public function restore(User $user, Facility $facility): bool
     {
-        return $user->can('restore_facility');
+        //return $user->can('restore_facility');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -87,7 +94,8 @@ class FacilityPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_facility');
+        //return $user->can('restore_any_facility');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -95,7 +103,8 @@ class FacilityPolicy
      */
     public function replicate(User $user, Facility $facility): bool
     {
-        return $user->can('replicate_facility');
+        //return $user->can('replicate_facility');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -103,6 +112,7 @@ class FacilityPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_facility');
+        //return $user->can('reorder_facility');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 }
