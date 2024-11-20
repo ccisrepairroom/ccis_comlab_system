@@ -15,7 +15,8 @@ class RequestListPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_request::list');
+        //return $user->can('view_any_request::list');
+        return $user->hasRole(['super_admin','admin','staff','public']);
     }
 
     /**

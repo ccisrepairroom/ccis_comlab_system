@@ -15,7 +15,8 @@ class SuppliesAndMaterialsPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_supplies::and::materials');
+        //return $user->can('view_any_supplies::and::materials');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -23,7 +24,8 @@ class SuppliesAndMaterialsPolicy
      */
     public function view(User $user, SuppliesAndMaterials $suppliesAndMaterials): bool
     {
-        return $user->can('view_supplies::and::materials');
+        //return $user->can('view_supplies::and::materials');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**

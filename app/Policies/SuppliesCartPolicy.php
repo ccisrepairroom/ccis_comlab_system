@@ -15,7 +15,8 @@ class SuppliesCartPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_supplies::cart');
+        //return $user->can('view_any_supplies::cart');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -23,7 +24,8 @@ class SuppliesCartPolicy
      */
     public function view(User $user, SuppliesCart $suppliesCart): bool
     {
-        return $user->can('view_supplies::cart');
+        //return $user->can('view_supplies::cart');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
