@@ -25,7 +25,7 @@ class SuppliesCartResource extends Resource
     protected static ?string $navigationGroup = 'Supplies And Materials';
     protected static ?string $navigationLabel = 'Supplies Cart';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationBadge(): ?string
     {

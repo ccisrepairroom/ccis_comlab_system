@@ -27,7 +27,7 @@ class BorrowedItemsResource extends Resource
 
     protected static ?string $navigationGroup = 'Borrowing';
     protected static ?string $navigationLabel = 'Borrowed Items';
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 2;
 
     // public static function getNavigationBadge(): ?string
     // {

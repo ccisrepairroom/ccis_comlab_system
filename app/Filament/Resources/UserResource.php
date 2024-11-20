@@ -97,7 +97,7 @@ class UserResource extends Resource
                     ]),
                     Section::make('User New Password')->schema([
                         
-                        Forms\Components\TextInput::make('password')
+                        Forms\Components\TextInput::make('new_password')
                             ->password()
                             ->nullable()
                             //->required()
@@ -111,7 +111,7 @@ class UserResource extends Resource
                             TextInput::make('new_password_confirmation')
                             ->password()
                             //->same('password')                          
-                            ->requiredWith('new_password')
+                            ->same('new_password')
                             ->revealable(),
                          
                     ])
