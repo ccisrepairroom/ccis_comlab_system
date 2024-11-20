@@ -291,7 +291,7 @@ class EquipmentResource extends Resource
         
         // Conditionally add ExportBulkAction
         if (!$isPublic) {
-            $bulkActions[] = Tables\Actions\DeleteBulkAction::make();
+            //$bulkActions[] = Tables\Actions\DeleteBulkAction::make();
             $bulkActions[] = ExportBulkAction::make();
         }
         
