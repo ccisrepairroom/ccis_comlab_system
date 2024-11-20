@@ -96,8 +96,11 @@ public function model(array $row){
             }
 
             // Lookup the facility by location, or return null if not found
-            $facility = Facility::where('name', $location)->first();
-            return $facility ? $facility->id : null;
+            /*$facility = Facility::where('name', $location)->first();
+            return $facility ? $facility->id : null;*/
+
+            $facility = Facility::firstOrCreate(['name' => $location], ['name' => $location]);
+            return $facility->id; 
         }
 
         public function getCategoryId($category)
@@ -108,8 +111,11 @@ public function model(array $row){
             }
 
             // Lookup the facility by location, or return null if not found
-            $category = Category::where('description', $category)->first();
-            return $category ? $category->id : null;
+            /*$category = Category::where('description', $category)->first();
+            return $category ? $category->id : null;*/
+
+            $category = Category::firstOrCreate(['description' => $category], ['description' => $category]);
+            return $category->id;
         }
         public function getStockUnitId($stockunit)
         {
@@ -119,7 +125,7 @@ public function model(array $row){
             }
 
             // Lookup the facility by location, or return null if not found
-            $stockunit = StockUnit::where('description', $stockunit)->first();
+            $stockunit = StockUnit::firstOrCreate(['description' => $stockunit], ['description'=> $stockunit]);
             return $stockunit ? $stockunit->id : null;
         }
 }
