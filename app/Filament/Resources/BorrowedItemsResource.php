@@ -83,7 +83,7 @@ class BorrowedItemsResource extends Resource
     {
 
         $user = auth()->user();
-        $isPanelUser = $user && $user->hasRole('panel_user');
+        $isPublic = $user && $user->hasRole('public');
 
          // Define the bulk actions array
          $bulkActions = [
@@ -93,7 +93,7 @@ class BorrowedItemsResource extends Resource
          ];
                  // Conditionally add ExportBulkAction
 
-            if (!$isPanelUser) {
+            if (!$isPublic) {
                 $bulkActions[] = ExportBulkAction::make();
             }
             return $table
@@ -350,6 +350,7 @@ class BorrowedItemsResource extends Resource
                                     ->send();
                             }
                         })
+                        ->hidden(fn () => $isPublic)
                         ->modalHeading('Update Equipment Return Status')
                         ->color('success'),
                 ]),
