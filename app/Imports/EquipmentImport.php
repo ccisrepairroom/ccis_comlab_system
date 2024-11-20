@@ -23,7 +23,9 @@ class EquipmentImport implements ToModel, WithHeadingRow
     $facilityName = trim($row['facility_id'] ?? '');
     $categoryDescription = trim($row['category_id'] ?? '');
     //$stockUnitDescription = trim($row['stock_unit_id'] ?? '');
-
+    \Log::info('Facility ID:', ['facility_id' => $facilityName]);
+    \Log::info('Category ID:', ['category_id' => $categoryDescription]);
+ 
     $facility = $facilityName ? Facility::firstOrCreate(['name' => $facilityName], ['name' => $facilityName]) : null;
     $category = $categoryDescription ? Category::firstOrCreate(['description' => $categoryDescription], ['description' => $categoryDescription]) : null;
     //$stock_unit = $stockUnitDescription ? StockUnit::firstOrCreate(['description' => $stockUnitDescription], ['description' => $stockUnitDescription]) : null;
@@ -100,8 +102,10 @@ class EquipmentImport implements ToModel, WithHeadingRow
         }
 
         // Lookup the facility by location, or return null if not found
-        $facility = Facility::where('name', $location)->first();
-        return $facility ? $facility->id : null;
+        /*$facility = Facility::where('name', $location)->first();
+        return $facility ? $facility->id : null;*/
+        $facility = Facility::firstOrCreate(['name' => $location], ['name' => $location]);
+        return $facility->id; 
     }
 
     public function getCategoryId($category)
@@ -112,7 +116,10 @@ class EquipmentImport implements ToModel, WithHeadingRow
         }
 
         // Lookup the facility by location, or return null if not found
-        $category = Category::where('description', $category)->first();
-        return $category ? $category->id : null;
+        /*$category = Category::where('description', $category)->first();
+        return $category ? $category->id : null;*/
+
+        $category = Category::firstOrCreate(['description' => $category], ['description' => $category]);
+        return $category->id;
     }
     }

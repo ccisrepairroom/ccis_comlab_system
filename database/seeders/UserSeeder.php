@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             'name'=> 'SuperAdmin',
             'email'=> 'superadmin@ccis.edu.ph',
             'password'=> '$2y$12$CrKAI857UyQ/L1Bd01JyjekfUqpoxuB2oJ64UsCFaCeysr95Is6mq',
-            'remember_token'=> Str::random(10),
+            //'remember_token'=> Str::random(10),
         ])->assignRole('super_admin');
     }
 }

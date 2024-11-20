@@ -1,0 +1,244 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\User;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\Storage;
+use League\Csv\Writer;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Illuminate\Validation\Rules\Password;
+use Filament\Tables\Columns\TextInputColumn;
+
+class UserResource extends Resource
+{
+    protected static ?string $model = User::class;
+    protected static ?string $navigationGroup = 'User Management';
+
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?int $navigationSort = 5;
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    
+    protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        \Log::info($record);
+        
+        return [
+            'Name' => $record->name ?? 'Unknown', 
+            'Email' => $record->email ?? 'Unknown', 
+        ];
+    }
+    public static function getGloballySearchableAttributes(): array
+    {
+        return['name','email'];
+    }
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Section::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->default(null)
+                            //->unique('users', 'name')
+                            //->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
+
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->rules([
+                                'regex:/^[a-zA-Z0-9._%+-]+@ccis\.edu\.ph$/'
+                            ])
+                            ->placeholder('Must end with @ccis.edu.ph (e.g., @ccis.edu.ph)')
+                            ->default('@ccis.edu.ph'),
+                        Forms\Components\Select::make('roles')
+                            ->relationship('roles', 'name')
+                            ->preload()
+                            ->default([])
+                            ->searchable(),
+                        Forms\Components\TextInput::make('password')->confirmed()
+                            ->password()
+                            ->required()
+                            ->revealable()
+                            //->default(fn (?User $record) => $record?->password ?? null)
+                            //->default(fn($record) => $record->password)  
+                            ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                            ->visible(fn ($livewire) =>$livewire instanceof Pages\CreateUser)
+                            ->hiddenOn('edit'),
+                        Forms\Components\TextInput::make('password_confirmation')
+                            ->password()
+                            ->requiredWith('password')
+                            ->revealable()
+                            ->visible(fn ($livewire) =>$livewire instanceof Pages\CreateUser),
+                    ]),
+                    Section::make('User New Password')->schema([
+                       /* Forms\Components\TextInput::make('password')
+                            ->revealable()
+                            ->password()
+                            -required()
+                            ->default(fn (?User $record) => $record?->password ?? null),                         
+                            //->default(fn($record) => $record->password),
+                          */  
+                           
+                        Forms\Components\TextInput::make('new_password')
+                            ->password()
+                            ->nullable()
+                            ->required()
+                            ->revealable(),
+                            TextInput::make('new_password_confirmation')
+                            ->password()
+                            ->same('new_password')                          
+                            ->requiredWith('new_password')
+                            ->revealable(),
+                         
+                    ])
+                    ->visible(fn ($livewire) => $livewire instanceof Pages\EditUser),
+                    
+            ]);
+    }
+
+
+    /*public static function afterSave(Model $record, array $data): void
+        {
+            // If there are roles to assign, sync them
+            if (isset($data['roles'])) {
+                $record->roles()->sync($data['roles']); // This will attach the selected roles to the user
+            }
+
+            // If the password was provided, it will be updated during the save process
+            if (isset($data['password']) && $data['password']) {
+                $record->password = Hash::make($data['password']); // Ensure password is hashed
+                $record->save();
+            }
+        }*/
+    public static function table(Tables\Table $table): Tables\Table
+    {
+        $user = auth()->user();
+        $isPanelUser = $user && $user->hasRole('panel_user');
+
+        // Define the bulk actions array
+        $bulkActions = [
+            Tables\Actions\DeleteBulkAction::make(),
+        ];
+    
+
+        // Conditionally add ExportBulkAction
+        if (!$isPanelUser) {
+            $bulkActions[] = BulkAction::make('export')
+                ->label('Export')
+                ->icon('heroicon-o-arrow-down')
+                ->action(function () {
+                    // Fetch users with roles
+                    $users = User::with('roles')->get();
+
+                    // Prepare data for the CSV export
+                    $data = $users->map(function ($user) {
+                        return [
+                            'Name' => $user->name,
+                            'Email' => $user->email,
+                            'Password' => $user->password,  // Include the password field explicitly
+                            'Role' => $user->roles->pluck('name')->implode(', '),
+                            'Created At' => $user->created_at->format('F j, Y h:i A'),
+                        ];
+                    });
+
+                    // Create CSV content using League\Csv
+                    $csv = Writer::createFromString('');
+                    $csv->insertOne(['Name', 'Email', 'Password', 'Role', 'Created At']);
+                    $csv->insertAll($data);
+
+                    // Save the CSV file
+                    $filePath = 'exports/users.csv';
+                    Storage::put($filePath, $csv->getContent());
+
+                    // Return the file for download
+                    return response()->download(storage_path("app/{$filePath}"));
+                });
+        }
+
+        return $table
+            ->query(User::with('roles'))
+            ->columns([
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('roles.name')->label('Role')
+                    ->formatStateUsing(fn($state): string => Str::headline($state))
+                    ->colors(['info'])
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->badge(),
+                Tables\Columns\TextColumn::make('password')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)  
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->formatStateUsing(function ($state) {
+                        return $state ? $state->format('F j, Y h:i A') : null;
+                    })
+                    ->sortable(),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make($bulkActions)
+                    ->label('Actions')
+            ]);
+    }
+
+    public static function getPermissions(User $user)
+    {
+        // Retrieve the user's permissions from the roles or any other source
+        return $user->getAllPermissions()->pluck('name'); // Adjust according to your setup
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
+        ];
+    }
+}
