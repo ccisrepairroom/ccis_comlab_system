@@ -202,6 +202,7 @@ class EquipmentResource extends Resource
     {
         $user = auth()->user();
         $isPublic = $user && $user->hasRole('public');
+         
        
         // Define the bulk actions array
         $bulkActions = [
@@ -287,9 +288,10 @@ class EquipmentResource extends Resource
                 
         
         ];
-    
+        
         // Conditionally add ExportBulkAction
         if (!$isPublic) {
+            $bulkActions[] = Tables\Actions\DeleteBulkAction::make();
             $bulkActions[] = ExportBulkAction::make();
         }
         
@@ -520,7 +522,10 @@ class EquipmentResource extends Resource
                             'monitorings' => $monitorings,
                         ]);
                     }),*/
+                    
                     Tables\Actions\EditAction::make(),
+                    
+                
                     Tables\Actions\ActionGroup::make([
                        // ListPreviewAction::make(),
                         
@@ -632,9 +637,9 @@ class EquipmentResource extends Resource
                                     ->title('Success')
                                     ->body('Status of the selected item/s have been updated.')
                                     ->send();
-                            }),
+                            })
                        
-                        
+                            ->hidden(fn () => $isPublic),
 
                     ]),
                 ])
