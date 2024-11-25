@@ -13,6 +13,8 @@ class EquipmentCountPerStatus extends ChartWidget
 
     protected static ?string $heading = 'Equipment Count per Status';
     //protected static string $color = 'primary';
+    protected static bool $isLazy = false;
+
     protected int | string | array $columnSpan = 3;
     protected function getData(): array
     {

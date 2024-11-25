@@ -35,7 +35,7 @@ class Dashboard extends \Filament\Pages\Dashboard
     use HasFiltersForm;
 
     public int | string | array $columnSpan = 3;
-    
+    protected static bool $isLazy = false;
 
     public function getWidgets(): array
     {

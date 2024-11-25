@@ -14,6 +14,7 @@ class ForDisposal extends ChartWidget
     protected static ?string $heading = 'Equipment Count (For Disposal) by Category';
     protected static string $color = 'primary';
     protected int | string | array $columnSpan = 3;
+    protected static bool $isLazy = false;
 
     protected function getData(): array
     {

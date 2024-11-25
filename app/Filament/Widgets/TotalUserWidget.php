@@ -13,6 +13,7 @@ class TotalUserWidget extends BaseWidget
     //use InteractsWithPageFilters;
 
     protected int | string | array $columnSpan = 3;
+    protected static bool $isLazy = false;
 
     protected function getStats(): array
     {

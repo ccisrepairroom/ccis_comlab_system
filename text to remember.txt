@@ -234,3 +234,9 @@ require __DIR__ . "/../public/index.php";
 --in terminal
 mkdir dist
 vercel project add ccis_comlab_system/
+
+**git commit error index
+in cmd--tasklist | findstr git
+in project--Remove-Item .git\index.lock
+try again
+

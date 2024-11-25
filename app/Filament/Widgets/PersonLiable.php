@@ -15,6 +15,7 @@ class PersonLiable extends BaseWidget
 
     protected static ?string $heading = 'Equipment Count by Person Liable';
     protected int | string | array $columnSpan = 3;
+    protected static bool $isLazy = false;
 
     // Ensure each record has a unique key
     public function getTableRecordKey($record): string
