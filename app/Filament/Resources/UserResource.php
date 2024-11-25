@@ -71,10 +71,10 @@ class UserResource extends Resource
                         Forms\Components\TextInput::make('email')
                             ->email()
                             ->rules([
-                                'regex:/^[a-zA-Z0-9._%+-]+@ccis\.edu\.ph$/'
+                                'regex:/^[a-zA-Z0-9._%+-]+@carsu\.edu\.ph$/'
                             ])
                             ->placeholder('Must end with @ccis.edu.ph (e.g., @ccis.edu.ph)')
-                            ->default('@ccis.edu.ph'),
+                            ->default('@carsu.edu.ph'),
                         Forms\Components\Select::make('roles')
                             ->relationship('roles', 'name')
                             ->preload()
