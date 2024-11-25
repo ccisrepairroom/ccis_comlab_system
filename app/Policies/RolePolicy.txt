@@ -15,8 +15,7 @@ class RolePolicy
      */
     public function viewAny(User $user): bool
     {
-        //return $user->can('view_any_role');
-        return $user->hasRole('super_admin');
+        return $user->can('view_any_role');
     }
 
     /**
@@ -24,8 +23,7 @@ class RolePolicy
      */
     public function view(User $user, Role $role): bool
     {
-        return $user->hasRole('super_admin');
-        //return $user->can('view_role');
+        return $user->can('view_role');
     }
 
     /**
@@ -33,8 +31,7 @@ class RolePolicy
      */
     public function create(User $user): bool
     {
-        //return $user->can('create_role');
-        return false;
+        return $user->can('create_role');
     }
 
     /**
@@ -42,8 +39,7 @@ class RolePolicy
      */
     public function update(User $user, Role $role): bool
     {
-        //return $user->can('update_role');
-        return $user->hasRole('super_admin');
+        return $user->can('update_role');
     }
 
     /**
@@ -51,8 +47,7 @@ class RolePolicy
      */
     public function delete(User $user, Role $role): bool
     {
-        //return $user->can('delete_role');
-        return false;
+        return $user->can('delete_role');
     }
 
     /**
@@ -60,8 +55,7 @@ class RolePolicy
      */
     public function deleteAny(User $user): bool
     {
-       // return $user->can('delete_any_role');
-       return false;
+        return $user->can('delete_any_role');
     }
 
     /**
@@ -69,8 +63,7 @@ class RolePolicy
      */
     public function forceDelete(User $user, Role $role): bool
     {
-       // return $user->can('{{ ForceDelete }}');
-       return false;
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -78,8 +71,7 @@ class RolePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        //return $user->can('{{ ForceDeleteAny }}');
-        return false;
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -113,5 +105,4 @@ class RolePolicy
     {
         return $user->can('{{ Reorder }}');
     }
-    
 }
