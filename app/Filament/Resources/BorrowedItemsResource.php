@@ -266,11 +266,13 @@ class BorrowedItemsResource extends Resource
                         ->pluck('borrowed_by', 'borrowed_by')
                         ->toArray()
                 ),
-                SelectFilter::make('status ')
+                SelectFilter::make('status')
                 ->label(' Status')
                 ->options(
                     BorrowedItems::query()
                         ->whereNotNull('status') // Filter out null values
+                        ->distinct()
+                        ->select('status')
                         ->pluck('status', 'status')
                         
                         ->toArray()
