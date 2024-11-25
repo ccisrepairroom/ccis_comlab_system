@@ -47,7 +47,7 @@ class BorrowedItemsResource extends Resource
         // If the user is not a 'panel_user', return the total count
         return static::getModel()::count();
     }
-/*
+    /*
     public static function form(Form $form): Form
     {
         return $form
@@ -59,7 +59,7 @@ class BorrowedItemsResource extends Resource
                 Forms\Components\Select::make('borrowed_by')
                     ->required(),
                 Forms\Components\Select::make('equipment_id')
-                    ->relationship('equipment', 'name')
+                    ->relationship('equipment', 'brand_name')
                     ->nullable(),
                 Forms\Components\Select::make('facility_id')
                     ->relationship('facility', 'name')
@@ -111,7 +111,7 @@ class BorrowedItemsResource extends Resource
                 }
             })*/
                 Tables\Columns\TextColumn::make('borrowed_date')
-                    ->label('Date Borrowed')
+                    ->label('Date Created')
                     ->searchable()
                     ->sortable()
                     
@@ -245,7 +245,7 @@ class BorrowedItemsResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('borrowed_date')
-                ->label('Date Borrowed')
+                ->label('Date Created')
                 ->options(
                     BorrowedItems::query()
                         ->whereNotNull('borrowed_date') // Filter out null values
@@ -256,22 +256,74 @@ class BorrowedItemsResource extends Resource
                         })
                         ->toArray()
                 ),
-                SelectFilter::make('borrowed_by ')
+                SelectFilter::make('borrowed_by')
                 ->label(' Borrowed By')
                 ->options(
                     BorrowedItems::query()
                         ->whereNotNull('borrowed_by') // Filter out null values
+                        ->distinct()
+                        ->select('borrowed_by')
                         ->pluck('borrowed_by', 'borrowed_by')
-                        
                         ->toArray()
                 ),
                 SelectFilter::make('status ')
-                ->label(' Availability')
+                ->label(' Status')
                 ->options(
                     BorrowedItems::query()
                         ->whereNotNull('status') // Filter out null values
                         ->pluck('status', 'status')
                         
+                        ->toArray()
+                ),
+                SelectFilter::make('equipment.brand_name')
+                    ->label('Requested Equipment')
+                    
+                    ->options(
+                        BorrowedItems::query()
+                            ->whereNotNull('equipment_id') // Filter out null values
+                            ->pluck('equipment_id', 'equipment_id')
+                            
+                            ->toArray()
+                    ),
+                    SelectFilter::make('facility.name')
+                    ->label('Requested Facility')
+                    
+                    ->options(
+                        BorrowedItems::query()
+                            ->whereNotNull('facility_id') // Filter out null values
+                            ->pluck('facility_id', 'facility_id')
+                            
+                            ->toArray()
+                    ),
+                
+                SelectFilter::make('start_date_and_time_of_use')
+                ->label(' Start Date and Time of Use')
+                ->options(
+                    BorrowedItems::query()
+                        ->whereNotNull('start_date_and_time_of_use') // Filter out null values
+                        ->distinct()
+                        ->select('start_date_and_time_of_use')
+                        ->pluck('start_date_and_time_of_use', 'start_date_and_time_of_use')
+                        ->toArray()
+                ),
+                SelectFilter::make('end_date_and_time_of_use')
+                ->label(' End Date and Time of Use')
+                ->options(
+                    BorrowedItems::query()
+                        ->whereNotNull('end_date_and_time_of_use') // Filter out null values
+                        ->distinct()
+                        ->select('end_date_and_time_of_use')
+                        ->pluck('end_date_and_time_of_use', 'end_date_and_time_of_use')
+                        ->toArray()
+                ),
+                SelectFilter::make('expected_return_date')
+                ->label('Expected Return Date')
+                ->options(
+                    BorrowedItems::query()
+                        ->whereNotNull('expected_return_date') // Filter out null values
+                        ->distinct()
+                        ->select('expected_return_date')
+                        ->pluck('expected_return_date', 'expected_return_date')
                         ->toArray()
                 ),
             ])

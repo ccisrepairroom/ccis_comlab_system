@@ -42,7 +42,8 @@ class RolePolicy
      */
     public function update(User $user, Role $role): bool
     {
-        return $user->can('update_role');
+        //return $user->can('update_role');
+        return $user->hasRole('super_admin');
     }
 
     /**

@@ -185,3 +185,52 @@ php artisan make:seeder Role seeder
                             ->hidden(fn () => $isPublic),
 
                     ]),
+
+
+**deploy vrcel
+
+--install vercel
+npm i -g vercel
+vercel --version
+
+--go to project
+mkdir api
+--create index.php inside api folder
+--copy in that file
+
+<?php
+require __DIR__ . "/../public/index.php";
+
+--create ne file in project/vercel.json
+--paste
+{
+    "version": 2,
+      "framework": null,
+    "functions": {
+        "api/index.php": { "runtime": "vercel-php@0.6.0" }
+    },
+    "routes": [{
+        "src": "/(.*)",
+        "dest": "/api/index.php"
+    }],
+    "env": {
+        "APP_ENV": "production",
+        "APP_DEBUG": "true",
+        "APP_URL": "https://yourproductionurl.com",
+ 
+        "APP_CONFIG_CACHE": "/tmp/config.php",
+        "APP_EVENTS_CACHE": "/tmp/events.php",
+        "APP_PACKAGES_CACHE": "/tmp/packages.php",
+        "APP_ROUTES_CACHE": "/tmp/routes.php",
+        "APP_SERVICES_CACHE": "/tmp/services.php",
+        "VIEW_COMPILED_PATH": "/tmp",
+ 
+        "CACHE_DRIVER": "array",
+        "LOG_CHANNEL": "stderr",
+        "SESSION_DRIVER": "cookie"
+    }
+}
+
+--in terminal
+mkdir dist
+vercel project add ccis_comlab_system/

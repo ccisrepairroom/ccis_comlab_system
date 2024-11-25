@@ -21,7 +21,9 @@ class ListBorrowedItems extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [];
+        return [
+            //Actions\CreateAction::make(),
+        ];
     }
 
   

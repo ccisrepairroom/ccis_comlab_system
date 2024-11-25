@@ -32,7 +32,8 @@ class BorrowedItemsPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_borrowed::items');
+       // return $user->can('create_borrowed::items');
+       return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
