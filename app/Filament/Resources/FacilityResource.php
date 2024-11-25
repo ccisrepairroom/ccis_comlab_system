@@ -26,7 +26,7 @@ class FacilityResource extends Resource
 {
     protected static ?string $model = Facility::class;
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
-
+    protected static ?string $pollingInterval = '1s';
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();

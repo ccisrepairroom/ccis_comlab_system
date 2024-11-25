@@ -26,6 +26,7 @@ class SuppliesCartResource extends Resource
     protected static ?string $navigationLabel = 'Supplies Cart';
 
     protected static ?int $navigationSort = 4;
+    protected static ?string $pollingInterval = '1s';
 
     public static function getNavigationBadge(): ?string
     {

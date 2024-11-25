@@ -26,6 +26,7 @@ class StockMonitoringResource extends Resource
     protected static ?string $navigationGroup = 'Monitoring History';
     protected static ?string $navigationLabel = 'Stock Monitoring';
     protected static ?int $navigationSort = 7;
+    protected static ?string $pollingInterval = '1s';
 
     public static function getNavigationBadge(): ?string
     {

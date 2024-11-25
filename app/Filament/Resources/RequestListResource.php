@@ -35,6 +35,7 @@ class RequestListResource extends Resource
     {
         return 'request-list'; 
     }
+    protected static ?string $pollingInterval = '1s';
 
     public static function getNavigationBadge(): ?string
     {

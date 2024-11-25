@@ -27,6 +27,7 @@ class FacilityMonitoringResource extends Resource
     protected static ?string $navigationGroup = 'Monitoring History';
     protected static ?string $navigationLabel = 'Facility Monitoring';
     protected static ?int $navigationSort = 6;
+    protected static ?string $pollingInterval = '1s';
 
     public static function getNavigationBadge(): ?string
     {

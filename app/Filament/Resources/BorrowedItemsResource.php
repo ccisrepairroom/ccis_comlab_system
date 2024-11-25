@@ -35,7 +35,7 @@ class BorrowedItemsResource extends Resource
     // {
     //     return static::getModel()::count();
     // }
-
+    protected static ?string $pollingInterval = '1s';
     public static function getNavigationBadge(): ?string
     {
         // Check if the user is authenticated and has the 'panel_user' role
