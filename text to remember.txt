@@ -240,3 +240,5 @@ in cmd--tasklist | findstr git
 in project--Remove-Item .git\index.lock
 try again
 
+** note in import
+facility and category columnmust not be absent

@@ -23,8 +23,8 @@ class EquipmentImport implements ToModel, WithHeadingRow
     $facilityName = trim($row['facility_id'] ?? '');
     $categoryDescription = trim($row['category_id'] ?? '');
     //$stockUnitDescription = trim($row['stock_unit_id'] ?? '');
-    \Log::info('Facility ID:', ['facility_id' => $facilityName]);
-    \Log::info('Category ID:', ['category_id' => $categoryDescription]);
+  //  \Log::info('Facility ID:', ['facility_id' => $facilityName]);
+    //\Log::info('Category ID:', ['category_id' => $categoryDescription]);
  
     $facility = $facilityName ? Facility::firstOrCreate(['name' => $facilityName], ['name' => $facilityName]) : null;
     $category = $categoryDescription ? Category::firstOrCreate(['description' => $categoryDescription], ['description' => $categoryDescription]) : null;
