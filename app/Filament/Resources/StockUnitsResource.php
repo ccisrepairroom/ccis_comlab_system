@@ -21,7 +21,7 @@ class StockUnitsResource extends Resource
 {
     protected static ?string $model = StockUnit::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-funnel';
+    protected static ?string $navigationIcon = 'heroicon-o-archive-box';
     //protected static ?string $navigationGroup = 'Classification';
     protected static ?int $navigationSort = 1;
 
