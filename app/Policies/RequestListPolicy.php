@@ -16,8 +16,7 @@ class RequestListPolicy
     public function viewAny(User $user): bool
     {
         //return $user->can('view_any_request::list');
-        return $user->hasRole(['super_admin','admin','staff','public']);
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 
     /**
      * Determine whether the user can view the model.
@@ -25,7 +24,7 @@ class RequestListPolicy
     public function view(User $user, RequestList $requestList): bool
     {
         //return $user->can('view_request::list');
-        return $user->hasRole(['super_admin','admin','staff']);
+        return $user->hasRole(['super_admin','admin','staff','faculty']);
     }
 
     /**
@@ -33,16 +32,14 @@ class RequestListPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_request::list');
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 
     /**
      * Determine whether the user can update the model.
      */
     public function update(User $user, RequestList $requestList): bool
     {
-        return $user->can('update_request::list');
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 
     /**
      * Determine whether the user can delete the model.
@@ -50,8 +47,7 @@ class RequestListPolicy
     public function delete(User $user, RequestList $requestList): bool
     {
         //return $user->can('delete_request::list');
-        return $user->hasRole(['super_admin','admin','staff','public']);
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 
     /**
      * Determine whether the user can bulk delete.
@@ -85,30 +81,26 @@ class RequestListPolicy
      */
     public function restore(User $user, RequestList $requestList): bool
     {
-        return $user->can('restore_request::list');
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 
     /**
      * Determine whether the user can bulk restore.
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_request::list');
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 
     /**
      * Determine whether the user can replicate.
      */
     public function replicate(User $user, RequestList $requestList): bool
     {
-        return $user->can('replicate_request::list');
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 
     /**
      * Determine whether the user can reorder.
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_request::list');
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 }
