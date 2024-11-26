@@ -37,6 +37,7 @@ class AdminPanelProvider extends PanelProvider
             //->path('admin')
             //->login( )
             ->login()
+            //->passwordReset()
             ->brandName('CCIS ComLab System')
             ->favicon(asset('images/ccis.png'))
             ->sidebarFullyCollapsibleOnDesktop()
