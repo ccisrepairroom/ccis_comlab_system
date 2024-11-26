@@ -38,7 +38,7 @@ class CategoryResource extends Resource
     public static function table(Tables\Table $table): Tables\Table
     {
         $user = auth()->user();
-        $isPanelUser = $user && $user->hasRole('panel_user');
+        $isFaculty = $user && $user->hasRole('faculty');
 
          // Define the bulk actions array
          $bulkActions = [
@@ -48,7 +48,7 @@ class CategoryResource extends Resource
          ];
                  // Conditionally add ExportBulkAction
 
-            if (!$isPanelUser) {
+            if (!$isFaculty) {
                 $bulkActions[] = ExportBulkAction::make();
             }
             return $table

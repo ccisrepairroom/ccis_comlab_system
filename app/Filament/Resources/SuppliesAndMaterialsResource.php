@@ -149,7 +149,7 @@ class SuppliesAndMaterialsResource extends Resource
     {
        
         $user = auth()->user();
-        $isPublic = $user && $user->hasRole('public');
+        $isFaculty = $user && $user->hasRole('faculty');
 
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
@@ -219,7 +219,7 @@ class SuppliesAndMaterialsResource extends Resource
                 }),
         ];
 
-        if (!$isPublic) {
+        if (!$isFaculty) {
             $bulkActions[] = ExportBulkAction::make();
         }
 
@@ -402,7 +402,7 @@ class SuppliesAndMaterialsResource extends Resource
                             ->body('Stock quantity for this item has been successfully adjusted.')
                             ->send();
                     })
-                    ->hidden(fn () => $isPublic),
+                    ->hidden(fn () => $isFaculty),
                    
                 
             ])

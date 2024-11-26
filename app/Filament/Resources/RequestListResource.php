@@ -76,10 +76,10 @@ class RequestListResource extends Resource
     public static function table(Table $table): Table
     {
         $user = auth()->user();
-        $isPublic = $user && $user->hasRole('public');
+        $isFaculty = $user && $user->hasRole('faculty');
 
         // Add EditAction only if the user is not a panel_user
-        if (!$isPublic) {
+        if (!$isFaculty) {
             $actions[] = Tables\Actions\EditAction::make();
         }
 
@@ -208,7 +208,7 @@ class RequestListResource extends Resource
                                 ->send();
                         }
                     })
-                    ->hidden(fn () => $isPublic)
+                    ->hidden(fn () => $isFaculty)
                     ->color('success'),
             ])->label('Actions') // Optional: You can label the action group
         ];
@@ -436,7 +436,7 @@ class RequestListResource extends Resource
                                     ->send();
                             }
                         })
-                        ->hidden(fn () => $isPublic)
+                        ->hidden(fn () => $isFaculty)
                         ->color('success')
                         ->requiresConfirmation()
                         ->modalIcon('heroicon-o-check')

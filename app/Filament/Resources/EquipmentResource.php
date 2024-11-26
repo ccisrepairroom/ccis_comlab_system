@@ -202,7 +202,7 @@ class EquipmentResource extends Resource
     public static function table(Table $table): Table
     {
         $user = auth()->user();
-        $isPublic = $user && $user->hasRole('public');
+        $isFaculty = $user && $user->hasRole('faculty');
          
        
         // Define the bulk actions array
@@ -291,7 +291,7 @@ class EquipmentResource extends Resource
         ];
         
         // Conditionally add ExportBulkAction
-        if (!$isPublic) {
+        if (!$isFaculty) {
             //$bulkActions[] = Tables\Actions\DeleteBulkAction::make();
             $bulkActions[] = ExportBulkAction::make();
         }
@@ -640,7 +640,7 @@ class EquipmentResource extends Resource
                                     ->send();
                             })
                        
-                            ->hidden(fn () => $isPublic),
+                            ->hidden(fn () => $isFaculty),
 
                     ]),
                 ])
