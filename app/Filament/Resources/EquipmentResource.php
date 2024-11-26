@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Columns\TextColumn;
 
 
 class EquipmentResource extends Resource
@@ -322,7 +323,12 @@ class EquipmentResource extends Resource
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->limit(50)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        return strlen($state) > $column->getCharacterLimit() ? $state : null;
+                    }),
                 Tables\Columns\TextColumn::make('facility.name')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
@@ -383,7 +389,12 @@ class EquipmentResource extends Resource
                     ->searchable()
                     ->label('Serial Number')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->limit(30)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        return strlen($state) > $column->getCharacterLimit() ? $state : null;
+                    }),
                 /*Tables\Columns\TextColumn::make('no_of_stocks')
                     ->label('No. of Stocks')
                     ->searchable()
