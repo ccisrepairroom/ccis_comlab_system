@@ -24,7 +24,7 @@ class ListEquipment extends ListRecords
     protected function getHeaderActions(): array
     {
         $user = auth()->user(); // Retrieve the currently authenticated user
-        $isPublic = $user->hasRole('public'); // Check if the user has the 'panel_user' role
+        $isFaculty = $user->hasRole('faculty'); // Check if the user has the 'panel_user' role
         
         $actions = [
            
@@ -35,7 +35,7 @@ class ListEquipment extends ListRecords
                 ->url(route('download.request.form'))
                 ->openUrlInNewTab(),
         ];
-        if (!$isPublic) {
+        if (!$isFaculty) {
             $actions[] = Actions\CreateAction::make()
             ->label('Create');
         }

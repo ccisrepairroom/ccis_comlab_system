@@ -29,9 +29,10 @@ class ListCategories extends ListRecords
         if (!$isPanelUser) {
             // Only add the import action if the user is not a panel_user
             $actions[] = Action::make('importCategory')
-                ->label('Import')
+                ->label('Import excel file')
                 ->color('success')
                 ->button()
+                ->tooltip('The excel file must have the following columns: Brand Name,PO Number,Unit Number, ')
                 ->form([
                     FileUpload::make('attachment'),
                 ])

@@ -32,7 +32,7 @@ class FacilityPolicy
     public function create(User $user): bool
     {
         //return $user->can('create_facility');
-        return $user->hasRole(['super_admin','admin','staff','faculty']);
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
