@@ -44,7 +44,7 @@ class StockMonitoringResource extends Resource
     public static function table(Table $table): Table
     {
         $user = auth()->user();
-        $isPanelUser = $user && $user->hasRole('panel_user');
+        $isFaculty = $user && $user->hasRole('faculty');
 
         
         // Define the bulk actions array
@@ -52,7 +52,7 @@ class StockMonitoringResource extends Resource
             Tables\Actions\DeleteBulkAction::make()
         ];
          // Conditionally add ExportBulkAction
-         if (!$isPanelUser) {
+         if (!$isFaculty) {
             $bulkActions[] = ExportBulkAction::make();
         }
         

@@ -16,8 +16,7 @@ class SuppliesCartPolicy
     public function viewAny(User $user): bool
     {
         //return $user->can('view_any_supplies::cart');
-        return $user->hasRole(['super_admin','admin','staff']);
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 
     /**
      * Determine whether the user can view the model.
@@ -25,15 +24,15 @@ class SuppliesCartPolicy
     public function view(User $user, SuppliesCart $suppliesCart): bool
     {
         //return $user->can('view_supplies::cart');
-        return $user->hasRole(['super_admin','admin','staff']);
-    }
+    return $user->hasRole(['super_admin','admin','staff','faculty']);     }
 
     /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
     {
-        return $user->can('create_supplies::cart');
+        //return $user->can('create_supplies::cart');
+        return false;
     }
 
     /**
@@ -41,7 +40,9 @@ class SuppliesCartPolicy
      */
     public function update(User $user, SuppliesCart $suppliesCart): bool
     {
-        return $user->can('update_supplies::cart');
+       // return $user->can('update_supplies::cart');
+       return false;
+
     }
 
     /**
@@ -49,7 +50,7 @@ class SuppliesCartPolicy
      */
     public function delete(User $user, SuppliesCart $suppliesCart): bool
     {
-        return $user->can('delete_supplies::cart');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -57,7 +58,7 @@ class SuppliesCartPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_supplies::cart');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -65,7 +66,7 @@ class SuppliesCartPolicy
      */
     public function forceDelete(User $user, SuppliesCart $suppliesCart): bool
     {
-        return $user->can('force_delete_supplies::cart');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -73,7 +74,7 @@ class SuppliesCartPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_supplies::cart');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -81,7 +82,7 @@ class SuppliesCartPolicy
      */
     public function restore(User $user, SuppliesCart $suppliesCart): bool
     {
-        return $user->can('restore_supplies::cart');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -89,7 +90,7 @@ class SuppliesCartPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_supplies::cart');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -97,7 +98,7 @@ class SuppliesCartPolicy
      */
     public function replicate(User $user, SuppliesCart $suppliesCart): bool
     {
-        return $user->can('replicate_supplies::cart');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 
     /**
@@ -105,6 +106,6 @@ class SuppliesCartPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_supplies::cart');
+        return $user->hasRole(['super_admin','admin','staff']);
     }
 }

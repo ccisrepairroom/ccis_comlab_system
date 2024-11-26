@@ -63,14 +63,14 @@ class SuppliesCartResource extends Resource
     public static function table(Table $table): Table
     {
         $user = auth()->user();
-        $isPublic = $user && $user->hasRole('public');
+        $isFaculty = $user && $user->hasRole('faculty');
         
         // Define bulk actions based on the user role
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
         ];
 
-        if (!$isPublic) {
+        if (!$isFaculty) {
             $bulkActions[] = ExportBulkAction::make();
         }
 

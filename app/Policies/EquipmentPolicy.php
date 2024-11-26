@@ -15,7 +15,7 @@ class EquipmentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_equipment');
+        return $user->hasRole(['super_admin','admin','staff','faculty']);
     }
 
     /**
@@ -23,7 +23,7 @@ class EquipmentPolicy
      */
     public function view(User $user, Equipment $equipment): bool
     {
-        return $user->can('view_equipment');
+        return $user->hasRole(['super_admin','admin','staff','faculty']);
     }
 
     /**

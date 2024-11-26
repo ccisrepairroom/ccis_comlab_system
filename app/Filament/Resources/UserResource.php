@@ -76,6 +76,7 @@ class UserResource extends Resource
                             ->placeholder('Must end with @ccis.edu.ph (e.g., @ccis.edu.ph)')
                             ->default('@carsu.edu.ph'),
                         Forms\Components\Select::make('roles')
+                            ->label('Role')
                             ->relationship('roles', 'name')
                             ->preload()
                             ->default([])
@@ -138,7 +139,7 @@ class UserResource extends Resource
     public static function table(Tables\Table $table): Tables\Table
     {
         $user = auth()->user();
-        $isPanelUser = $user && $user->hasRole('panel_user');
+        $isFaculty = $user && $user->hasRole('faculty');
 
         // Define the bulk actions array
         $bulkActions = [
@@ -147,7 +148,7 @@ class UserResource extends Resource
     
 
         // Conditionally add ExportBulkAction
-        if (!$isPanelUser) {
+        if (!$isFaculty) {
             $bulkActions[] = BulkAction::make('export')
                 ->label('Export')
                 ->icon('heroicon-o-arrow-down')

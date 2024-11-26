@@ -15,15 +15,15 @@ class FacilityPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_facility');
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 
     /**
      * Determine whether the user can view the model.
      */
     public function view(User $user, Facility $facility): bool
     {
-        return $user->can('view_facility');
+        //return $user->can('view_facility');
+        return $user->hasRole(['super_admin','admin','staff','faculty']);
     }
 
     /**
@@ -32,7 +32,7 @@ class FacilityPolicy
     public function create(User $user): bool
     {
         //return $user->can('create_facility');
-        return $user->hasRole(['super_admin','admin','staff']);
+        return $user->hasRole(['super_admin','admin','staff','faculty']);
     }
 
     /**

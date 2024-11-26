@@ -15,7 +15,7 @@ class BorrowedItemsPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_borrowed::items');
+        return $user->hasRole(['super_admin','admin','staff','faculty']);   
     }
 
     /**
@@ -24,7 +24,7 @@ class BorrowedItemsPolicy
     public function view(User $user, BorrowedItems $borrowedItems): bool
     {
         //return $user->can('view_borrowed::items');
-        return $user->hasRole(['super_admin','admin','staff','public']);
+        return $user->hasRole(['super_admin','admin','staff','faculty']);
     }
 
     /**
@@ -41,16 +41,14 @@ class BorrowedItemsPolicy
      */
     public function update(User $user, BorrowedItems $borrowedItems): bool
     {
-        return $user->can('update_borrowed::items');
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 
     /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, BorrowedItems $borrowedItems): bool
     {
-        return $user->can('delete_borrowed::items');
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 
     /**
      * Determine whether the user can bulk delete.
@@ -84,30 +82,26 @@ class BorrowedItemsPolicy
      */
     public function restore(User $user, BorrowedItems $borrowedItems): bool
     {
-        return $user->can('restore_borrowed::items');
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 
     /**
      * Determine whether the user can bulk restore.
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_borrowed::items');
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 
     /**
      * Determine whether the user can replicate.
      */
     public function replicate(User $user, BorrowedItems $borrowedItems): bool
     {
-        return $user->can('replicate_borrowed::items');
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 
     /**
      * Determine whether the user can reorder.
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_borrowed::items');
-    }
+        return $user->hasRole(['super_admin','admin','staff','faculty']);    }
 }
