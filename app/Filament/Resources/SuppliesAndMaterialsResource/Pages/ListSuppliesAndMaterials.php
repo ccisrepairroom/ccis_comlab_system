@@ -24,7 +24,7 @@ class ListSuppliesAndMaterials extends ListRecords
     protected function getHeaderActions(): array
     {
         $user = auth()->user(); // Retrieve the currently authenticated user
-        $isPublic = $user->hasRole('public'); // Check if the user has the 'panel_user' role
+        $isFaculty = $user->hasRole('faculty'); // Check if the user has the 'panel_user' role
         
         $actions = [
             Actions\CreateAction::make()
@@ -32,7 +32,7 @@ class ListSuppliesAndMaterials extends ListRecords
             
         ];
     
-        if (!$isPublic) {
+        if (!$isFaculty) {
             // Only add the import action if the user is not a panel_user
             $actions[] = Action::make('importSupplies')
                 ->label('Import')
