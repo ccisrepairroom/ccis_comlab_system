@@ -25,13 +25,14 @@ class UserImport implements ToModel, WithHeadingRow
         // Trim and retrieve related models
         $roleName = trim($row['role_id'] ?? '');
     
-        $role = $roleName ? Roles::firstOrCreate(['name' => $roleName], ['name' => $roleName]) : null;
+        $role = $roleName ? Role::firstOrCreate(['name' => $roleName], ['name' => $roleName]) : null;
     
     // Prepare data array with null checks
 $data = [
     'name' => $row['name'] ?? null,
     'email' => $row['email'] ?? null,
-    'role' => $row['role'] ?? null,
+    'role' =>  $this->getRoleId($row['role']) ?? null,
+     $row['role'] ?? null,
     'password' => $row['password'] ?? null,
     'created_at' => $row['created_at'] ?? null,
     
@@ -60,6 +61,20 @@ $data = [
        // Create and return new Equipment instance if the row has data
        return new User($data);
        }
+       public function getRoleId($role)
+    {
+        // Check if location exists, else return null
+        if (!$role) {
+            return null;
+        }
+
+       
+
+        $role = Role::firstOrCreate(['name' => $role], ['name' => $role]);
+        return $role->id;
+    }
+    
+
 
 
 }
