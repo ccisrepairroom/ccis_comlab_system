@@ -21,20 +21,21 @@ class ListUsers extends ListRecords
     protected function getHeaderActions(): array
     {
         $user = auth()->user(); // Retrieve the currently authenticated user
-        $isPanelUser = $user->hasRole('panel_user'); // Check if the user has the 'panel_user' role
+        $isFaculty = $user->hasRole('faculty'); // Check if the user has the 'panel_user' role
 
         $actions = [
             Actions\CreateAction::make()
             ->label('Create'),
         ];
-        /*if (!$isPanelUser) {
+        if (!$isFaculty) {
             // Only add the import action if the user is not a panel_user
             $actions[] = Action::make('importUsers')
                 ->label('Import')
                 ->color('success')
                 ->button()
                 ->form([
-                    FileUpload::make('attachment'),
+                    FileUpload::make('attachment')
+                    ->label('Import an Excel file. Column headers must include: Name, Role, Email, and Password.'),
                 ])
                 ->action(function (array $data) {
                     $file = public_path('storage/' . $data['attachment']);
@@ -46,7 +47,7 @@ class ListUsers extends ListRecords
                         ->success()
                         ->send();
                 });
-        }*/
+        }
         
 
         return $actions;
