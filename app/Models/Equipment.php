@@ -90,7 +90,7 @@ class Equipment extends Model
     {
         return $this->hasMany(BorrowedItems::class);
     }
-    public function getDateAcquiredAttribute($value)
+    /*public function getDateAcquiredAttribute($value)
     {
         // Check if the value is numeric (Excel-style date)
         if (is_numeric($value)) {
@@ -102,5 +102,5 @@ class Equipment extends Model
 
         // If it's not numeric, parse it as a normal date
         return Carbon::parse($value)->timezone('Asia/Manila')->format('M-d-y');
-    }
+    }*/
 }

@@ -427,6 +427,11 @@ class EquipmentResource extends Resource
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->sortable()
+                    ->limit(30)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        return strlen($state) > $column->getCharacterLimit() ? $state : null;
+                    })
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
