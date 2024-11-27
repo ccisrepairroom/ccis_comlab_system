@@ -53,6 +53,8 @@ class RolePolicy
     {
         //return $user->can('delete_role');
         return false;
+        //return $user->hasRole('super_admin');
+
     }
 
     /**
@@ -62,6 +64,8 @@ class RolePolicy
     {
        // return $user->can('delete_any_role');
        return false;
+       //return $user->hasRole('super_admin');
+
     }
 
     /**

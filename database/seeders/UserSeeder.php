@@ -19,6 +19,8 @@ class UserSeeder extends Seeder
         User::create([
             'name'=> 'SuperAdmin',
             'email'=> 'superadmin@carsu.edu.ph',
+            'department'=> 'Information System',
+            'designation'=> 'Developer',
             'password'=> '$2y$12$CrKAI857UyQ/L1Bd01JyjekfUqpoxuB2oJ64UsCFaCeysr95Is6mq',
             //'remember_token'=> Str::random(10),
         ])->assignRole('super_admin');

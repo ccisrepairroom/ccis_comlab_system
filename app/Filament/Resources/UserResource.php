@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Illuminate\Validation\Rules\Password;
 use Filament\Tables\Columns\TextInputColumn;
+use Filament\Tables\Filters\SelectFilter;
 
 class UserResource extends Resource
 {
@@ -71,16 +72,26 @@ class UserResource extends Resource
                         Forms\Components\TextInput::make('email')
                             ->email()
                             ->rules([
-                                'regex:/^[a-zA-Z0-9._%+-]+@carsu\.edu\.ph$/'
-                            ])
-                            ->placeholder('Must end with @ccis.edu.ph (e.g., @ccis.edu.ph)')
-                            ->default('@carsu.edu.ph'),
+                                'regex:/^[\w\.-]+@carsu\.edu\.ph$/',
+                                ])
+                            ->placeholder('Must end with @carsu.edu.ph (e.g., user@carsu.edu.ph)')
+                            ->default(''),
                         Forms\Components\Select::make('roles')
                             ->label('Role')
                             ->relationship('roles', 'name')
                             ->preload()
                             ->default([])
                             ->searchable(),
+                        Forms\Components\Select::make('department')
+                            ->options([
+                                'Information System' => 'Information System',
+                                'Information Technology' => 'Information Technology',
+                                'Computer Science' => 'Computer Science',
+                            ]),
+                        Forms\Components\TextInput::make('designation')
+                            //->required()
+                
+                            ->maxLength(255),
                         Forms\Components\TextInput::make('password')->confirmed()
                             ->password()
                             ->required()
@@ -198,6 +209,14 @@ class UserResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->badge(),
+                Tables\Columns\TextColumn::make('department')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('designation')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('password')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true)  
@@ -211,7 +230,22 @@ class UserResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('department')
+                ->label('Department')
+                ->options(
+                    User::query()
+                        ->whereNotNull('department') // Filter out null values
+                        ->pluck('department', 'department')
+                        ->toArray()
+                ),
+                SelectFilter::make('designation')
+                ->label('Designation')
+                ->options(
+                    User::query()
+                        ->whereNotNull('designation') // Filter out null values
+                        ->pluck('designation', 'designation')
+                        ->toArray()
+                ),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
