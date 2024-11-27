@@ -41,7 +41,9 @@ class ListFacilities extends ListRecords
                 ->color('success')
                 ->button()
                 ->form([
-                    FileUpload::make('attachment'),
+                    FileUpload::make('attachment')
+                    ->label('Import an Excel file. Column headers must include: Name, Connection Type, Facility Type, Floor level, Cooling Tools, Building and Remarks.
+                     It is okay to have null fields in Excel as long as all the column headers are present.'),
                 ])
                 ->action(function (array $data) {
                     $file = public_path('storage/' . $data['attachment']);
