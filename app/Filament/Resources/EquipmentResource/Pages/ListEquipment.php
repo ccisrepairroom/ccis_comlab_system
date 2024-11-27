@@ -52,7 +52,7 @@ class ListEquipment extends ListRecords
                     FileUpload::make('attachment')
                     ->label('Import an Excel file. Column headers must include: PO Number, Unit Number, Brand Name, Description, Facility, Category, Status,
                      Date Acquired, Supplier, Amount, Estimated Life, Item Number, Property Number, Control Number,  Serial Number, Person Liable, and Remarks.
-                     It is okay to have null fields in Xxcel as long as all the column headers are present.')
+                     It is okay to have null fields in Excel as long as all the column headers are present.')
                     
                 ])
                 ->action(function (array $data) {

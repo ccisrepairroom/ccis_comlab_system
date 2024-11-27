@@ -35,7 +35,8 @@ protected function getHeaderActions(): array
             ->color('success')
             ->button()
             ->form([
-                FileUpload::make('attachment'),
+                FileUpload::make('attachment')
+                ->label('Import an excel file. Column header must include: Description.'),
             ])
             ->action(function (array $data) {
                 $file = public_path('storage/' . $data['attachment']);

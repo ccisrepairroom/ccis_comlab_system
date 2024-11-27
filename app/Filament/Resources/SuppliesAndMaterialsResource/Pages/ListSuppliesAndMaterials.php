@@ -39,7 +39,9 @@ class ListSuppliesAndMaterials extends ListRecords
                 ->color('success')
                 ->button()
                 ->form([
-                    FileUpload::make('attachment'),
+                    FileUpload::make('attachment')
+                    ->label('Import an Excel file. Column headers must include: Item, Category, Quantity, Stocking Point, Stock Unit, Facility, Supplier, Date Acquired, and Remarks.
+                     It is okay to have null fields in Excel as long as all the column headers are present.'),
                 ])
                 ->action(function (array $data) {
                     $file = public_path('storage/' . $data['attachment']);

@@ -29,14 +29,13 @@ class ListCategories extends ListRecords
         if (!$isPanelUser) {
             // Only add the import action if the user is not a panel_user
             $actions[] = Action::make('importCategory')
-                ->label('Import excel file')
+                ->label('Import')
                 ->color('success')
                 ->button()
                 
                 ->form([
                     FileUpload::make('attachment')
-                    ->label('Import an excel file. Column headers must include:  and Remarks.
-                     It is okay to have null fields in excel as long as all the column headers are present.'),
+                    ->label('Import an excel file. Column header must include: Description.'),
                 ])
                 ->action(function (array $data) {
                     $file = public_path('storage/' . $data['attachment']);
