@@ -18,7 +18,8 @@ class CategoryResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-funnel';
     //protected static ?string $navigationGroup = 'Classification';
     protected static ?int $navigationSort = 1;
-
+    protected static ?string $pollingInterval = '1s';
+    protected static bool $isLazy = false;
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();

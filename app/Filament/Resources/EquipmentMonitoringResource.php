@@ -23,12 +23,12 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 class EquipmentMonitoringResource extends Resource
 {
     protected static ?string $model = EquipmentMonitoring::class;
-
+    protected static ?string $pollingInterval = '1s';
+    protected static bool $isLazy = false;
     protected static ?string $navigationIcon = 'heroicon-o-cube';
     protected static ?string $navigationGroup = 'Monitoring History';
     protected static ?string $navigationLabel = 'Equipment Monitoring';
     protected static ?int $navigationSort = 5;
-    protected static ?string $pollingInterval = '1s';
 
     public static function getNavigationBadge(): ?string
     {

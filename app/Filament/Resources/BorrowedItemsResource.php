@@ -26,7 +26,7 @@ class BorrowedItemsResource extends Resource
     protected static ?string $model = BorrowedItems::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-inbox-arrow-down';
-
+    protected static bool $isLazy = false;
     protected static ?string $navigationGroup = 'Borrowing';
     protected static ?string $navigationLabel = 'Borrowed Items';
     protected static ?int $navigationSort = 2;

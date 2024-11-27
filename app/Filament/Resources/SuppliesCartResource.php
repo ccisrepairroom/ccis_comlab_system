@@ -27,7 +27,7 @@ class SuppliesCartResource extends Resource
 
     protected static ?int $navigationSort = 4;
     protected static ?string $pollingInterval = '1s';
-
+    protected static bool $isLazy = false;
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();

@@ -18,7 +18,8 @@ use App\Models\Borroweditems;
 class ListEquipment extends ListRecords
 {
     protected static string $resource = EquipmentResource::class;
-
+    protected static ?string $pollingInterval = '1s';
+    protected static bool $isLazy = false;
   
 
     protected function getHeaderActions(): array

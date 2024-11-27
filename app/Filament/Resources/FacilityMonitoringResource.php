@@ -28,7 +28,7 @@ class FacilityMonitoringResource extends Resource
     protected static ?string $navigationLabel = 'Facility Monitoring';
     protected static ?int $navigationSort = 6;
     protected static ?string $pollingInterval = '1s';
-
+    protected static bool $isLazy = false;
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();

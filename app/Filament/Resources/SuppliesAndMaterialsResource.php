@@ -35,7 +35,7 @@ class SuppliesAndMaterialsResource extends Resource
     protected static ?string $navigationGroup = 'Supplies And Materials';
     protected static ?int $navigationSort = 3;
     protected static ?string $pollingInterval = '1s';
-
+    protected static bool $isLazy = false;
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();

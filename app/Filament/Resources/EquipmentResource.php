@@ -48,7 +48,7 @@ class EquipmentResource extends Resource
         return Equipment::with('stockUnit');
     }
     protected static ?string $pollingInterval = '1s';
-
+    protected static bool $isLazy = false;
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();

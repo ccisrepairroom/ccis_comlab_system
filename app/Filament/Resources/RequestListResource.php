@@ -27,7 +27,8 @@ class RequestListResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
     protected static ?string $navigationGroup = 'Borrowing';
-
+    protected static ?string $pollingInterval = '1s';
+    protected static bool $isLazy = false;
     protected static ?string $navigationLabel = 'Request List';
    protected static ?int $navigationSort = 1;
 
@@ -35,7 +36,6 @@ class RequestListResource extends Resource
     {
         return 'request-list'; 
     }
-    protected static ?string $pollingInterval = '1s';
 
     public static function getNavigationBadge(): ?string
     {
@@ -155,7 +155,7 @@ class RequestListResource extends Resource
                                 ->view('components.download-link'),*/
                         ]),
                         Forms\Components\FileUpload::make('request_form')
-                            ->label('Signed Request Form')
+                            ->label('Signed Request Form/Image for proof')
                             ->disk('public')
                             ->required()
                             ->directory('request_forms')
@@ -388,7 +388,7 @@ class RequestListResource extends Resource
                                         ->view('components.download-link'),*/
                                 ]),
                             Forms\Components\FileUpload::make('request_form')
-                                ->label('Signed Request Form')
+                                ->label('Signed Request Form/Image for proof')
                                 ->disk('public')
                                 ->required()
                                 ->directory('request_forms')
