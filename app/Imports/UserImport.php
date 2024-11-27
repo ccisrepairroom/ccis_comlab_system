@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\Importable;
 use App\Models\User;
-use App\Models\Role;
+use Spatie\Permission\Models\Role;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use App\Filament\Resources\UserResource\Pages\Notification;
@@ -32,7 +32,7 @@ $data = [
     'name' => $row['name'] ?? null,
     'email' => $row['email'] ?? null,
     'role' =>  $this->getRoleId($row['role']) ?? null,
-     $row['role'] ?? null,
+     //$row['role'] ?? null,
     'password' => $row['password'] ?? null,
     'created_at' => $row['created_at'] ?? null,
     

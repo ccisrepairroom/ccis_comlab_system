@@ -12,6 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Route;
 
 
@@ -62,6 +63,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'role_id',
         'password',
     ];
 
@@ -88,4 +90,9 @@ class User extends Authenticatable
     {
         return User::role($roleName)->count();
     }
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
 }
