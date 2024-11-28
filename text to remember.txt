@@ -242,3 +242,10 @@ try again
 
 ** note in import
 facility and category columnmust not be absent
+
+**hide navig
+
+public static bool $shouldRegisterNavigation=false;
+--go to admin panel
+in the last add thisline
+

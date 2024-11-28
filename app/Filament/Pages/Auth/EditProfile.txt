@@ -1,0 +1,77 @@
+<?php
+
+namespace App\Filament\Pages\Auth;
+
+use Filament\Pages\Page;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\PasswordInput;
+use Illuminate\Support\Facades\Auth;
+
+class EditProfile extends Page
+{
+    protected static string $view = 'filament.pages.auth.edit-profile'; // Can be removed if you aren't using a Blade view
+
+    public static function getLabel(): string
+    {
+        $user = Auth::user();
+        return $user ? $user->name : 'Edit Profile';
+    }
+
+    // Define the schema for the profile form
+    protected function getFormSchema(): array
+    {
+        return [
+            TextInput::make('name')
+                ->label('Name')
+                ->default(Auth::user()->name)
+                ->required(),
+            
+            TextInput::make('email')
+                ->label('Email')
+                ->default(Auth::user()->email)
+                ->required()
+                ->email(),
+            
+            TextInput::make('department')
+                ->label('Department')
+                ->default(Auth::user()->department)
+                ->required(),
+            
+            TextInput::make('designation')
+                ->label('Designation')
+                ->default(Auth::user()->designation)
+                ->required(),
+            
+            PasswordInput::make('password')
+                ->label('New Password')
+                ->nullable()
+                ->minLength(8)
+                ->required(),
+        ];
+    }
+
+    // Handle form submission
+    public function submit()
+    {
+        $this->validate();
+
+        $user = Auth::user();
+        $user->update([
+            'name' => $this->form->getState()['name'],
+            'email' => $this->form->getState()['email'],
+            'department' => $this->form->getState()['department'],
+            'designation' => $this->form->getState()['designation'],
+            'password' => $this->form->getState()['password'] ? bcrypt($this->form->getState()['password']) : $user->password,
+        ]);
+
+        session()->flash('success', 'Profile updated successfully.');
+
+        return redirect()->route('filament.pages.auth.edit-profile'); // Redirect after successful update
+    }
+
+    // Optionally, you can define the success or error message in the form.
+    public function render()
+    {
+        return view('filament.pages.auth.edit-profile');
+    }
+}

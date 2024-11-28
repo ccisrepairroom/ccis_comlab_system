@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MonitoringController;
 use Filament\Facades\Filament;
+use App\Filament\Pages\Auth\EditProfile;
+
 
 
 /*
@@ -20,6 +22,13 @@ use Filament\Facades\Filament;
 Route::get('/', function () {
     return redirect('ccis_comlab_system/login');
 });
+/*Route::middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('ccis_comlab_system')->group(function () {
+        // Define the route for the Filament profile page
+        Route::get('/profile', EditProfile::class)->name('filament.admin.auth.profile');
+    });
+});*/
+
 Route::get('download-request-form', function () {
     // Define the path to the file stored in the 'app/Filament/Resources/request_form'
     $filePath = app_path('Filament/Resources/request_form/request_form.pdf');
