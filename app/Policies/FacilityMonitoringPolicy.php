@@ -37,7 +37,8 @@ class FacilityMonitoringPolicy
      */
     public function update(User $user, FacilityMonitoring $facilityMonitoring): bool
     {
-        return $user->hasRole(['super_admin','admin','staff']);
+        //return $user->hasRole(['super_admin','admin','staff']);
+        return false;
     }
 
     /**

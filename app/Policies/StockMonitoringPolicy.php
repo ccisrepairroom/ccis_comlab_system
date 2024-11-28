@@ -45,7 +45,8 @@ class StockMonitoringPolicy
      */
     public function delete(User $user, StockMonitoring $stockMonitoring): bool
     {
-        return $user->hasRole(['super_admin','admin','staff']);
+        //return $user->hasRole(['super_admin','admin','staff']);
+        return false;
     }
 
     /**

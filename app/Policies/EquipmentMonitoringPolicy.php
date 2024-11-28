@@ -37,7 +37,8 @@ class EquipmentMonitoringPolicy
      */
     public function update(User $user, EquipmentMonitoring $equipmentMonitoring): bool
     {
-        return $user->hasRole(['super_admin','admin','staff']);
+       // return $user->hasRole(['super_admin','admin','staff']);
+       return false;
     }
 
     /**
