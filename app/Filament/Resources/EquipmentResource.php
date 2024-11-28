@@ -102,8 +102,8 @@ class EquipmentResource extends Resource
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('description')
-                                    ->placeholder('Specifications, e.g., dimensions, weight, power')
-                                    ->maxLength(255),
+                                    ->placeholder('Specifications, e.g., dimensions, weight, power'),
+                                    
                                 Forms\Components\Select::make('facility_id')
                                     ->relationship('facility', 'name')
                                     ->createOptionForm([
@@ -172,6 +172,11 @@ class EquipmentResource extends Resource
                                 Forms\Components\TextInput::make('serial_no')
                                     ->label('Serial Number')
                                     ->placeholder('Refer to the Equipment sticker.')
+                                    ->unique(
+                                        table: 'equipment', 
+                                        column: 'serial_no', 
+                                        ignoreRecord: true
+                                    )
                                     ->maxLength(255),
                                 /*Forms\Components\Select::make('no_of_stocks')
                                     ->label('No. of Stocks')
