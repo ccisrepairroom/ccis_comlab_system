@@ -23,6 +23,8 @@ use App\Filament\Widgets\EquipmentStatusChart;
 use App\Filament\Widgets\EquipmentsPerCategory;
 use App\Filament\Widgets\EquipmentsPerFacility;
 use App\Filament\Widgets\FacilityPerFacilityType;
+use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
+
 
 
 class AdminPanelProvider extends PanelProvider
@@ -41,7 +43,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('CCIS ComLab System')
             ->favicon(asset('images/ccis.png'))
             ->sidebarFullyCollapsibleOnDesktop()
-            ->profile()
+            //->profile()
             //->brandLogo(asset('images/ccis.png'))
             // ->breadcrumbs(false)
             ->viteTheme('resources/css/filament/admin/theme.css')
@@ -53,11 +55,14 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 \App\Filament\Pages\Dashboard::class,
+               
             ])
                 //Pages\Dashboard::class,
             //])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                //->setNavigationGroup('User Management'),
+                FilamentEditProfilePlugin::make(),
                 //FilamentPeekPlugin::make()
                 // \EightyNine\Approvals\ApprovalPlugin::make(),
 

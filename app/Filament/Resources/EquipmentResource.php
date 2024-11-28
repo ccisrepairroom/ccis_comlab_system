@@ -27,6 +27,11 @@ use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Validation\Rule;
+use Filament\Forms\Components\TextInput;
+use App\Rules\UniquePropertyCategoryEquipment;
+
+
 
 
 class EquipmentResource extends Resource
@@ -163,21 +168,28 @@ class EquipmentResource extends Resource
                                
                                 Forms\Components\TextInput::make('property_no')
                                     ->label('Property Number')
-                                    ->placeholder('Refer to the Equipment sticker.')
-                                    ->maxLength(255),
+                                    ->placeholder('Refer to the Equipment sticker.'),
+                                    /*->rules([
+                                        Rule::unique('equipment') // Validate unique 'property_no' in the 'equipment' table
+                                            ->where(function ($query) {
+                                                return $query->where('category_id', request()->input('category_id'));
+                                            })
+                                            ->ignore(request()->route('equipment')) // Ignore the current record being updated (if updating)
+                                    ])
+                                    ->validationMessages([
+                                        'unique' => 'This property number with the same category already exists.',
+                                    ]),*/
+                                    
+                                    
                                 Forms\Components\TextInput::make('control_no')
                                     ->label('Control Number')
                                     ->placeholder('Refer to the Equipment sticker.')
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('serial_no')
                                     ->label('Serial Number')
-                                    ->placeholder('Refer to the Equipment sticker.')
-                                    ->unique(
-                                        table: 'equipment', 
-                                        column: 'serial_no', 
-                                        ignoreRecord: true
-                                    )
-                                    ->maxLength(255),
+                                    ->placeholder('Refer to the Equipment sticker.'),
+                                   
+                                    
                                 /*Forms\Components\Select::make('no_of_stocks')
                                     ->label('No. of Stocks')
                                     ->options(array_combine(range(1, 1000), range(1, 1000))),
@@ -323,6 +335,11 @@ class EquipmentResource extends Resource
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable()
+                    ->limit(50)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        return strlen($state) > $column->getCharacterLimit() ? $state : null;
+                    })
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()

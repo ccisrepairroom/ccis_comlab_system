@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use App\Rules\UniquePropertyCategoryEquipment;
+use Illuminate\Support\Facades\Validator;
+
 
 class Equipment extends Model
 {
@@ -103,4 +106,22 @@ class Equipment extends Model
         // If it's not numeric, parse it as a normal date
         return Carbon::parse($value)->timezone('Asia/Manila')->format('M-d-y');
     }*/
+
+    protected static function booted()
+    {
+        static::creating(function ($equipment) {
+            // Validate using the custom rule before saving the record
+            $validator = Validator::make($equipment->attributesToArray(), [
+                'property_no' => [
+                    'required',
+                    new UniquePropertyCategoryEquipment($equipment->category_id),
+                ],
+            ]);
+
+            if ($validator->fails()) {
+                throw new \Illuminate\Validation\ValidationException($validator);
+            }
+        });
+    }
+
 }
