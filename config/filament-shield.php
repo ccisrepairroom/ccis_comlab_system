@@ -24,10 +24,7 @@ return [
         'intercept_gate' => 'before', // after
     ],
 
-    'panel_user' => [
-        'enabled' => true,
-        'name' => 'panel_user',
-    ],
+    
     'Admin' => [
             'enabled' => true,
             'name' => 'admin',
