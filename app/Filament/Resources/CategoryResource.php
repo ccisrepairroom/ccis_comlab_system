@@ -60,6 +60,7 @@ class CategoryResource extends Resource
                     Tables\Columns\TextColumn::make('description')
                         ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                         ->searchable()
+                        ->toggleable(isToggledHiddenByDefault: false)
                         ->sortable(),
                         Tables\Columns\TextColumn::make('created_at')
                         ->searchable()
