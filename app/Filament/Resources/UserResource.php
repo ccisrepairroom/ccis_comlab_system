@@ -84,14 +84,29 @@ class UserResource extends Resource
                             ->searchable(),
                         Forms\Components\Select::make('department')
                             ->options([
+                                'Not Applicable'=> 'Not Applicable',
                                 'Information System' => 'Information System',
                                 'Information Technology' => 'Information Technology',
                                 'Computer Science' => 'Computer Science',
                             ]),
-                        Forms\Components\TextInput::make('designation')
+                        Forms\Components\Select::make('designation')
                             //->required()
+                            ->options([
+                                'CCIS Dean'=>    'CCIS Dean',
+                                'Lab Technician' =>  'Lab Technician',
+                                'Comlab Adviser' =>'Comlab Adviser' ,
+                                'Department Chairperson' =>  'Department Chairperson',
+                                'Associate Dean' =>    'Associate Dean',
+                                'College Clerk' => 'College Clerk',
+                                'Student Assistant' => 'Student Assistant',
+                                'Instructor' => 'Instructor',
+                                'Lecturer' => 'Lecturer' ,
+                                'Other' => 'Other',
+    
+                                
+                            ]),
                 
-                            ->maxLength(255),
+                           
                         Forms\Components\TextInput::make('password')->confirmed()
                             ->password()
                             ->required()
