@@ -107,7 +107,7 @@ class Equipment extends Model
         return Carbon::parse($value)->timezone('Asia/Manila')->format('M-d-y');
     }*/
 
-    protected static function booted()
+    /*protected static function booted()
     {
         static::creating(function ($equipment) {
             // Validate using the custom rule before saving the record
@@ -122,6 +122,6 @@ class Equipment extends Model
                 throw new \Illuminate\Validation\ValidationException($validator);
             }
         });
-    }
+    }*/
 
 }
