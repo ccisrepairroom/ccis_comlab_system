@@ -266,14 +266,16 @@ class UserResource extends Resource
                 ->options(
                     User::query()
                         ->whereNotNull('created_at') // Filter out null values
-                        ->get(['created_at']) // Fetch the 'created_at' values
+                        ->distinct() // Ensure distinct dates
+                        ->get(['created_at'])
                         ->mapWithKeys(function ($user) {
-                            $date = $user->created_at; // Access the created_at field
-                            $formattedDate = \Carbon\Carbon::parse($date)->format('F j, Y');
-                            return [$date->toDateString() => $formattedDate]; // Use string representation as key
+                            // Parse created_at as a Carbon instance
+                            $date = \Carbon\Carbon::parse($user->created_at);
+                            // Use only the date (Y-m-d) for filtering purposes
+                            return [$date->toDateString() => $date->format('F j, Y')];
                         })
                         ->toArray()
-                ),
+                    ),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

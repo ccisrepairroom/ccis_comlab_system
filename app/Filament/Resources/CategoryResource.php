@@ -11,6 +11,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Filters\SelectFilter;
+
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
@@ -73,7 +76,19 @@ class CategoryResource extends Resource
                      
                 ])
                 ->filters([
-                    // Add any filters here if needed
+                    SelectFilter::make('created_at')
+                ->label('Created At')
+                ->options(
+                    Category::query()
+                        ->whereNotNull('created_at') // Filter out null values
+                        ->get(['created_at']) // Fetch the 'created_at' values
+                        ->mapWithKeys(function ($user) {
+                            $date = $user->created_at; // Access the created_at field
+                            $formattedDate = \Carbon\Carbon::parse($date)->format('F j, Y');
+                            return [$date->toDateString() => $formattedDate]; // Use string representation as key
+                        })
+                        ->toArray()
+                ),
                 ])
                 ->actions([
                     Tables\Actions\ActionGroup::make([

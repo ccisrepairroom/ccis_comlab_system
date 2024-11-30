@@ -136,6 +136,19 @@ class SuppliesCartResource extends Resource
                     ->relationship('category', 'description'),
                 SelectFilter::make('Facility')
                     ->relationship('facility', 'name'),
+                SelectFilter::make('created_at')
+                    ->label('Date Requested')
+                    ->options(
+                        SuppliesCart::query()
+                            ->whereNotNull('created_at') // Filter out null values
+                            ->get(['created_at']) // Fetch the 'created_at' values
+                            ->mapWithKeys(function ($user) {
+                                $date = $user->created_at; // Access the created_at field
+                                $formattedDate = \Carbon\Carbon::parse($date)->format('F j, Y');
+                                return [$date->toDateString() => $formattedDate]; // Use string representation as key
+                            })
+                            ->toArray()
+                    ),
             ])
             ->actions([
                 //Tables\Actions\EditAction::make(),

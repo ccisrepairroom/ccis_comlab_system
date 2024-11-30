@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Models\StockUnit;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Filters\SelectFilter;
 
 
 class StockUnitsResource extends Resource
@@ -79,8 +81,19 @@ class StockUnitsResource extends Resource
                      
                 ])
                 ->filters([
-                    // Add any filters here if needed
-                ])
+                    SelectFilter::make('created_at')
+                    ->label('Created At')
+                    ->options(
+                        StockUnit::query()
+                            ->whereNotNull('created_at') // Filter out null values
+                            ->get(['created_at']) // Fetch the 'created_at' values
+                            ->mapWithKeys(function ($user) {
+                                $date = $user->created_at; // Access the created_at field
+                                $formattedDate = \Carbon\Carbon::parse($date)->format('F j, Y');
+                                return [$date->toDateString() => $formattedDate]; // Use string representation as key
+                            })
+                            ->toArray()
+                    ),                ])
                 ->actions([
                     Tables\Actions\ActionGroup::make([
                         Tables\Actions\EditAction::make(),
