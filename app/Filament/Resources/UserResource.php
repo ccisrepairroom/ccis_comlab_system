@@ -72,9 +72,8 @@ class UserResource extends Resource
                         Forms\Components\TextInput::make('email')
                             ->email()
                             ->rules([
-                                'regex:/^[\w\.-]+@carsu\.edu\.ph$/',
-                                ])
-                            ->placeholder('Must end with @carsu.edu.ph (e.g., user@carsu.edu.ph)')
+                                'regex:/^[\w\.-]+@carsu\.edu\.ph$/', // Custom regex for domain check
+                            ])
                             ->default(''),
                         Forms\Components\Select::make('roles')
                             ->label('Role')
