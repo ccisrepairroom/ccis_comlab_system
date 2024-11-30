@@ -27,7 +27,7 @@ class ListUsers extends ListRecords
             Actions\CreateAction::make()
             ->label('Create'),
         ];
-        /*if (!$isFaculty) {
+        if (!$isFaculty) {
             // Only add the import action if the user is not a panel_user
             $actions[] = Action::make('importUsers')
                 ->label('Import')
@@ -47,7 +47,7 @@ class ListUsers extends ListRecords
                         ->success()
                         ->send();
                 });
-        }*/
+        }
         
 
         return $actions;

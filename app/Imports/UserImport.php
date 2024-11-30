@@ -34,6 +34,8 @@ $data = [
     'role' =>  $this->getRoleId($row['role']) ?? null,
      //$row['role'] ?? null,
     'password' => $row['password'] ?? null,
+    'department' => $row['department'] ?? null,
+    'designation' => $row['designation'] ?? null,
     'created_at' => $row['created_at'] ?? null,
     
 ];
@@ -43,6 +45,8 @@ $data = [
         'name',
         'email',
         'role' ,
+        'department',
+        'designation',
         'password',
         'created_at',
       
