@@ -122,7 +122,7 @@ class UserResource extends Resource
                             ->revealable()
                             ->visible(fn ($livewire) =>$livewire instanceof Pages\CreateUser),
                     ]),
-                    Section::make('User New Password')->schema([
+                    /*Section::make('User New Password')->schema([
                         
                         Forms\Components\TextInput::make('new_password')
                             ->password()
@@ -142,7 +142,7 @@ class UserResource extends Resource
                             ->revealable(),
                          
                     ])
-                    ->visible(fn ($livewire) => $livewire instanceof Pages\EditUser),
+                    ->visible(fn ($livewire) => $livewire instanceof Pages\EditUser),*/
                     
             ]);
     }

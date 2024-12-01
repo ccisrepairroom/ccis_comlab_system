@@ -73,7 +73,7 @@ class RolePolicy
      */
     public function forceDelete(User $user, Role $role): bool
     {
-       // return $user->can('{{ ForceDelete }}');
+        //return $user->can('{{ ForceDelete }}');
        return false;
     }
 
