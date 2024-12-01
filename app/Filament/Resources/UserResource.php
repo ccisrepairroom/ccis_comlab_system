@@ -208,6 +208,7 @@ class UserResource extends Resource
 
         return $table
             ->query(User::with('roles'))
+            ->description('This page contains the list of all users. For more information, go to the dashboard to download the user manual.')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()

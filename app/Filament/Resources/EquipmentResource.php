@@ -41,12 +41,13 @@ class EquipmentResource extends Resource
     // protected static ?string $navigationGroup = 'Equipment';
     protected static ?string $label = 'Equipment';
     protected static ?string $navigationLabel = 'Equipment';
+
     public static ?string $slug = 'equipment';
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
     protected static ?string  $recordTitleAttribute = 'description';
 
-    
+ 
     
     public function query(): Builder
     {
@@ -317,6 +318,8 @@ class EquipmentResource extends Resource
     
        
         return $table
+            ->description('To borrow, select an equipment. An "Actions" button will appear. Click it and choose "Add to Request List". 
+           For more information, go to the dashboard to download the user manual.')
             ->columns([
                 Tables\Columns\TextColumn::make('po_number')
                     ->label('PO Number')

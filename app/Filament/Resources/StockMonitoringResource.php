@@ -59,7 +59,8 @@ class StockMonitoringResource extends Resource
 
         return $table
         ->query(StockMonitoring::query()->with('suppliesAndMaterials')) // This pulls all records from the stock_monitorings table
-            ->columns([
+        ->description('This page contains the history of stock monitoring. For more information, go to the dashboard to download the user manual.')    
+        ->columns([
                 //Tables\Columns\TextColumn::make('id')->sortable(),
                 Tables\Columns\TextColumn::make('monitored_date')
                 ->sortable()

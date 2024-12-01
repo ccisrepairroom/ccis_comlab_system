@@ -76,6 +76,7 @@ class SuppliesCartResource extends Resource
 
         return $table
             ->query(SuppliesCart::with('stockUnit'))
+            ->description('This page contains the list of all requested supplies. For more information, go to the dashboard to download the user manual.')
             ->columns([
                 Tables\Columns\TextColumn::make('requested_by')
                     ->label('Requested By')

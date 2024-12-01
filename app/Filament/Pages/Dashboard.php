@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 use Filament\Pages\Page;
 
-use Filament\Pages\Actions\Action; 
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
@@ -23,7 +22,7 @@ use App\Filament\Widgets\Disposed;
 use App\Filament\Widgets\PersonLiable;
 use App\Filament\Widgets\EquipmentCountPerPersonLiable;
 use App\Filament\Widgets\FacilityPerFloorLevel;
-
+use Filament\Pages\Actions\Action;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 
@@ -72,6 +71,16 @@ class Dashboard extends \Filament\Pages\Dashboard
         ])->columns(3);
     }
 
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('downloadUserManual')
+                ->label('Download User Manual')
+                ->color('primary')
+                ->url(route('download.user.manual'))
+                ->openUrlInNewTab(),
+        ];
+    }
     /*public function exportToWord()
     {
         $phpWord = new PhpWord();

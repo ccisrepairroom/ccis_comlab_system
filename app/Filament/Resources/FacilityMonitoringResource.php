@@ -61,6 +61,7 @@ class FacilityMonitoringResource extends Resource
                 ->query(FacilityMonitoring::query()
                 ->with(['facility', 'user']) 
                 )
+            ->description('This page contains the history of facility monitoring. For more information, go to the dashboard to download the user manual.')
             ->columns([
                 Tables\Columns\TextColumn::make('monitored_date')
                 ->sortable()

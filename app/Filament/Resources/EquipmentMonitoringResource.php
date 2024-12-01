@@ -63,6 +63,7 @@ class EquipmentMonitoringResource extends Resource
         ->query(EquipmentMonitoring::query()
                 ->with(['facility', 'user', 'equipment']) 
                 )
+            ->description('This page contains the history of equipment monitoring. For more information, go to the dashboard to download the user manual.')
             ->columns([
                 Tables\Columns\TextColumn::make('monitored_date')
                 ->sortable()

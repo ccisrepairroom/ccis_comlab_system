@@ -151,6 +151,8 @@ class FacilityResource extends Resource
         }
 
         return $table
+            ->description('To request a facility for use, select a facility. An "Actions" button will appear. Click it and choose "Add to Request List".
+            For more information, go to the dashboard to download the user manual.')
             ->query(Facility::with('user'))
             ->columns([
                 Tables\Columns\TextColumn::make('name')

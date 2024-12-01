@@ -62,6 +62,8 @@ class StockUnitsResource extends Resource
             }
             return $table
             ->query(StockUnit::with('user'))
+            ->description('This page contains all the stock units of the supplies and materials. 
+            For more information, go to the dashboard to download the user manual.')
             ->columns([
     
          

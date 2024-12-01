@@ -223,6 +223,8 @@ class RequestListResource extends Resource
                     $query->where('user_id', Auth::id());
                 }
             })
+            ->description('Wait until an admin or staff approves your request. Once approved, it will be added to borrowed items.
+            For more information, go to the dashboard to download the user manual.')
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
                 ->label('Requested at')

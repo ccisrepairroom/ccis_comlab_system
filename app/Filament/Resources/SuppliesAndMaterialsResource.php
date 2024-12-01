@@ -224,6 +224,8 @@ class SuppliesAndMaterialsResource extends Resource
         }
 
         return $table
+            ->description('Supplies refer to consumable items. To request, select an item. An "Actions" button will appear. Click it and choose "Add to Supplies Cart".
+            For more information, go to the dashboard to download the user manual.')
             ->columns([
                 Tables\Columns\TextColumn::make('item')
                     ->label('Item')                

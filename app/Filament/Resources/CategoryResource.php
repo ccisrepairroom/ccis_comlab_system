@@ -57,6 +57,7 @@ class CategoryResource extends Resource
             }
             return $table
             ->query(Category::with('user'))
+            ->description('This page contains all the equipment and supplies categories. For more information, go to the dashboard to download the user manual.')
             ->columns([
     
          

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MonitoringController;
 use Filament\Facades\Filament;
+use Filament\Actions\Action;
 use App\Filament\Pages\Auth\EditProfile;
 
 
@@ -40,6 +41,23 @@ Route::get('download-request-form', function () {
         abort(404, 'File not found.');
     }
 })->name('download.request.form');
+Route::get('/download-user-manual', function () {
+    $filePath = app_path('Filament/Resources/user_manual/user_manual.pdf');
+    return response()->download($filePath);
+})->name('download.user.manual');
+
+
+/*Route::get('download-user-manual', function () {
+    // Define the path to the file stored in the 'app/Filament/Resources/request_form'
+    $filePath = app_path('Filament/Resources/user_manual/user_manual.pdf');
+
+    // Check if the file exists and return it for download
+    if (file_exists($filePath)) {
+        return Response::download($filePath);
+    } else {
+        abort(404, 'File not found.');
+    }
+})->name('download.user.manual');*/
 
 
 Route::middleware(['auth', 'verified'])->group(function () {

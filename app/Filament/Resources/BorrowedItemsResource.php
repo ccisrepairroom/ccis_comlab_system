@@ -100,6 +100,8 @@ class BorrowedItemsResource extends Resource
             }
             return $table
             ->query(BorrowedItems::with('user'))
+            ->description('This page contains the list of all the requested/borrowed equipment and facilities.
+            For more information, go to the dashboard to download the user manual.')
             ->columns([
 
        /* return $table
