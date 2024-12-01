@@ -284,7 +284,7 @@ class FacilityResource extends Resource
                         ->requiresConfirmation()
                         ->modalIcon('heroicon-o-check')
                         ->modalHeading('Add to Monitoring')
-                        ->modalDescription('Confirm to add selected items to your Monitoring')
+                        ->modalDescription('Confirm to add selected facility to your Monitoring')
                         ->form(function (Forms\Form $form, $record) {
                             return $form->schema([
                                 Forms\Components\Select::make('monitored_by')
@@ -324,7 +324,7 @@ class FacilityResource extends Resource
                             Notification::make()
                                 ->success()
                                 ->title('Success')
-                                ->body('Selected items have been added to your monitoring.')
+                                ->body('Selected facility/ies have been added to your monitoring.')
                                 ->send();
                         })
                         ->hidden(fn () => $isFaculty),
