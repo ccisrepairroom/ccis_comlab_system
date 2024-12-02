@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Collection;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Columns\TextColumn;
+
 
 
 class BorrowedItemsResource extends Resource
@@ -154,7 +156,11 @@ class BorrowedItemsResource extends Resource
                     ->label('Category')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false)
-
+                    ->limit(50)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        return strlen($state) > $column->getCharacterLimit() ? $state : null;
+                    })
                     ->searchable(),
                 /*Tables\Columns\TextColumn::make('equipment.status')
                     ->label('Status')

@@ -159,6 +159,7 @@ class RequestListResource extends Resource
                         Forms\Components\FileUpload::make('request_form')
                             ->label('Signed Request Form/Image for proof')
                             ->disk('public')
+                            ->maxSize(1048576)
                             ->required()
                             ->directory('request_forms')
                             ->preserveFilenames()
