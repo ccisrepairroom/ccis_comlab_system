@@ -204,6 +204,7 @@ class BorrowedItemsResource extends Resource
                 Tables\Columns\TextColumn::make('request_form')
                 ->label('Signed Request Form')
                 ->sortable()
+                
                 ->toggleable(isToggledHiddenByDefault: false)
                 ->formatStateUsing(fn (string $state): string => basename($state)),
 
