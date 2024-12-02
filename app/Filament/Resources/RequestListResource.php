@@ -157,7 +157,7 @@ class RequestListResource extends Resource
                                 ->view('components.download-link'),*/
                         ]),
                         Forms\Components\FileUpload::make('request_form')
-                            ->label('Signed Request Form/Image for proof')
+                            ->label('Signed Request Form/Image for proof. Must be an image or PDF file')
                             ->disk('public')
                             ->maxSize(921600)
                             ->required()
@@ -400,7 +400,7 @@ class RequestListResource extends Resource
                                         ->view('components.download-link'),*/
                                 ]),
                             Forms\Components\FileUpload::make('request_form')
-                                ->label('Signed Request Form/Image for proof')
+                                ->label('Signed Request Form/Image for proof. Must be an image or PDF file')
                                 ->disk('public')
                                 ->maxSize(921600)
                                 ->required()
