@@ -324,7 +324,7 @@ class FacilityResource extends Resource
                             Notification::make()
                                 ->success()
                                 ->title('Success')
-                                ->body('Selected facility/ies have been added to your monitoring.')
+                                ->body('Selected facility have been added to your monitoring.')
                                 ->send();
                         })
                         ->hidden(fn () => $isFaculty),

@@ -249,6 +249,11 @@ class RequestListResource extends Resource
                     ->label('Description')
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->toggleable(isToggledHiddenByDefault: false)
+                    ->limit(50)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        return strlen($state) > $column->getCharacterLimit() ? $state : null;
+                    })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.unit_no')
                     ->label('Unit Number')
@@ -295,6 +300,7 @@ class RequestListResource extends Resource
                 Tables\Columns\TextColumn::make('equipment.remarks')
                     ->label('Remarks')
                     ->toggleable(isToggledHiddenByDefault: true)
+                    
                     ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.person_liable')
                     ->label('Person_liable')
