@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Columns\TextColumn;
+
 
 
 class RequestListResource extends Resource
@@ -254,6 +256,7 @@ class RequestListResource extends Resource
                         $state = $column->getState();
                         return strlen($state) > $column->getCharacterLimit() ? $state : null;
                     })
+                   
                     ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.unit_no')
                     ->label('Unit Number')
