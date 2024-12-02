@@ -266,7 +266,7 @@ class EquipmentResource extends Resource
                             [
                                 'user_id' => auth()->id(),
                                 'equipment_id' => $equipmentId,
-                                'facility_id' => $facilityId,
+                                'facility_id' => $facilityId ?? null,
                             ]
                         );
                 
