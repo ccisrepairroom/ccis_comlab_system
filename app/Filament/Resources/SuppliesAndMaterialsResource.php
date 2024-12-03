@@ -309,7 +309,7 @@ class SuppliesAndMaterialsResource extends Resource
                             ->pluck('date_acquired', 'date_acquired')
                             ->toArray()
                     ),
-                    SelectFilter::make('created_at')
+                    /*SelectFilter::make('created_at')
                     ->label('Created At')
                     ->options(
                         SuppliesAndMaterials::query()
@@ -321,7 +321,7 @@ class SuppliesAndMaterialsResource extends Resource
                                 return [$date->toDateString() => $formattedDate]; // Use string representation as key
                             })
                             ->toArray()
-                    ),
+                    ),*/
                     
                     
             ])

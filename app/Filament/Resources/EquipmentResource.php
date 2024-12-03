@@ -543,7 +543,7 @@ class EquipmentResource extends Resource
                             ->pluck('description', 'description')
                             ->toArray()
                     ), 
-                        SelectFilter::make('created_at')
+                        /*SelectFilter::make('created_at')
                     ->label('Created At')
                     ->options(
                         Category::query()
@@ -555,7 +555,7 @@ class EquipmentResource extends Resource
                                 return [$date->toDateString() => $formattedDate]; // Use string representation as key
                             })
                             ->toArray()
-                    ),
+                    ),*/
                     
                 ])
                 /*->recordUrl(function ($record) {

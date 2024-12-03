@@ -83,7 +83,7 @@ class StockUnitsResource extends Resource
                      
                 ])
                 ->filters([
-                    SelectFilter::make('created_at')
+                    /*SelectFilter::make('created_at')
                     ->label('Created At')
                     ->options(
                         StockUnit::query()
@@ -95,7 +95,8 @@ class StockUnitsResource extends Resource
                                 return [$date->toDateString() => $formattedDate]; // Use string representation as key
                             })
                             ->toArray()
-                    ),                ])
+                    ),  */
+                        ])
                 ->actions([
                     Tables\Actions\ActionGroup::make([
                         Tables\Actions\EditAction::make(),

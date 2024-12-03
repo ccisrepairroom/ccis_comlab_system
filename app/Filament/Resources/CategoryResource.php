@@ -77,7 +77,7 @@ class CategoryResource extends Resource
                      
                 ])
                 ->filters([
-                    SelectFilter::make('created_at')
+                    /*SelectFilter::make('created_at')
                 ->label('Created At')
                 ->options(
                     Category::query()
@@ -89,7 +89,7 @@ class CategoryResource extends Resource
                             return [$date->toDateString() => $formattedDate]; // Use string representation as key
                         })
                         ->toArray()
-                ),
+                ),*/
                 ])
                 ->actions([
                     Tables\Actions\ActionGroup::make([
