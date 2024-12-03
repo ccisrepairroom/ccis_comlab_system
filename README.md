@@ -20,6 +20,9 @@ php artisan serve <br>
 Go to file, "UserSeeder", and log in that credential for Superadmin.
 When get to the dashboard, go to roles, select a role, and hit the "select all" beside guard web
 
+Change code for the policies per role. Go to "C:\Users\vgpu-client-2\Desktop\ccis_comlab_system\app\Policies"
+Then change the code for each file...
+
 To improve performance, run the ff. commands
 php artisan optimize:clear <br>
 php artisan icons:cache <br>
