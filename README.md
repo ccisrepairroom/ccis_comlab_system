@@ -13,6 +13,8 @@ php artisan storage:link <br>
 npm run dev <br>
 php artisan shield:install <br>
 php artisan shield:super-admin <br>
+--What panel? ***type "admin" then enter
+--fresh install? ***type "yes"
 php artisan serve <br>
 
 Go to file, "UserSeeder", and log in that credential for Superadmin.
