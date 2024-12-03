@@ -21,7 +21,7 @@ use App\Filament\Pages\Auth\EditProfile;
 */
 
 Route::get('/', function () {
-    return redirect('ccis_comlab_system/login');
+    return redirect('ccis_erma/login');
 });
 /*Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('ccis_comlab_system')->group(function () {
