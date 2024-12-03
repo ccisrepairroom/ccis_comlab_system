@@ -21,7 +21,8 @@ Go to file, "UserSeeder", and log in that credential for Superadmin.
 When get to the dashboard, go to roles, select a role, and hit the "select all" beside guard web
 
 Change code for the policies per role. Go to "C:\Users\vgpu-client-2\Desktop\ccis_comlab_system\app\Policies"
-Then change the code for each file...
+Then change the code for each file...The codes to copy and paste can be located here: "C:\Users\Desktop\ccis_comlab_system\1caps\Policies to copy paste"
+Just change the codes every file.
 
 To improve performance, run the ff. commands
 php artisan optimize:clear <br>
