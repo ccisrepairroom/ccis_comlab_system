@@ -12,3 +12,23 @@
     @apply font-bold;
 }
 
+/* Sidebar logo styling */
+.filament-sidebar .filament-sidebar-brand {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #fff; /* Optional: Match your theme color */
+    padding: 10px; /* Adjust padding as needed */
+    text-align: center;
+}
+
+.filament-sidebar .filament-sidebar-brand img {
+    max-height: 40px; /* Keep this consistent with brandLogoHeight */
+    width: auto;
+}
+
+.filament-sidebar.collapsed .filament-sidebar-brand img {
+    max-height: 40px; /* Same for collapsed view */
+    margin: 0 auto;
+}
+

@@ -43,6 +43,7 @@ class EquipmentResource extends Resource
     protected static ?string $navigationLabel = 'Equipment';
 
     public static ?string $slug = 'equipment';
+   // protected ?string $maxContentWidth = 'full';
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
     protected static ?string  $recordTitleAttribute = 'description';
