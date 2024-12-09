@@ -43,7 +43,7 @@ class AdminPanelProvider extends PanelProvider
             //->passwordReset()
             ->brandName('CCIS ERMA')
             ->favicon(asset('images/ccis.png'))
-            ->sidebarFullyCollapsibleOnDesktop()
+            ->sidebarCollapsibleOnDesktop()
             ->profile()
             ->brandLogo(asset('images/logo.png'))
             ->darkModeBrandLogo(asset('images/darklogo.png'))
