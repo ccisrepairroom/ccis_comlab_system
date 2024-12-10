@@ -115,7 +115,7 @@ class BorrowedItemsResource extends Resource
                 }
             })*/
                 Tables\Columns\TextColumn::make('borrowed_date')
-                    ->label('Date Created')
+                    ->label('Date Borrowed')
                     ->searchable()
                     ->sortable()
                     

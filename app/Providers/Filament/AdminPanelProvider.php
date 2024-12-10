@@ -45,7 +45,7 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(asset('images/ccis.png'))
             ->sidebarCollapsibleOnDesktop()
             ->profile()
-            ->brandLogo(asset('images/logo.png'))
+            ->brandLogo(asset('images/ccis_orangelogo.png'))
             ->darkModeBrandLogo(asset('images/darklogo.png'))
             ->brandLogoHeight(20)
             ->breadcrumbs(false)

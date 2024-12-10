@@ -43,7 +43,7 @@ class ListEquipment extends ListRecords
         
 
         if (!$isFaculty) {
-            // Only add the import action if the user is not a panel_user
+            // Only add the import action if the user is not a faculty
             $actions[] = Action::make('importEquipment')
                 ->label('Import')
                 ->color('success')
