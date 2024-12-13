@@ -66,38 +66,44 @@ class ListSuppliesAndMaterials extends ListRecords
     }
     protected function getCriticalStocksCount(): int
     {
-        // Fetch supplies where quantity is less than or equal to the stocking point
-        // Add a condition to ensure no null or negative quantities
+        // Fetch critical stock items (where quantity <= stocking point)
         $criticalStocks = SuppliesAndMaterials::whereColumn('quantity', '<=', 'stocking_point')
             ->where('quantity', '>=', 0) // Ensure quantity is not negative
             ->whereNotNull('quantity') // Ensure quantity is not null
             ->whereNotNull('stocking_point') // Ensure stocking point is not null
             ->get();
-
-
-        // Debugging: log the critical items to the error log for inspection
-        \Log::debug('Critical Stocks: ', $criticalStocks->toArray());
-        
-
-        // Iterate through each critical stock item
-    foreach ($criticalStocks as $stock) {
-        // Check if a notification for this item already exists
-        $existingNotification = DB::table('notifications')
-            ->where('data->supplies_and_materials_id', $stock->id)
-            ->exists();
-
-        if (!$existingNotification) {
-            // Send notification if it doesn't already exist
-            $recipient = auth()->user();
-            $recipient->notify(
-                Notification::make()
-                    ->title('Critical Stock Alert')
-                    ->color('danger')
-                    ->body("Item '{$stock->item}' is out of stock with a quantity left of {$stock->quantity}.")
-                    ->toDatabase(['supplies_and_materials_id' => $stock->id]) // Include the item ID in the notification data
-            );
+    
+        foreach ($criticalStocks as $stock) {
+            // Check if a notification already exists for this item
+            $existingNotification = DB::table('notifications')
+                ->where('type', '=', 'critical_stock_alert') // Specific type for critical stock alerts
+                ->where('data->supplies_and_materials_id', $stock->id)
+                ->exists();
+    
+            if ($existingNotification) {
+                // If a notification exists, update its timestamp (updated_at)
+                DB::table('notifications')
+                    ->where('data->supplies_and_materials_id', $stock->id)
+                    ->where('type', '=', 'critical_stock_alert')
+                    ->update([
+                        'updated_at' => now() // Update the timestamp to the current date
+                    ]);
+            } else {
+                // Send a new notification only if it does not already exist
+                $recipient = auth()->user();
+                $recipient->notify(
+                    Notification::make()
+                        ->title('Critical Stock Alert')
+                        ->color('danger')
+                        ->body("Item '{$stock->item}' is critically low with a quantity of {$stock->quantity}.")
+                        ->toDatabase([
+                            'type' => 'critical_stock_alert', // Type for easy identification
+                            'supplies_and_materials_id' => $stock->id, // Associate notification with stock item
+                        ])
+                );
+            }
         }
-    }
+    
         return $criticalStocks->count();
     }
 
