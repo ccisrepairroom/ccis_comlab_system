@@ -13,6 +13,8 @@ use Filament\Forms\Components\FileUpload;
 use Maatwebsite\Excel\Facades\Excel;
 use Filament\Notifications\Notification;
 use Filament\Resources\Components\Tab;
+use Illuminate\Support\Facades\DB;
+
 
 
 
@@ -75,17 +77,27 @@ class ListSuppliesAndMaterials extends ListRecords
 
         // Debugging: log the critical items to the error log for inspection
         \Log::debug('Critical Stocks: ', $criticalStocks->toArray());
+        
 
-        foreach ($criticalStocks as $stock) {
+        // Iterate through each critical stock item
+    foreach ($criticalStocks as $stock) {
+        // Check if a notification for this item already exists
+        $existingNotification = DB::table('notifications')
+            ->where('data->supplies_and_materials_id', $stock->id)
+            ->exists();
+
+        if (!$existingNotification) {
+            // Send notification if it doesn't already exist
             $recipient = auth()->user();
             $recipient->notify(
                 Notification::make()
                     ->title('Critical Stock Alert')
-                    ->body("Item '{$stock->item}' is running low with a quantity of {$stock->quantity}.")
-                    ->toDatabase()
+                    ->color('danger')
+                    ->body("Item '{$stock->item}' is out of stock with a quantity left of {$stock->quantity}.")
+                    ->toDatabase(['supplies_and_materials_id' => $stock->id]) // Include the item ID in the notification data
             );
         }
-
+    }
         return $criticalStocks->count();
     }
 
