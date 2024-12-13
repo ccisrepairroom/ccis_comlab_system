@@ -72,8 +72,19 @@ class ListSuppliesAndMaterials extends ListRecords
             ->whereNotNull('stocking_point') // Ensure stocking point is not null
             ->get();
 
+
         // Debugging: log the critical items to the error log for inspection
         \Log::debug('Critical Stocks: ', $criticalStocks->toArray());
+
+        foreach ($criticalStocks as $stock) {
+            $recipient = auth()->user();
+            $recipient->notify(
+                Notification::make()
+                    ->title('Critical Stock Alert')
+                    ->body("Item '{$stock->item}' is running low with a quantity of {$stock->quantity}.")
+                    ->toDatabase()
+            );
+        }
 
         return $criticalStocks->count();
     }
