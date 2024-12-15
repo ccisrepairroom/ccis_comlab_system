@@ -16,6 +16,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Route;
 
 
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;

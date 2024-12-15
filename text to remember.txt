@@ -249,3 +249,6 @@ public static bool $shouldRegisterNavigation=false;
 --go to admin panel
 in the last add thisline
 
+**** if black screen
+composer require spatie/laravel-permission
+php artisan shield:install

@@ -60,6 +60,7 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Pages\Dashboard::class,
                
             ])
+            
                 //Pages\Dashboard::class,
             //])
             ->plugins([

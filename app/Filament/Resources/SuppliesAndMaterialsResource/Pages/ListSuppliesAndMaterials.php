@@ -6,7 +6,6 @@ use App\Filament\Resources\SuppliesAndMaterialsResource;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
-use Illuminate\Database\Eloquent\Builder;
 use App\Imports\SuppliesImport;
 use App\Models\SuppliesAndMaterials;
 use Filament\Forms\Components\FileUpload;
@@ -14,9 +13,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use Filament\Notifications\Notification;
 use Filament\Resources\Components\Tab;
 use Illuminate\Support\Facades\DB;
-
-
-
+use Illuminate\Database\Eloquent\Builder;
+use Spatie\Permission\Traits\HasRoles;
 
 
 class ListSuppliesAndMaterials extends ListRecords
@@ -26,28 +24,25 @@ class ListSuppliesAndMaterials extends ListRecords
     protected function getHeaderActions(): array
     {
         $user = auth()->user(); // Retrieve the currently authenticated user
-        $isFaculty = $user->hasRole('faculty'); // Check if the user has the 'panel_user' role
-        
+        $isFaculty = $user->hasRole('faculty'); // Check if the user has the 'faculty' role
+
         $actions = [
             Actions\CreateAction::make()
-            ->label('Create'),
-            
+                ->label('Create'),
         ];
-    
+
         if (!$isFaculty) {
-            // Only add the import action if the user is not a panel_user
+            // Only add the import action if the user is not a faculty
             $actions[] = Action::make('importSupplies')
                 ->label('Import')
                 ->color('success')
                 ->button()
                 ->form([
                     FileUpload::make('attachment')
-                    ->label('Import an Excel file. Column headers must include: Item, Category, Quantity, Stocking Point, Stock Unit, Facility, Supplier, Date Acquired, and Remarks.
-                     It is okay to have null fields in Excel as long as all the column headers are present.'),
+                        ->label('Import an Excel file. Column headers must include: Item, Category, Quantity, Stocking Point, Stock Unit, Facility, Supplier, Date Acquired, and Remarks. It is okay to have null fields in Excel as long as all the column headers are present.'),
                 ])
                 ->action(function (array $data) {
                     $file = public_path('storage/' . $data['attachment']);
-
                     Excel::import(new SuppliesImport, $file);
 
                     Notification::make()
@@ -56,14 +51,15 @@ class ListSuppliesAndMaterials extends ListRecords
                         ->send();
                 });
         }
-        
 
         return $actions;
     }
+
     protected function getAllSuppliesCount(): int
     {
         return SuppliesAndMaterials::count();
     }
+
     protected function getCriticalStocksCount(): int
     {
         // Fetch critical stock items (where quantity <= stocking point)
@@ -72,14 +68,14 @@ class ListSuppliesAndMaterials extends ListRecords
             ->whereNotNull('quantity') // Ensure quantity is not null
             ->whereNotNull('stocking_point') // Ensure stocking point is not null
             ->get();
-    
+
         foreach ($criticalStocks as $stock) {
             // Check if a notification already exists for this item
             $existingNotification = DB::table('notifications')
                 ->where('type', '=', 'critical_stock_alert') // Specific type for critical stock alerts
                 ->where('data->supplies_and_materials_id', $stock->id)
                 ->exists();
-    
+
             if ($existingNotification) {
                 // If a notification exists, update its timestamp (updated_at)
                 DB::table('notifications')
@@ -103,8 +99,8 @@ class ListSuppliesAndMaterials extends ListRecords
                 );
             }
         }
-    
-        return $criticalStocks->count();
+
+        return $criticalStocks->count(); // Return the count of critical stocks
     }
 
     public function getBreadcrumbs(): array
@@ -112,10 +108,10 @@ class ListSuppliesAndMaterials extends ListRecords
         return [];
     }
 
-    protected function getTableQuery(): ?Builder
+    protected function query(): Builder
     {
         // Get the base query and order it by the latest created_at field
-        return parent::getTableQuery()->latest('created_at');
+        return parent::query()->latest('created_at');
     }
 
     public function getTabs(): array
