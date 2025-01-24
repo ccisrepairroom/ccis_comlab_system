@@ -175,7 +175,7 @@ class ListEquipment extends ListRecords
             Tab::make('All Equipment')
                 ->badge($this->getAllEquipmentCount())
                 ->modifyQueryUsing(function ($query) {
-                    return $query  ->orderBy('facility_id', 'asc') // No filtering, display all records
+                    return $query  ->orderBy('created_at', 'desc') 
                     //->orderBy('unit_no' , 'desc')
                     ->orderBy('category_id');
 
