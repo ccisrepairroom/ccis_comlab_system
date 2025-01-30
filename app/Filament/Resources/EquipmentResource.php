@@ -580,6 +580,7 @@ class EquipmentResource extends Resource
                     }),*/
                     
                     Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
                     
                 
                     Tables\Actions\ActionGroup::make([
