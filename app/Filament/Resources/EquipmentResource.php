@@ -327,6 +327,7 @@ class EquipmentResource extends Resource
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable()
+                    ->extraAttributes(['class' => 'sticky left-0 bg-white z-10'])
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('unit_no')
                     ->label('Unit Number')
@@ -580,6 +581,7 @@ class EquipmentResource extends Resource
                     }),*/
                     
                     Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
                     
                 
                     Tables\Actions\ActionGroup::make([
