@@ -579,17 +579,16 @@ class EquipmentResource extends Resource
                         ]);
                     }),*/
                     
-                    Tables\Actions\EditAction::make(),
                     
                 
-                    Tables\Actions\ActionGroup::make([
-                       // ListPreviewAction::make(),
+                    // Tables\Actions\ActionGroup::make([
+                    //    // ListPreviewAction::make(),
                         
                        
 
                             Tables\Actions\Action::make('Update Status')
                             ->icon('heroicon-o-plus')
-                            ->color('primary')
+                            ->color('info')
                             ->requiresConfirmation()
                             ->modalIcon('heroicon-o-check')
                             ->modalHeading('Update Equipment Status')
@@ -696,14 +695,20 @@ class EquipmentResource extends Resource
                             })
                        
                             ->hidden(fn () => $isFaculty),
+                            
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
 
-                    ]),
-                ])
+                    ])
+                    
+                
                 ->bulkActions([
 
                     Tables\Actions\BulkActionGroup::make($bulkActions)
                         ->label('Actions')
                 ]);
+
+                
                 
     }
 
