@@ -580,12 +580,8 @@ class EquipmentResource extends Resource
                         ]);
                     }),*/
                     
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                    
+                   
                 
-                    Tables\Actions\ActionGroup::make([
-                       // ListPreviewAction::make(),
                         
                        
 
@@ -695,12 +691,19 @@ class EquipmentResource extends Resource
                                     ->title('Success')
                                     ->body('Status of the selected item/s have been updated.')
                                     ->send();
+                                    
                             })
+                          
                        
                             ->hidden(fn () => $isFaculty),
+                            Tables\Actions\EditAction::make(),
+                            Tables\Actions\DeleteAction::make(),
+                            
 
-                    ]),
-                ])
+                    ])
+                  
+                    
+            
                 ->bulkActions([
 
                     Tables\Actions\BulkActionGroup::make($bulkActions)
