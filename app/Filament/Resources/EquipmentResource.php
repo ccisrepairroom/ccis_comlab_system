@@ -587,7 +587,7 @@ class EquipmentResource extends Resource
 
                             Tables\Actions\Action::make('Update Status')
                             ->icon('heroicon-o-plus')
-                            ->color('primary')
+                            ->color('info')
                             ->requiresConfirmation()
                             ->modalIcon('heroicon-o-check')
                             ->modalHeading('Update Equipment Status')
