@@ -579,11 +579,7 @@ class EquipmentResource extends Resource
                             'monitorings' => $monitorings,
                         ]);
                     }),*/
-                    
-                   
-                
-                        
-                       
+
 
                             Tables\Actions\Action::make('Update Status')
                             ->icon('heroicon-o-plus')
