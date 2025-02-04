@@ -4,46 +4,12 @@
       <div class="flex flex-wrap mb-24 -mx-3">
         <div class="w-full pr-2 lg:w-1/4 lg:block">
           <div class="p-4 mb-5 bg-white border border-gray-200 dark:border-gray-900 dark:bg-gray-900">
-            <h2 class="text-2xl font-bold dark:text-gray-400"> Categories</h2>
+            <h2 class="text-2xl font-bold dark:text-gray-400"> Filter By:</h2>
             <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div>
-            <ul>
-              <li class="mb-4">
-                <label for="" class="flex items-center dark:text-gray-400 ">
-                  <input type="checkbox" class="w-4 h-4 mr-2 accent-orange-500">
-                  <span class="text-lg">All-one Desktop</span>
-                </label>
-            </ul>
-    <!-- Start Facilities Section -->
-        </div>
-          <div class="p-4 mb-5 bg-white border border-gray-200 dark:border-gray-900 dark:bg-gray-900">
-            <h2 class="text-2xl font-bold dark:text-gray-400"> Facilities</h2>
-            <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div>
-            <ul>
-              <li class="mb-4">
-                <label for="" class="flex items-center dark:text-gray-400 ">
-                  <input type="checkbox" class="w-4 h-4 mr-2 accent-orange-500">
-                  <span class="text-lg">CL1</span>
-                </label>
-              </li>
-            </ul>
-        <!-- End Facilities Section -->
-    </div>
-    </div>
-      <!-- <div class="w-full px-3 lg:w-3/4">
-          <div class="px-3 mb-4">
-            <div class="items-center justify-between hidden px-3 py-2 bg-gray-100 md:flex dark:bg-gray-900 ">
-              <div class="flex items-center justify-between">
-                <select name="" id="" class="block w-40 text-base bg-gray-100 cursor-pointer dark:text-gray-400 dark:bg-gray-900">
-                  <option value="">Sort by latest</option>
-                  <option value="">Sort by Price</option>
-                </select>
-              </div>
-            </div>
-          </div> -->
 
-  <!-- Start Dropdown Section -->
+             <!-- Start Dropdown Section -->
  <div>      
-<button id="dropdownCheckboxButton" data-dropdown-toggle="dropdownDefaultCheckbox" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Dropdown checkbox <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+<button id="dropdownCheckboxButton" data-dropdown-toggle="dropdownDefaultCheckbox" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Categories <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
 </svg>
 </button>
@@ -76,6 +42,36 @@
 
 
 
+            
+    <!-- Start Facilities Section -->
+        </div>
+          <div class="p-4 mb-5 bg-white border border-gray-200 dark:border-gray-900 dark:bg-gray-900">
+            <h2 class="text-2xl font-bold dark:text-gray-400"> Facilities</h2>
+            <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div>
+            <ul>
+              <li class="mb-4">
+                <label for="" class="flex items-center dark:text-gray-400 ">
+                  <input type="checkbox" class="w-4 h-4 mr-2 accent-orange-500">
+                  <span class="text-lg">CL1</span>
+                </label>
+              </li>
+            </ul>
+        <!-- End Facilities Section -->
+    </div>
+    </div>
+      <!-- <div class="w-full px-3 lg:w-3/4">
+          <div class="px-3 mb-4">
+            <div class="items-center justify-between hidden px-3 py-2 bg-gray-100 md:flex dark:bg-gray-900 ">
+              <div class="flex items-center justify-between">
+                <select name="" id="" class="block w-40 text-base bg-gray-100 cursor-pointer dark:text-gray-400 dark:bg-gray-900">
+                  <option value="">Sort by latest</option>
+                  <option value="">Sort by Price</option>
+                </select>
+              </div>
+            </div>
+          </div> -->
+
+ 
 
 
     <!-- Start Fount Items -->

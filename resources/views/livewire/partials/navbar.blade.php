@@ -6,7 +6,7 @@
 
          <!-- Start Logo Section -->
         <a class="flex flex-none" href="/" aria-label="Brand">
-                <img src="{{ asset('images/ccis_orangelogo.png') }}" alt="SM Supermarket Logo" class="h-12 md:h-16 lg:h-20 w-auto">
+                <img src="{{ asset('images/ccislogo1.1.png') }}" alt="SM Supermarket Logo" class="h-12 md:h-16 lg:h-20 w-auto">
             </a>
             <!-- End Logo Section -->
         <!-- Search bar Section -->
