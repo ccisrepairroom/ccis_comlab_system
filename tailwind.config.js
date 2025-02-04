@@ -9,6 +9,8 @@ export default {
         './resources/views/**/*.blade.php',
         "./resources/**/*.{html,js}",
          'node_modules/preline/dist/*.js',
+
+         
     ],
     darkMode:'class',
     theme: {
@@ -20,7 +22,7 @@ export default {
     },
 
     plugins: [
-        forms,
+        // forms,
         require('preline/plugin'),
     ],
 };

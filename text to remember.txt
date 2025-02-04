@@ -256,3 +256,13 @@ php artisan shield:install
 
 ------------------------------
 video 10...livewire video
+video 11: navbar
+
+php artisan make:livewire partials.navbar
+CLASS: app/Livewire//Partials/Navbar.php
+VIEW:  C:\Users\Student\Videos\ccis_comlab_system\resources\views/livewire/partials\navbar.blade.php
+
+https://github.com/DCodeMania/ecommerce-ui-resources
+
+make code in navbar blade. now go back to app.blade.php and insert the partials.navbar under body class
+the app.blade is located in res/views/components/layouts/app.bladde.php
