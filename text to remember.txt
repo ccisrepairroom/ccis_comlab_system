@@ -266,3 +266,56 @@ https://github.com/DCodeMania/ecommerce-ui-resources
 
 make code in navbar blade. now go back to app.blade.php and insert the partials.navbar under body class
 the app.blade is located in res/views/components/layouts/app.bladde.php
+
+-----------------------
+install flowbite
+
+npm install flowbite
+in tailwind.config.js, add the flowbite
+========================================================================
+import defaultTheme from 'tailwindcss/defaultTheme';
+import forms from '@tailwindcss/forms';
+
+/** @type {import('tailwindcss').Config} */
+export default {
+    content: [
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './storage/framework/views/*.php',
+        './resources/views/**/*.blade.php',
+        "./resources/**/*.{html,js}",
+         'node_modules/preline/dist/*.js',
+         "./node_modules/flowbite/**/*.js",
+
+         
+    ],
+    darkMode:'class',
+    theme: {
+        extend: {
+            fontFamily: {
+                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+            },
+        },
+    },
+
+    plugins: [
+        // forms,
+        require('preline/plugin'),
+        require('flowbite/plugin'),
+    ],
+};
+=============================================
+Then in app.js, import flowbite
+=========================================
+import './bootstrap';
+
+
+import Alpine from 'alpinejs';
+import 'preline';
+import 'flowbite';
+
+
+
+window.Alpine = Alpine;
+
+Alpine.start();
+===========================================
