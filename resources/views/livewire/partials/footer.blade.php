@@ -8,9 +8,12 @@
                 <img src="{{ asset('images/darklogo.png') }}" alt="SM Supermarket Logo" class="h-12 md:h-16 lg:h-20 w-auto">
             </a>
             <!-- End Logo Section -->
+
+          
         <!-- <a class="flex-none text-xl font-semibold text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#" aria-label="Brand">CCIS ERMA</a> -->
       </div>
       <!-- End Col -->
+       
 
       <div class="col-span-1">
         <h4 class="font-semibold text-gray-100">Facilities</h4>
