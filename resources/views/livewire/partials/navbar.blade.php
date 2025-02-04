@@ -9,7 +9,11 @@
                 <img src="{{ asset('images/ccis_orangelogo.png') }}" alt="SM Supermarket Logo" class="h-12 md:h-16 lg:h-20 w-auto">
             </a>
             <!-- End Logo Section -->
-
+        <!-- Search bar Section -->
+        <!-- <input type="text" wire:model.live="search" class="w-60 ml-4 px-4 py-2 border border-orange-300 dark:bg-orange-800 dark:text-orange-100" placeholder="Search product name..."> -->
+       
+         
+        <!-- End Search Bar Section -->
           
 
         <div class="md:hidden">
@@ -31,18 +35,18 @@
         <div class="overflow-hidden overflow-y-auto max-h-[75vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-slate-700 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500">
           <div class="flex flex-col gap-x-0 mt-5 divide-y divide-dashed divide-gray-200 md:flex-row md:items-center md:justify-end md:gap-x-7 md:mt-0 md:ps-7 md:divide-y-0 md:divide-solid dark:divide-gray-700">
 
-            <a class="font-medium text-orange-600 py-3 md:py-6 dark:text-orange-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/" aria-current="page">Home</a>
+            <a class="font-medium text-orange-600 py-3 md:py-6 dark:text-orange-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/" aria-current="page">Equipment</a>
+
+            <!-- <a class="font-medium text-gray-500 hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/categories">
+              Equipment
+            </a> -->
+            
+            <a class="font-medium text-gray-500 hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/categories">
+              Items
+            </a>
 
             <a class="font-medium text-gray-500 hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/categories">
               Facilities
-            </a>
-
-            <a class="font-medium text-gray-500 hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/categories">
-              Equipment
-            </a>
-
-            <a class="font-medium text-gray-500 hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/categories">
-              Items
             </a>
 
 
