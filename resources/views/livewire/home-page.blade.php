@@ -3,7 +3,7 @@
     <div class="px-4 py-4 mx-auto max-w-7xl lg:py-6 md:px-6">
       <div class="flex flex-wrap mb-24 -mx-3">
         <div class="w-full pr-2 lg:w-1/4 lg:block">
-          <div class="pl-4 mb-5 bg-white border border-gray-200 dark:border-gray-900 dark:bg-gray-900">
+          <div class=" mb-5 bg-white border border-gray-200 dark:border-gray-900 dark:bg-gray-900">
             <h2 class="text-2xl font-bold dark:text-gray-400"> Filter By:</h2>
             <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div>
             <!-- <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div> -->
@@ -131,57 +131,27 @@
     </div>
   </div>
     
-    <!-- End Equipment Section -->
-    <!-- <div class="w-full px-3 mb-6 sm:w-1/2 md:w-1/3">
-              <div class="border border-gray-300 dark:border-gray-700">
-                <div class="relative bg-gray-200">
-                  <a href="#" class="">
-                    <img src="https://i.postimg.cc/hj6h6Vwv/pexels-artem-beliaikin-2292919.jpg" alt="" class="object-cover w-full h-56 mx-auto ">
-                  </a>
-                </div>
-                <div class="p-3 ">
-                  <div class="flex items-center justify-between gap-2 mb-2">
-                    <h3 class="text-xl font-medium dark:text-gray-400">
-                      ACER ASPIRE 3
-                    </h3>
-                  </div>
-                  <p class="text-lg ">
-                    <span class="text-green-600 dark:text-green-600">Quantity: 1</span>
-                  </p>
-                </div>
-                <div class="flex justify-center p-4 border-t border-gray-300 dark:border-gray-700">
+   
+  <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4">
+  <a href="#" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
+    <div class="h-48 bg-gray-100 overflow-hidden">
+      <img src="{{ asset('images/equipment/keyboard.png') }}" alt="Keyboard" class="w-full h-full object-cover">
+    </div>
+    <div class="p-4">
+      <div class="flex flex-wrap gap-2 mb-2">
+        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">Keyboard</span>
+        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">CL1</span>
+      </div>
+      <h2 class="font-bold text-lg mb-1">A4TECH</h2>
+      <p class="text-sm text-gray-600 mb-3">No Description.</p>
+      <div class="flex justify-end">
+        <button class="px-3 py-1 bg-orange-500 text-white rounded-full text-xs font-semibold hover:bg-orange-600 transition-colors">Request</button>
+      </div>
+    </div>
+  </a>
+</div>
 
-                  <a href="#" class="text-gray-500 flex items-center space-x-2 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4 bi bi-cart3 " viewBox="0 0 16 16">
-                      <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path>
-                    </svg><span>Add to Requests</span>
-                  </a>
 
-                </div>
-              </div>
-            </div> -->
-            <!-- End equipment section -->
-
-            <body class="antialiased bg-gray-200 text-gray-900 font-sans p-6">
-              <div class="container mx-auto pl-4 pr-4">
-                <div class="flex flex-wrap -mx-4">
-                  <div class="w-full sm:w-1/2 md:w-1/2 xl:w-1/4 p-4">
-                    <a href="" class="c-card block bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden">
-                    <div class="relative pb-48 overflow-hidden">
-                      <img class="absolute inset-0 h-full w-full object-cover" src="{{asset('images//equipment/keyboard.png')}}" alt="">
-                    </div>
-                    <div class="p-4">
-                      <span class="inline-block px-2 py-1 leading-none bg-orange-200 text-orange-800 rounded-full font-semibold uppercase tracking-wide text-xs">Keyboard</span>
-                      <span class="inline-block px-2 py-1 leading-none bg-orange-200 text-orange-800 rounded-full font-semibold uppercase tracking-wide text-xs">CL1</span>
-
-                      <h2 class="mt-2 mb-2  font-bold">A4TECH</h2>
-                      <p class="text-sm">No Description.</p>
-                      
-                      <!-- <div class="mt-3 flex items-center ">
-                      <span class="inline-block px-2 py-1 ml-auto leading-none bg-orange-500 text-white  font-semibold  tracking-wide text-xs">Request</span>
-                      </div> -->
-                    </div>
-              
                   
                   
 
