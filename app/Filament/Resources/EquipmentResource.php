@@ -20,6 +20,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Illuminate\Database\Eloquent\Collection;
@@ -90,12 +91,21 @@ class EquipmentResource extends Resource
     {
         return $form
             ->schema([
+                Section::make('Equipment Image')
+                ->schema([
+                    Forms\Components\FileUpload::make('main_image')
+                    ->imageEditor()
+                    ->deletable()
+                    ->preserveFilenames(),
+                    ])
+                    ->columnSpan(1)
+                    ->columns(1)
+                    ->collapsible(),
                 Forms\Components\Section::make('Equipment Details')
                     ->schema([
                         Forms\Components\Grid::make(3)
                             ->schema([
-
-                               
+                                    
                                 Forms\Components\TextInput::make('po_number')
                                     ->placeholder('Refer to the inventory sticker.')
                                     ->label('PO Number')
@@ -322,6 +332,8 @@ class EquipmentResource extends Resource
             ->description('To borrow, select an equipment. An "Actions" button will appear. Click it and choose "Add to Request List". 
            For more information, go to the dashboard to download the user manual.')
             ->columns([
+                Tables\Columns\ImageColumn::make('main_image')
+                ->stacked(),
                 Tables\Columns\TextColumn::make('po_number')
                     ->label('PO Number')
                     ->searchable()

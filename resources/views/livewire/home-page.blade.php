@@ -129,27 +129,31 @@
 
 
 <!--Start Equipment Card Section -->
-  <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4">
-    <a href="#" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
-      <div class="h-48 bg-gray-100 overflow-hidden">
-        <img src="{{ asset('images/equipment/keyboard.png') }}" alt="Keyboard" class="w-full h-full object-cover">
-      </div>
-      <div class="p-4">
-        <div class="flex flex-wrap gap-2 mb-2">
-          <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">Keyboard</span>
-          <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">CL1</span>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-1 lg:gap-1">
+    @foreach($equipment as $equipment)
+        <div class="p-4 lg:p-2" wire:key="{{ $equipment->id }}">
+            <a href="#" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
+                <div class="h-48 lg:h-36 bg-gray-100 ">
+                    <img src="{{ url('storage', $equipment->main_image) }}" alt="{{ $equipment->brand_name }}" class="w-full h-full object-cover">
+                </div>
+                <div class="p-4 lg:p-2">
+                    <div class="flex flex-wrap gap-1 lg:gap-0.5 mb-2">
+                        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">Keyboard</span>
+                        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">CL1</span>
+                    </div>
+                    <h2 class="font-bold text-lg lg:text-md mb-1">{{ $equipment->brand_name }}</h2>
+                    <p class="text-sm lg:text-xs text-gray-600 mb-2">No Description.</p>
+                    <div class="flex justify-end">
+                        <button class="flex items-center gap-1 mt-2 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold hover:bg-orange-600 transition-colors">
+                            Request <x-eva-plus class="w-4 h-4" />
+                        </button>
+                    </div>
+                </div>
+            </a>
         </div>
-        <h2 class="font-bold text-lg mb-1">A4TECH</h2>
-        <p class="text-sm text-gray-600 mb-3">No Description.</p>
-        <div class="flex justify-end">
-          <button class="flex items-center gap-1 mt-3 px-3 pt-2 py-2 bg-orange-500 text-white  text-xs font-semibold hover:bg-orange-600 transition-colors">Request <x-eva-plus class="w-4 h-4"/></button>
-        </div>
-      </div>
-    </a>
-    <!--End Equipment Card Section -->
+    @endforeach
+</div>
 
-  </div>               
-  </div>
 </body>
 
 

@@ -33,6 +33,7 @@ class Equipment extends Model
     protected $fillable = [
         'unit_no',
         'brand_name',
+        'main_image',
         'description',
         'facility_id',
         'category_id',
