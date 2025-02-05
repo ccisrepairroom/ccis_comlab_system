@@ -1,14 +1,4 @@
-<!-- <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
-  <section class="py-10 bg-gray-50 font-poppins dark:bg-green-800 rounded-lg">
-    <div class="px-4 py-4 mx-auto max-w-7xl lg:py-6 md:px-6">
-      <div class="flex flex-wrap mb-24 -mx-3">
-        <div class="w-full pr-2 lg:w-1/4 lg:block">
-          <div class=" mb-5 bg-white border border-gray-200 dark:border-gray-900 dark:bg-gray-900">
-            <h2 class=" pl-4 pt-2 text-2xl font-bold dark:text-gray-400"> Filter By:</h2>
-            <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400 pl-4"></div>
-
-             -->
-             <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
+<div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
   <section class="py-10 bg-gray-50 font-poppins dark:bg-gray-800 rounded-lg">
     <div class="px-4 py-4 mx-auto max-w-7xl lg:py-6 md:px-6">
       <div class="flex flex-wrap mb-24 -mx-3">
@@ -136,32 +126,29 @@
     
     </div>
   </div>
-    
-   
+
+
+<!--Start Equipment Card Section -->
   <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4">
-  <a href="#" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
-    <div class="h-48 bg-gray-100 overflow-hidden">
-      <img src="{{ asset('images/equipment/keyboard.png') }}" alt="Keyboard" class="w-full h-full object-cover">
-    </div>
-    <div class="p-4">
-      <div class="flex flex-wrap gap-2 mb-2">
-        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">Keyboard</span>
-        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">CL1</span>
+    <a href="#" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
+      <div class="h-48 bg-gray-100 overflow-hidden">
+        <img src="{{ asset('images/equipment/keyboard.png') }}" alt="Keyboard" class="w-full h-full object-cover">
       </div>
-      <h2 class="font-bold text-lg mb-1">A4TECH</h2>
-      <p class="text-sm text-gray-600 mb-3">No Description.</p>
-      <div class="flex justify-end">
-        <button class="px-3 py-1 bg-orange-500 text-white rounded-full text-xs font-semibold hover:bg-orange-600 transition-colors">Request</button>
+      <div class="p-4">
+        <div class="flex flex-wrap gap-2 mb-2">
+          <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">Keyboard</span>
+          <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">CL1</span>
+        </div>
+        <h2 class="font-bold text-lg mb-1">A4TECH</h2>
+        <p class="text-sm text-gray-600 mb-3">No Description.</p>
+        <div class="flex justify-end">
+          <button class="flex items-center gap-1 mt-3 px-3 pt-2 py-2 bg-orange-500 text-white  text-xs font-semibold hover:bg-orange-600 transition-colors">Request <x-eva-plus class="w-4 h-4"/></button>
+        </div>
       </div>
-    </div>
-  </a>
-</div>
+    </a>
+    <!--End Equipment Card Section -->
 
-
-                  
-                  
-
-    </div>
+  </div>               
   </div>
 </body>
 

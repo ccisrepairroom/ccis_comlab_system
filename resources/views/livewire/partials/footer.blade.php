@@ -16,12 +16,12 @@
        
 
       <div class="col-span-1">
-        <h4 class="font-semibold text-gray-100">Facilities</h4>
+        <h4 class="font-semibold text-gray-100">Equipment & Resource</h4>
 
         <div class="mt-3 grid space-y-3">
           <p><a class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/categories">All Equipment</a></p>
           <p><a class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/products">All Items</a></p>
-          <p><a class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/products">Critical Stock Items</a></p>
+          <p><a class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/products">All Facilities</a></p>
         </div>
       </div>
       <!-- End Col -->

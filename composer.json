@@ -20,6 +20,7 @@
         "filament/infolists": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "3.2",
         "guzzlehttp/guzzle": "^7.2",
+        "hasnayeen/blade-eva-icons": "^2.0",
         "joaopaulolndev/filament-edit-profile": "^1.0",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
