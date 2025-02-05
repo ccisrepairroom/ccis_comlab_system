@@ -17,7 +17,7 @@
         </button>
 
       <!-- Dropdown menu -->
-      <div id="categoryDropdownDefaultCheckbox" class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600">
+      <div id="categoryDropdownDefaultCheckbox" class="pl-9 z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600">
           <ul class="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="categoryDropdownCheckboxButton">
             <li>
               <div class="flex items-center">
@@ -80,7 +80,7 @@
 
             
     <!-- Start Facilities Section -->
-        </div>
+        <!-- </div>
           <div class="p-4 mb-5 bg-white border border-gray-200 dark:border-gray-900 dark:bg-gray-900">
             <h2 class="text-2xl font-bold dark:text-gray-400"> Facilities</h2>
             <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div>
@@ -91,10 +91,10 @@
                   <span class="text-lg">CL1</span>
                 </label>
               </li>
-            </ul>
+            </ul> -->
         <!-- End Facilities Section -->
-    </div>
-    </div>
+    <!-- </div>
+    </div> -->
       <!-- <div class="w-full px-3 lg:w-3/4">
           <div class="px-3 mb-4">
             <div class="items-center justify-between hidden px-3 py-2 bg-gray-100 md:flex dark:bg-gray-900 ">
