@@ -11,6 +11,7 @@
         "php": "^8.1",
         "bezhansalleh/filament-shield": "^3.2",
         "codeat3/blade-fluentui-system-icons": "^1.33",
+        "codeat3/blade-google-material-design-icons": "^1.19",
         "eightynine/filament-approvals": "^3.1",
         "eightynine/filament-excel-import": "^3.1",
         "filament/actions": "^3.2",

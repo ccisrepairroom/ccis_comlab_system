@@ -3,7 +3,7 @@
     <div class="px-4 py-4 mx-auto max-w-7xl lg:py-6 md:px-6">
       <div class="flex flex-wrap mb-24 -mx-3">
         <div class="w-full pr-2 lg:w-1/4 lg:block">
-          <div class="p-4 mb-5 bg-white border border-gray-200 dark:border-gray-900 dark:bg-gray-900">
+          <div class="pl-4 mb-5 bg-white border border-gray-200 dark:border-gray-900 dark:bg-gray-900">
             <h2 class="text-2xl font-bold dark:text-gray-400"> Filter By:</h2>
             <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div>
             <!-- <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div> -->
@@ -126,20 +126,13 @@
       </select>
 
       <!-- Search Input (below dropdown on small screens) -->
-      <input type="text" wire:model.live="search" class="w-full md:w-46 px-4 py-2 border border-orange-300 dark:bg-orange-500 dark:text-gray-100 focus:ring-2 focus:ring-orange-500 rounded-md" placeholder="Search keyword for equipment brand name, category name and etc.">
+      <input type="text" wire:model.live="search" class="w-full md:w-46 px-4 py-2 border border-orange-300 dark:bg-orange-500 dark:text-gray-100 focus:ring-2 focus:ring-orange-500 rounded-md" placeholder="Search keyword for an equipment brand name, category name and etc.">
     
     </div>
   </div>
-
-          
-
-    
-
-
-    <!-- Start Equipment Section -->
     
     <!-- End Equipment Section -->
-    <div class="w-full px-3 mb-6 sm:w-1/2 md:w-1/3">
+    <!-- <div class="w-full px-3 mb-6 sm:w-1/2 md:w-1/3">
               <div class="border border-gray-300 dark:border-gray-700">
                 <div class="relative bg-gray-200">
                   <a href="#" class="">
@@ -166,7 +159,35 @@
 
                 </div>
               </div>
-            </div>
+            </div> -->
+            <!-- End equipment section -->
+
+            <body class="antialiased bg-gray-200 text-gray-900 font-sans p-6">
+              <div class="container mx-auto pl-4 pr-4">
+                <div class="flex flex-wrap -mx-4">
+                  <div class="w-full sm:w-1/2 md:w-1/2 xl:w-1/4 p-4">
+                    <a href="" class="c-card block bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden">
+                    <div class="relative pb-48 overflow-hidden">
+                      <img class="absolute inset-0 h-full w-full object-cover" src="{{asset('images//equipment/keyboard.png')}}" alt="">
+                    </div>
+                    <div class="p-4">
+                      <span class="inline-block px-2 py-1 leading-none bg-orange-200 text-orange-800 rounded-full font-semibold uppercase tracking-wide text-xs">Keyboard</span>
+                      <span class="inline-block px-2 py-1 leading-none bg-orange-200 text-orange-800 rounded-full font-semibold uppercase tracking-wide text-xs">CL1</span>
+
+                      <h2 class="mt-2 mb-2  font-bold">A4TECH</h2>
+                      <p class="text-sm">No Description.</p>
+                      
+                      <!-- <div class="mt-3 flex items-center ">
+                      <span class="inline-block px-2 py-1 ml-auto leading-none bg-orange-500 text-white  font-semibold  tracking-wide text-xs">Request</span>
+                      </div> -->
+                    </div>
+              
+                  
+                  
+
+    </div>
+  </div>
+</body>
 
 
 
