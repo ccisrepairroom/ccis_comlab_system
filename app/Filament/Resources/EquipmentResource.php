@@ -251,49 +251,86 @@ class EquipmentResource extends Resource
             ->requiresConfirmation()
             ->modalIcon('entypo-cycle')
             ->modalHeading('Bulk Update Equipment Details')
-            ->modalDescription('Confirm to bulk update equipment details')
+            ->modalDescription('Select the fields you want to update.')
             ->form(function (Forms\Form $form) {
                 return $form->schema([
-                    
-                    Forms\Components\Select::make('monitored_by')
-                        ->label('Monitored By')
-                        ->options(User::all()->pluck('name', 'id'))
-                        ->default(auth()->user()->id)
-                        ->disabled()
-                        ->required(),
-                    Forms\Components\DatePicker::make('monitored_date')
-                        ->label('Monitoring Date')
-                        ->required()
-                        ->disabled()
-                        ->default(now())
-                        ->format('Y-m-d'),
-                    Forms\Components\FileUpload::make('main_image')
-                        ->imageEditor()
-                        ->deletable()
-                        ->preserveFilenames(),
-                        
+                    // Step 1: Select columns to update
+                    Forms\Components\CheckboxList::make('fields_to_update')
+                        ->label('Select Fields to Update')
+                        ->options([
+                            'status' => 'Status',
+                            'facility_id' => 'Facility',
+                            'category_id' => 'Category',
+                            'person_liable' => 'Person Liable',
+                            'remarks' => 'Remarks',
+                        ])
+                        ->reactive(), // This makes the form update when options are selected
+        
+                    // Step 2: Conditional fields based on selections
                     Forms\Components\Select::make('status')
-                        ->label('Equipment Status')
+                        ->label('Status')
                         ->options([
                             'working' => 'Working',
-                            'maintenance' => 'Under Maintenance',
-                            'broken' => 'Broken',
+                            'not_working' => 'Not Working',
+                            'under_maintenance' => 'Under Maintenance',
                         ])
-                        ->required(),
-                    
+                        ->visible(fn ($get) => in_array('status', $get('fields_to_update') ?? [])) // Fix: default to empty array if null
+                        ->required(fn ($get) => in_array('status', $get('fields_to_update') ?? [])),
+        
+                    Forms\Components\Select::make('facility_id')
+                        ->label('Facility')
+                        ->options(\App\Models\Facility::all()->pluck('name', 'id'))
+                        ->visible(fn ($get) => in_array('facility_id', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('facility_id', $get('fields_to_update') ?? [])),
+        
+                    Forms\Components\Select::make('category_id')
+                        ->label('Category')
+                        ->options(\App\Models\Category::all()->pluck('name', 'id'))
+                        ->visible(fn ($get) => in_array('category_id', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('category_id', $get('fields_to_update') ?? [])),
+        
+                    Forms\Components\TextInput::make('person_liable')
+                        ->label('Person Liable')
+                        ->visible(fn ($get) => in_array('person_liable', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('person_liable', $get('fields_to_update') ?? [])),
+        
+                    Forms\Components\Textarea::make('remarks')
+                        ->label('Remarks')
+                        ->rows(3)
+                        ->visible(fn ($get) => in_array('remarks', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('remarks', $get('fields_to_update') ?? [])),
                 ]);
             })
-            ->action(function (array $records, array $data) {
+            ->action(function (array $data, $records) {
+                // Step 3: Apply updates to selected records
                 foreach ($records as $record) {
-                    $record->update([
-                        'monitored_by' => $data['monitored_by'],
-                        'status' => $data['status'],
-                    ]);
-                }
-            })
+                    $updateData = [];
         
-,
-
+                    if (in_array('status', $data['fields_to_update'])) {
+                        $updateData['status'] = $data['status'];
+                    }
+                    if (in_array('facility_id', $data['fields_to_update'])) {
+                        $updateData['facility_id'] = $data['facility_id'];
+                    }
+                    if (in_array('category_id', $data['fields_to_update'])) {
+                        $updateData['category_id'] = $data['category_id'];
+                    }
+                    if (in_array('person_liable', $data['fields_to_update'])) {
+                        $updateData['person_liable'] = $data['person_liable'];
+                    }
+                    if (in_array('remarks', $data['fields_to_update'])) {
+                        $updateData['remarks'] = $data['remarks'];
+                    }
+        
+                    $record->update($updateData);
+                }
+        
+                \Filament\Notifications\Notification::make()
+                    ->title('Equipment updated successfully!')
+                    ->success()
+                    ->send();
+            }),
+        
             Tables\Actions\BulkAction::make('add_to_request_list')
                 ->label('Add to Request List')
                 ->icon('eva-plus')
@@ -394,9 +431,9 @@ class EquipmentResource extends Resource
                 Tables\Columns\TextColumn::make('po_number')
                     ->label('PO Number')
                     ->searchable()
-                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
+                    // ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable()
-                    ->extraAttributes(['class' => 'sticky left-0 bg-white z-10'])
+                    // ->extraAttributes(['class' => 'sticky left-0 bg-white z-10'])
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('unit_no')
                     ->label('Unit Number')
