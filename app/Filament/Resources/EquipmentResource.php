@@ -239,9 +239,17 @@ class EquipmentResource extends Resource
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
             //Tables\Actions\EditBulkAction::make(),
+            Tables\Actions\BulkAction::make('bulk_update')
+            ->icon('entypo-cycle')
+            ->color('info')
+            ->requiresConfirmation()
+            ->modalIcon('entypo-cycle')
+            ->modalHeading('Bulk Update Equipment Details')
+            ->modalDescription('Confirm to bulk update equipment details'),
+
             Tables\Actions\BulkAction::make('add_to_request_list')
                 ->label('Add to Request List')
-                ->icon('heroicon-o-shopping-cart')
+                ->icon('eva-plus')
                 ->action(function (Collection $records) {
                     $added = false; // Flag to track if any items were successfully added
                     $unreturnedItems = []; // Array to track unreturned items
@@ -596,7 +604,7 @@ class EquipmentResource extends Resource
 
 
                             Tables\Actions\Action::make('Update')
-                            ->icon('heroicon-o-plus')
+                            ->icon('entypo-cycle')
                             ->color('info')
                             ->requiresConfirmation()
                             ->modalIcon('heroicon-o-check')
