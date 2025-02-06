@@ -452,9 +452,12 @@ sudo systemctl restart php-fpm
 3- Download Imagick for PHP
   https://pecl.php.net/package/imagick/3.7.0/windows
   - copy php_imagick.dll and pass into C:\xampp\php\ext
-  - open php.ini (Dynamic Extensions)
+  - open php.ini (Dynamic Extensions) in last module settings
     extension=php_imagick.dll
 
 4- Download required Imagick binaries
   https://windows.php.net/downloads/pecl/deps/
-  - copy all CORE_* and IM_MOD_* file and pass into C:\xampp\apache\bin
+  - copy all CORE_* in bin and IM_MOD_* file and pass into C:\xampp\apache\bin
+161 items
+  C:\Program Files\ImageMagick-7.1.1-Q16-HDRI
+  to confirm installation, check localhost search for imagick
