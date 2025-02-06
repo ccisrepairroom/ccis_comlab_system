@@ -97,10 +97,16 @@ class EquipmentResource extends Resource
                     ->imageEditor()
                     ->deletable()
                     ->preserveFilenames(),
+                    Forms\Components\FileUpload::make('qr_code')
+                    ->imageEditor()
+                    ->deletable()
+                    ->preserveFilenames(),
                     ])
                     ->columnSpan(1)
                     ->columns(1)
                     ->collapsible(),
+                   
+                    
                 Forms\Components\Section::make('Equipment Details')
                     ->schema([
                         Forms\Components\Grid::make(3)
@@ -382,6 +388,8 @@ class EquipmentResource extends Resource
            For more information, go to the dashboard to download the user manual.')
             ->columns([
                 Tables\Columns\ImageColumn::make('main_image')
+                ->stacked(),
+                Tables\Columns\ImageColumn::make('qr_code')
                 ->stacked(),
                 Tables\Columns\TextColumn::make('po_number')
                     ->label('PO Number')

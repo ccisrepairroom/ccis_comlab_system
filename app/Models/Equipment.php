@@ -34,6 +34,7 @@ class Equipment extends Model
         'unit_no',
         'brand_name',
         'main_image',
+        'qr_code',
         'description',
         'facility_id',
         'category_id',
