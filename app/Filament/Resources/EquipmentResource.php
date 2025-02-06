@@ -245,7 +245,48 @@ class EquipmentResource extends Resource
             ->requiresConfirmation()
             ->modalIcon('entypo-cycle')
             ->modalHeading('Bulk Update Equipment Details')
-            ->modalDescription('Confirm to bulk update equipment details'),
+            ->modalDescription('Confirm to bulk update equipment details')
+            ->form(function (Forms\Form $form) {
+                return $form->schema([
+                    
+                    Forms\Components\Select::make('monitored_by')
+                        ->label('Monitored By')
+                        ->options(User::all()->pluck('name', 'id'))
+                        ->default(auth()->user()->id)
+                        ->disabled()
+                        ->required(),
+                    Forms\Components\DatePicker::make('monitored_date')
+                        ->label('Monitoring Date')
+                        ->required()
+                        ->disabled()
+                        ->default(now())
+                        ->format('Y-m-d'),
+                    Forms\Components\FileUpload::make('main_image')
+                        ->imageEditor()
+                        ->deletable()
+                        ->preserveFilenames(),
+                        
+                    Forms\Components\Select::make('status')
+                        ->label('Equipment Status')
+                        ->options([
+                            'working' => 'Working',
+                            'maintenance' => 'Under Maintenance',
+                            'broken' => 'Broken',
+                        ])
+                        ->required(),
+                    
+                ]);
+            })
+            ->action(function (array $records, array $data) {
+                foreach ($records as $record) {
+                    $record->update([
+                        'monitored_by' => $data['monitored_by'],
+                        'status' => $data['status'],
+                    ]);
+                }
+            })
+        
+,
 
             Tables\Actions\BulkAction::make('add_to_request_list')
                 ->label('Add to Request List')
