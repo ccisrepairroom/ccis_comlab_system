@@ -28,9 +28,15 @@ use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\View;
 use Illuminate\Validation\Rule;
 use Filament\Forms\Components\TextInput;
 use App\Rules\UniquePropertyCategoryEquipment;
+use LaraZeus\Qr\Facades\Qr;
+use App\Filament\Resources\EquipmentResource\Pages\ViewQrCode;
+
+
+
 
 
 
@@ -97,10 +103,14 @@ class EquipmentResource extends Resource
                     ->imageEditor()
                     ->deletable()
                     ->preserveFilenames(),
-                    Forms\Components\FileUpload::make('qr_code')
-                    ->imageEditor()
-                    ->deletable()
-                    ->preserveFilenames(),
+
+                    
+
+                    \LaraZeus\Qr\Components\Qr::make('qr_code')
+                    // ->asSlideOver()
+                    ->optionsColumn('qr_code')
+                    ->actionIcon('heroicon-s-building-library'),
+ 
                     ])
                     ->columnSpan(1)
                     ->columns(1)
@@ -671,6 +681,26 @@ class EquipmentResource extends Resource
                     return Pages\ViewEquipment::getUrl([$record->id]);
                 })*/
                 ->actions([
+                    // Tables\Actions\Action::make('View QR Code')
+                    // ->label('View QR Code')
+                    // ->icon('heroicon-s-qr-code')
+                    // ->url(fn (Equipment $record) => route('filament.resources.equipment-resource.pages.view-qr-code', $record)),
+
+               
+                    Tables\Actions\Action::make('View QR Code')
+                    ->label('View QR Code')
+                    ->icon('heroicon-s-qr-code')
+                    ->modalHeading('QR Code')
+                    ->modalContent(function ($record) {
+                        // Here, $record will automatically be passed into the closure
+                        return view('filament.resources.equipment-resource.views.view-qr-code', [
+                            'equipment' => $record,
+                        ]);
+                    })
+                    ->action(function (Equipment $record) {
+                        // You can add additional logic here if needed
+                    }),
+
                     Tables\Actions\Action::make('view_monitoring')
                     ->label('View ')
                     ->icon('fas-eye')
@@ -688,6 +718,9 @@ class EquipmentResource extends Resource
                         ]);
                     }),
 
+                   
+                   
+                    
 
                             Tables\Actions\Action::make('Update')
                             ->icon('entypo-cycle')
@@ -837,6 +870,7 @@ class EquipmentResource extends Resource
             'create' => Pages\CreateEquipment::route('/create'),
             //'view' => Pages\ViewEquipment::route('/{record}'),
             'edit' => Pages\EditEquipment::route('/{record}/edit'),
+            'qr-code' => Pages\ViewQrCode::route('/{record}/qr-code'),
         ];
     }
 }

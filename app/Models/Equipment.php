@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Rules\UniquePropertyCategoryEquipment;
 use Illuminate\Support\Facades\Validator;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 
 class Equipment extends Model
@@ -125,5 +127,38 @@ class Equipment extends Model
             }
         });
     }*/
+
+  
+
+    // protected static function booted()
+    // {
+    //     static::creating(function ($equipment) {
+    //         $equipment->generateQrCode();
+    //     });
+
+    //     static::updating(function ($equipment) {
+    //         $equipment->generateQrCode();
+    //     });
+    // }
+
+    // public function generateQrCode()
+    // {
+    //     // Generate a QR code with equipment details
+    //     $qrContent = "Equipment ID: {$this->id}, Name: {$this->name}, Serial No: {$this->serial_no}";
+        
+    //     // Save the QR code image in storage
+    //     $qrImage = QrCode::format('png')->size(200)->generate($qrContent);
+
+    //     $filePath = 'qr_codes/equipment_' . $this->id . '.png';
+    //     Storage::disk('public')->put($filePath, $qrImage);
+        
+    //     // Update the qr_code field in the database
+    //     $this->qr_code = $filePath;
+    // }
+
+    protected $casts = [
+        'qr_code' => 'array'
+    ];
+
 
 }

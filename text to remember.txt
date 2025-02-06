@@ -413,3 +413,48 @@ paste this in srtableiterator
      }
  }
  ======================================================================================================
+
+ making QR code
+
+ composer require simplesoftwareio/simple-qrcode
+
+ --watch this video:https://www.youtube.com/watch?v=nLNClenxwSs
+--in this case i use larazeus
+  php artisan make:filament-page ViewQrCode --resource=EquipmentResource --type=ViewRecord
+  --register the view in getpagges of equipment
+              'qr-code' => Pages\ViewQrCode::route('/{record}/qr-code'),
+
+--create a table action
+--then in equipment resource fin the custom page
+in views create a view in res/views/filament/resources/equipment-resource/views/view-qr-code.blade.php
+    in view qr-code resource,insert this 
+    protected static string $view = 'filament.resources.equipment-resource..pages.view-qr-code';
+
+    --in view, 
+--1. Install Imagick
+--First, update your package list:
+
+sudo apt update
+sudo service php8.2.12-fpm restart
+sudo yum install php-pecl-imagick
+sudo systemctl restart php-fpm
+
+=---install imagick
+--watch yt:    https://www.imagemagick.org/script/download.php#windows
+
+1- Pre-installation
+  - PHP version
+  - Architecture (64/86)
+  - Thread Safety (enabled)
+2- Download and install ImageMagick for Windows
+   https://www.imagemagick.org/script/download.php#windows
+
+3- Download Imagick for PHP
+  https://pecl.php.net/package/imagick/3.7.0/windows
+  - copy php_imagick.dll and pass into C:\xampp\php\ext
+  - open php.ini (Dynamic Extensions)
+    extension=php_imagick.dll
+
+4- Download required Imagick binaries
+  https://windows.php.net/downloads/pecl/deps/
+  - copy all CORE_* and IM_MOD_* file and pass into C:\xampp\apache\bin
