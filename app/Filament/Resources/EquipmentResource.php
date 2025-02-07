@@ -258,7 +258,7 @@ class EquipmentResource extends Resource
             Tables\Actions\BulkAction::make('bulk_update')
             ->label('Bulk Update')
             ->icon('entypo-cycle')
-            ->color('info')
+            ->color('warning')
             ->requiresConfirmation()
             ->modalIcon('entypo-cycle')
             ->modalHeading('Bulk Update Equipment Details')

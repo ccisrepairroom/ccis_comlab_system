@@ -39,6 +39,19 @@ class FacilityResource extends Resource
     {
         return $form
             ->schema([
+                Section::make('Facility Image')
+                ->schema([
+                    Forms\Components\FileUpload::make('facility_img')
+                    ->label('Main Image')
+                    ->imageEditor()
+                    ->deletable()
+                    ->preserveFilenames(),
+ 
+                    ])
+                    ->columnSpan(1)
+                    ->columns(1)
+                    ->collapsible(),
+
                 Section::make('Facility Information')
                     ->schema([
                         Grid::make(2)
@@ -93,16 +106,6 @@ class FacilityResource extends Resource
                                     ->default('HIRAYA'),
                             ]),
                     ]),
-                Section::make('Facility Image')
-                    ->schema([
-                        Forms\Components\FileUpload::make('facility_img')
-                            ->image()
-                            ->label('Facility Image')
-                            //->required()
-                            ->imageEditor()
-                            ->disk('public')
-                            ->directory('facility'),
-                    ]),
                 Section::make('Remarks')
                     ->schema([
                         Forms\Components\RichEditor::make('remarks')
@@ -120,6 +123,82 @@ class FacilityResource extends Resource
         // Define bulk actions
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
+            Tables\Actions\BulkAction::make('bulk_update')
+                ->label('Bulk Update')
+                ->icon('entypo-cycle')
+                ->color('warning')
+                ->requiresConfirmation()
+                ->modalIcon('entypo-cycle')
+                ->modalHeading('Bulk Update Facility Details')
+                ->modalDescription('Select the fields you want to update.')
+                ->form(function (Forms\Form $form) {
+                    return $form->schema([
+                        // Step 1: Select columns to update
+                        Forms\Components\CheckboxList::make('fields_to_update')
+                            ->options([
+                                'facility_img' => 'Facility Image',
+                                'connection_type' => 'Connection Type',
+                                'facility_type' => 'Facility Type',
+                                'cooling_tools' => 'Cooling Tools',
+                                'floor_level' => 'Floor Level',
+                                'building' => 'Building',
+                                'remarks' => 'Remarks',
+                            ])
+                            ->columns(2)
+                            ->reactive(), 
+
+                        Forms\Components\FileUpload::make('facility_img')
+                            ->label('Main Image')
+                            ->imageEditor()
+                            ->deletable()
+                            ->preserveFilenames()
+                            ->visible(fn ($get) => in_array('facility_img', $get('fields_to_update') ?? [])) 
+                            ->required(fn ($get) => in_array('facility_img', $get('fields_to_update') ?? [])),
+
+                        Forms\Components\Select::make('connection_type')
+                            ->options([
+                                'None' => 'None',
+                                'Wi-Fi' => 'Wi-Fi',
+                                'Ethernet' => 'Ethernet',
+                                'Both Wi-fi and Ethernet' => 'Both Wi-fi and Ethernet',
+                                'Fiber Optic' => 'Fiber Optic',
+                                'Cellular' => 'Cellular',
+                                'Bluetooth' => 'Bluetooth',
+                                'Satellite' => 'Satellite',
+                                'DSL' => 'DSL',
+                                'Cable' => 'Cable',
+                            ])
+                            ->visible(fn ($get) => in_array('connection_type', $get('fields_to_update') ?? [])) 
+                            ->required(fn ($get) => in_array('connection_type', $get('fields_to_update') ?? [])),
+            
+                        Forms\Components\Select::make('facility_id')
+                            ->label('Facility')
+                            ->options(\App\Models\Facility::all()->pluck('name', 'id'))
+                            ->visible(fn ($get) => in_array('facility_id', $get('fields_to_update') ?? []))
+                            ->required(fn ($get) => in_array('facility_id', $get('fields_to_update') ?? [])),
+                        ]);
+                    })
+                    ->action(function (array $data, $records) {
+                        foreach ($records as $record) {
+                            $updateData = [];
+                
+                            if (in_array('connection_type', $data['fields_to_update'])) {
+                                $updateData['connection_type'] = $data['connection_type'];
+                            }
+                            if (in_array('facility_img', $data['fields_to_update'])) {
+                                $updateData['facility_img'] = $data['facility_img'];
+                            }
+
+                            $record->update($updateData);
+                        }
+                
+                        \Filament\Notifications\Notification::make()
+                            ->title('Facilities updated successfully!')
+                            ->success()
+                            ->send();
+                    }),
+                
+
             Tables\Actions\BulkAction::make('add_to_Request_list')
                 ->label('Add to Request List')
                 ->icon('heroicon-o-shopping-cart')
@@ -155,6 +234,8 @@ class FacilityResource extends Resource
             For more information, go to the dashboard to download the user manual.')
             ->query(Facility::with('user'))
             ->columns([
+                Tables\Columns\ImageColumn::make('facility_img')
+                    ->stacked(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Name')
                     ->searchable()
