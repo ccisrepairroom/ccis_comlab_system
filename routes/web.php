@@ -7,6 +7,10 @@ use Filament\Facades\Filament;
 use Filament\Actions\Action;
 use App\Filament\Pages\Auth\EditProfile;
 
+use Livewire\Livewire;
+use App\Livewire\HomePage;
+
+
 
 
 /*
@@ -20,7 +24,7 @@ use App\Filament\Pages\Auth\EditProfile;
 |
 */
 
-Route::get('/', function () {
+Route::get('/admin', function () {
     return redirect('ccis_erma/login');
 });
 /*Route::middleware(['auth', 'verified'])->group(function () {
@@ -47,17 +51,6 @@ Route::get('/download-user-manual', function () {
 })->name('download.user.manual');
 
 
-/*Route::get('download-user-manual', function () {
-    // Define the path to the file stored in the 'app/Filament/Resources/request_form'
-    $filePath = app_path('Filament/Resources/user_manual/user_manual.pdf');
-
-    // Check if the file exists and return it for download
-    if (file_exists($filePath)) {
-        return Response::download($filePath);
-    } else {
-        abort(404, 'File not found.');
-    }
-})->name('download.user.manual');*/
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -76,6 +69,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/equipment-monitorings', [MonitoringController::class, 'index'])->name('equipment-monitorings.index');
 });*/
+
+
+
+
+
+// Route::get('/', [Home::class, 'render'])->name('home');
+Route::get('/', HomePage::class);
+
 
 
 

@@ -20,6 +20,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Illuminate\Database\Eloquent\Collection;
@@ -27,9 +28,15 @@ use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\View;
 use Illuminate\Validation\Rule;
 use Filament\Forms\Components\TextInput;
 use App\Rules\UniquePropertyCategoryEquipment;
+use LaraZeus\Qr\Facades\Qr;
+use App\Filament\Resources\EquipmentResource\Pages\ViewQrCode;
+
+
+
 
 
 
@@ -90,12 +97,31 @@ class EquipmentResource extends Resource
     {
         return $form
             ->schema([
+                Section::make('Equipment Image')
+                ->schema([
+                    Forms\Components\FileUpload::make('main_image')
+                    ->imageEditor()
+                    ->deletable()
+                    ->preserveFilenames(),
+
+                    
+
+                    \LaraZeus\Qr\Components\Qr::make('qr_code')
+                    // ->asSlideOver()
+                    ->optionsColumn('qr_code')
+                    ->actionIcon('heroicon-s-building-library'),
+ 
+                    ])
+                    ->columnSpan(1)
+                    ->columns(1)
+                    ->collapsible(),
+                   
+                    
                 Forms\Components\Section::make('Equipment Details')
                     ->schema([
                         Forms\Components\Grid::make(3)
                             ->schema([
-
-                               
+                                    
                                 Forms\Components\TextInput::make('po_number')
                                     ->placeholder('Refer to the inventory sticker.')
                                     ->label('PO Number')
@@ -229,9 +255,95 @@ class EquipmentResource extends Resource
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
             //Tables\Actions\EditBulkAction::make(),
+            Tables\Actions\BulkAction::make('bulk_update')
+            ->icon('entypo-cycle')
+            ->color('info')
+            ->requiresConfirmation()
+            ->modalIcon('entypo-cycle')
+            ->modalHeading('Bulk Update Equipment Details')
+            ->modalDescription('Select the fields you want to update.')
+            ->form(function (Forms\Form $form) {
+                return $form->schema([
+                    // Step 1: Select columns to update
+                    Forms\Components\CheckboxList::make('fields_to_update')
+                        ->label('Select Fields to Update')
+                        ->options([
+                            'status' => 'Status',
+                            'facility_id' => 'Facility',
+                            'category_id' => 'Category',
+                            'person_liable' => 'Person Liable',
+                            'remarks' => 'Remarks',
+                        ])
+                        ->reactive(), // This makes the form update when options are selected
+        
+                    // Step 2: Conditional fields based on selections
+                    Forms\Components\Select::make('status')
+                        ->label('Status')
+                        ->options([
+                            'working' => 'Working',
+                            'not_working' => 'Not Working',
+                            'under_maintenance' => 'Under Maintenance',
+                        ])
+                        ->visible(fn ($get) => in_array('status', $get('fields_to_update') ?? [])) // Fix: default to empty array if null
+                        ->required(fn ($get) => in_array('status', $get('fields_to_update') ?? [])),
+        
+                    Forms\Components\Select::make('facility_id')
+                        ->label('Facility')
+                        ->options(\App\Models\Facility::all()->pluck('name', 'id'))
+                        ->visible(fn ($get) => in_array('facility_id', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('facility_id', $get('fields_to_update') ?? [])),
+        
+                    Forms\Components\Select::make('category_id')
+                        ->label('Category')
+                        ->options(\App\Models\Category::all()->pluck('name', 'id'))
+                        ->visible(fn ($get) => in_array('category_id', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('category_id', $get('fields_to_update') ?? [])),
+        
+                    Forms\Components\TextInput::make('person_liable')
+                        ->label('Person Liable')
+                        ->visible(fn ($get) => in_array('person_liable', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('person_liable', $get('fields_to_update') ?? [])),
+        
+                    Forms\Components\Textarea::make('remarks')
+                        ->label('Remarks')
+                        ->rows(3)
+                        ->visible(fn ($get) => in_array('remarks', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('remarks', $get('fields_to_update') ?? [])),
+                ]);
+            })
+            ->action(function (array $data, $records) {
+                // Step 3: Apply updates to selected records
+                foreach ($records as $record) {
+                    $updateData = [];
+        
+                    if (in_array('status', $data['fields_to_update'])) {
+                        $updateData['status'] = $data['status'];
+                    }
+                    if (in_array('facility_id', $data['fields_to_update'])) {
+                        $updateData['facility_id'] = $data['facility_id'];
+                    }
+                    if (in_array('category_id', $data['fields_to_update'])) {
+                        $updateData['category_id'] = $data['category_id'];
+                    }
+                    if (in_array('person_liable', $data['fields_to_update'])) {
+                        $updateData['person_liable'] = $data['person_liable'];
+                    }
+                    if (in_array('remarks', $data['fields_to_update'])) {
+                        $updateData['remarks'] = $data['remarks'];
+                    }
+        
+                    $record->update($updateData);
+                }
+        
+                \Filament\Notifications\Notification::make()
+                    ->title('Equipment updated successfully!')
+                    ->success()
+                    ->send();
+            }),
+        
             Tables\Actions\BulkAction::make('add_to_request_list')
                 ->label('Add to Request List')
-                ->icon('heroicon-o-shopping-cart')
+                ->icon('eva-plus')
                 ->action(function (Collection $records) {
                     $added = false; // Flag to track if any items were successfully added
                     $unreturnedItems = []; // Array to track unreturned items
@@ -322,12 +434,16 @@ class EquipmentResource extends Resource
             ->description('To borrow, select an equipment. An "Actions" button will appear. Click it and choose "Add to Request List". 
            For more information, go to the dashboard to download the user manual.')
             ->columns([
+                Tables\Columns\ImageColumn::make('main_image')
+                ->stacked(),
+                Tables\Columns\ImageColumn::make('qr_code')
+                ->stacked(),
                 Tables\Columns\TextColumn::make('po_number')
                     ->label('PO Number')
                     ->searchable()
-                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
+                    // ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable()
-                    ->extraAttributes(['class' => 'sticky left-0 bg-white z-10'])
+                    // ->extraAttributes(['class' => 'sticky left-0 bg-white z-10'])
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('unit_no')
                     ->label('Unit Number')
@@ -565,10 +681,32 @@ class EquipmentResource extends Resource
                     return Pages\ViewEquipment::getUrl([$record->id]);
                 })*/
                 ->actions([
-                    /*Tables\Actions\ViewAction::make('view_monitoring')
-                    ->label('View Equipment Records')
-                    ->icon('heroicon-o-presentation-chart-line')
+                    // Tables\Actions\Action::make('View QR Code')
+                    // ->label('View QR Code')
+                    // ->icon('heroicon-s-qr-code')
+                    // ->url(fn (Equipment $record) => route('filament.resources.equipment-resource.pages.view-qr-code', $record)),
+
+               
+                    // Tables\Actions\Action::make('View QR Code')
+                    // ->label('View QR Code')
+                    // ->icon('heroicon-s-qr-code')
+                    // ->modalHeading('QR Code')
+                    // ->modalContent(function ($record) {
+                    //     // Here, $record will automatically be passed into the closure
+                    //     return view('filament.resources.equipment-resource.views.view-qr-code', [
+                    //         'equipment' => $record,
+                    //     ]);
+                    // })
+                    // ->action(function (Equipment $record) {
+                    //     // You can add additional logic here if needed
+                    // }),
+
+                    Tables\Actions\Action::make('view_monitoring')
+                    ->label('View ')
+                    ->icon('fas-eye')
                     ->color('info')
+                    ->modalSubmitAction(false)
+                    ->modalCancelAction(false)
                     ->modalHeading('Monitoring Records')
                     ->modalContent(function ($record) {
                         $equipmentId = $record->id;
@@ -578,20 +716,15 @@ class EquipmentResource extends Resource
                         return view('filament.resources.equipment-monitoring-modal', [
                             'monitorings' => $monitorings,
                         ]);
-                    }),*/
-                    
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                    
-                
-                    Tables\Actions\ActionGroup::make([
-                       // ListPreviewAction::make(),
-                        
-                       
+                    }),
 
-                            Tables\Actions\Action::make('Update Status')
-                            ->icon('heroicon-o-plus')
-                            ->color('primary')
+                   
+                   
+                    
+
+                            Tables\Actions\Action::make('Update')
+                            ->icon('entypo-cycle')
+                            ->color('info')
                             ->requiresConfirmation()
                             ->modalIcon('heroicon-o-check')
                             ->modalHeading('Update Equipment Status')
@@ -695,12 +828,19 @@ class EquipmentResource extends Resource
                                     ->title('Success')
                                     ->body('Status of the selected item/s have been updated.')
                                     ->send();
+                                    
                             })
+                          
                        
                             ->hidden(fn () => $isFaculty),
+                            Tables\Actions\EditAction::make(),
+                            Tables\Actions\DeleteAction::make(),
+                            
 
-                    ]),
-                ])
+                    ])
+                  
+                    
+            
                 ->bulkActions([
 
                     Tables\Actions\BulkActionGroup::make($bulkActions)
@@ -730,6 +870,7 @@ class EquipmentResource extends Resource
             'create' => Pages\CreateEquipment::route('/create'),
             //'view' => Pages\ViewEquipment::route('/{record}'),
             'edit' => Pages\EditEquipment::route('/{record}/edit'),
+            'qr-code' => Pages\ViewQrCode::route('/{record}/qr-code'),
         ];
     }
 }
