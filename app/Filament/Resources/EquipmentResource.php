@@ -256,6 +256,7 @@ class EquipmentResource extends Resource
             Tables\Actions\DeleteBulkAction::make(),
             //Tables\Actions\EditBulkAction::make(),
             Tables\Actions\BulkAction::make('bulk_update')
+            ->label('Bulk Update')
             ->icon('entypo-cycle')
             ->color('info')
             ->requiresConfirmation()
@@ -266,25 +267,40 @@ class EquipmentResource extends Resource
                 return $form->schema([
                     // Step 1: Select columns to update
                     Forms\Components\CheckboxList::make('fields_to_update')
-                        ->label('Select Fields to Update')
                         ->options([
                             'status' => 'Status',
                             'facility_id' => 'Facility',
                             'category_id' => 'Category',
+                            'main_image' => 'Main Image',
+                            'description' => 'Description',
+                            'date_acquired' => 'Date Acquired',
+                            'supplier' => 'Supplier',
+                            'amount' => 'Amount',
+                            'estimated_life' => 'Estimated Life',
+                            'po_number' => 'PO No.',
+                            'item_no' => 'Item No.',
+                            'property_no' => 'Property No.',
+                            'control_no' => 'Control No.',
+                            'property_no' => 'Property No.',
+                            'serial_no' => 'Serial No.',
                             'person_liable' => 'Person Liable',
                             'remarks' => 'Remarks',
                         ])
-                        ->reactive(), // This makes the form update when options are selected
+                        ->columns(2)
+                        ->reactive(), 
         
-                    // Step 2: Conditional fields based on selections
                     Forms\Components\Select::make('status')
                         ->label('Status')
                         ->options([
                             'working' => 'Working',
-                            'not_working' => 'Not Working',
-                            'under_maintenance' => 'Under Maintenance',
+                            'for repair' => 'For Repair',
+                            'for replacement' => 'For Replacement',
+                            'lost' => 'Lost',
+                            'for disposal' => 'For Disposal',
+                            'disposed' => 'Disposed',
+                           
                         ])
-                        ->visible(fn ($get) => in_array('status', $get('fields_to_update') ?? [])) // Fix: default to empty array if null
+                        ->visible(fn ($get) => in_array('status', $get('fields_to_update') ?? [])) 
                         ->required(fn ($get) => in_array('status', $get('fields_to_update') ?? [])),
         
                     Forms\Components\Select::make('facility_id')
@@ -295,10 +311,68 @@ class EquipmentResource extends Resource
         
                     Forms\Components\Select::make('category_id')
                         ->label('Category')
-                        ->options(\App\Models\Category::all()->pluck('name', 'id'))
+                        ->options(\App\Models\Category::all()->pluck('description', 'id'))
                         ->visible(fn ($get) => in_array('category_id', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('category_id', $get('fields_to_update') ?? [])),
-        
+
+                    Forms\Components\FileUpload::make('main_image')
+                        ->label('Main Image')
+                        ->visible(fn ($get) => in_array('main_image', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('main_image', $get('fields_to_update') ?? [])),
+                    
+                    Forms\Components\TextInput::make('description')
+                        ->placeholder('Specifications, e.g., dimensions, weight, power')
+                        ->label('Description')
+                        ->visible(fn ($get) => in_array('description', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('description', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\TextInput::make('date_acquired')
+                        ->label('Date Acquired')
+                        ->visible(fn ($get) => in_array('date_acquired', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('date_acquired', $get('fields_to_update') ?? [])),
+                    
+                    Forms\Components\TextInput::make('supplier')
+                        ->label('Supplier')
+                        ->visible(fn ($get) => in_array('supplier', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('supplier', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\TextInput::make('amount')
+                        ->label('Amount')
+                        ->numeric()
+                        ->prefix('₱')
+                        ->visible(fn ($get) => in_array('amount', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('amount', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\TextInput::make('estimated_life')
+                        ->label('Estimated Life')
+                        ->visible(fn ($get) => in_array('estimated_life', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('estimated_life', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\TextInput::make('po_number')
+                        ->label('PO Number')
+                        ->visible(fn ($get) => in_array('po_number', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('po_number', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\TextInput::make('item_no')
+                        ->label('Item No.')
+                        ->visible(fn ($get) => in_array('item_no', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('item_no', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\TextInput::make('control_no')
+                        ->label('Control No.')
+                        ->visible(fn ($get) => in_array('control_no', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('control_no', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\TextInput::make('property_no')
+                        ->label('Property No.')
+                        ->visible(fn ($get) => in_array('property_no', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('property_no', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\TextInput::make('serial_no')
+                        ->label('Serial No.')
+                        ->visible(fn ($get) => in_array('serial_no', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('serial_no', $get('fields_to_update') ?? [])),
+
                     Forms\Components\TextInput::make('person_liable')
                         ->label('Person Liable')
                         ->visible(fn ($get) => in_array('person_liable', $get('fields_to_update') ?? []))
@@ -312,7 +386,6 @@ class EquipmentResource extends Resource
                 ]);
             })
             ->action(function (array $data, $records) {
-                // Step 3: Apply updates to selected records
                 foreach ($records as $record) {
                     $updateData = [];
         
@@ -324,6 +397,39 @@ class EquipmentResource extends Resource
                     }
                     if (in_array('category_id', $data['fields_to_update'])) {
                         $updateData['category_id'] = $data['category_id'];
+                    }
+                    if (in_array('main_image', $data['fields_to_update'])) {
+                        $updateData['main_image'] = $data['main_image'];
+                    }
+                    if (in_array('description', $data['fields_to_update'])) {
+                        $updateData['description'] = $data['description'];
+                    }
+                    if (in_array('date_acquired', $data['fields_to_update'])) {
+                        $updateData['date_acquired'] = $data['date_acquired'];
+                    }
+                    if (in_array('supplier', $data['fields_to_update'])) {
+                        $updateData['supplier'] = $data['supplier'];
+                    }
+                    if (in_array('amount', $data['fields_to_update'])) {
+                        $updateData['amount'] = $data['amount'];
+                    }
+                    if (in_array('estimated_life', $data['fields_to_update'])) {
+                        $updateData['estimated_life'] = $data['estimated_life'];
+                    }
+                    if (in_array('po_number', $data['fields_to_update'])) {
+                        $updateData['po_number'] = $data['po_number'];
+                    }
+                    if (in_array('item_no', $data['fields_to_update'])) {
+                        $updateData['item_no'] = $data['item_no'];
+                    }
+                    if (in_array('property_no', $data['fields_to_update'])) {
+                        $updateData['property_no'] = $data['property_no'];
+                    }
+                    if (in_array('control_no', $data['fields_to_update'])) {
+                        $updateData['control_no'] = $data['control_no'];
+                    }
+                    if (in_array('serial_no', $data['fields_to_update'])) {
+                        $updateData['serial_no'] = $data['serial_no'];
                     }
                     if (in_array('person_liable', $data['fields_to_update'])) {
                         $updateData['person_liable'] = $data['person_liable'];
@@ -444,6 +550,7 @@ class EquipmentResource extends Resource
                     // ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable()
                     // ->extraAttributes(['class' => 'sticky left-0 bg-white z-10'])
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('unit_no')
                     ->label('Unit Number')
@@ -471,7 +578,8 @@ class EquipmentResource extends Resource
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
                         return strlen($state) > $column->getCharacterLimit() ? $state : null;
-                    }),
+                    })
+                    ->formatStateUsing(fn(string $state): string => ucfirst(strtolower($state))),
                 Tables\Columns\TextColumn::make('facility.name')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
@@ -485,6 +593,7 @@ class EquipmentResource extends Resource
                     ->badge()
                     ->searchable()
                     ->sortable()
+                    ->formatStateUsing(fn(string $state): string => ucfirst(strtolower($state)))
                     ->color(fn(string $state): string => match (strtolower($state)) {
                         'working' => 'success',
                         'for repair' => 'warning',
@@ -508,6 +617,7 @@ class EquipmentResource extends Resource
                 Tables\Columns\TextColumn::make('amount')
                     ->searchable()
                     ->sortable()
+                    ->money('PHP')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('estimated_life')
                     ->searchable()
@@ -517,21 +627,25 @@ class EquipmentResource extends Resource
                     ->label('Item Number')
                     ->searchable()
                     ->sortable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('property_no')
                     ->searchable()
                     ->label('Property Number')
                     ->sortable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('control_no')
                     ->searchable()
                     ->label('Control Number')
                     ->sortable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('serial_no')
                     ->searchable()
                     ->label('Serial Number')
                     ->sortable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->limit(30)
                     ->tooltip(function (TextColumn $column): ?string {
