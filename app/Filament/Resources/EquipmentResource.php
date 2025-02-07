@@ -278,6 +278,7 @@ class EquipmentResource extends Resource
                             'amount' => 'Amount',
                             'estimated_life' => 'Estimated Life',
                             'po_number' => 'PO No.',
+                            'unit_no' => 'Unit No.',
                             'item_no' => 'Item No.',
                             'property_no' => 'Property No.',
                             'control_no' => 'Control No.',
@@ -352,6 +353,11 @@ class EquipmentResource extends Resource
                         ->label('PO Number')
                         ->visible(fn ($get) => in_array('po_number', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('po_number', $get('fields_to_update') ?? [])),
+                        
+                    Forms\Components\TextInput::make('unit_no')
+                        ->label('Unit No.')
+                        ->visible(fn ($get) => in_array('unit_no', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('unit_no', $get('fields_to_update') ?? [])),
 
                     Forms\Components\TextInput::make('item_no')
                         ->label('Item No.')
@@ -418,6 +424,9 @@ class EquipmentResource extends Resource
                     }
                     if (in_array('po_number', $data['fields_to_update'])) {
                         $updateData['po_number'] = $data['po_number'];
+                    }
+                    if (in_array('unit_no', $data['fields_to_update'])) {
+                        $updateData['unit_no'] = $data['unit_no'];
                     }
                     if (in_array('item_no', $data['fields_to_update'])) {
                         $updateData['item_no'] = $data['item_no'];
