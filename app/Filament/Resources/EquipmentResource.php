@@ -687,19 +687,19 @@ class EquipmentResource extends Resource
                     // ->url(fn (Equipment $record) => route('filament.resources.equipment-resource.pages.view-qr-code', $record)),
 
                
-                    Tables\Actions\Action::make('View QR Code')
-                    ->label('View QR Code')
-                    ->icon('heroicon-s-qr-code')
-                    ->modalHeading('QR Code')
-                    ->modalContent(function ($record) {
-                        // Here, $record will automatically be passed into the closure
-                        return view('filament.resources.equipment-resource.views.view-qr-code', [
-                            'equipment' => $record,
-                        ]);
-                    })
-                    ->action(function (Equipment $record) {
-                        // You can add additional logic here if needed
-                    }),
+                    // Tables\Actions\Action::make('View QR Code')
+                    // ->label('View QR Code')
+                    // ->icon('heroicon-s-qr-code')
+                    // ->modalHeading('QR Code')
+                    // ->modalContent(function ($record) {
+                    //     // Here, $record will automatically be passed into the closure
+                    //     return view('filament.resources.equipment-resource.views.view-qr-code', [
+                    //         'equipment' => $record,
+                    //     ]);
+                    // })
+                    // ->action(function (Equipment $record) {
+                    //     // You can add additional logic here if needed
+                    // }),
 
                     Tables\Actions\Action::make('view_monitoring')
                     ->label('View ')
