@@ -129,7 +129,7 @@
 
 
 <!--Start Equipment Card Section -->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 lg:gap-1">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 lg:gap-1">
     @foreach($equipment as $equipment)
         <div class="p-4 lg:p-2" wire:key="{{ $equipment->id }}">
             <a href="#" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
@@ -144,7 +144,7 @@
                     <h2 class="font-bold text-lg lg:text-md mb-1">{{ $equipment->brand_name }}</h2>
                     <p class="text-sm lg:text-xs text-gray-600 mb-2">No Description.</p>
                     <div class="flex justify-end">
-                        <button class="flex items-center gap-1 mt-2 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold hover:bg-orange-600 transition-colors">
+                        <button class="flex items-center gap-1 mr-2 mb-2 mt-2 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold hover:bg-orange-600 transition-colors">
                             Request 
                             <x-heroicon-o-plus class="w-4 h-4" />
                         </button>
