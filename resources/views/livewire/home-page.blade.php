@@ -129,7 +129,7 @@
 
 
 <!--Start Equipment Card Section -->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-1 lg:gap-1">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 lg:gap-1">
     @foreach($equipment as $equipment)
         <div class="p-4 lg:p-2" wire:key="{{ $equipment->id }}">
             <a href="#" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
