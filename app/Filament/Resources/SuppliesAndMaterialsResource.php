@@ -19,11 +19,14 @@ use Filament\Notifications\Notification;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+
 
 
 
@@ -44,8 +47,21 @@ class SuppliesAndMaterialsResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\Section::make('')
+
+                ->schema([
+                    Section::make('Item Image')
+                    ->schema([
+                        Forms\Components\FileUpload::make('main_image')
+                        ->imageEditor()
+                        ->deletable()
+                        ->preserveFilenames(),
+     
+                        ])
+                        ->columnSpan(1)
+                        ->columns(1)
+                        ->collapsible(),
+
+                Forms\Components\Section::make('Item Details')
                     ->schema([
                         Forms\Components\Grid::make(3)
                             ->schema([
@@ -58,7 +74,12 @@ class SuppliesAndMaterialsResource extends Resource
                                         table: 'supplies_and_materials', 
                                         column: 'item', 
                                         ignoreRecord: true
-                                    ),
+                                    )
+                                    ->validationMessages([
+                                        'unique' => 'This item name already exists.',
+                                    ]),
+                                Forms\Components\TextInput::make('description')
+                                    ->placeholder('Specifications, e.g., dimensions, weight, power'),
                                 Forms\Components\Select::make('category_id')
                                     ->relationship('category', 'description')
                                     ->createOptionForm([
@@ -153,6 +174,164 @@ class SuppliesAndMaterialsResource extends Resource
 
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
+
+            Tables\Actions\BulkAction::make('bulk_update')
+            ->label('Bulk Update')
+            ->icon('entypo-cycle')
+            ->color('warning')
+            ->requiresConfirmation()
+            ->modalIcon('entypo-cycle')
+            ->modalHeading('Bulk Update Item Details')
+            ->modalDescription('Select the fields you want to update.')
+            ->form(function (Forms\Form $form) {
+                return $form->schema([
+                    // Step 1: Select columns to update
+                    Forms\Components\CheckboxList::make('fields_to_update')
+                        ->options([
+                            'main_image' => 'Item Image',
+                            'description' => 'Description',
+                            'category_id' => 'Category',
+                            'facility_id' => 'Facility',
+                            'quantity' => 'Quantity',
+                            'stocking_point' => 'Stocking Point',
+                            'stock_unit_id' => 'Stock Unit',
+                            'date_acquired' => 'Date Acquired',
+                            'supplier' => 'Supplier',
+                            'remarks' => 'Remarks',
+
+                        ])
+                        ->columns(2)
+                        ->reactive(), 
+
+                    Forms\Components\FileUpload::make('main_image')
+                        ->label('Main Image')
+                        ->imageEditor()
+                        ->deletable()
+                        ->preserveFilenames()
+                        ->visible(fn ($get) => in_array('main_image', $get('fields_to_update') ?? [])) 
+                        ->required(fn ($get) => in_array('main_image', $get('fields_to_update') ?? [])),
+                        
+                    Forms\Components\TextInput::make('description')
+                        ->placeholder('Specifications, e.g., dimensions, weight, power')
+                        ->visible(fn ($get) => in_array('description', $get('fields_to_update') ?? [])) 
+                        ->required(fn ($get) => in_array('description', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\Select::make('category_id')
+                        ->relationship('category', 'description')
+                        ->visible(fn ($get) => in_array('category_id', $get('fields_to_update') ?? [])) 
+                        ->required(fn ($get) => in_array('category_id', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\Select::make('facility_id')
+                        ->label('Facility')
+                        ->required()
+                        ->relationship('facility', 'name')
+                        ->visible(fn ($get) => in_array('facility_id', $get('fields_to_update') ?? [])) 
+                        ->required(fn ($get) => in_array('facility_id', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\TextInput::make('quantity')
+                        ->required()
+                        ->numeric()
+                        ->minValue(1)
+                        ->visible(fn ($get) => in_array('quantity', $get('fields_to_update') ?? [])) 
+                        ->required(fn ($get) => in_array('quantity', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\TextInput::make('stocking_point')
+                        //->options(array_combine(range(1, 1000), range(1, 1000)))
+                        ->label('Stocking Point')
+                        ->numeric()
+                        ->minValue(0)
+                        ->required()
+                        ->reactive()
+                        ->afterStateUpdated(function (callable $set, $state, $get) {
+                            // Get the values of quantity and stocking_point
+                            $quantity = $get('quantity');
+                            
+                            // Check if stocking_point exceeds quantity
+                            if ($state > $quantity) {
+                                // Set error message if stocking_point exceeds quantity
+                                $set('stocking_point', null);  // Optionally reset the stocking_point
+                                Notification::make()
+                                    ->danger()
+                                    ->title('Try Again')
+                                    ->body('Stocking Point cannot exceed Quantity.')
+                                    ->send();
+                                    }
+                                 })
+                        ->visible(fn ($get) => in_array('stocking_point', $get('fields_to_update') ?? [])) 
+                        ->required(fn ($get) => in_array('stocking_point', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\Select::make('stock_unit_id')
+                        ->label('Stock Unit')
+                        ->required()
+                        ->relationship('stockUnit', 'description')
+                        ->visible(fn ($get) => in_array('stock_unit_id', $get('fields_to_update') ?? [])) 
+                        ->required(fn ($get) => in_array('stock_unit_id', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\TextInput::make('date_acquired')
+                        ->label('Date Acquired')
+                        ->placeholder('mm-dd-yy. E.g., 01-28-24')
+                        ->maxLength(255)
+                        ->visible(fn ($get) => in_array('date_acquired', $get('fields_to_update') ?? [])) 
+                        ->required(fn ($get) => in_array('date_acquired', $get('fields_to_update') ?? [])),
+                    
+                    Forms\Components\TextInput::make('supplier')
+                        ->label('Supplier')
+                        ->placeholder('Refer to the item sticker.')
+                        ->maxLength(255)
+                        ->visible(fn ($get) => in_array('supplier', $get('fields_to_update') ?? [])) 
+                        ->required(fn ($get) => in_array('supplier', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\TextInput::make('remarks')
+                        ->label('Remarks')
+                        ->visible(fn ($get) => in_array('remarks', $get('fields_to_update') ?? [])) 
+                        ->required(fn ($get) => in_array('remarks', $get('fields_to_update') ?? [])),
+
+                    ]);            
+                                
+                })
+                ->action(function (array $data, $records) {
+                    foreach ($records as $record) {
+                        $updateData = [];
+
+                        if (in_array('main_image', $data['fields_to_update'])) {
+                            $updateData['main_image'] = $data['main_image'];
+                        }
+                        if (in_array('item', $data['fields_to_update'])) {
+                            $updateData['item'] = $data['item'];
+                        }
+                        if (in_array('description', $data['fields_to_update'])) {
+                            $updateData['description'] = $data['description'];
+                        }
+                        if (in_array('facility_id', $data['fields_to_update'])) {
+                            $updateData['facility_id'] = $data['facility_id'];
+                        }
+                        if (in_array('quantity', $data['fields_to_update'])) {
+                            $updateData['quantity'] = $data['quantity'];
+                        }
+                        if (in_array('stocking_point', $data['fields_to_update'])) {
+                            $updateData['stocking_point'] = $data['stocking_point'];
+                        }
+                        if (in_array('stock_unit_id', $data['fields_to_update'])) {
+                            $updateData['stock_unit_id'] = $data['stock_unit_id'];
+                        }
+                        if (in_array('date_aquired', $data['fields_to_update'])) {
+                            $updateData['date_aquired'] = $data['date_aquired'];
+                        }
+                        if (in_array('supplier', $data['fields_to_update'])) {
+                            $updateData['supplier'] = $data['supplier'];
+                        }
+                        if (in_array('remarks', $data['fields_to_update'])) {
+                            $updateData['remarks'] = $data['remarks'];
+                        }
+                        $record->update($updateData);
+                    }
+            
+                    \Filament\Notifications\Notification::make()
+                        ->title('Facilities updated successfully!')
+                        ->success()
+                        ->send();
+                }),
+
             Tables\Actions\BulkAction::make('add_to_supplies_cart')
                 ->label('Add to Supplies Cart')
                 ->icon('heroicon-o-shopping-bag')
@@ -227,11 +406,26 @@ class SuppliesAndMaterialsResource extends Resource
             ->description('Supplies refer to consumable items. To request, select an item. An "Actions" button will appear. Click it and choose "Add to Supplies Cart".
             For more information, go to the dashboard to download the user manual.')
             ->columns([
+                Tables\Columns\ImageColumn::make('main_image')
+                ->label('Main Image')
+                ->stacked(),
                 Tables\Columns\TextColumn::make('item')
                     ->label('Item')                
                     ->searchable()
                     ->sortable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('description')
+                    ->searchable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->limit(50)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        return strlen($state) > $column->getCharacterLimit() ? $state : null;
+                    })
+                    ->formatStateUsing(fn(string $state): string => ucfirst(strtolower($state))),
                 Tables\Columns\TextColumn::make('category.description')  
                     ->label('Category')  
                     ->searchable()
@@ -263,6 +457,7 @@ class SuppliesAndMaterialsResource extends Resource
                     ->label('Facility')
                     ->searchable()
                     ->sortable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('supplier')
                     ->searchable()

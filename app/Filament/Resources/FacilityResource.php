@@ -59,7 +59,11 @@ class FacilityResource extends Resource
                                 Forms\Components\TextInput::make('name')
                                     ->placeholder('Facility Name Displayed On The Door (e.g., CL1, CL2)')
                                     ->required()
-                                    ->unique('facilities','name')
+                                    ->unique(
+                                        table: 'facilities', 
+                                        column: 'name', 
+                                        ignoreRecord: true
+                                    )
                                     ->maxLength(255),
                                 Forms\Components\Select::make('connection_type')
                                     ->options([
