@@ -170,24 +170,78 @@ class FacilityResource extends Resource
                             ])
                             ->visible(fn ($get) => in_array('connection_type', $get('fields_to_update') ?? [])) 
                             ->required(fn ($get) => in_array('connection_type', $get('fields_to_update') ?? [])),
-            
-                        Forms\Components\Select::make('facility_id')
-                            ->label('Facility')
-                            ->options(\App\Models\Facility::all()->pluck('name', 'id'))
-                            ->visible(fn ($get) => in_array('facility_id', $get('fields_to_update') ?? []))
-                            ->required(fn ($get) => in_array('facility_id', $get('fields_to_update') ?? [])),
+
+                        Forms\Components\Select::make('facility_type')
+                            ->options([
+                                'Room' => 'Room',
+                                'Office' => 'Office',
+                                'Computer Laboratory' => 'Computer Laboratory',
+                                'Incubation Hub' => 'Incubation Hub',
+                                'Robotic Hub' => 'Robotic Hub',
+                                'Hall' => 'Hall',
+                            ])
+                            ->visible(fn ($get) => in_array('facility_type', $get('fields_to_update') ?? [])) 
+                            ->required(fn ($get) => in_array('facility_type', $get('fields_to_update') ?? [])),
+
+                        Forms\Components\Select::make('cooling_tools')
+                                ->options([
+                                    'None' => 'None',
+                                    'Aircon' => 'Aircon',
+                                    'Ceiling Fan' => 'Ceiling Fan',
+                                    'Both Aircon and Ceiling Fan' => 'Both Aircon and Ceiling Fan',
+                                ])
+                            ->visible(fn ($get) => in_array('cooling_tools', $get('fields_to_update') ?? [])) 
+                            ->required(fn ($get) => in_array('cooling_tools', $get('fields_to_update') ?? [])),
+
+                        Forms\Components\Select::make('floor_level')
+                                ->options([
+                                    '1st Floor' => '1st Floor',
+                                    '2nd Floor' => '2nd Floor',
+                                    '3rd Floor' => '3rd Floor',
+                                    '4th Floor' => '4th Floor',
+                                ])
+                            ->visible(fn ($get) => in_array('floor_level', $get('fields_to_update') ?? [])) 
+                            ->required(fn ($get) => in_array('floor_level', $get('fields_to_update') ?? [])),
+
+                        Forms\Components\TextInput::make('building')
+                                ->required()
+                                ->default('HIRAYA')
+                                ->visible(fn ($get) => in_array('building', $get('fields_to_update') ?? [])) 
+                                ->required(fn ($get) => in_array('building', $get('fields_to_update') ?? [])),
+
+                        Forms\Components\RichEditor::make('remarks')
+                                ->placeholder('Anything that describes the facility (e.g., Computer Laboratory with space for 30 students)')
+                                ->disableToolbarButtons(['attachFiles'])
+                                ->visible(fn ($get) => in_array('remarks', $get('fields_to_update') ?? [])) 
+                                ->required(fn ($get) => in_array('remarks', $get('fields_to_update') ?? [])),
                         ]);
                     })
                     ->action(function (array $data, $records) {
                         foreach ($records as $record) {
                             $updateData = [];
-                
-                            if (in_array('connection_type', $data['fields_to_update'])) {
-                                $updateData['connection_type'] = $data['connection_type'];
-                            }
+
                             if (in_array('facility_img', $data['fields_to_update'])) {
                                 $updateData['facility_img'] = $data['facility_img'];
                             }
+                            if (in_array('connection_type', $data['fields_to_update'])) {
+                                $updateData['connection_type'] = $data['connection_type'];
+                            }
+                            if (in_array('facility_type', $data['fields_to_update'])) {
+                                $updateData['facility_type'] = $data['facility_type'];
+                            }
+                            if (in_array('cooling_tools', $data['fields_to_update'])) {
+                                $updateData['cooling_tools'] = $data['cooling_tools'];
+                            }
+                            if (in_array('floor_level', $data['fields_to_update'])) {
+                                $updateData['floor_level'] = $data['floor_level'];
+                            }
+                            if (in_array('building', $data['fields_to_update'])) {
+                                $updateData['building'] = $data['building'];
+                            }
+                            if (in_array('remarks', $data['fields_to_update'])) {
+                                $updateData['remarks'] = $data['remarks'];
+                            }
+                            
 
                             $record->update($updateData);
                         }

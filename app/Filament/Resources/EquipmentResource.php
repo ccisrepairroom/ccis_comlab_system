@@ -458,7 +458,7 @@ class EquipmentResource extends Resource
         
             Tables\Actions\BulkAction::make('add_to_request_list')
                 ->label('Add to Request List')
-                ->icon('eva-plus')
+                ->icon('heroicon-o-plus')
                 ->action(function (Collection $records) {
                     $added = false; // Flag to track if any items were successfully added
                     $unreturnedItems = []; // Array to track unreturned items

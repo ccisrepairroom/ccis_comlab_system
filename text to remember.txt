@@ -463,3 +463,9 @@ sudo systemctl restart php-fpm
   to confirm installation, check localhost search for imagick
 
   https://www.youtube.com/watch?v=y_OHy5qNJlQ--yt watch for qr code
+
+
+  ---------------------------------------------------
+  performance tips
+
+  --yt https://www.youtube.com/watch?v=LA2jgtAn4Sc&list=PL1TrjkMQ8UbWRZ4tv4GW_KwbyavOxt6bc

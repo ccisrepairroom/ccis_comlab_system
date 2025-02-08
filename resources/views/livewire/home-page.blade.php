@@ -145,7 +145,8 @@
                     <p class="text-sm lg:text-xs text-gray-600 mb-2">No Description.</p>
                     <div class="flex justify-end">
                         <button class="flex items-center gap-1 mt-2 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold hover:bg-orange-600 transition-colors">
-                            Request <x-eva-plus class="w-4 h-4" />
+                            Request 
+                            <x-heroicon-o-plus class="w-4 h-4" />
                         </button>
                     </div>
                 </div>
