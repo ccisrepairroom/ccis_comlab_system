@@ -17,7 +17,7 @@ class Facility extends Model
         'floor_level',
         'building',
         'remarks',
-        'facility_img',
+        'main_image',
     ];
     public function user()
 {

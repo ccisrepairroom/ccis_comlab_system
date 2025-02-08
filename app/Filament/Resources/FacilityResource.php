@@ -136,7 +136,7 @@ class FacilityResource extends Resource
                         // Step 1: Select columns to update
                         Forms\Components\CheckboxList::make('fields_to_update')
                             ->options([
-                                'facility_img' => 'Facility Image',
+                                'main_image' => 'Facility Image',
                                 'connection_type' => 'Connection Type',
                                 'facility_type' => 'Facility Type',
                                 'cooling_tools' => 'Cooling Tools',
@@ -147,13 +147,13 @@ class FacilityResource extends Resource
                             ->columns(2)
                             ->reactive(), 
 
-                        Forms\Components\FileUpload::make('facility_img')
+                        Forms\Components\FileUpload::make('main_image')
                             ->label('Main Image')
                             ->imageEditor()
                             ->deletable()
                             ->preserveFilenames()
-                            ->visible(fn ($get) => in_array('facility_img', $get('fields_to_update') ?? [])) 
-                            ->required(fn ($get) => in_array('facility_img', $get('fields_to_update') ?? [])),
+                            ->visible(fn ($get) => in_array('main_image', $get('fields_to_update') ?? [])) 
+                            ->required(fn ($get) => in_array('main_image', $get('fields_to_update') ?? [])),
 
                         Forms\Components\Select::make('connection_type')
                             ->options([
@@ -220,8 +220,8 @@ class FacilityResource extends Resource
                         foreach ($records as $record) {
                             $updateData = [];
 
-                            if (in_array('facility_img', $data['fields_to_update'])) {
-                                $updateData['facility_img'] = $data['facility_img'];
+                            if (in_array('main_image', $data['fields_to_update'])) {
+                                $updateData['main_image'] = $data['main_image'];
                             }
                             if (in_array('connection_type', $data['fields_to_update'])) {
                                 $updateData['connection_type'] = $data['connection_type'];
@@ -288,7 +288,7 @@ class FacilityResource extends Resource
             For more information, go to the dashboard to download the user manual.')
             ->query(Facility::with('user'))
             ->columns([
-                Tables\Columns\ImageColumn::make('facility_img')
+                Tables\Columns\ImageColumn::make('main_image')
                     ->stacked(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Name')
