@@ -266,7 +266,14 @@ class EquipmentResource extends Resource
             ->form(function (Forms\Form $form) {
                 return $form->schema([
                     // Step 1: Select columns to update
+                    Forms\Components\Select::make('monitored_by')
+                                        ->label('Monitored By')
+                                        ->options(User::all()->pluck('name', 'id'))
+                                        ->default(auth()->user()->id)
+                                        ->disabled()
+                                        ->required(),
                     Forms\Components\CheckboxList::make('fields_to_update')
+                        ->label('Select fields to update.')
                         ->options([
                             'status' => 'Status',
                             'facility_id' => 'Facility',
@@ -448,6 +455,16 @@ class EquipmentResource extends Resource
                     }
         
                     $record->update($updateData);
+
+                    // Insert into Equipment Monitoring
+                    \App\Models\EquipmentMonitoring::create([
+                        'equipment_id' => $record->id,
+                        'monitored_by' => auth()->user()->id,
+                        'status' => $updateData['status'] ?? $record->status,
+                        'facility_id' => $updateData['facility_id'] ?? $record->facility_id,
+                        'remarks' => $updateData['remarks'] ?? $record->remarks,
+                        'created_at' => now()->setTimezone('Asia/Manila')->format('Y-m-d H:i:s'),
+                    ]);
                 }
         
                 \Filament\Notifications\Notification::make()
