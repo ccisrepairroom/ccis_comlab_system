@@ -138,6 +138,19 @@ class FacilityResource extends Resource
                 ->form(function (Forms\Form $form) {
                     return $form->schema([
                         // Step 1: Select columns to update
+                        Forms\Components\Select::make('monitored_by')
+                            ->label('Monitored By')
+                            ->options(User::all()->pluck('name', 'id'))
+                            ->default(auth()->user()->id)
+                            ->disabled()
+                            ->required(),
+                        Forms\Components\DatePicker::make('monitored_date')
+                            ->label('Monitoring Date')
+                            ->required()
+                            ->disabled()
+                            ->default(now())
+                            ->format('Y-m-d'),
+
                         Forms\Components\CheckboxList::make('fields_to_update')
                             ->options([
                                 'main_image' => 'Facility Image',
@@ -248,6 +261,15 @@ class FacilityResource extends Resource
                             
 
                             $record->update($updateData);
+
+                            // Insert into Equipment Monitoring
+                            \App\Models\FacilityMonitoring::create([
+                                'facility_id' => $record->id,
+                                'monitored_by' => auth()->user()->id,
+                                'remarks' => $updateData['remarks'] ?? $record->remarks,
+                                'created_at' => now()->setTimezone('Asia/Manila')->format('Y-m-d H:i:s'),
+                            ]);
+
                         }
                 
                         \Filament\Notifications\Notification::make()
@@ -399,18 +421,20 @@ class FacilityResource extends Resource
                                 'equipment' => $equipment,
                             ]);
                         }),
-                    /*Tables\Actions\ViewAction::make('view_monitoring')
+                    Tables\Actions\Action::make('view_monitoring')
                         ->label('View Facility Records')
                         ->icon('heroicon-o-presentation-chart-line')
                         ->color('info')
-                        ->modalHeading('Monitoring Records')
+                        ->modalHeading('')
+                        ->modalSubmitAction(false)
+                        ->modalCancelAction(false)
                         ->modalContent(function ($record) {
                             $facilityId = $record->id;
                             $monitorings = FacilityMonitoring::where('facility_id', $facilityId)->with('user')->get();
                             return view('filament.resources.facility-monitoring-modal', [
                                 'monitorings' => $monitorings,
                             ]);
-                        }),*/
+                        }),
                     Tables\Actions\EditAction::make(),
 
                     Tables\Actions\ActionGroup::make([

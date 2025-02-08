@@ -20,8 +20,8 @@
                 <td class="px-6 py-4 whitespace-nowrap">{{ $monitoring->user->name ?? 'Unknown' }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($monitoring->monitored_date)->format('F d, Y') }}</td>
                 <!--<td class="px-6 py-4 whitespace-nowrap">{{ $monitoring->status }}</td>-->
-                <td class="px-6 py-4 whitespace-nowrap">{{ $monitoring->remarks }}</td>
-            </tr>
+                <td class="px-4 py-4 whitespace-nowrap"> {{ strip_tags($monitoring->remarks) }}</td>
+                </tr>
             @endforeach
         </tbody>
     </table>
