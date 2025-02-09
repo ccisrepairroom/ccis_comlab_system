@@ -6,6 +6,7 @@ use App\Http\Controllers\MonitoringController;
 use Filament\Facades\Filament;
 use Filament\Actions\Action;
 use App\Filament\Pages\Auth\EditProfile;
+use App\Models\Facility;
 
 use Livewire\Livewire;
 use App\Livewire\HomePage;
@@ -76,6 +77,12 @@ Route::middleware('auth')->group(function () {
 
 // Route::get('/', [Home::class, 'render'])->name('home');
 Route::get('/', HomePage::class);
+
+Route::get('/facility-monitoring/{record}', function ($record) {
+    return view('filament.resources.facility-monitoring-modal', [
+        'record' => \App\Models\Facility::findOrFail($record),
+    ]);
+})->name('facility-monitoring-modal');
 
 
 

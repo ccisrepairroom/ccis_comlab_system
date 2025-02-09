@@ -357,6 +357,16 @@ class FacilityResource extends Resource
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+           
+            // ->recordUrl(function ($record) { 
+            //     if ($record->trashed()) { 
+            //     return null; 
+            //     } 
+            //     return
+            //      view('filament.resources.facility-monitoring-modal'); 
+            //     }) 
+            // ->recordUrl(fn ($record) => route('filament.admin.resources.facilities.view', $record))
+
             ->filters([
                 SelectFilter::make('floor_level')
                     ->label('Floor Level')
@@ -413,10 +423,12 @@ class FacilityResource extends Resource
                         ->modalHeading('')
                         ->modalSubmitAction(false)
                         ->modalCancelAction(false)
+                        ->action(fn (Facility $record) => redirect()->route('monitoring.view', ['facility' => $record->id]))
                         ->modalContent(function ($record) {
-                            $facilityId = $record->id;
-                            $monitorings = FacilityMonitoring::where('facility_id', $facilityId)->with('user')->get();
+                            $facility = Facility::with('user')->find($record->id);
+                            $monitorings = FacilityMonitoring::where('facility_id', $record->id)->with('user')->get();
                             return view('filament.resources.facility-monitoring-modal', [
+                                'facility' => $facility,
                                 'monitorings' => $monitorings,
                             ]);
                         }),
@@ -437,6 +449,7 @@ class FacilityResource extends Resource
                         }),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                   
 
 
                     Tables\Actions\ActionGroup::make([
@@ -494,6 +507,8 @@ class FacilityResource extends Resource
                         })
                         ->hidden(fn () => $isFaculty),
                         
+
+                        
                 ])
             ])
             ->bulkActions([
@@ -501,6 +516,7 @@ class FacilityResource extends Resource
                     ->label('Actions'),
             ]);
     }
+   
 
     public static function create(array $data)
     {
@@ -527,8 +543,9 @@ class FacilityResource extends Resource
         return [
             'index' => Pages\ListFacilities::route('/'),
             'create' => Pages\CreateFacility::route('/create'),
-           // 'view' => Pages\ViewFacility::route('/{record}'),
             'edit' => Pages\EditFacility::route('/{record}/edit'),
+            'view' => Pages\ViewFacility::route('/{record}'),
+
         ];
     }
 }

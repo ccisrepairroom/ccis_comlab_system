@@ -469,3 +469,6 @@ sudo systemctl restart php-fpm
   performance tips
 
   --yt https://www.youtube.com/watch?v=LA2jgtAn4Sc&list=PL1TrjkMQ8UbWRZ4tv4GW_KwbyavOxt6bc
+
+  ------------------------------------
+  laravel dompdf for print and download
