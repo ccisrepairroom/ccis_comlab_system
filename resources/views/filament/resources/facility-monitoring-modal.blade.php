@@ -71,10 +71,7 @@
 
 <!-- Buttons Section -->
 <div class="flex items-center space-x-2 mt-4 ml-4">
-    <button type="button" class="text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-500 font-medium rounded-lg text-xs px-4 py-2">
-        Print
-    </button>
-    <button type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-xs px-4 py-2">
-        Download
-    </button>
+    <a href="{{ route('facility-monitoring-page')}}"   type="button" class="text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-500 font-medium rounded-lg text-xs px-4 py-2" target="_blank">
+        Show in Browser
+</a>
 </div>

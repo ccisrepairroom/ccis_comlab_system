@@ -12,11 +12,15 @@
         @livewireStyles
     </head>
     <body class="bg-slate-200 dark:bg-slate-200" >
-    @livewire('partials.navbar')
+    @if (!request()->routeIs('facility-monitoring-page')) 
+        @livewire('partials.navbar')
+    @endif
    <main>
    {{ $slot }}
    </main>
-   @livewire('partials.footer')
+   @if (!request()->routeIs('facility-monitoring-page')) 
+        @livewire('partials.footer')
+    @endif
 
     @livewireScripts
 

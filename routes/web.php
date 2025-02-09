@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MonitoringController;
+use App\Http\Controllers\FacilityMonitoringPageController;
 use Filament\Facades\Filament;
 use Filament\Actions\Action;
 use App\Filament\Pages\Auth\EditProfile;
@@ -10,6 +11,8 @@ use App\Models\Facility;
 
 use Livewire\Livewire;
 use App\Livewire\HomePage;
+use App\Livewire\FacilityMonitoringPage;
+
 
 
 
@@ -77,12 +80,9 @@ Route::middleware('auth')->group(function () {
 
 // Route::get('/', [Home::class, 'render'])->name('home');
 Route::get('/', HomePage::class);
+Route::get('/facility-monitoring-page', FacilityMonitoringPage::class)->name('facility-monitoring-page');
+Route::get('/downloadpdf', [FacilityMonitoringPage::class, 'downloadpdf'])->name('downloadpdf');
 
-Route::get('/facility-monitoring/{record}', function ($record) {
-    return view('filament.resources.facility-monitoring-modal', [
-        'record' => \App\Models\Facility::findOrFail($record),
-    ]);
-})->name('facility-monitoring-modal');
 
 
 

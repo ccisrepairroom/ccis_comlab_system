@@ -472,3 +472,11 @@ sudo systemctl restart php-fpm
 
   ------------------------------------
   laravel dompdf for print and download
+  -yt:https://www.youtube.com/watch?v=3_I7UHSV9l0&t=334s
+  composer require barryvdh/laravel-dompdf
+    use Barryvdh\DomPDF\Facade\Pdf;
+
+
+  ------------------------browsershot
+  composer require spatie/browsershot
+  https://www.youtube.com/watch?v=a6pVPcUiQ9U
