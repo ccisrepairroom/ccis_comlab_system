@@ -842,12 +842,12 @@ class EquipmentResource extends Resource
                     }),
 
                     Tables\Actions\Action::make('view_monitoring')
-                    ->label('View ')
+                    ->label(' ')
                     ->icon('fas-eye')
                     ->color('info')
                     ->modalSubmitAction(false)
                     ->modalCancelAction(false)
-                    ->modalHeading('Monitoring Records')
+                    ->modalHeading('')
                     ->modalContent(function ($record) {
                         $equipmentId = $record->id;
                         $monitorings = EquipmentMonitoring::with('equipment.facility', 'user')

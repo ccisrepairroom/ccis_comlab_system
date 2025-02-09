@@ -406,24 +406,9 @@ class FacilityResource extends Resource
             ])
             ->actions([
                       
-                    
-                    Tables\Actions\ViewAction::make('viewFacilityEquipment')
-                        ->label('View Facility Equipment')
-                        ->icon('heroicon-o-cog')
-                        ->color('success')
-                        ->modalSubmitAction(false)
-                        ->modalCancelAction(false)
-                        ->slideOver()
-                        ->modalHeading('Equipment List')
-                        ->modalContent(function ($record) {
-                            $equipment = Equipment::where('facility_id', $record->id)->paginate(100);
-                            return view('filament.resources.facility-equipment-modal', [
-                                'equipment' => $equipment,
-                            ]);
-                        }),
                     Tables\Actions\Action::make('view_monitoring')
-                        ->label('View Facility Records')
-                        ->icon('heroicon-o-presentation-chart-line')
+                        ->label(' ')
+                        ->icon('fas-eye')                       
                         ->color('info')
                         ->modalHeading('')
                         ->modalSubmitAction(false)
@@ -435,7 +420,24 @@ class FacilityResource extends Resource
                                 'monitorings' => $monitorings,
                             ]);
                         }),
+
+                    Tables\Actions\Action::make('viewFacilityEquipment')
+                        ->label('Equipment')
+                        ->icon('heroicon-o-cog')
+                        ->color('info')
+                        ->modalSubmitAction(false)
+                        ->modalCancelAction(false)
+                        ->slideOver()
+                        ->modalHeading('Equipment List')
+                        ->modalContent(function ($record) {
+                            $equipment = Equipment::where('facility_id', $record->id)->paginate(100);
+                            return view('filament.resources.facility-equipment-modal', [
+                                'equipment' => $equipment,
+                            ]);
+                        }),
                     Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+
 
                     Tables\Actions\ActionGroup::make([
                     //Tables\Actions\EditAction::make()->color('warning'),

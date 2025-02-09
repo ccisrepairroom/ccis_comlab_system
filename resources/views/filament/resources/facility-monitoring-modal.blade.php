@@ -1,4 +1,7 @@
-<div id="printableModal" class="p-8 bg-white">
+<div class="p-8 bg-white">
+<div class="text-center mb-4">
+        <img src="{{ asset('images/ccisheader.png') }}" alt="CCIS Header" class="mx-auto w-full max-w-6xl">
+    </div>
     <h3 class="text-lg font-semibold mb-4 text-center">Monitoring Records</h3>
     
     @if($monitorings->isEmpty())
@@ -23,43 +26,4 @@
             </tbody>
         </table>
     @endif
-
-    <button onclick="printModal()" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded">Print</button>
 </div>
-
-<style>
-    @media print {
-        @page {
-            size: A4 portrait;
-            margin: 1in;
-        }
-        body * {
-            visibility: hidden;
-        }
-        #printableModal, #printableModal * {
-            visibility: visible;
-        }
-        #printableModal {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            font-size: 12px;
-            padding: 8px;
-            border: 1px solid black;
-        }
-    }
-</style>
-
-<script>
-    function printModal() {
-        window.print();
-    }
-</script>
