@@ -5,8 +5,8 @@
 
       <div class="mt-3">
         <p class="flex justify-center items-center space-x-3 whitespace-nowrap">
+        <a class="text-gray-400 hover:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="https://www.facebook.com/CarSUOfficial"target="_blank">Caraga State University -</a>
           <span class="text-gray-400">Ampayon, Butuan City, Caraga Region, 8600 Philippines</span>
-          <a class="text-gray-400 hover:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#">- Blog</a>
         </p>
       </div>
 

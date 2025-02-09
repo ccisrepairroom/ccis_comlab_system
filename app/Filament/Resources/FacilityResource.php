@@ -14,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Section;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\Grid;
 use Filament\Notifications\Notification;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
@@ -348,7 +349,14 @@ class FacilityResource extends Resource
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->formatStateUsing(fn (string $state): string => strip_tags($state))
-                    ->html(),
+                    ->limit(50)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = strip_tags($column->getState());
+                        return strlen($state) > $column->getCharacterLimit() ? $state : null;
+                    })
+                    
+                    
+                    ->html(false),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->sortable()
