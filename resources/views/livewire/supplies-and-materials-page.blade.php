@@ -134,14 +134,15 @@
         <div class="p-4 lg:p-2" wire:key="{{ $supply->id }}">
             <a href="#" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
                 <div class="h-48 lg:h-36 bg-gray-100 ">
+                <img src="{{ url('storage', $supply->main_image) }}" alt="{{ $supply->item }}" class="w-full h-full object-cover">
                 </div>
-                <div class="p-4 lg:p-2">
-                    <div class="flex flex-wrap gap-1 lg:gap-0.5 mb-2">
+                <div class=" lg:p-2 mr-5">
+                    <div class="flex flex-wrap gap-1 lg:gap-0.5 mb-2 ml-2">
                         <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">Keyboard</span>
                         <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">CL1</span>
                     </div>
-                    <h2 class="font-bold text-lg lg:text-md mb-1">{{ $supply->item }}</h2>
-                    <p class="text-sm lg:text-xs text-gray-600 mb-2">{{ $supply->description }}</p>
+                    <h2 class="font-bold text-lg lg:text-md mb-1 px-2">{{ $supply->item }}</h2>
+                    <p class="text-sm lg:text-xs text-gray-600 mb-2 px-2">{{ $supply->description }}</p>
                     <div class="flex justify-end">
                         <button class="flex items-center gap-1 mr-2 mb-2 mt-2 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold hover:bg-orange-600 transition-colors">
                             Request 
