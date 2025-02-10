@@ -12,6 +12,10 @@ use App\Models\Facility;
 use Livewire\Livewire;
 use App\Livewire\HomePage;
 use App\Livewire\FacilityMonitoringPage;
+use App\Livewire\FacilitiesPage;
+use App\Livewire\SuppliesAndMaterialsPage;
+
+
 
 
 
@@ -77,11 +81,15 @@ Route::middleware('auth')->group(function () {
 
 
 
+Route::get('/facility-monitoring/{facility}', FacilityMonitoringPage::class)->name('facility-monitoring-page');
 
 // Route::get('/', [Home::class, 'render'])->name('home');
 Route::get('/', HomePage::class);
-Route::get('/facility-monitoring/{facility}', FacilityMonitoringPage::class)->name('facility-monitoring-page');
-Route::get('/downloadpdf', [FacilityMonitoringPage::class, 'downloadpdf'])->name('downloadpdf');
+Route::get('/facilities', FacilitiesPage::class);
+Route::get('/supplies-and-materials', SuppliesAndMaterialsPage::class);
+
+
+// Route::get('/downloadpdf', [FacilityMonitoringPage::class, 'downloadpdf'])->name('downloadpdf');
 
 
 
