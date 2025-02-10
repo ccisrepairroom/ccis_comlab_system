@@ -575,7 +575,10 @@ class EquipmentResource extends Resource
            For more information, go to the dashboard to download the user manual.')
             ->columns([
                 Tables\Columns\ImageColumn::make('main_image')
-                ->stacked(),
+                ->stacked()
+                ->sortable(query: function ($query, $direction) {
+                    $query->orderByRaw("ISNULL(main_image) $direction, main_image $direction");
+                }),
                 Tables\Columns\ImageColumn::make('qr_code')
                 ->stacked(),
                 Tables\Columns\TextColumn::make('po_number')

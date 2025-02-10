@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('supplies_and_materials', function (Blueprint $table) {
-            $table->string('main_image')->nullable()->before('item')->index('supp_main_image');
+            $table->string('main_image')->default('no_image')->before('item')->index('supp_main_image');
 
         });
     }
@@ -23,7 +23,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('supplies_and_materials', function (Blueprint $table) {
-            $table->dropIndex(['supp_main_image']);
             $table->dropColumn('main_image');
 
         });

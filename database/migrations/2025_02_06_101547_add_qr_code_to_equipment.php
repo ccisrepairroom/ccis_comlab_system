@@ -23,7 +23,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('equipment', function (Blueprint $table) {
-            $table->dropIndex(['equip_qr_code']);
             $table->dropColumn('qr_code');
         });
     }
