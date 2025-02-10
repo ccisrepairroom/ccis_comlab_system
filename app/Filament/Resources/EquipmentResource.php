@@ -739,6 +739,14 @@ class EquipmentResource extends Resource
 
             
                 ->filters([
+                    SelectFilter::make('main_image')
+                    ->label('Main Image')
+                    ->options(
+                        Equipment::query()
+                            ->whereNotNull('main_image') // Filter out null values
+                            ->pluck('main_image', 'main_image')
+                            ->toArray()
+                    ),
                    
                     SelectFilter::make('po_number')
                     ->label('PO Number')
