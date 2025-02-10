@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\StockUnit;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Filament\Notifications\Notification;
+
 
 class EquipmentImport implements ToModel, WithHeadingRow
 {
@@ -19,6 +21,22 @@ class EquipmentImport implements ToModel, WithHeadingRow
     public function model(array $row)
 {
     $userId = auth()->id(); 
+
+     // Check if serial number already exists
+     $serialNumber = $row['serial_number'] ?? null;
+
+
+    if ($serialNumber && Equipment::where('serial_no', $serialNumber)->exists()) {
+        Notification::make()
+            ->title('Duplicate Serial Number')
+            ->body("Equipment with Serial Number: {$serialNumber} already exists.")
+            ->danger()  // Makes it a red, error-like notification
+            ->send();
+
+        // Skip inserting this duplicate record
+        return null;
+    }
+
     // Trim and retrieve related models
     $facilityName = trim($row['facility_id'] ?? '');
     $categoryDescription = trim($row['category_id'] ?? '');
@@ -48,7 +66,7 @@ class EquipmentImport implements ToModel, WithHeadingRow
         'po_number' => $row['po_number'] ?? null,
         'property_no' => $row['property_number'] ?? null,
         'control_no' => $row['control_number'] ?? null,
-        'serial_no' => $row['serial_number'] ?? null,
+        'serial_no' => $serialNumber,
         //'no_of_stocks' => $row['no_of_stocks'] ?? null,
         //'restocking_point' => $row['restocking_point'] ?? null,
         //'stock_unit_id' => $stock_unit ? $stock_unit->id : null,
