@@ -1,4 +1,4 @@
-<div class="p-4 bg-white">
+<div class="fixed top-0 right-0 w-1/3 h-full bg-white shadow-lg overflow-y-auto p-4">
     <div class="text-center mb-4">
         <img src="{{ asset('images/ccisheader.png') }}" alt="CCIS Header" class="mx-auto w-full max-w-6xl">
     </div>
@@ -67,11 +67,11 @@
             </tbody>
         </table>  
     @endif
-</div>
 
-<!-- Buttons Section -->
-<div class="flex items-center space-x-2 mt-4 ml-4">
-    <a href="{{ route('facility-monitoring-page')}}"   type="button" class="text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-500 font-medium rounded-lg text-xs px-4 py-2" target="_blank">
-        Show in Browser
-</a>
+    <!-- Buttons Section -->
+    <div class="flex items-center space-x-2 mt-4">
+        <a href="{{ route('facility-monitoring-page')}}" type="button" class="text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-500 font-medium rounded-lg text-xs px-4 py-2" target="_blank">
+            Show in Browser
+        </a>
+    </div>
 </div>

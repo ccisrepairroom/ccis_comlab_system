@@ -28,4 +28,9 @@ public function equipment()
     {
         return $this->hasMany(Equipment::class, 'facility_id');
     }
+
+    public function monitorings()
+{
+    return $this->hasMany(FacilityMonitoring::class);
+}
 }

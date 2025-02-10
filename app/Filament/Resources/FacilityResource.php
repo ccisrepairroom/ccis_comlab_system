@@ -423,23 +423,25 @@ class FacilityResource extends Resource
                 ),
             ])
             ->actions([
-                      
-                    Tables\Actions\Action::make('view_monitoring')
-                        ->label(' ')
-                        ->icon('fas-eye')                       
-                        ->color('info')
-                        ->modalHeading('')
-                        ->modalSubmitAction(false)
-                        ->modalCancelAction(false)
-                        ->action(fn (Facility $record) => redirect()->route('monitoring.view', ['facility' => $record->id]))
-                        ->modalContent(function ($record) {
-                            $facility = Facility::with('user')->find($record->id);
-                            $monitorings = FacilityMonitoring::where('facility_id', $record->id)->with('user')->get();
-                            return view('filament.resources.facility-monitoring-modal', [
-                                'facility' => $facility,
-                                'monitorings' => $monitorings,
-                            ]);
-                        }),
+                    Tables\Actions\ViewAction::make('view')
+                    ->url(fn (Facility $record) => route('facility-monitoring-page', ['facility' => $record->id]))
+                    ->openUrlInNewTab(),
+                    // Tables\Actions\Action::make('view_monitoring')
+                    //     ->label(' ')
+                    //     ->icon('fas-eye')                       
+                    //     ->color('info')
+                    //     ->modalHeading('')
+                    //     ->modalSubmitAction(false)
+                    //     ->modalCancelAction(false)
+                    //     ->action(fn (Facility $record) => redirect()->route('monitoring.view', ['facility' => $record->id]))
+                    //     ->modalContent(function ($record) {
+                    //         $facility = Facility::with('user')->find($record->id);
+                    //         $monitorings = FacilityMonitoring::where('facility_id', $record->id)->with('user')->get();
+                    //         return view('filament.resources.facility-monitoring-modal', [
+                    //             'facility' => $facility,
+                    //             'monitorings' => $monitorings,
+                    //         ]);
+                    //     }),
 
                     Tables\Actions\Action::make('viewFacilityEquipment')
                         ->label('Equipment')
