@@ -144,7 +144,53 @@
                         <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">CL1</span>
                     </div>
                     <h2 class="font-bold text-lg lg:text-md mb-1 px-2">{{ $supply->item }}</h2>
-                    <p class="text-sm lg:text-xs text-gray-600 mb-2 px-2">{{ $supply->description }}</p>
+                    <!-- Modal Triggered by See More -->
+                    <p class="text-sm md:text-xs text-gray-600 mb-2 px-2 text-justify">
+                        {{ Str::limit($supply->description, 43) }}
+                        @if(strlen($supply->description) > 80)
+                            <span class="text-orange-500 underline cursor-pointer" 
+                                  data-modal-target="default-modal" 
+                                  data-modal-toggle="default-modal">
+                                  See more
+                            </span>
+                        @endif
+                    </p>
+
+                    <!-- Main Modal -->
+                    <div id="default-modal" tabindex="-1" aria-hidden="true" 
+                        class="hidden overflow-y-auto overflow-x-hidden fixed top-16 right-0 left-0 z-50 justify-center items-start w-full md:inset-0 max-h-[calc(100%-4rem)]">
+                        <div class="relative p-4 w-full max-w-sm max-h-[calc(100vh-5rem)]"> <!-- Adjust modal max height -->
+                            <!-- Modal content -->
+                            <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700 overflow-y-auto">
+                                <!-- Modal header -->
+                                <div class="flex items-center justify-between p-3 border-b rounded-t dark:border-gray-600 border-gray-200">
+                                    <h3 class="text-xs font-semibold text-gray-900 dark:text-white">
+                                        {{ $supply->item }}
+                                    </h3>
+                                    <button type="button" 
+                                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-xs w-6 h-6 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" 
+                                            data-modal-hide="default-modal">
+                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                        </svg>
+                                        <span class="sr-only">Close modal</span>
+                                    </button>
+                                </div>
+                                <!-- Modal body -->
+                                <div class="p-3 space-y-2">
+                                    <p class="text-xs leading-relaxed text-gray-500 dark:text-gray-400">
+                                        {{ $supply->description }}
+                                    </p>
+                                </div>
+                                <!-- Modal footer -->
+                                <div class="flex items-center p-3 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                    <button data-modal-hide="default-modal" type="button" class="text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-xs px-4 py-2 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
                     <div class="flex justify-end">
                         <button class="flex items-center gap-1  mb-2 mt-2 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold hover:bg-orange-600 transition-colors">
                             Request 

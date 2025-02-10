@@ -65,6 +65,9 @@ class FacilityResource extends Resource
                                         column: 'name', 
                                         ignoreRecord: true
                                     )
+                                    ->validationMessages([
+                                        'unique' => 'This facility name already exists.',
+                                    ])
                                     ->maxLength(255),
                                 Forms\Components\Select::make('connection_type')
                                     ->options([

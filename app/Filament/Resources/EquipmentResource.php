@@ -215,7 +215,15 @@ class EquipmentResource extends Resource
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('serial_no')
                                     ->label('Serial Number')
-                                    ->placeholder('Refer to the Equipment sticker.'),
+                                    ->placeholder('Refer to the Equipment sticker.')
+                                    ->unique(
+                                        table: 'equipment', 
+                                        column: 'serial_no', 
+                                        ignoreRecord: true
+                                    )
+                                    ->validationMessages([
+                                        'unique' => 'This serial number already exists.',
+                                    ]),
                                    
                                     
                                 /*Forms\Components\Select::make('no_of_stocks')
