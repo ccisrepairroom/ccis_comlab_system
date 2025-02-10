@@ -5,16 +5,17 @@
 @layer utilities {
     @media print {
         .page-break {
+            display: block;
             page-break-before: always;
         }
         .avoid-break {
             break-inside: avoid;
             page-break-inside: avoid;
         }
-        .print-container {
+        /* .print-container {
             width: 210mm;
             min-height: 297mm;
             margin: auto;
-        }
+        } */
     }
 }
