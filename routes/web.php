@@ -80,7 +80,7 @@ Route::middleware('auth')->group(function () {
 
 // Route::get('/', [Home::class, 'render'])->name('home');
 Route::get('/', HomePage::class);
-Route::get('/facility-monitoring-page', FacilityMonitoringPage::class)->name('facility-monitoring-page');
+Route::get('/facility-monitoring/{facility}', FacilityMonitoringPage::class)->name('facility-monitoring-page');
 Route::get('/downloadpdf', [FacilityMonitoringPage::class, 'downloadpdf'])->name('downloadpdf');
 
 
