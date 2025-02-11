@@ -32,7 +32,8 @@
                 @else
                     <p class="text-gray-500">No QR Code Available</p>
                 @endif
-            </td>        </tr>
+            </td>        
+        </tr>
 
         <!-- Second Row: -->
         <tr>

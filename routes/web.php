@@ -15,6 +15,8 @@ use App\Livewire\FacilityMonitoringPage;
 use App\Livewire\EquipmentMonitoringPage;
 use App\Livewire\FacilitiesPage;
 use App\Livewire\SuppliesAndMaterialsPage;
+use App\Livewire\SuppliesAndMaterialsMonitoring;
+
 
 
 
@@ -84,6 +86,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/facility-monitoring/{facility}', FacilityMonitoringPage::class)->name('facility-monitoring-page');
 Route::get('/equiment-monitoring/{equipment}', EquipmentMonitoringPage::class)->name('equipment-monitoring-page');
+Route::get('/supplies-and-materials-monitoring/{supply}', SuppliesAndMaterialsMonitoring::class)->name('supplies-and-materials-monitoring');
+
 
 
 // Route::get('/', [Home::class, 'render'])->name('home');

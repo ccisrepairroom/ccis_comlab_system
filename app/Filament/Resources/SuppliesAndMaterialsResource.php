@@ -434,6 +434,7 @@ class SuppliesAndMaterialsResource extends Resource
                     
                 })
                 
+                
                 ->action(function (array $data, Collection $records) {
                     foreach ($records as $record) {
                         // Check if requested quantity is available
@@ -548,6 +549,9 @@ class SuppliesAndMaterialsResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
             ])
+            ->recordUrl(fn ($record) => route('supplies-and-materials-monitoring', ['supply' => $record->id]))
+            ->openRecordUrlInNewTab()
+
             ->filters([
                     SelectFilter::make('item')
                     ->label('Item')
@@ -596,7 +600,10 @@ class SuppliesAndMaterialsResource extends Resource
                     
             ])
             ->actions([
-                
+                Tables\Actions\ViewAction::make()
+                    ->url(fn (SuppliesAndMaterials $record) => route('supplies-and-materials-monitoring', ['supply' => $record->id]))
+                    ->openUrlInNewTab(),
+
                 Tables\Actions\EditAction::make(),
                 // Tables\Actions\Action::make('AddStock')
                 //     ->icon('heroicon-o-pencil')

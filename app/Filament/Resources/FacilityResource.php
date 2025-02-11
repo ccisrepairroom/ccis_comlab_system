@@ -368,8 +368,7 @@ class FacilityResource extends Resource
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->recordUrl(fn ($record) => route('facility-monitoring-page', ['facility' => $record->id]))
-            ->openRecordUrlInNewTab()
+            
             // ->recordUrl(function ($record) { 
             //     if ($record->trashed()) { 
             //     return null; 
