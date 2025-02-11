@@ -738,6 +738,8 @@ class EquipmentResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),*/
                 
                 ])
+                ->recordUrl(fn ($record) => route('equipment-monitoring-page', ['equipment' => $record->id]))
+                ->openRecordUrlInNewTab()
                 ->defaultSort('created_at', 'desc')
 
             

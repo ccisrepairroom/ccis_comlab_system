@@ -7,6 +7,7 @@ use App\Models\Facility;
 use App\Models\FacilityMonitoring;
 use Barryvdh\DomPDF\Facade\Pdf;
 
+#[Title('Facility Monitoring- CCIS ERMA')]
 class FacilityMonitoringPage extends Component
 {
     public $facility;

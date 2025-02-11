@@ -5,7 +5,7 @@ use Livewire\Component;
 use App\Models\Equipment;
 use App\Models\EquipmentMonitoring;
 
-
+#[Title('Equipment Monitoring - CCIS ERMA')]
 class EquipmentMonitoringPage extends Component
 {
     public $equipment;
