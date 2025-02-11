@@ -844,7 +844,10 @@ class EquipmentResource extends Resource
                     // ->label('View QR Code')
                     // ->icon('heroicon-s-qr-code')
                     // ->url(fn (Equipment $record) => route('filament.resources.equipment-resource.pages.view-qr-code', $record)),
-
+                    
+                    Tables\Actions\ViewAction::make('view')
+                    ->url(fn (Equipment $record) => route('equipment-monitoring-page', ['equipment' => $record->id]))
+                    ->openUrlInNewTab(),
                
                     Tables\Actions\Action::make('View QR Code')
                     ->label('View QR Code')

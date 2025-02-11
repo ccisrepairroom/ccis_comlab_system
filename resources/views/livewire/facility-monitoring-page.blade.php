@@ -15,7 +15,7 @@
                     <td class="border border-gray-300 px-2 py-1 text-center" colspan="2">
                         @if($facility?->main_image)
                             <div class="w-64 h-32 mx-auto overflow-hidden bg-gray-200 rounded-lg">
-                                <img src="{{ asset('storage/' . $facility->main_image) }}" alt="Facility Image" class="w-full h-full object-cover">
+                                <img src="{{ asset('storage/' . $facility->main_image) }}" alt="Facility Image" class="w-full h-full object-contain bg-white">
                             </div>
                         @else
                             <p class="text-gray-500">No Image Available</p>
