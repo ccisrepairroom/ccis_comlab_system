@@ -102,7 +102,7 @@
             <td class="border border-gray-300 px-2 py-1 font-semibold bg-gray-100">Remarks</td>
             <td class="border border-gray-300 px-2 py-1 text-justify">{{ $equipment?->remarks ?? 'N/A' }}</td>
 
-            <td class="border border-gray-300 px-2 py-1 font-semibold bg-gray-100"></td>
+            <td class="border border-gray-300 px-2 py-1 font-semibold bg-gray-100">Estimated Life</td>
             <td class="border border-gray-300 px-2 py-1 text-justify">{{ $equipment?->estimated_life ?? 'N/A' }}</td>
         </tr>
 
@@ -142,7 +142,7 @@
                             <td class="border border-gray-300 px-2 py-1 break-words">
                                 {{ $monitoring->facility->name ?? 'Unknown' }}
                             </td>
-                            <td class="border border-gray-300 px-2 py-1 break-words">
+                            <td class="border border-gray-300 px-2 py-1 break-words text-justify">
                                 {{ strip_tags($monitoring->remarks) }}
                             </td>
 
