@@ -332,6 +332,81 @@ class SuppliesAndMaterialsResource extends Resource
                         ->send();
                 }),
 
+            Tables\Actions\BulkAction::make('bulk_update_stock')
+                ->modalHeading('Reorder Stock')
+                ->icon('heroicon-o-pencil')
+                ->color('warning')
+                ->requiresConfirmation()
+                ->modalIcon('heroicon-o-pencil')
+                ->modalHeading('Reorder Stock')
+                ->modalDescription('Enter the quantity and supplier to adjust stocks for selected items.')
+                ->form(function (Forms\Form $form) {
+                    return $form->schema([
+            Forms\Components\Select::make('monitored_by')
+                ->label('Monitored By')
+                ->options(User::all()->pluck('name', 'id'))
+                ->default(auth()->user()->id)
+                ->disabled()
+                ->required(),
+
+            Forms\Components\DatePicker::make('monitored_date')
+                ->label('Monitoring Date')
+                ->required()
+                ->default(now()),
+
+            Forms\Components\TextInput::make('quantity_to_add')
+                ->label('Quantity to Add (Applied to all selected items)')
+                ->required()
+                ->numeric()
+                ->minValue(1),
+
+            Forms\Components\TextInput::make('supplier')
+                ->label('Supplier')
+                ->required()
+                ]);
+            })
+            ->action(function (array $data, $records) {
+                foreach ($records as $record) {
+                    $newStock = $record->quantity + $data['quantity_to_add'];
+
+                    // Ensure stock does not go negative
+                    if ($data['quantity_to_add'] < 0 && $newStock < 0) {
+                        Notification::make()
+                            ->danger()
+                            ->title('Error')
+                            ->body("Insufficient stock for item {$record->id}. Cannot deduct more than available stock.")
+                            ->send();
+                        continue; // Skip this record
+                    }
+
+                    // Log stock change in StockMonitoring table
+                    \App\Models\StockMonitoring::create([
+                        'supplies_and_materials_id' => $record->id,
+                        'facility_id' => $record->facility_id,
+                        'monitored_by' => auth()->user()->id,
+                        'current_quantity' => $record->quantity,
+                        'quantity_to_add' => $data['quantity_to_add'],
+                        'new_quantity' => $newStock,
+                        'supplier' => $data['supplier'],  // Use the new supplier from form
+                        'monitored_date' => $data['monitored_date'],
+                    ]);
+
+                    // Update the item's stock and supplier
+                    $record->update([
+                        'quantity' => $newStock,
+                        'supplier' => $data['supplier'],  // Update supplier in the item record
+                    ]);
+                }
+
+                Notification::make()
+                    ->success()
+                    ->title('Stock Updated')
+                    ->body('Stock quantities and suppliers have been successfully updated for the selected items.')
+                    ->send();
+            }),
+
+
+
             Tables\Actions\BulkAction::make('add_to_supplies_cart')
                 ->label('Add to Supplies Cart')
                 ->icon('heroicon-o-shopping-bag')
