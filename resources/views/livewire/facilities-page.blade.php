@@ -135,7 +135,7 @@
         <div class="p-4 lg:p-2" wire:key="{{ $facility->id }}">
             <a href="#" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
                 <!-- Image Container -->
-                <div class="h-48 lg:h-36 bg-white flex items-center justify-center">
+                <div class="h-48 lg:h-36 mt-3  bg-white flex items-center justify-center">
                     <img src="{{ url('storage', $facility->main_image) }}" alt="{{ $facility->name }}" 
                          class="w-full h-full object-contain">
                 </div>
@@ -147,13 +147,17 @@
                     <h2 class="font-bold text-lg lg:text-md mb-1 px-2">{{ $facility->name }}</h2>
                     <!-- Modal Triggered by See More -->
                     <p class="text-sm md:text-xs text-gray-600 mb-2 px-2 text-justify">
-                        {{ Str::limit($facility->description, 43) }}
-                        @if(strlen($facility->description) > 80)
-                            <span class="text-orange-500 underline cursor-pointer" 
-                                  data-modal-target="default-modal" 
-                                  data-modal-toggle="default-modal">
-                                  See more
-                            </span>
+                        @if($facility->description)
+                            {{ Str::limit($facility->description, 27) }}
+                            @if(strlen($facility->description) > 80)
+                                <span class="text-orange-500 underline cursor-pointer" 
+                                      data-modal-target="default-modal" 
+                                      data-modal-toggle="default-modal">
+                                      See more
+                                </span>
+                            @endif
+                        @else
+                            Description is not available.
                         @endif
                     </p>
 
