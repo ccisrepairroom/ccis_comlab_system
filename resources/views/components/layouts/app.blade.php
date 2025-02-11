@@ -12,13 +12,13 @@
         @livewireStyles
     </head>
     <body class="bg-slate-200 dark:bg-slate-200" >
-    @if (!request()->routeIs('facility-monitoring-page')) 
+    @if (!request()->routeIs(['facility-monitoring-page', 'equipment-monitoring-page'])) 
         @livewire('partials.navbar')
     @endif
    <main>
    {{ $slot }}
    </main>
-   @if (!request()->routeIs('facility-monitoring-page')) 
+   @if (!request()->routeIs(['facility-monitoring-page', 'equipment-monitoring-page'])) 
         @livewire('partials.footer')
     @endif
 

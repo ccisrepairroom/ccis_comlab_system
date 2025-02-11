@@ -115,13 +115,15 @@
          <h3 class="text-lg font-semibold mb-4 mt-6 text-center">Monitoring Records</h3>
 
         @if($monitorings->isEmpty())
-            <p class="text-center text-xs">No monitoring records found for this facility.</p>
+            <p class="text-center text-xs">No monitoring records found for this equipment.</p>
         @else
             <table class="mx-auto w-full max-w-full table-fixed border-collapse border border-gray-300 text-xs break-inside-avoid">
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="border border-gray-300 px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider w-1/4">Monitored By</th>
                         <th class="border border-gray-300 px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider w-1/4">Monitored Date</th>
+                        <th class="border border-gray-300 px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider w-1/4">Status</th>
+                        <th class="border border-gray-300 px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider w-1/4">Facility</th>
                         <th class="border border-gray-300 px-2 py-1 text-left font-medium text-gray-500 uppercase tracking-wider w-1/2">Remarks</th>
                     </tr>
                 </thead>
@@ -135,8 +137,15 @@
                                 {{ \Carbon\Carbon::parse($monitoring->monitored_date)->format('F d, Y') }}
                             </td>
                             <td class="border border-gray-300 px-2 py-1 break-words">
+                                {{ $monitoring->status ?? 'Unknown' }}
+                            </td>
+                            <td class="border border-gray-300 px-2 py-1 break-words">
+                                {{ $monitoring->facility->name ?? 'Unknown' }}
+                            </td>
+                            <td class="border border-gray-300 px-2 py-1 break-words">
                                 {{ strip_tags($monitoring->remarks) }}
                             </td>
+
                         </tr>
                     @endforeach
                 </tbody>

@@ -399,9 +399,8 @@ class EquipmentResource extends Resource
                         ->visible(fn ($get) => in_array('person_liable', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('person_liable', $get('fields_to_update') ?? [])),
         
-                    Forms\Components\Textarea::make('remarks')
+                    Forms\Components\TextInput::make('remarks')
                         ->label('Remarks')
-                        ->rows(3)
                         ->visible(fn ($get) => in_array('remarks', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('remarks', $get('fields_to_update') ?? [])),
                 ]);
@@ -459,8 +458,13 @@ class EquipmentResource extends Resource
                         $updateData['person_liable'] = $data['person_liable'];
                     }
                     if (in_array('remarks', $data['fields_to_update'])) {
-                        $updateData['remarks'] = $data['remarks'];
+                        // Sanitize the remarks input
+                        $sanitizedRemarks = strip_tags($data['remarks']); // Removes HTML tags
+                        $sanitizedRemarks = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $sanitizedRemarks); // Removes non-printable characters
+                        
+                        $updateData['remarks'] = $sanitizedRemarks;
                     }
+                    
         
                     $record->update($updateData);
 
@@ -470,7 +474,7 @@ class EquipmentResource extends Resource
                         'monitored_by' => auth()->user()->id,
                         'status' => $updateData['status'] ?? $record->status,
                         'facility_id' => $updateData['facility_id'] ?? $record->facility_id,
-                        'remarks' => $updateData['remarks'] ?? $record->remarks,
+                        $updateData['remarks'] ?? $record->remarks,                        
                         'created_at' => now()->setTimezone('Asia/Manila')->format('Y-m-d H:i:s'),
                     ]);
                 }
