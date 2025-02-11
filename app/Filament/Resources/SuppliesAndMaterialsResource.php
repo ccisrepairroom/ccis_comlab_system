@@ -612,7 +612,14 @@ class SuppliesAndMaterialsResource extends Resource
                             ->title('Stock Adjusted')
                             ->body('Stock quantity for this item has been successfully adjusted.')
                             ->send();
-                    })
+
+                        
+
+
+                    }),
+                    Tables\Actions\DeleteAction::make()
+
+                    
                     ->hidden(fn () => $isFaculty),
                    
                 
