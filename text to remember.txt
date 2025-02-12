@@ -506,3 +506,20 @@ wire:navigate
 
 --video 11, making pages
 --video 12, wire:navigate
+--video 13, fetching data
+--to ferch data make a variable in controller plural in render
+
+  public function render()
+    {
+        $equipment = Equipment::all();
+
+        return view('livewire.home-page', [
+            'equipment' => $equipment,
+        ]);
+    }
+
+--go to blade use 
+@foreach ($brands as $brand)
+@endforeach
+--in div class use 
+wire:key="{{$brand->id}}"...........to fetch every id

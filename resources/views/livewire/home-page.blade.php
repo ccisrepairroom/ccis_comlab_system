@@ -17,24 +17,14 @@
       <!-- Dropdown menu -->
       <div id="categoryDropdownDefaultCheckbox" class="pl-9 z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600">
           <ul class="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="categoryDropdownCheckboxButton">
-            <li>
-              <div class="flex items-center">
-                <input id="checkbox-item-1" type="checkbox" value="" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                <label for="checkbox-item-1" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Keyboard</label>
+            @foreach ($categories as $category)
+          <li>
+              <div class="flex items-center" wire:key ="$category->id">
+                <input id="category-checkbox" type="checkbox" value="" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                <label for="category-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $category->description}}</label>
               </div>
             </li>
-            <li>
-              <div class="flex items-center">
-                  <input checked id="checkbox-item-2" type="checkbox" value="" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                  <label for="checkbox-item-2" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Monitor</label>
-                </div>
-            </li>
-            <li>
-              <div class="flex items-center">
-                <input id="checkbox-item-3" type="checkbox" value="" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-orange-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                <label for="checkbox-item-3" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Laptop</label>
-              </div>
-            </li>
+           @endforeach
           </ul>
       </div>
       </div>
@@ -140,10 +130,10 @@
                 </div>
                 <div class=" lg:p-2 mr-5">
                     <div class="flex flex-wrap gap-1 lg:gap-0.5 mb-2 ml-2">
-                        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">Keyboard</span>
-                        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">CL1</span>
+                        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">{{ $equipment->category->description}}</span>
+                        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">{{ $equipment->facility->name}}</span>
                     </div>
-                    <h2 class="font-bold text-lg lg:text-md mb-1 px-2">{{ $equipment->name }}</h2>
+                    <h2 class="font-bold text-lg lg:text-md mb-1 px-2">{{ $equipment->brand_name }}</h2>
                     <!-- Modal Triggered by See More -->
                     <p class="text-sm md:text-xs text-gray-600 mb-2 px-2 text-justify">
                         @if($equipment->description)
