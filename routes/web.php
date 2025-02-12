@@ -16,6 +16,25 @@ use App\Livewire\EquipmentMonitoringPage;
 use App\Livewire\FacilitiesPage;
 use App\Livewire\SuppliesAndMaterialsPage;
 use App\Livewire\SuppliesAndMaterialsMonitoring;
+use App\Livewire\RequestPage;
+use App\Livewire\RequestFillPage;
+use App\Livewire\MyRequestsPage;
+use App\Livewire\MyRequestDetailPage;
+use App\Livewire\EquipmentDetailPage;
+use App\Livewire\Auth\LoginPage;
+use App\Livewire\Auth\RegisterPage;
+use App\Livewire\Auth\ForgotPasswordPage;
+use App\Livewire\Auth\ResetPasswordPage;
+use App\Livewire\SuccessPage;
+use App\Livewire\CancelPage;
+
+
+
+
+
+
+
+
 
 
 
@@ -94,6 +113,29 @@ Route::get('/supplies-and-materials-monitoring/{supply}', SuppliesAndMaterialsMo
 Route::get('/', HomePage::class);
 Route::get('/facilities', FacilitiesPage::class);
 Route::get('/supplies-and-materials', SuppliesAndMaterialsPage::class);
+Route::get('/request', RequestPage::class);
+Route::get('/my-requests', MyRequestsPage::class);
+Route::get('/my-request-detail', MyRequestDetailPage::class);
+Route::get('/equipments/{equipment}', EquipmentDetailPage::class);
+Route::get('/request-fill', RequestFillPage::class);
+
+
+Route::get('/login-page', LoginPage::class);
+Route::get('/register-page', RegisterPage::class);
+Route::get('/forgot-password-page', ForgotPasswordPage::class);
+Route::get('/reset-password-page', ResetPasswordPage::class);
+
+Route::get('/success', SuccessPage::class);
+Route::get('/cancel', CancelPage::class);
+
+
+
+
+
+
+
+
+
 
 
 // Route::get('/downloadpdf', [FacilityMonitoringPage::class, 'downloadpdf'])->name('downloadpdf');

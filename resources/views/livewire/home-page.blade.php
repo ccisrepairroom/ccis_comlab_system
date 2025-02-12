@@ -132,7 +132,7 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 lg:gap-1">
     @foreach($equipment as $equipment)
         <div class="p-4 lg:p-2" wire:key="{{ $equipment->id }}">
-            <a href="#" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
+            <a href="{{ url('/equipments/'.$equipment) }}" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
                 <!-- Image Container -->
                 <div class="h-48 lg:h-36 mt-3 bg-white flex items-center justify-center">
                     <img src="{{ url('storage', $equipment->main_image) }}" alt="{{ $equipment->name }}" 

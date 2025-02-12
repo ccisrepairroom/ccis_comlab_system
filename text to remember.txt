@@ -503,3 +503,6 @@ Route::get('/supplies-and-materials', SuppliesAndMaterialsPage::class);
 wire:navigate
 --in anchor tag before class
 ------------------
+
+--video 11, making pages
+--video 12, wire:navigate
