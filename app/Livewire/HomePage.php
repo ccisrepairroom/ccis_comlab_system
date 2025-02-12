@@ -7,7 +7,7 @@ use Livewire\WithPagination;
 use Illuminate\Http\Request;
 use App\Models\Equipment;
 use App\Models\Category;
-
+use App\Models\Facility;
 
 
 
@@ -22,10 +22,14 @@ class HomePage extends Component
     {
         $equipment = Equipment::all();
         $categories = Category::all();
+        $facilities = Facility::all();
+
 
         return view('livewire.home-page', [
             'equipment' => $equipment,
             'categories' => $categories,
+            'facilities' => $facilities,
+
         ]);
     }
 }
