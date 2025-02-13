@@ -20,8 +20,8 @@
             @foreach ($categories as $category)
           <li>
               <div class="flex items-center" wire:key ="$category->id">
-                <input id="categories-checkbox" type="checkbox" value="" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                <label for="categories-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $category->description}}</label>
+                <input id="{{ $category->slug }}" type="checkbox" value="{{ $category->id }}" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                <label for="{{ $category->description}}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $category->description}}</label>
               </div>
             </li>
            @endforeach
@@ -191,9 +191,6 @@
     {{ $equipment->links() }}
           </div>
           <!-- pagination end -->
-
-
-
 </body>
 
 

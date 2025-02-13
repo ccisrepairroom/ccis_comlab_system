@@ -557,3 +557,8 @@ document.addEventListener("livewire:navigated", () => {
           <!-- pagination end -->
 --to customize pagination
 php artisan livewire:publish --pagination
+--to format description based on filament editor
+{!! Str::markdown($equip->description) !!}
+
+---------video 15, filtering
+--go to blade, in its input type section, the value must have the model->id
