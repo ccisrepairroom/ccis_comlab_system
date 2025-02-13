@@ -13,15 +13,15 @@
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
         </svg>
         </button>
-
+          
       <!-- Dropdown menu -->
       <div id="categoryDropdownDefaultCheckbox" class="pl-9 z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600">
-          <ul class="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="categoryDropdownCheckboxButton">
+      <ul class="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="categoryDropdownCheckboxButton">
             @foreach ($categories as $category)
           <li>
               <div class="flex items-center" wire:key ="$category->id">
-                <input id="{{ $category->slug }}" type="checkbox" value="{{ $category->id }}" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                <label for="{{ $category->description}}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $category->description}}</label>
+                <input id="{{ $category->alias }}"  wire:model.live= "selected_categories" type="checkbox" value="{{ $category->id }}" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                <label for="{{ $category->alias}}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $category->description}}</label>
               </div>
             </li>
            @endforeach
@@ -44,8 +44,8 @@
           @foreach ($facilities as $facility)  
           <li>
               <div class="flex items-center" wire:key ="$facility->id">
-                <input id="facilities-checkbox" type="checkbox" value="" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                <label for="facilities-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $facility->name}}</label>
+                <input id="{{$facility->alias}}" type="checkbox" wire:model.live= "selected_facilities" value="{{ $facility->id }}" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                <label for="{{$facility->alias}}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $facility->name}}</label>
               </div>
             </li>
             @endforeach

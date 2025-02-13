@@ -562,3 +562,23 @@ php artisan livewire:publish --pagination
 
 ---------video 15, filtering
 --go to blade, in its input type section, the value must have the model->id
+--in category loop div class and input  put these:
+ wire:key ="$category->id"
+  id="{{ $category->alias }}"
+  value="{{ $category->id }}"
+  label for="{{ $category->alias}}"
+
+--in input type use:
+wire:model.live= "selected_categories"
+--this will be used in livewire controller, in under class use:
+    public $selected_categories = [];
+--in blade, in category dropdown div class start, use the array selected_categories
+      {{ json_encode ($selected_categories) }}    
+--that is only for testing just clear it., To work, go to controller, then use URL trait above the variable def.
+    #[Url]
+--and import the class
+use Livewire\Attributes\Url;
+--then add a method in the render of equipment to fetch the category of every equipment:
+ if(!empty($this->selected_categories)){
+            $equipment-> whereIn('category_id', $this->selected_categories);
+        }

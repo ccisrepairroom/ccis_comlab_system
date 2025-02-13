@@ -3,6 +3,7 @@
 namespace App\Livewire;
 use Livewire\Component;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Illuminate\Http\Request;
 use App\Models\Equipment;
@@ -16,19 +17,34 @@ class HomePage extends Component
 {
     use WithPagination;
 
+    #[Url]
+    public $selected_categories = [];
+
+    #[Url]
+    public $selected_facilities = [];
+
    
 
     public function render()
     {
+        //Only show working equipment
         $equipment = Equipment::query()->where('status', 'working');
-        $categories = Category::all();
-        $facilities = Facility::all();
+
+        //Equipment filter based on categories
+        if(!empty($this->selected_categories)){
+            $equipment-> whereIn('category_id', $this->selected_categories);
+        }
+        
+        //Equipment filter based on facilities
+        if(!empty($this->selected_facilities)){
+            $equipment-> whereIn('facility_id', $this->selected_facilities);
+        }
 
 
         return view('livewire.home-page', [
             'equipment' => $equipment->orderBy('id')->cursorPaginate(30, ['*'], 'cursor', 'id'),
-            'categories' => $categories,
-            'facilities' => $facilities,
+            'categories' => Category::get(),
+            'facilities' => Facility::get(),
 
         ]);
     }
