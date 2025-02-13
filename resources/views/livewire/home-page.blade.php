@@ -107,7 +107,9 @@
     </div>
   </div>
 
-
+  @if ($noEquipmentFound)
+      <p class="text-center text-gray-500 mb-4">No equipment found.</p>
+  @endif
 <!--Start Equipment Card Section -->
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 lg:gap-1">
     @foreach($equipment as $equip)

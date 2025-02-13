@@ -44,14 +44,27 @@ class HomePage extends Component
         }
 
         if ($this->search) {
-            $equipment->where('brand_name', 'like', '%' . $this->search . '%');
+            $equipment->where(function ($query) {
+                $query->where('brand_name', 'like', '%' . $this->search . '%')
+                      ->orWhere('description', 'like', '%' . $this->search . '%')
+                      ->orWhereHas('facility', function ($facilityQuery) { 
+                        $facilityQuery->where('name', 'like', '%' . $this->search . '%');
+                        })
+                      ->orWhereHas('category', function ($categoryQuery) { 
+                            $categoryQuery->where('description', 'like', '%' . $this->search . '%');
+                        });  
+                    
+            });
         }
-
+        
+        $noEquipmentFound = $equipment->get()->isEmpty();
 
         return view('livewire.home-page', [
             'equipment' => $equipment->orderBy('id')->cursorPaginate(30, ['*'], 'cursor', 'id'),
             'categories' => Category::get(),
             'facilities' => Facility::get(),
+            'noEquipmentFound' => $noEquipmentFound,
+
 
         ]);
     }
