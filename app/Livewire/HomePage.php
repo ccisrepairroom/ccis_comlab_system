@@ -26,7 +26,7 @@ class HomePage extends Component
 
 
         return view('livewire.home-page', [
-            'equipment' => $equipment->paginate(12),
+            'equipment' => $equipment->orderBy('id')->cursorPaginate(15, ['*'], 'cursor', 'id'),
             'categories' => $categories,
             'facilities' => $facilities,
 

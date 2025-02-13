@@ -110,25 +110,25 @@
 
 <!--Start Equipment Card Section -->
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 lg:gap-1">
-    @foreach($equipment as $equipment)
-        <div class="p-4 lg:p-2" wire:key="{{ $equipment->id }}">
+    @foreach($equipment as $equip)
+        <div class="p-4 lg:p-2" wire:key="{{ $equip->id }}">
             <a href="{{ url('/equipments/'.$equipment) }}" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
                 <!-- Image Container -->
                 <div class="h-48 lg:h-36 mt-3 bg-white flex items-center justify-center">
-                    <img src="{{ url('storage', $equipment->main_image) }}" alt="{{ $equipment->name }}" 
+                    <img src="{{ url('storage', $equip->main_image) }}" alt="{{ $equip->name }}" 
                          class="w-full h-full object-contain">
                 </div>
                 <div class=" lg:p-2 mr-5">
                     <div class="flex flex-wrap gap-1 lg:gap-0.5 mb-2 ml-2">
-                        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">{{ $equipment->category->description}}</span>
-                        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">{{ $equipment->facility->name}}</span>
+                        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">{{ $equip->category->description}}</span>
+                        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">{{ $equip->facility->name}}</span>
                     </div>
-                    <h2 class="font-bold text-lg lg:text-md mb-1 px-2">{{ $equipment->brand_name }}</h2>
+                    <h2 class="font-bold text-lg lg:text-md mb-1 px-2">{{ $equip->brand_name }}</h2>
                     <!-- Modal Triggered by See More -->
                     <p class="text-sm md:text-xs text-gray-600 mb-2 px-2 text-justify">
-                        @if($equipment->description)
-                            {{ Str::limit($equipment->description, 27) }}
-                            @if(strlen($equipment->description) > 80)
+                        @if($equip->description)
+                            {{ Str::limit($equip->description, 27) }}
+                            @if(strlen($equip->description) > 80)
                                 <span class="text-orange-500 underline cursor-pointer" 
                                       data-modal-target="default-modal" 
                                       data-modal-toggle="default-modal">
@@ -149,7 +149,7 @@
                                 <!-- Modal header -->
                                 <div class="flex items-center justify-between p-3 border-b rounded-t dark:border-gray-600 border-gray-200">
                                     <h3 class="text-xs font-semibold text-gray-900 dark:text-white">
-                                        {{ $equipment->name }}
+                                        {{ $equip->name }}
                                     </h3>
                                     <button type="button" 
                                             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-xs w-6 h-6 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" 
@@ -163,7 +163,7 @@
                                 <!-- Modal body -->
                                 <div class="p-3 space-y-2">
                                     <p class="text-xs leading-relaxed text-gray-500 dark:text-gray-400">
-                                        {{ $equipment->description }}
+                                        {{ $equip->description }}
                                     </p>
                                 </div>
                                 <!-- Modal footer -->
@@ -186,6 +186,12 @@
         </div>
     @endforeach
 </div>
+  <!-- pagination start -->
+  <div class="flex justify-end mt-6">
+    {{ $equipment->links() }}
+          </div>
+          <!-- pagination end -->
+
 
 
 </body>

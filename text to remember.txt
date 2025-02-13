@@ -546,6 +546,12 @@ document.addEventListener("livewire:navigated", () => {
 --use ->paginate(12) in below render, and below class Page, use-> use WithPagination, and import use/livewire/WithPagination
 --just use query and 1 column indicator to paginate it.
         $equipment = Equipment::query()->where('status', 'working');
-        
+
                 return view('livewire.home-page', [
             'equipment' => $equipment->paginate(12),
+--go to blade div to apply pagination, after the endforeach</div>
+ <!-- pagination start -->
+  <div class="flex justify-end mt-6">
+    {{ $equipment->links() }}
+          </div>
+          <!-- pagination end -->
