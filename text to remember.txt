@@ -541,3 +541,11 @@ document.addEventListener("livewire:navigated", () => {
             window.initFlowbite(); // Reinitialize Flowbite components
         }
     });
+
+--Pagination
+--use ->paginate(12) in below render, and below class Page, use-> use WithPagination, and import use/livewire/WithPagination
+--just use query and 1 column indicator to paginate it.
+        $equipment = Equipment::query()->where('status', 'working');
+        
+                return view('livewire.home-page', [
+            'equipment' => $equipment->paginate(12),

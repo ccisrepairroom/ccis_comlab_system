@@ -20,13 +20,13 @@ class HomePage extends Component
 
     public function render()
     {
-        $equipment = Equipment::all();
+        $equipment = Equipment::query()->where('status', 'working');
         $categories = Category::all();
         $facilities = Facility::all();
 
 
         return view('livewire.home-page', [
-            'equipment' => $equipment,
+            'equipment' => $equipment->paginate(12),
             'categories' => $categories,
             'facilities' => $facilities,
 
