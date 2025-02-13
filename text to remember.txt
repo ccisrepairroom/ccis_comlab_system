@@ -555,3 +555,5 @@ document.addEventListener("livewire:navigated", () => {
     {{ $equipment->links() }}
           </div>
           <!-- pagination end -->
+--to customize pagination
+php artisan livewire:publish --pagination
