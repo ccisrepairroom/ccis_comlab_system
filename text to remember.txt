@@ -523,3 +523,21 @@ wire:navigate
 @endforeach
 --in div class use 
 wire:key="{{$brand->id}}"...........to fetch every id
+
+----video 14 
+--active link stucked fix, go to livewire/navigate, dont rely on dom 
+
+document.addEventListener('livewire:navigated', () => { 
+    // ...
+})
+
+--in app.js, use these to reinitialize using pre and flow:
+
+document.addEventListener('livewire:navigated', () => { 
+    window.HSStaticMethods.autoInit();
+});
+document.addEventListener("livewire:navigated", () => {
+    if (typeof window.initFlowbite === "function") {
+            window.initFlowbite(); // Reinitialize Flowbite components
+        }
+    });
