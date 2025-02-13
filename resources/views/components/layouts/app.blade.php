@@ -12,7 +12,7 @@
         @livewireStyles
     </head>
     <body class="bg-slate-200 dark:bg-slate-200" >
-    @if (!request()->routeIs(['facility-monitoring-page', 'supplies-and-materials-monitoring'])) 
+    @if (!request()->routeIs(['facility-monitoring-page', 'equipment-monitoring-page', 'supplies-and-materials-monitoring'])) 
         @livewire('partials.navbar')
     @endif
    <main>

@@ -33,4 +33,5 @@ public function equipment()
 {
     return $this->hasMany(FacilityMonitoring::class);
 }
+
 }

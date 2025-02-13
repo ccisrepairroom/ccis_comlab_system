@@ -1,10 +1,11 @@
-<div class="w-[297mm] min-h-[210mm] mx-auto bg-white shadow-lg p-8 overflow-visible">
+<div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
+<div class="w-[297mm] min-h-[210mm] mx-auto bg-white shadow-lg p-8 overflow-visible">    
     <div class="p-4 bg-white">
         <div class="text-center mb-4">
             <img src="{{ asset('images/ccisheader.png') }}" alt="CCIS Header" class="mx-auto w-full max-w-full">
         </div>
 
-        <h3 class="text-lg font-semibold mb-4 mt-6 text-center">
+        <h3 class="text-lg font-semibold mb-4 mt-20 text-center">
             {{ $supply->item ?? 'Unknown Item' }}
         </h3>
 
