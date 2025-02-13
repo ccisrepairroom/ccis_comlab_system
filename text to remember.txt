@@ -582,3 +582,10 @@ use Livewire\Attributes\Url;
  if(!empty($this->selected_categories)){
             $equipment-> whereIn('category_id', $this->selected_categories);
         }
+
+--if using preline
+data-hs-overlay="id modal">
+--if flow,
+data-model-target="id"
+data-model-toggle="id">
+

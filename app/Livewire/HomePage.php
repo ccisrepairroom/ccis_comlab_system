@@ -61,8 +61,8 @@ class HomePage extends Component
 
         return view('livewire.home-page', [
             'equipment' => $equipment->orderBy('id')->cursorPaginate(30, ['*'], 'cursor', 'id'),
-            'categories' => Category::get(),
-            'facilities' => Facility::get(),
+            'categories' => Category::whereHas('equipment')->get(),
+            'facilities' => Facility::whereHas('equipment')->get(),
             'noEquipmentFound' => $noEquipmentFound,
 
 
