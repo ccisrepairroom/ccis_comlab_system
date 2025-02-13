@@ -287,6 +287,7 @@ class EquipmentResource extends Resource
                             'facility_id' => 'Facility',
                             'category_id' => 'Category',
                             'main_image' => 'Main Image',
+                            'brand_name' => 'Brand Name',
                             'description' => 'Description',
                             'date_acquired' => 'Date Acquired',
                             'supplier' => 'Supplier',
@@ -335,6 +336,11 @@ class EquipmentResource extends Resource
                         ->label('Main Image')
                         ->visible(fn ($get) => in_array('main_image', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('main_image', $get('fields_to_update') ?? [])),
+                    
+                    Forms\Components\TextInput::make('brand_name')
+                        ->label('Brand Name')
+                        ->visible(fn ($get) => in_array('brand_name', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('brand_name', $get('fields_to_update') ?? [])),
                     
                     Forms\Components\TextInput::make('description')
                         ->placeholder('Specifications, e.g., dimensions, weight, power')
@@ -421,6 +427,9 @@ class EquipmentResource extends Resource
                     }
                     if (in_array('main_image', $data['fields_to_update'])) {
                         $updateData['main_image'] = $data['main_image'];
+                    }
+                    if (in_array('brand_name', $data['fields_to_update'])) {
+                        $updateData['brand_name'] = $data['brand_name'];
                     }
                     if (in_array('description', $data['fields_to_update'])) {
                         $updateData['description'] = $data['description'];

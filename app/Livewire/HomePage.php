@@ -23,6 +23,9 @@ class HomePage extends Component
     #[Url]
     public $selected_facilities = [];
 
+    #[Url]
+    public  $search = '';
+
    
 
     public function render()
@@ -38,6 +41,10 @@ class HomePage extends Component
         //Equipment filter based on facilities
         if(!empty($this->selected_facilities)){
             $equipment-> whereIn('facility_id', $this->selected_facilities);
+        }
+
+        if ($this->search) {
+            $equipment->where('brand_name', 'like', '%' . $this->search . '%');
         }
 
 
