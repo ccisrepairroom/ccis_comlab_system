@@ -898,138 +898,138 @@ class EquipmentResource extends Resource
                         // You can add additional logic here if needed
                     }),
 
-                    Tables\Actions\Action::make('view_monitoring')
-                    ->label(' ')
-                    ->icon('fas-eye')
-                    ->color('info')
-                    ->modalSubmitAction(false)
-                    ->modalCancelAction(false)
-                    ->modalHeading('')
-                    ->modalContent(function ($record) {
-                        $equipmentId = $record->id;
-                        $monitorings = EquipmentMonitoring::with('equipment.facility', 'user')
-                            ->where('equipment_id', $equipmentId)
-                            ->get();
-                        return view('filament.resources.equipment-monitoring-modal', [
-                            'monitorings' => $monitorings,
-                        ]);
-                    }),
+                    // Tables\Actions\Action::make('view_monitoring')
+                    // ->label(' ')
+                    // ->icon('fas-eye')
+                    // ->color('info')
+                    // ->modalSubmitAction(false)
+                    // ->modalCancelAction(false)
+                    // ->modalHeading('')
+                    // ->modalContent(function ($record) {
+                    //     $equipmentId = $record->id;
+                    //     $monitorings = EquipmentMonitoring::with('equipment.facility', 'user')
+                    //         ->where('equipment_id', $equipmentId)
+                    //         ->get();
+                    //     return view('filament.resources.equipment-monitoring-modal', [
+                    //         'monitorings' => $monitorings,
+                    //     ]);
+                    // }),
 
                    
                    
                     
 
-                            Tables\Actions\Action::make('Update')
-                            ->icon('entypo-cycle')
-                            ->color('info')
-                            ->requiresConfirmation()
-                            ->modalIcon('heroicon-o-check')
-                            ->modalHeading('Update Equipment Status')
-                            ->modalDescription('Confirm to update equipment status')
-                            ->form(function (Forms\Form $form, $record) {
-                                return $form
-                                    ->schema([
-                                        Forms\Components\Select::make('monitored_by')
-                                            ->label('Monitored By')
-                                            ->options(User::all()->pluck('name', 'id'))
-                                            ->default(auth()->user()->id)
-                                            ->disabled()
-                                            ->required(),
-                                        Forms\Components\DatePicker::make('monitored_date')
-                                            ->label('Monitoring Date')
-                                            ->required()
-                                            ->disabled()
-                                            ->default(now())
-                                            ->format('Y-m-d'),
+                            // Tables\Actions\Action::make('Update')
+                            // ->icon('entypo-cycle')
+                            // ->color('info')
+                            // ->requiresConfirmation()
+                            // ->modalIcon('heroicon-o-check')
+                            // ->modalHeading('Update Equipment Status')
+                            // ->modalDescription('Confirm to update equipment status')
+                            // ->form(function (Forms\Form $form, $record) {
+                            //     return $form
+                            //         ->schema([
+                            //             Forms\Components\Select::make('monitored_by')
+                            //                 ->label('Monitored By')
+                            //                 ->options(User::all()->pluck('name', 'id'))
+                            //                 ->default(auth()->user()->id)
+                            //                 ->disabled()
+                            //                 ->required(),
+                            //             Forms\Components\DatePicker::make('monitored_date')
+                            //                 ->label('Monitoring Date')
+                            //                 ->required()
+                            //                 ->disabled()
+                            //                 ->default(now())
+                            //                 ->format('Y-m-d'),
                 
-                                        Forms\Components\Select::make('status')
-                                            ->required()
-                                            ->options([
-                                                'Working' => 'Working',
-                                                'For Repair' => 'For Repair',
-                                                'For Replacement' => 'For Replacement',
-                                                'Lost' => 'Lost',
-                                                'For Disposal' => 'For Disposal',
-                                                'Disposed' => 'Disposed',
-                                                'Borrowed' => 'Borrowed',
-                                            ])
-                                            ->default($record->status)
-                                            ->native(false),
-                                        Forms\Components\Select::make('facility_id')
-                                            ->label ('New Assigned Facility')
-                                            ->relationship('facility', 'name')
-                                            ->default($record->facility_id)
-                                            ->required(),
+                            //             Forms\Components\Select::make('status')
+                            //                 ->required()
+                            //                 ->options([
+                            //                     'Working' => 'Working',
+                            //                     'For Repair' => 'For Repair',
+                            //                     'For Replacement' => 'For Replacement',
+                            //                     'Lost' => 'Lost',
+                            //                     'For Disposal' => 'For Disposal',
+                            //                     'Disposed' => 'Disposed',
+                            //                     'Borrowed' => 'Borrowed',
+                            //                 ])
+                            //                 ->default($record->status)
+                            //                 ->native(false),
+                            //             Forms\Components\Select::make('facility_id')
+                            //                 ->label ('New Assigned Facility')
+                            //                 ->relationship('facility', 'name')
+                            //                 ->default($record->facility_id)
+                            //                 ->required(),
                                         
-                                        Forms\Components\TextInput::make('remarks')
-                                            ->default($record->remarks)
-                                            ->formatStateUsing(fn($state) => strip_tags($state))
-                                            ->label('Remarks'),
-                                    ]);
-                                return $form->schema([
-                                    Forms\Components\Select::make('monitored_by')
-                                        ->label('Monitored By')
-                                        ->options(User::all()->pluck('name', 'id'))
-                                        ->default(auth()->user()->id)
-                                        ->disabled()
-                                        ->required(),
-                                    Forms\Components\DatePicker::make('monitored_date')
-                                        ->label('Monitoring Date')
-                                        ->required()
-                                        ->default(now())
-                                        ->format('Y-m-d'),
-                                    Forms\Components\Select::make('status')
-                                        ->required()
-                                        ->options([
-                                            'Working' => 'Working',
-                                            'For Repair' => 'For Repair',
-                                            'For Replacement' => 'For Replacement',
-                                            'Lost' => 'Lost',
-                                            'For Disposal' => 'For Disposal',
-                                            'Disposed' => 'Disposed',
-                                            'Borrowed' => 'Borrowed',
-                                        ])
-                                        ->default($record->status)
-                                        ->native(false),
-                                    Forms\Components\Select::make('facility_id')
-                                        ->relationship('facility', 'name')
-                                        ->default($record->facility_id)
-                                        ->required(),
-                                    Forms\Components\TextInput::make('remarks')
-                                        ->default($record->remarks)
-                                        ->formatStateUsing(fn($state) => strip_tags($state))
-                                        ->label('Remarks'),
-                                ]);
-                            })
-                            ->action(function (array $data, $record) {
-                                $data['equipment_id'] = $record->id;
+                            //             Forms\Components\TextInput::make('remarks')
+                            //                 ->default($record->remarks)
+                            //                 ->formatStateUsing(fn($state) => strip_tags($state))
+                            //                 ->label('Remarks'),
+                            //         ]);
+                            //     return $form->schema([
+                            //         Forms\Components\Select::make('monitored_by')
+                            //             ->label('Monitored By')
+                            //             ->options(User::all()->pluck('name', 'id'))
+                            //             ->default(auth()->user()->id)
+                            //             ->disabled()
+                            //             ->required(),
+                            //         Forms\Components\DatePicker::make('monitored_date')
+                            //             ->label('Monitoring Date')
+                            //             ->required()
+                            //             ->default(now())
+                            //             ->format('Y-m-d'),
+                            //         Forms\Components\Select::make('status')
+                            //             ->required()
+                            //             ->options([
+                            //                 'Working' => 'Working',
+                            //                 'For Repair' => 'For Repair',
+                            //                 'For Replacement' => 'For Replacement',
+                            //                 'Lost' => 'Lost',
+                            //                 'For Disposal' => 'For Disposal',
+                            //                 'Disposed' => 'Disposed',
+                            //                 'Borrowed' => 'Borrowed',
+                            //             ])
+                            //             ->default($record->status)
+                            //             ->native(false),
+                            //         Forms\Components\Select::make('facility_id')
+                            //             ->relationship('facility', 'name')
+                            //             ->default($record->facility_id)
+                            //             ->required(),
+                            //         Forms\Components\TextInput::make('remarks')
+                            //             ->default($record->remarks)
+                            //             ->formatStateUsing(fn($state) => strip_tags($state))
+                            //             ->label('Remarks'),
+                            //     ]);
+                            // })
+                            // ->action(function (array $data, $record) {
+                            //     $data['equipment_id'] = $record->id;
                 
-                                if (empty($data['monitored_by'])) {
-                                    $data['monitored_by'] = auth()->user()->id;
-                                }
+                            //     if (empty($data['monitored_by'])) {
+                            //         $data['monitored_by'] = auth()->user()->id;
+                            //     }
                 
-                                if (empty($data['monitored_date'])) {
-                                    $data['monitored_date'] = now()->format('Y-m-d');
-                                }
+                            //     if (empty($data['monitored_date'])) {
+                            //         $data['monitored_date'] = now()->format('Y-m-d');
+                            //     }
                 
-                                EquipmentMonitoring::create($data);
+                            //     EquipmentMonitoring::create($data);
                 
-                                $record->update([
-                                    'status' => $data['status'],
-                                    'facility_id' => $data['facility_id'],
-                                    'remarks' => $data['remarks'],
-                                ]);
+                            //     $record->update([
+                            //         'status' => $data['status'],
+                            //         'facility_id' => $data['facility_id'],
+                            //         'remarks' => $data['remarks'],
+                            //     ]);
                 
-                                Notification::make()
-                                    ->success()
-                                    ->title('Success')
-                                    ->body('Status of the selected item/s have been updated.')
-                                    ->send();
+                            //     Notification::make()
+                            //         ->success()
+                            //         ->title('Success')
+                            //         ->body('Status of the selected item/s have been updated.')
+                            //         ->send();
                                     
-                            })
+                            // })
                           
                        
-                            ->hidden(fn () => $isFaculty),
+                            // ->hidden(fn () => $isFaculty),
                             Tables\Actions\EditAction::make(),
                             Tables\Actions\DeleteAction::make(),
                             
