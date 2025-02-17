@@ -78,13 +78,14 @@ class HomePage extends Component
                 break;
         }
         
-        $noEquipmentFound = $equipment->get()->isEmpty();
+        $noEquipmentFound = !$equipment->exists(); 
 
         return view('livewire.home-page', [
-            'equipment' => $equipment->orderBy('id')->cursorPaginate(15, ['*'], 'cursor', 'id'),
+            'equipment' => $equipment->orderBy('id')->paginate(15),
             'categories' => Category::whereHas('equipment')->get(),
             'facilities' => Facility::whereHas('equipment')->get(),
             'noEquipmentFound' => $noEquipmentFound,
+            // 'equipment' => $equipment->orderBy('id')->cursorPaginate(15, ['*'], 'cursor', 'id'),
 
 
 

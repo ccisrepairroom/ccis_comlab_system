@@ -140,7 +140,7 @@
                   {{ $equip->description }}
                 </p>
 
-                <p class="text-justify text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                <p class="text-left text-base leading-relaxed text-gray-500 dark:text-gray-400">
                   Serial Number: {{$equip->serial_no ?? 'N/A'}} <br>
                   Property Number: {{$equip->_no ?? 'N/A'}}
 
@@ -159,7 +159,7 @@
 
                  
                     <div class="flex justify-end">
-                        <button class="flex items-center gap-1  mb-2 mt-2 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold hover:bg-orange-600 transition-colors">
+                        <button class="flex items-center gap-1  my-5 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold hover:bg-orange-600 transition-colors">
                             Request 
                             <x-heroicon-o-plus class="w-4 h-4" />
                         </button>
