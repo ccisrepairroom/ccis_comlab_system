@@ -26,6 +26,9 @@ class HomePage extends Component
     #[Url]
     public  $search = '';
 
+    #[Url]
+    public $sort='latest';
+
    
 
     public function render()
@@ -56,11 +59,15 @@ class HomePage extends Component
                     
             });
         }
+
+        if ($this->sort == 'latest') {
+            $equipment->latest();
+        }
         
         $noEquipmentFound = $equipment->get()->isEmpty();
 
         return view('livewire.home-page', [
-            'equipment' => $equipment->orderBy('id')->cursorPaginate(30, ['*'], 'cursor', 'id'),
+            'equipment' => $equipment->orderBy('id')->cursorPaginate(15, ['*'], 'cursor', 'id'),
             'categories' => Category::whereHas('equipment')->get(),
             'facilities' => Facility::whereHas('equipment')->get(),
             'noEquipmentFound' => $noEquipmentFound,
