@@ -103,6 +103,12 @@ class EquipmentResource extends Resource
                     ->imageEditor()
                     ->deletable()
                     ->preserveFilenames(),
+                    
+                    Forms\Components\FileUpload::make('alternate_images')
+                    ->imageEditor()
+                    ->deletable()
+                    ->multiple()
+                    ->preserveFilenames(),
 
                     
 
@@ -112,8 +118,8 @@ class EquipmentResource extends Resource
                     ->actionIcon('heroicon-s-building-library'),
  
                     ])
-                    ->columnSpan(1)
-                    ->columns(1)
+                    ->columnSpan(3)
+                    ->columns(3)
                     ->collapsible(),
                    
                     
@@ -584,12 +590,17 @@ class EquipmentResource extends Resource
            For more information, go to the dashboard to download the user manual.')
             ->columns([
                 Tables\Columns\ImageColumn::make('main_image')
-                ->stacked()
-                ->sortable(query: function ($query, $direction) {
-                    $query->orderByRaw("ISNULL(main_image) $direction, main_image $direction");
-                }),
+                    ->stacked()
+                    ->sortable(query: function ($query, $direction) {
+                        $query->orderByRaw("ISNULL(main_image) $direction, main_image $direction");
+                    }),
+                Tables\Columns\ImageColumn::make('alternate_images')
+                    ->stacked()
+                    ->sortable(query: function ($query, $direction) {
+                        $query->orderByRaw("ISNULL(alternate_images) $direction, alternate_images $direction");
+                    }),
                 Tables\Columns\ImageColumn::make('qr_code')
-                ->stacked(),
+                    ->stacked(),
                 Tables\Columns\TextColumn::make('po_number')
                     ->label('PO Number')
                     ->searchable()

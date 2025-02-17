@@ -36,6 +36,7 @@ class Equipment extends Model
         'unit_no',
         'brand_name',
         'main_image',
+        'alternate_images',
         'qr_code',
         'description',
         'facility_id',
@@ -157,7 +158,7 @@ class Equipment extends Model
     // }
 
     protected $casts = [
-        'qr_code' => 'array'
+        'alternate_images' => 'array'
     ];
 
 
