@@ -29,6 +29,10 @@ class HomePage extends Component
     #[Url]
     public $sort='latest';
 
+
+
+    
+
    
 
     public function render()
@@ -60,8 +64,18 @@ class HomePage extends Component
             });
         }
 
-        if ($this->sort == 'latest') {
-            $equipment->latest();
+        switch ($this->sort) {
+            case 'latest':
+                $equipment->latest(); // Orders by `created_at` DESC
+                break;
+    
+            case 'facility':
+                $equipment->orderBy('facility_id')->orderBy('id', 'desc'); // Sort by facility then newest
+                break;
+    
+            case 'category':
+                $equipment->orderBy('category_id')->orderBy('id', 'desc'); // Sort by category then newest
+                break;
         }
         
         $noEquipmentFound = $equipment->get()->isEmpty();
@@ -71,6 +85,7 @@ class HomePage extends Component
             'categories' => Category::whereHas('equipment')->get(),
             'facilities' => Facility::whereHas('equipment')->get(),
             'noEquipmentFound' => $noEquipmentFound,
+
 
 
         ]);

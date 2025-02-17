@@ -56,6 +56,7 @@
       </div>
       <!-- End Facility Dropdown Section -->
 
+      
  <!-- Start Sorting Section  -->
  <div class="w-full px-3 lg:w-3/4">
   <div class="px-3 mb-4">
@@ -63,15 +64,19 @@
     <div class="flex flex-col md:flex-row items-start md:items-center gap-3 px-3 py-2 bg-orange-100 dark:bg-gray-900 rounded-md shadow-sm">
       
       <!-- Sort Dropdown (always first) -->
-      <select name ="sort" wire:model.live="sort" class="w-full md:w-40 text-base bg-white border border-orange-300 dark:text-gray-400 dark:bg-gray-900 focus:ring-2 focus:ring-orange-500  
-                px-3 py-2 rounded-md cursor-pointer accent-orange-500">
-        <option value="latest">Sort by latest</option>
-        <option value="facility">Sort by facility</option>
-      </select>
+      <!-- <select name ="sort" wire:model.live="sort" class="w-full md:w-40 text-base bg-white border border-orange-300 dark:text-gray-400 dark:bg-gray-900 focus:ring-2 focus:ring-orange-500  
+                px-3 py-2 rounded-md cursor-pointer accent-orange-500 appearance-none">
+        <option value="latest" class ="hover:bg-orange-600">Sort by latest</option>
+        <option value="facility" class ="hover:bg-orange-600">Sort by facility</option>
+      </select> -->
 
+      <select id="sort" name ="sort"  wire:model.live="sort" class="w-full md:w-40 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500">
+      <option value="latest">Sort by Latest</option>
+      <option value="facility">Sort by Facility</option>
+      <option value="category">Sort by Category</option>
+    </select>
       <!-- Search Input (below dropdown on small screens) -->
       <input type="text" id ="search" name ="search" wire:model.live="search" class="w-full md:w-46 px-4 py-2 border border-orange-300 dark:bg-orange-500 dark:text-gray-100 focus:ring-2 focus:ring-orange-500 rounded-md" placeholder="Search keyword for an equipment brand name, category name and etc.">
-    
     </div>
   </div>
 
@@ -120,7 +125,7 @@
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    {{ $equip->brand_name }}
+                    {{ Str::title($equip->brand_name)}}
                 </h3>
                 <button type="button" class="text-gray-20 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="equipment-seemore-modal-{{ $equip->id }}">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -133,6 +138,12 @@
             <div class="p-4 md:p-5 space-y-4">
                 <p class="text-justify text-base leading-relaxed text-gray-500 dark:text-gray-400">
                   {{ $equip->description }}
+                </p>
+
+                <p class="text-justify text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                  Serial Number: {{$equip->serial_no ?? 'N/A'}} <br>
+                  Property Number: {{$equip->_no ?? 'N/A'}}
+
                 </p>
             </div>
             <!-- Modal footer -->
