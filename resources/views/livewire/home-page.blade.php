@@ -1,3 +1,7 @@
+@php
+    use Illuminate\Support\Str;
+@endphp
+
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
   <section class="py-10 bg-gray-50 font-poppins dark:bg-gray-800 rounded-lg">
     <div class="px-4 py-4 mx-auto max-w-7xl lg:py-6 md:px-6">
@@ -95,8 +99,13 @@
                         </div>
                         <div class=" lg:p-2 mr-5">
                             <div class="flex flex-wrap gap-1 lg:gap-0.5 mb-2 ml-2">
-                                <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">{{ $equip->category->description}}</span>
-                                <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs">{{ $equip->facility->name}}</span>
+                            <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs cursor-pointer" title="{{ $equip->category->description }}">
+                                {{ Str::limit($equip->category->description, 13, '...') }}
+                            </span>
+                            <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs cursor-pointer" title="{{ $equip->facility->name }}">
+                                {{ Str::limit($equip->facility->name, 13, '...') }}
+                            </span>
+
                             </div>
                             <h2 class="font-bold text-lg lg:text-md mb-1 px-2">{{ $equip->brand_name }}</h2>
                             <!-- Modal Triggered by See More -->
