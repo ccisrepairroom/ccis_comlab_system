@@ -81,7 +81,7 @@ class HomePage extends Component
         $noEquipmentFound = !$equipment->exists(); 
 
         return view('livewire.home-page', [
-            'equipment' => $equipment->orderBy('id')->paginate(15),
+            'equipment' => $equipment->paginate(15),
             'categories' => Category::whereHas('equipment')->get(),
             'facilities' => Facility::whereHas('equipment')->get(),
             'noEquipmentFound' => $noEquipmentFound,
