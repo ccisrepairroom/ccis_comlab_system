@@ -21,7 +21,7 @@
           <li>
               <div class="flex items-center" wire:key ="$category->id">
                 <input id="category-{{ $category->id }}"  name = "selected_categories[]" wire:model.live= "selected_categories" type="checkbox" value="{{ $category->id }}" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                <label for="category-{{ $category->id}}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $category->description}}</label>
+                <label for="category-{{ $category->id}}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 capitalize">{{Str::title ($category->description)}}</label>
               </div>
             </li>
            @endforeach
@@ -45,7 +45,7 @@
           <li>
               <div class="flex items-center" wire:key ="$facility->id">
                 <input id="facility-{{$facility->id}}" name = "selected_facilities[]" type="checkbox" wire:model.live= "selected_facilities" value="{{ $facility->id }}" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                <label for="facility-{{$facility->id}}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $facility->name}}</label>
+                <label for="facility-{{$facility->id}}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ Str::upper($facility->name)}}</label>
               </div>
             </li>
             @endforeach
@@ -66,7 +66,7 @@
       <select name ="sort" wire:model.live="sort" class="w-full md:w-40 text-base bg-white border border-orange-300 dark:text-gray-400 dark:bg-gray-900 focus:ring-2 focus:ring-orange-500  
                 px-3 py-2 rounded-md cursor-pointer accent-orange-500">
         <option value="latest">Sort by latest</option>
-        <option value="price">Sort by facility</option>
+        <option value="facility">Sort by facility</option>
       </select>
 
       <!-- Search Input (below dropdown on small screens) -->
