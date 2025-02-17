@@ -293,6 +293,7 @@ class EquipmentResource extends Resource
                             'facility_id' => 'Facility',
                             'category_id' => 'Category',
                             'main_image' => 'Main Image',
+                            'alternate_images'=> 'Alternate Images',
                             'brand_name' => 'Brand Name',
                             'description' => 'Description',
                             'date_acquired' => 'Date Acquired',
@@ -342,6 +343,15 @@ class EquipmentResource extends Resource
                         ->label('Main Image')
                         ->visible(fn ($get) => in_array('main_image', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('main_image', $get('fields_to_update') ?? [])),
+
+                    Forms\Components\FileUpload::make('alternate_images')
+                        ->imageEditor()
+                        ->deletable()
+                        ->multiple()
+                        ->preserveFilenames()
+                        ->label('Alternate Images')
+                        ->visible(fn ($get) => in_array('alternate_images', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('alternate_images', $get('fields_to_update') ?? [])),
                     
                     Forms\Components\TextInput::make('brand_name')
                         ->label('Brand Name')
@@ -433,6 +443,9 @@ class EquipmentResource extends Resource
                     }
                     if (in_array('main_image', $data['fields_to_update'])) {
                         $updateData['main_image'] = $data['main_image'];
+                    }
+                    if (in_array('alternate_images', $data['fields_to_update'])) {
+                        $updateData['alternate_images'] = $data['alternate_images'];
                     }
                     if (in_array('brand_name', $data['fields_to_update'])) {
                         $updateData['brand_name'] = $data['brand_name'];

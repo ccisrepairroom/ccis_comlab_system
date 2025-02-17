@@ -116,7 +116,7 @@
 
 
 <!-- Main modal -->
-<div id="equipment-seemore-modal-{{ $equip->id }}"  data-modal-backdrop="static" tabindex="-1" class="hidden fixed inset-0 z-50 flex justify-center items-start w-full h-full bg-gray-900 bg-opacity-50">
+<div id="equipment-seemore-modal-{{ $equip->id }}"  data-modal-backdrop="static" tabindex="-1" class="hidden fixed inset-0 z-50 flex justify-center items-start w-full h-full bg-gray-900 bg-opacity-50 aria-hidden="true">
     <div class="relative p-4 w-full max-w-2xl mt-16">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700 max-h-[80vh] overflow-y-auto">
@@ -137,16 +137,14 @@
 
 <div id="animation-carousel" class="relative w-full" data-carousel="static">
     <!-- Carousel wrapper -->
-    <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+    <div class="relative h-56 overflow-hidden rounded-lg md:h-96 object-contain">
          <!-- Item 1 -->
+         @foreach($equip->alternate_images as $image)
         <div class="hidden duration-100 ease-linear" data-carousel-item>
-            <img src="/images/ccis.png" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            <img src="{{ url('storage', $image) }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
-        <!-- Item 2 -->
-        <div class="hidden duration-100 ease-linear" data-carousel-item>
-        <img src="/images/ccisheader.png" class="object-contain bg-white absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-        </div>
-        
+      
+        @endforeach
     </div>
    <!-- Slider controls -->
     <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
