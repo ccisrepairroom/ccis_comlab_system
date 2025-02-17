@@ -63,6 +63,13 @@
           <!-- Ensure flex layout changes based on screen size -->
           <div class="flex flex-col md:flex-row items-start md:items-center gap-3 px-3 py-2 bg-orange-100 dark:bg-gray-900 rounded-md shadow-sm">
             
+            <!-- Sort Dropdown (always first) -->
+            <!-- <select name ="sort" wire:model.live="sort" class="w-full md:w-40 text-base bg-white border border-orange-300 dark:text-gray-400 dark:bg-gray-900 focus:ring-2 focus:ring-orange-500  
+                      px-3 py-2 rounded-md cursor-pointer accent-orange-500 appearance-none">
+              <option value="latest" class ="hover:bg-orange-600">Sort by latest</option>
+              <option value="facility" class ="hover:bg-orange-600">Sort by facility</option>
+            </select> -->
+
             <select id="sort" name ="sort"  wire:model.live="sort" class="w-full md:w-40 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500">
             <option value="latest">Sort by Latest</option>
             <option value="facility">Sort by Facility</option>
@@ -131,7 +138,8 @@
                     <div id="animation-carousel" class="relative w-full" data-carousel="static">
                         <!-- Carousel wrapper -->
                         <div class="relative h-56 overflow-hidden rounded-lg md:h-96 object-contain">
-                            <!-- images -->
+                            <!-- Item 1 -->
+                              
                             @foreach($equip->alternate_images as $image)
                             <div class="hidden duration-100 ease-linear" data-carousel-item>
                             <img src="{{ url('storage', $image) }}" class="absolute block max-w-full max-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 object-contain" alt="...">
@@ -180,7 +188,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>  
                     <!-- Request button -->
                     <div class="flex justify-end">
                         <button class="flex items-center gap-1  my-5 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold hover:bg-orange-600 transition-colors">
@@ -202,14 +210,14 @@
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll("[id^='equipment-seemore-modal-']").forEach((modal) => {
-            const modalId = modal.id;
-            if (!window.Flowbite || !window.Flowbite.instances[modalId]) {
-                new Modal(modal);
-            }
-        });
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[id^='equipment-seemore-modal-']").forEach((modal) => {
+        const modalId = modal.id;
+        if (!window.Flowbite || !window.Flowbite.instances[modalId]) {
+            new Modal(modal);
+        }
     });
+});
 </script>
 
 
