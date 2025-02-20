@@ -123,6 +123,8 @@
                             <div class="my-10 bg-white p-6 rounded shadow-lg max-h-[80vh] overflow-y-auto">
                                 <h3 class="text-xl font-semibold">{{Str::upper($equip->brand_name)}}</h3>
                                 
+                                <!-- carousel -->
+                                 
                                 <p class="text-gray-600 py-6 text-justify">{{$equip->description}}</p>
                                 <p class="text-gray-600 text-sm">
                                     Serial Number: {{$equip->serial_no ?? 'N/A'}} <br>
