@@ -129,6 +129,7 @@
                                     Property Number: {{$equip->property_no ?? 'N/A'}} <br>
                                     Control Number: {{$equip->control_no ?? 'N/A'}} <br>
                                     PO Number: {{$equip->po_number ?? 'N/A'}} <br>
+                                    Unit Number: {{$equip->unit_no ?? 'N/A'}} - {{$equip->facility->name ?? 'N/A'}} <br>
                                     Date Acquired: {{$equip->date_acquired ?? 'N/A'}} <br>
                                     Person Liable: {{$equip->person_liable ?? 'N/A'}} <br>
                                 </p>
