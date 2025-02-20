@@ -5,14 +5,18 @@
 
 
          <!-- Start Logo Section -->
-        <a class="flex flex-none" href="/" aria-label="Brand">
-                <img src="{{ asset('images/ccislogo1.1.png') }}" alt="SM Supermarket Logo" class="h-12 md:h-16 lg:h-20 w-auto">
+        <a class="hidden md:flex flex-none" href="/" aria-label="logo">
+                <img src="{{ asset('images/ccislogo1.1.png') }}" alt="CCIS ERMA Logo" class="h-12 md:h-16 lg:h-20 w-auto">
             </a>
-            <!-- End Logo Section -->
+
+        <a class="flex md:hidden flex-none" href="/" aria-label="Brand">
+            <img src="{{ asset('images/ermashortlogo.png') }}" alt="SM Supermarket Logo" class="h-12 md:h-16 lg:h-20 w-auto">
+        </a>
+        <!-- End Logo Section -->
         <!-- Search bar Section -->
-        <!-- <input type="text" wire:model.live="search" class="w-60 ml-4 px-4 py-2 border border-orange-300 dark:bg-orange-800 dark:text-orange-100" placeholder="Search product name..."> -->
-       
-         
+
+
+        <!-- <input type="text" wire:model.live="search" class="w-60 ml-4 px-4 py-2 border border-orange-300 dark:bg-orange-800 dark:text-orange-100" placeholder="Search product name..."> --> 
         <!-- End Search Bar Section -->
           
 
