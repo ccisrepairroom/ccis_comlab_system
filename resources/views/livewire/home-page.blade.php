@@ -74,11 +74,7 @@
               <option value="facility" class ="hover:bg-orange-600">Sort by facility</option>
             </select> -->
 
-            <select id="sort" name ="sort"  wire:model.live="sort" class="w-full md:w-40 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500">
-            <option value="latest">Sort by Latest</option>
-            <option value="facility">Sort by Facility</option>
-            <option value="category">Sort by Category</option>
-          </select>
+           
             <!-- Search Input (below dropdown on small screens) -->
             <input type="text" id ="search" name ="search" wire:model.live="search" class="w-full md:w-46 px-4 py-2 border border-orange-300 dark:bg-orange-500 dark:text-gray-100 focus:ring-2 focus:ring-orange-500 rounded-md text-sm" placeholder="Search keyword for an equipment brand name, category name and etc.">
           </div>
@@ -106,18 +102,35 @@
                             {{ Str::limit($equip->facility->name, 13, '...') }}
                         </span>
                     </div>
+
                     <h2 class="font-bold text-lg sm:text-md md:text-sm lg:text-md mb-1 px-2">{{ Str::upper($equip->brand_name) }}</h2>
                     <!-- Modal Triggered by See More -->
+                    <div x-data="{ open: false }">
                     <p class="text-sm sm:text-xs md:text-xs text-gray-600 mb-2 px-2 text-justify">
                         @if($equip->description)
                             {{ Str::limit($equip->description, 27) }}
                         @else
                             Description is not available.
                         @endif
-                        <span class="text-orange-500 underline cursor-pointer">
+                        
+                        <span class="text-orange-500 underline cursor-pointer" @click="open = true">
                             See more
                         </span>
-                    </p>
+                        </p>
+                    <!-- modal -->
+                    <div x-show="open" id="seemore-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                        <div class="relative p-4 w-full max-w-2xl max-h-full">
+                            <div class="my-10 bg-white p-6 rounded shadow-lg max-h-[80vh] overflow-y-auto">
+                                <h3 class="text-xl font-semibold">{{Str::upper($equip->brand_name)}}</h3>
+                                <p class="text-gray-600">{{$equip->description}}</p>
+                                <button class=" mt-4 px-4 py-2 bg-blue-500 text-white rounded" @click="open = false">Close</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    </div>
+
+    
                 </div>
 
                <!-- Request button -->
@@ -129,8 +142,11 @@
                     </div>
             </a>
         </div>
+
     @endforeach
 </div>
+
+
   <!-- pagination start -->
   <div class="flex justify-end mt-6">
     {{ $equipment->links() }}

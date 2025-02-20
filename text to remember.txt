@@ -590,3 +590,11 @@ data-model-target="id"
 data-model-toggle="id">
 
 --more html:https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
+
+---making modals
+--put this in the div of where you want t click
+ <div x-data="{ open: false }">
+ --then put this to an item ku will click
+  @click="open = true"
+--then put this in modal in div:
+x-show="open" id="seemore-modal"
