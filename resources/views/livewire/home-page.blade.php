@@ -118,7 +118,7 @@
                         </span>
                         </p>
                     <!-- modal -->
-                    <div x-show="open" id="seemore-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div x-show="open" id="seemore-modal" name="seemore-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                         <div class="relative p-4 w-full max-w-2xl max-h-full mt-16">
                             <div class="my-10 bg-white p-6 rounded shadow-lg max-h-[80vh] overflow-y-auto">
                                 <h3 class="text-xl font-semibold">{{Str::upper($equip->brand_name)}}</h3>
@@ -133,8 +133,12 @@
                                     Date Acquired: {{$equip->date_acquired ?? 'N/A'}} <br>
                                     Person Liable: {{$equip->person_liable ?? 'N/A'}} <br>
                                 </p>
-
+                                <p class="text-gray-600 text-sm text-justify pt-5">
+                                    Remarks:  {{$equip->remarks ?? 'N/A'}} <br>
+                                </p>
+                                <div class="flex justify-end">
                                 <button class=" mt-4 px-4 py-2 bg-orange-500 text-white rounded" @click="open = false">Close</button>
+                                </div>
                             </div>
                         </div>
                     </div>
