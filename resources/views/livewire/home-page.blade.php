@@ -106,7 +106,7 @@
                             {{ Str::limit($equip->facility->name, 13, '...') }}
                         </span>
                     </div>
-                    <h2 class="font-bold text-lg sm:text-md md:text-sm lg:text-md mb-1 px-2">{{ $equip->brand_name }}</h2>
+                    <h2 class="font-bold text-lg sm:text-md md:text-sm lg:text-md mb-1 px-2">{{ Str::upper($equip->brand_name) }}</h2>
                     <!-- Modal Triggered by See More -->
                     <p class="text-sm sm:text-xs md:text-xs text-gray-600 mb-2 px-2 text-justify">
                         @if($equip->description)
