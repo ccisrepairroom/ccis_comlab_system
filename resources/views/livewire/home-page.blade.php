@@ -87,125 +87,46 @@
         @if ($noEquipmentFound)
             <p class="text-center text-gray-500 mb-4">No equipment found.</p>
         @endif
-        <!--Start Equipment Card Section -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 lg:gap-1">
-            @foreach($equipment as $equip)
-                <div class="p-4 lg:p-2" wire:key="{{ $equip->id }}">
-                    <a  class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
-                        <!-- Image Container -->
-                        <div class="h-48 lg:h-36 mt-3 bg-white flex items-center justify-center">
-                            <img src="{{ url('storage', $equip->main_image) }}" alt="{{ $equip->name }}" 
-                                class="w-full h-full object-contain">
-                        </div>
-                        <div class=" lg:p-2 mr-5">
-                            <div class="flex flex-wrap gap-1 lg:gap-0.5 mb-2 ml-2">
-                            <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs cursor-pointer" title="{{ $equip->category->description }}">
-                                {{ Str::limit($equip->category->description, 13, '...') }}
-                            </span>
-                            <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs cursor-pointer" title="{{ $equip->facility->name }}">
-                                {{ Str::limit($equip->facility->name, 13, '...') }}
-                            </span>
-
-                            </div>
-                            <h2 class="font-bold text-lg lg:text-md mb-1 px-2">{{ $equip->brand_name }}</h2>
-                            <!-- Modal Triggered by See More -->
-                            <p class="text-sm md:text-xs text-gray-600 mb-2 px-2 text-justify">
-                                @if($equip->description)
-                                    {{ Str::limit($equip->description, 27) }}
-                                @else
-                                    Description is not available.
-                                @endif
-
-                                <span class="text-orange-500 underline cursor-pointer" 
-                                      data-modal-target="equipment-seemore-modal-{{ $equip->id }}" 
-                                      data-modal-toggle="equipment-seemore-modal-{{ $equip->id }}">
-                                      See more
-                                </span>
-                            </p>
-
-
-        <!-- Main modal -->
-        <div id="equipment-seemore-modal-{{ $equip->id }}"  data-modal-backdrop="static" tabindex="-1" class="hidden fixed inset-0 z-50 flex justify-center items-start w-full h-full bg-gray-900 bg-opacity-50 aria-hidden="true">
-            <div class="relative p-4 w-full max-w-2xl mt-16">
-                <!-- Modal content -->
-                <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700 max-h-[80vh] overflow-y-auto">
-                    <!-- Modal header -->
-                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            {{ Str::title($equip->brand_name) }}
-                        </h3>
-                        <button type="button" class="text-gray-20 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="equipment-seemore-modal-{{ $equip->id }}">
-                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                            </svg>
-                            <span class="sr-only">Close modal</span>
-                        </button>
-                    </div>
-
-                    
-                    @if($equip->alternate_images && count($equip->alternate_images) > 0)
-                    <div id="animation-carousel" class="relative w-full" data-carousel="static">
-                        <!-- Carousel wrapper -->
-                        <div class="relative h-56 overflow-hidden rounded-lg md:h-96 object-contain">
-                            <!-- Item 1 -->
-                              
-                            @foreach($equip->alternate_images as $image)
-                            <div class="hidden duration-100 ease-linear" data-carousel-item>
-                            <img src="{{ url('storage', $image) }}" class="absolute block max-w-full max-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 object-contain" alt="...">
-                            </div>
-                            @endforeach
-                        </div>
-                      <!-- Slider controls -->
-                        <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-                            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-orange-500/30 dark:bg-orange-500/30 group-hover:bg-orange-500/50 dark:group-hover:bg-orange-500/60 group-focus:ring-4 group-focus:ring-orange-500 dark:group-focus:ring-orange-500/70 group-focus:outline-none">
-                                <svg class="w-4 h-4 text-white dark:text-orange-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-                                </svg>
-                                <span class="sr-only">Previous</span>
-                            </span>
-                        </button>
-                        <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-                            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-orange-500/30 dark:bg-orange-500/30 group-hover:bg-orange-500/50 dark:group-hover:bg-orange-500/60 group-focus:ring-4 group-focus:ring-orange-500 dark:group-focus:ring-orange-500/70 group-focus:outline-none">
-                                <svg class="w-4 h-4 text-white dark:text-orange-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                                </svg>
-                                <span class="sr-only">Next</span>
-                            </span>
-                        </button>
-                    </div>
-                    @endif
-
-                    <!-- Modal body -->
-                    <div class="p-4 md:p-5 space-y-4">
-                        <p class="text-justify text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                            {{ $equip->description }}
-                        </p>
-                        <p class="text-left text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                            Serial Number: {{$equip->serial_no ?? 'N/A'}} <br>
-                            Unit Number: {{$equip->unit_no ?? 'N/A'}} - {{$facility->name ?? 'N/A'}}  <br>
-                            Property Number: {{$equip->property_no ?? 'N/A'}} <br>
-                            Control Number: {{$equip->control_no ?? 'N/A'}} <br>
-                            PO Number: {{$equip->po_number ?? 'N/A'}} <br>
-                            Date Acquired: {{$equip->date_acquired ?? 'N/A'}} <br>
-                            Person Liable: {{$equip->person_liable ?? 'N/A'}} <br>
-                        </p>
-                    </div>
-                    <!-- Modal footer -->
-                    <div class="flex justify-end items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                        <button data-modal-hide="equipment-seemore-modal-{{ $equip->id }}" type="button" class="text-white bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-orange-300 dark:hover:bg-orange-300 dark:focus:ring-orange-800">Request</button>
-                        <button data-modal-hide="equipment-seemore-modal-{{ $equip->id }}" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-orange-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Close</button>
-                    </div>
+      <!-- Start Equipment Card Section -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 lg:gap-1">
+    @foreach($equipment as $equip)
+        <div class="p-4 sm:p-3 md:p-2 lg:p-2" wire:key="{{ $equip->id }}">
+            <a class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
+                <!-- Image Container -->
+                <div class="h-48 sm:h-40 md:h-36 lg:h-36 mt-3 bg-white flex items-center justify-center">
+                    <img src="{{ url('storage', $equip->main_image) }}" alt="{{ $equip->name }}" 
+                        class="w-full h-full object-contain">
                 </div>
-            </div>
-        </div>  
-                    <!-- Request button -->
-                    <div class="flex justify-end">
-                        <button class="flex items-center gap-1  my-5 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold hover:bg-orange-600 transition-colors">
+                <div class="lg:p-2 sm:pl-3 md:pl-2 pl-5 my-3">
+                    <div class="flex flex-wrap gap-1 lg:gap-0.5 mb-2 ml-2">
+                        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" title="{{ $equip->category->description }}">
+                            {{ Str::limit($equip->category->description, 13, '...') }}
+                        </span>
+                        <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" title="{{ $equip->facility->name }}">
+                            {{ Str::limit($equip->facility->name, 13, '...') }}
+                        </span>
+                    </div>
+                    <h2 class="font-bold text-lg sm:text-md md:text-sm lg:text-md mb-1 px-2">{{ $equip->brand_name }}</h2>
+                    <!-- Modal Triggered by See More -->
+                    <p class="text-sm sm:text-xs md:text-xs text-gray-600 mb-2 px-2 text-justify">
+                        @if($equip->description)
+                            {{ Str::limit($equip->description, 27) }}
+                        @else
+                            Description is not available.
+                        @endif
+                        <span class="text-orange-500 underline cursor-pointer">
+                            See more
+                        </span>
+                    </p>
+                </div>
+
+               <!-- Request button -->
+               <div class="flex justify-end mt-1 mb-5 mr-5">
+                        <button class="flex items-center gap-1  px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold hover:bg-orange-600 transition-colors">
                             Request 
                             <x-heroicon-o-plus class="w-4 h-4" />
                         </button>
                     </div>
-                </div>
             </a>
         </div>
     @endforeach
@@ -216,21 +137,3 @@
           </div>
           <!-- pagination end -->
 </body>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("[id^='equipment-seemore-modal-']").forEach((modal) => {
-        const modalId = modal.id;
-        if (!window.Flowbite || !window.Flowbite.instances[modalId]) {
-            new Modal(modal);
-        }
-    });
-});
-</script>
-
-
-
-
-
-                        
