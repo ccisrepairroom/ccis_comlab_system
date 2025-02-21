@@ -598,3 +598,43 @@ data-model-toggle="id">
   @click="open = true"
 --then put this in modal in div:
 x-show="open" id="seemore-modal"
+
+--video 16 helpers, 
+make helpers in app/helpers/RequestManagement.php
+
+//in helpers, first put //add request equipment to cookie
+//then     //clear requestlist equipment from cookie
+//then     //get all requestlist equipment  from cookie
+//then     //add equipment to requestlist
+//then     //remove equipment from requestlist
+//then     //increment equipment quantity
+
+--video 17, add to request button working,
+//find the request button, add this 
+wire:click.prevent='addToRequestList({{$equip->id}})'
+//then add to the component controller:addToRequestList
+
+ //add to request list method
+    public function addToRequestList($equipment_id){
+        dd($equipment_id);
+        $total_count = CartManagement::addEquipmentToRequestList($equipment_id);
+
+        $this->dispatch('update-request-list-count', total_count: $total_count)->to(Navbar::class);
+
+        $this->alert('success', 'Equipment added to your request list', [
+            'position' => 'top-right',
+            'timer' => 3000,
+            'toast' => true
+        ]);
+    }
+//import the helpers class
+use App\Helpers\RequestManagement;
+
+//go to navbar to update request list count
+
+public $total_count=0;
+
+    public function mount(){
+        $this->total_count = count(RequestManagement::getRequestListEquipmentFromCookie());
+    }
+//in navbar.blade modify the static count

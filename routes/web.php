@@ -113,7 +113,7 @@ Route::get('/supplies-and-materials-monitoring/{supply}', SuppliesAndMaterialsMo
 Route::get('/', HomePage::class);
 // Route::get('/facilities', FacilitiesPage::class);
 Route::get('/supplies-and-materials', SuppliesAndMaterialsPage::class);
-// Route::get('/request', RequestPage::class);
+Route::get('/request', RequestPage::class);
 // Route::get('/my-requests', MyRequestsPage::class);
 // Route::get('/my-request-detail', MyRequestDetailPage::class);
 Route::get('/equipment/{equip}', EquipmentDetailPage::class);
