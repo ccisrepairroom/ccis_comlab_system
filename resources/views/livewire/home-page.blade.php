@@ -157,16 +157,20 @@
                                 </div>
                                   <p class="text-gray-600 py-6 text-justify">{{$equip->description}}</p>
                                   <p class="text-gray-600 text-sm">
-                                      Serial Number: {{$equip->serial_no ?? 'N/A'}} <br>
-                                      Property Number: {{$equip->property_no ?? 'N/A'}} <br>
-                                      Control Number: {{$equip->control_no ?? 'N/A'}} <br>
-                                      PO Number: {{$equip->po_number ?? 'N/A'}} <br>
-                                      Unit Number: {{$equip->unit_no ?? 'N/A'}} - {{$equip->facility->name ?? 'N/A'}} <br>
-                                      Date Acquired: {{$equip->date_acquired ?? 'N/A'}} <br>
-                                      Person Liable: {{$equip->person_liable ?? 'N/A'}} <br>
+                                      Serial Number: {{Str::upper($equip->serial_no ?? 'N/A')}} <br>
+                                      Property Number: {{Str::upper($equip->property_no ?? 'N/A')}} <br>
+                                      Control Number: {{Str::upper($equip->control_no ?? 'N/A')}}  <br>
+                                      PO Number: {{Str::upper($equip->po_number ?? 'N/A')}}  <br>
+                                      Item Number: {{Str::upper($equip->po_number ?? 'N/A')}}  <br>
+                                      Unit Number: {{Str::upper($equip->item_no ?? 'N/A')}} - {{Str::upper($equip->facility->name ?? 'N/A')}}  <br>
+                                      Date Acquired: {{Str::upper($equip->date_acquired ?? 'N/A')}} <br>
+                                      Amount: {{Str::upper($equip->amount ?? 'N/A')}}  <br>
+                                      Estimated Life: {{Str::upper($equip->estimated_life ?? 'N/A')}}  <br>
+                                      Supplier: {{Str::upper($equip->supplier ?? 'N/A')}}  <br>
+                                      Person Liable: {{Str::upper($equip->person_liable ?? 'N/A')}} <br>
                                   </p>
                                   <p class="text-gray-600 text-sm text-justify pt-5">
-                                      Remarks:  {{$equip->remarks ?? 'N/A'}} <br>
+                                      Remarks:  {{Str::title($equip->remarks ?? 'N/A')}} <br>
                                   </p>
                                   <div class="flex justify-end">
                                   <button class=" mt-4 px-4 py-2 bg-orange-500 text-white rounded" @click="open = false">Close</button>

@@ -60,6 +60,18 @@ class HomePage extends Component
             $equipment->where(function ($query) {
                 $query->where('brand_name', 'like', '%' . $this->search . '%')
                       ->orWhere('description', 'like', '%' . $this->search . '%')
+                      ->orWhere('serial_no', 'like', '%' . $this->search . '%')
+                      ->orWhere('property_no', 'like', '%' . $this->search . '%')
+                      ->orWhere('control_no', 'like', '%' . $this->search . '%')
+                      ->orWhere('item_no', 'like', '%' . $this->search . '%')
+                      ->orWhere('unit_no', 'like', '%' . $this->search . '%')
+                      ->orWhere('po_number', 'like', '%' . $this->search . '%')
+                      ->orWhere('supplier', 'like', '%' . $this->search . '%')
+                      ->orWhere('date_acquired', 'like', '%' . $this->search . '%')
+                      ->orWhere('amount', 'like', '%' . $this->search . '%')
+                      ->orWhere('estimated_life', 'like', '%' . $this->search . '%')
+                      ->orWhere('person_liable', 'like', '%' . $this->search . '%')
+                      ->orWhere('remarks', 'like', '%' . $this->search . '%')
                       ->orWhereHas('facility', function ($facilityQuery) { 
                         $facilityQuery->where('name', 'like', '%' . $this->search . '%');
                         })
