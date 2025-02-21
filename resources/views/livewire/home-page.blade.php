@@ -66,15 +66,7 @@
         <div class="px-3 mb-4">
           <!-- Ensure flex layout changes based on screen size -->
           <div class="flex flex-col md:flex-row items-start md:items-center gap-3 px-3 py-2 bg-orange-100 dark:bg-gray-900 rounded-md shadow-sm">
-            
-            <!-- Sort Dropdown (always first) -->
-            <select name ="sort" wire:model.live="sort" class="w-full md:w-40 text-base bg-white border border-orange-300 dark:text-gray-400 dark:bg-gray-900 focus:ring-2 focus:ring-orange-500  
-                      px-3 py-2 rounded-md cursor-pointer accent-orange-500 appearance-none">
-              <option value="latest" class ="hover:bg-orange-600">Sort by latest</option>
-              <option value="facility" class ="hover:bg-orange-600">Sort by facility</option>
-              <option value="category" class ="hover:bg-orange-600">Sort by category</option>
-            </select>
-
+        
            
             <!-- Search Input (below dropdown on small screens) -->
             <input type="text" id ="search" name ="search" wire:model.live="search" class="w-full md:w-46 px-4 py-2 border border-orange-300 dark:bg-orange-500 dark:text-gray-100 focus:ring-2 focus:ring-orange-500 rounded-md text-sm" placeholder="Search keyword for an equipment brand name, category name and etc.">
