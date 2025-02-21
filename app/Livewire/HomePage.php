@@ -29,6 +29,8 @@ class HomePage extends Component
     #[Url]
     public $sort='latest';
 
+    public $alternateImages = [];
+
 
 
     
@@ -40,6 +42,10 @@ class HomePage extends Component
         //Only show working equipment
         $equipment = Equipment::query()->where('status', 'working');
 
+        // Get alternate images from the first equipment (or handle selection properly)
+        $firstEquipment = $equipment->first(); 
+        $this->alternateImages = $firstEquipment ? ($firstEquipment->alternate_images ?? []) : [];
+            
         //Equipment filter based on categories
         if(!empty($this->selected_categories)){
             $equipment-> whereIn('category_id', $this->selected_categories);
