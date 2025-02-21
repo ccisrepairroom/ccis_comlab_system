@@ -85,10 +85,10 @@
             <p class="text-center text-gray-500 mb-4">No equipment found.</p>
         @endif
       <!-- Start Equipment Card Section -->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 lg:gap-1">
+<div x-data="{ open: false }" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 lg:gap-1">
       @foreach($equipment as $equip)
           <div class="p-4 sm:p-3 md:p-2 lg:p-2" wire:key="{{ $equip->id }}">
-              <a class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
+              <a  href="#" @click.prevent="open = true" href="#" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
                   <!-- Image Container -->
                   <div class="h-48 sm:h-40 md:h-36 lg:h-36 mt-3 bg-white flex items-center justify-center">
                       <img src="{{ url('storage', $equip->main_image) }}" alt="{{ $equip->name }}" 
@@ -144,7 +144,7 @@
                                         </div>
                                     </div>
                                     @if (!empty($equip->alternate_images))
-                                    <div class="carousel-nav flex justify-center gap-2 pt-2">
+                                    <div class="carousel-nav flex justify-end gap-2 pt-2">
                                       <button type="button" class="carousel-nav-prev rounded-full bg-gray-200 p-1.5 text-gray-600 shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-gray-200 transition-all duration-300">
                                         <svg class="lucide lucide-chevron-left w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                                       </button>
@@ -198,62 +198,58 @@
             <!-- pagination end -->
 
   <script>
-   // Carousel
+// Select all carousel components
 var carousels = document.querySelectorAll('.carousel');
-carousels.forEach(function(carousel) {
-    var carouselSlides = carousel.querySelector('.carousel-slides');
-    var slide = carousel.querySelector('.carousel-slides div');
 
-    if (!carouselSlides || !slide) return; // Exit if no slides exist
+carousels.forEach(function (carousel) {
+  var carouselSlides = carousel.querySelector('.carousel-slides');
+  var slides = carouselSlides.children;
+  var slideWidth = slides[0].clientWidth; // Get the width of a single slide
 
-    // Next button
-    var carouselNavNext = carousel.querySelector('.carousel-nav-next');
-    if (carouselNavNext) { // Check if button exists before adding event listener
-        carouselNavNext.addEventListener('click', function(event) {
-            event.preventDefault();
-            carouselSlides.scrollLeft = carouselSlides.scrollLeft + slide.clientWidth;
-        });
+  // Function to go to the next slide
+  function nextSlide() {
+    if (carouselSlides.scrollLeft + slideWidth >= carouselSlides.scrollWidth) {
+      carouselSlides.scrollLeft = 0; // Loop back to start
+    } else {
+      carouselSlides.scrollBy({ left: slideWidth, behavior: 'smooth' });
     }
+  }
 
-    // Prev button
-    var carouselNavPrev = carousel.querySelector('.carousel-nav-prev');
-    if (carouselNavPrev) { // Check if button exists before adding event listener
-        carouselNavPrev.addEventListener('click', function(event) {
-            event.preventDefault();
-            carouselSlides.scrollLeft = carouselSlides.scrollLeft - slide.clientWidth;
-        });
+  // Function to go to the previous slide
+  function prevSlide() {
+    if (carouselSlides.scrollLeft <= 0) {
+      carouselSlides.scrollLeft = carouselSlides.scrollWidth - slideWidth; // Loop to end
+    } else {
+      carouselSlides.scrollBy({ left: -slideWidth, behavior: 'smooth' });
     }
+  }
 
-    // Sorting slides
-    function updateSort(el) {
-        var scrollWidth = el.scrollWidth;
-        var scrollLeft = el.scrollLeft;
-        var width = el.offsetWidth;
-        var items = el.children;
+  // Auto-slide every 3 seconds
+  var autoSlide = setInterval(nextSlide, 1000);
 
-        console.log({scrollLeft}, {scrollWidth});
+  // Next button 
+  var carouselNavNext = carousel.querySelector('.carousel-nav-next');
+  carouselNavNext.addEventListener('click', function (event) {
+    event.preventDefault();
+    nextSlide();
+    resetAutoSlide(); 
+  });
 
-        if (scrollLeft <= width) {
-            el.prepend(items[items.length - 1]);
-            el.scrollLeft = scrollLeft + width;
-        }
-        if (scrollWidth - scrollLeft - width <= 0) {
-            el.append(items[0]);
-            el.scrollLeft = scrollLeft - width;
-        }
-    }
+  // Previous button 
+  var carouselNavPrev = carousel.querySelector('.carousel-nav-prev');
+  carouselNavPrev.addEventListener('click', function (event) {
+    event.preventDefault();
+    prevSlide();
+    resetAutoSlide(); 
+  });
 
-    var scrollDebounce = true;
-    carouselSlides.addEventListener('scrollend', function() {
-        if (scrollDebounce) {
-            scrollDebounce = false;
-            updateSort(carouselSlides);
-            setTimeout(function () { scrollDebounce = true; }, 500);
-        }
-    });
-
-    updateSort(carouselSlides);
+  // Reset auto-slide when user interacts
+  function resetAutoSlide() {
+    clearInterval(autoSlide);
+    autoSlide = setInterval(nextSlide, 4000);
+  }
 });
 
-  </script>
+</script>
+
   </body>
