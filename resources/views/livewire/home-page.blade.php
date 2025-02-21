@@ -144,7 +144,7 @@
                                         </div>
                                     </div>
                                     @if (!empty($equip->alternate_images))
-                                    <div class="carousel-nav flex justify-end gap-2 pt-2">
+                                    <div class="carousel-nav flex justify-center gap-2 pt-2">
                                       <button type="button" class="carousel-nav-prev rounded-full bg-gray-200 p-1.5 text-gray-600 shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-gray-200 transition-all duration-300">
                                         <svg class="lucide lucide-chevron-left w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                                       </button>
@@ -197,59 +197,69 @@
             </div>
             <!-- pagination end -->
 
-  <script>
-// Select all carousel components
-var carousels = document.querySelectorAll('.carousel');
+            <script>
+document.addEventListener("DOMContentLoaded", function () {
+    function initCarousel() {
+        var carousels = document.querySelectorAll('.carousel');
 
-carousels.forEach(function (carousel) {
-  var carouselSlides = carousel.querySelector('.carousel-slides');
-  var slides = carouselSlides.children;
-  var slideWidth = slides[0].clientWidth; // Get the width of a single slide
+        carousels.forEach(function (carousel) {
+            var carouselSlides = carousel.querySelector('.carousel-slides');
+            var slides = carouselSlides.children;
+            if (!slides.length) return; // Prevent errors if there are no slides
+            
+            var slideWidth = slides[0].clientWidth;
 
-  // Function to go to the next slide
-  function nextSlide() {
-    if (carouselSlides.scrollLeft + slideWidth >= carouselSlides.scrollWidth) {
-      carouselSlides.scrollLeft = 0; // Loop back to start
-    } else {
-      carouselSlides.scrollBy({ left: slideWidth, behavior: 'smooth' });
+            function nextSlide() {
+                if (carouselSlides.scrollLeft + slideWidth >= carouselSlides.scrollWidth) {
+                    carouselSlides.scrollLeft = 0;
+                } else {
+                    carouselSlides.scrollBy({ left: slideWidth, behavior: 'smooth' });
+                }
+            }
+
+            function prevSlide() {
+                if (carouselSlides.scrollLeft <= 0) {
+                    carouselSlides.scrollLeft = carouselSlides.scrollWidth - slideWidth;
+                } else {
+                    carouselSlides.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+                }
+            }
+
+            var autoSlide = setInterval(nextSlide, 4000);
+
+            var carouselNavNext = carousel.querySelector('.carousel-nav-next');
+            if (carouselNavNext) {
+                carouselNavNext.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    nextSlide();
+                    resetAutoSlide();
+                });
+            }
+
+            var carouselNavPrev = carousel.querySelector('.carousel-nav-prev');
+            if (carouselNavPrev) {
+                carouselNavPrev.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    prevSlide();
+                    resetAutoSlide();
+                });
+            }
+
+            function resetAutoSlide() {
+                clearInterval(autoSlide);
+                autoSlide = setInterval(nextSlide, 4000);
+            }
+        });
     }
-  }
 
-  // Function to go to the previous slide
-  function prevSlide() {
-    if (carouselSlides.scrollLeft <= 0) {
-      carouselSlides.scrollLeft = carouselSlides.scrollWidth - slideWidth; // Loop to end
-    } else {
-      carouselSlides.scrollBy({ left: -slideWidth, behavior: 'smooth' });
-    }
-  }
+    initCarousel(); // Run on first load
 
-  // Auto-slide every 3 seconds
-  var autoSlide = setInterval(nextSlide, 1000);
-
-  // Next button 
-  var carouselNavNext = carousel.querySelector('.carousel-nav-next');
-  carouselNavNext.addEventListener('click', function (event) {
-    event.preventDefault();
-    nextSlide();
-    resetAutoSlide(); 
-  });
-
-  // Previous button 
-  var carouselNavPrev = carousel.querySelector('.carousel-nav-prev');
-  carouselNavPrev.addEventListener('click', function (event) {
-    event.preventDefault();
-    prevSlide();
-    resetAutoSlide(); 
-  });
-
-  // Reset auto-slide when user interacts
-  function resetAutoSlide() {
-    clearInterval(autoSlide);
-    autoSlide = setInterval(nextSlide, 4000);
-  }
+    // Re-run script when Livewire updates the page
+    Livewire.hook('message.processed', (message, component) => {
+        initCarousel();
+    });
 });
-
 </script>
+
 
   </body>
