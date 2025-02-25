@@ -638,3 +638,11 @@ public $total_count=0;
         $this->total_count = count(RequestManagement::getRequestListEquipmentFromCookie());
     }
 //in navbar.blade modify the static count
+
+--video 18, quantity add to cart, request page
+//make a variable in controller, then in blade, under tbody, make forelse
+//copy the tr inside the forelse, then it will loop the number of requests
+//in tr put wire key 
+              <tr wire:key='{{ $item['equipment_id'] }}'>
+//in image, 
+ src="{{ url('storage', $item['main_image']) }}"

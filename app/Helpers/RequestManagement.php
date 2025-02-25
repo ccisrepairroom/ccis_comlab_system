@@ -3,6 +3,10 @@
 namespace App\Helpers;
 use Illuminate\Support\Facades\Cookie;
 use App\Models\Equipment;
+use App\Models\Category;
+use App\Models\Facility;
+
+
 
 
 class RequestManagement {
@@ -26,14 +30,19 @@ class RequestManagement {
             $requestlist_equipment[$existing_requestlist_equipment]['quantity']++;
         } else {
             // Fetch equipment details from the database
-            $equip = Equipment::where('id', $equipment_id)->first(['id', 'brand_name', 'serial_no', 'main_image']);
+            $equip = Equipment::with(['category', 'facility'])->where('id', $equipment_id)->first(['id', 'brand_name', 'serial_no', 'property_no', 'main_image', 'category_id', 'facility_id']);
             if ($equip) {
                 $requestlist_equipment[] = [
                     'equipment_id' => $equipment_id,
                     'brand_name' => $equip->brand_name,
                     'serial_no' => $equip->serial_no,
+                    'property_no' => $equip->property_no,
                     'main_image' => $equip->main_image ?? null,
                     'quantity' => 1,
+                    'category_description' => $equip->category->description ?? 'N/A', 
+                    'facility_name' => $equip->facility->name ?? 'N/A', 
+
+
                 ];
             }
         }

@@ -1,37 +1,49 @@
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
   <div class="container mx-auto px-4">
-    <h1 class="text-2xl font-semibold text-orange-500 mb-4">Request List</h1>
+    <h1 class="text-2xl font-semibold text-orange-500 mb-4">Requests List</h1>
     <div class="flex flex-col md:flex-row gap-4">
       <div class="md:w-3/4">
         <div class="bg-white overflow-x-auto rounded-lg shadow-md p-6 mb-4">
-          <table class="w-full">
-            <thead>
-              <tr>
-                <th class="text-left font-semibold">Equipment</th>
-                <th class="text-left font-semibold">Category</th>
-                <th class="text-left font-semibold">Facility</th>
-                <th class="text-left font-semibold">Serial No.</th>
-                <th class="text-left font-semibold">Property No.</th>
-                <th class="text-left font-semibold">Remove</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="py-4">
-                  <div class="flex items-center">
-                    <img class="h-16 w-16 mr-4" src="https://via.placeholder.com/150" alt="Equipment image">
-                    <span class="font-semibold">Equipment name</span>
-                  </div>
-                </td>
-                <td class="py-4">Keyboard</td>
-                <td class="py-4">CL1</td>
-                <td class="py-4">ANIINAKILA</td>
-                <td class="py-4">JEJE</td>
-                <td><button class="bg-orange-500 text-white border-2 border-orange-400 rounded-lg px-3 py-1 hover:bg-red-500 hover:text-white hover:border-red-500">Remove</button></td>
-              </tr>
-              <!-- More product rows -->
-            </tbody>
-          </table>
+          <!-- Added min-w-full and block table wrapper -->
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[600px] sm:min-w-full">
+              <thead>
+                <tr>
+                  <th class="text-left font-semibold p-2 whitespace-nowrap">Items</th>
+                  <th class="text-left font-semibold p-2 whitespace-nowrap">Category</th>
+                  <th class="text-left font-semibold p-2 whitespace-nowrap">Facility</th>
+                  <th class="text-left font-semibold p-2 whitespace-nowrap">Serial No.</th>
+                  <th class="text-left font-semibold p-2 whitespace-nowrap">Property No.</th>
+                  <th class="text-left font-semibold p-2 whitespace-nowrap">Remove</th>
+                </tr>
+              </thead>
+              <tbody>
+                @forelse ($requestlist_equipment as $item)
+                <tr wire:key='{{ $item['equipment_id'] }}' class="border-b text-sm sm:text-base">
+                  <td class="py-4 px-2">
+                    <div class="flex flex-col items-center text-center">
+                      <img class="h-12 w-12 sm:h-16 sm:w-16 rounded-lg mb-2" 
+                          src="{{ url('storage', $item['main_image']) }}" 
+                          alt="{{ $item['brand_name']}}">
+                      <span class="font-semibold">{{ $item['brand_name']}}</span>
+                    </div>
+                  </td>
+                  <td class="py-4 px-2 whitespace-nowrap">{{ $item['category_description'] ?? 'N/A' }}</td>
+                  <td class="py-4 px-2 whitespace-nowrap">{{ $item['facility_name'] ?? 'N/A' }}</td>
+                  <td class="py-4 px-2 whitespace-nowrap">{{ $item['serial_no'] ?? 'N/A' }}</td>
+                  <td class="py-4 px-2 whitespace-nowrap">{{ $item['property_no'] ?? 'N/A'}}</td>
+                  <td class="py-4 px-2">
+                    <button class="bg-orange-500 text-white border-2 border-orange-400 rounded-lg px-3 py-1 text-xs sm:text-sm hover:bg-red-500 hover:text-white hover:border-red-500">Remove</button>
+                  </td>
+                </tr>
+                @empty
+                <tr>
+                  <td colspan="6" class="text-center py-4 text-gray-500">No items in request list.</td>
+                </tr>
+                @endforelse
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <div class="md:w-1/4">

@@ -122,7 +122,7 @@ Route::get('/equipment/{equip}', EquipmentDetailPage::class);
 // Route::get('/request-fill', RequestFillPage::class);
 
 
-Route::get('/login-page', LoginPage::class);
+Route::get('/public-login', LoginPage::class);
 Route::get('/register-page', RegisterPage::class);
 Route::get('/forgot-password-page', ForgotPasswordPage::class);
 Route::get('/reset-password-page', ResetPasswordPage::class);
