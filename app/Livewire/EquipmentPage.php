@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Livewire;
+
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
@@ -13,11 +14,8 @@ use App\Helpers\RequestManagement;
 use App\Livewire\Partials\Navbar;
 
 
-
-
-
-#[Title('Home - CCIS ERMA')]
-class HomePage extends Component
+#[Title('Equipment - CCIS ERMA')]
+class EquipmentPage extends Component
 {
     use WithPagination;
 
@@ -109,7 +107,7 @@ class HomePage extends Component
         
         $noEquipmentFound = !$equipment->exists(); 
 
-        return view('livewire.home-page', [
+        return view('livewire.equipment-page', [
             'equipment' => $equipment->paginate(15),
             'categories' => Category::whereHas('equipment')->get(),
             'facilities' => Facility::whereHas('equipment')->get(),

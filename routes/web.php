@@ -11,6 +11,7 @@ use App\Models\Facility;
 
 use Livewire\Livewire;
 use App\Livewire\HomePage;
+use App\Livewire\EquipmentPage;
 use App\Livewire\FacilityMonitoringPage;
 use App\Livewire\EquipmentMonitoringPage;
 use App\Livewire\FacilitiesPage;
@@ -111,6 +112,7 @@ Route::get('/supplies-and-materials-monitoring/{supply}', SuppliesAndMaterialsMo
 
 // Route::get('/', [Home::class, 'render'])->name('home');
 Route::get('/', HomePage::class);
+Route::get('/equipment', EquipmentPage::class);
 // Route::get('/facilities', FacilitiesPage::class);
 Route::get('/supplies-and-materials', SuppliesAndMaterialsPage::class);
 Route::get('/request', RequestPage::class);
