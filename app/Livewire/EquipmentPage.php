@@ -37,7 +37,7 @@ class EquipmentPage extends Component
     public function addToRequestList($equipment_id){
         $total_count = RequestManagement::addEquipmentToRequestList($equipment_id);
 
-        $this->dispatch('update-request-list-count', total_count: $total_count)->to(Navbar::class);
+        $this->dispatch('update-requests-count', total_count: $total_count)->to(Navbar::class);
 
         // $this->alert('success', 'Equipment added to your request list', [
         //     'position' => 'top-right',

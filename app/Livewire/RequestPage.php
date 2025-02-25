@@ -18,6 +18,9 @@ class RequestPage extends Component
     public function mount(){
         $this->requestlist_equipment = RequestManagement::getRequestListEquipmentFromCookie();
         $this->total_request = RequestManagement::calculateTotalRequestedEquipment($this->requestlist_equipment);
+
+        $this->dispatch('update-requests-count', total_count: count($this->requestlist_equipment))->to(Navbar::class);
+
        
     }
 
@@ -25,7 +28,7 @@ class RequestPage extends Component
         $this->requestlist_equipment = RequestManagement::removeRequestListEquipment($equipment_id);
         $this->total_request = RequestManagement::calculateTotalRequestedEquipment($this->requestlist_equipment);
         
-        $this->dispatch('-count', total_count: count($this->requestlist_equipment))->to(Navbar::class);
+        $this->dispatch('update-requests-count', total_count: count($this->requestlist_equipment))->to(Navbar::class);
 
     }
 

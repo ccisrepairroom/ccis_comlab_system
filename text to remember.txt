@@ -654,9 +654,13 @@ public $total_count=0;
 //remove button, add this 
 wire:click='removeItem ({{ $item['product_id'] }})'
 //then make a function in controller
- public function removeItem($product_id){
-        $this->cart_items = CartManagement::removeCartItem($product_id);
-        $this->grand_total = CartManagement::calculateGrandTotal($this->cart_items);
-        $this->dispatch('-count', total_count: count($this->cart_items))->to(Navbar::class);
+public function mount(){
+        $this->requestlist_equipment = RequestManagement::getRequestListEquipmentFromCookie();
+        $this->total_request = RequestManagement::calculateTotalRequestedEquipment($this->requestlist_equipment);
 
+        $this->dispatch('update-requests-count', total_count: count($this->requestlist_equipment))->to(Navbar::class);
+
+       
     }
+
+//goto the navbar controller, and there must be update count function 
