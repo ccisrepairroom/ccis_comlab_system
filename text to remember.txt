@@ -646,3 +646,17 @@ public $total_count=0;
               <tr wire:key='{{ $item['equipment_id'] }}'>
 //in image, 
  src="{{ url('storage', $item['main_image']) }}"
+ //add this to button, to proceed only when items are available
+     @if ($requestlist_equipment)
+          <button class="bg-orange-500 text-white py-2 px-4 rounded-lg mt-4 w-full">Proceed</button>
+          @endif
+
+//remove button, add this 
+wire:click='removeItem ({{ $item['product_id'] }})'
+//then make a function in controller
+ public function removeItem($product_id){
+        $this->cart_items = CartManagement::removeCartItem($product_id);
+        $this->grand_total = CartManagement::calculateGrandTotal($this->cart_items);
+        $this->dispatch('-count', total_count: count($this->cart_items))->to(Navbar::class);
+
+    }

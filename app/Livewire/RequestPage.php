@@ -5,6 +5,8 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use App\Helpers\RequestManagement;
+use App\Livewire\Partials\Navbar;
+
 
 
 #[Title('Requests - CCIS ERMA')]
@@ -17,6 +19,14 @@ class RequestPage extends Component
         $this->requestlist_equipment = RequestManagement::getRequestListEquipmentFromCookie();
         $this->total_request = RequestManagement::calculateTotalRequestedEquipment($this->requestlist_equipment);
        
+    }
+
+    public function removeItem($equipment_id){
+        $this->requestlist_equipment = RequestManagement::removeRequestListEquipment($equipment_id);
+        $this->total_request = RequestManagement::calculateTotalRequestedEquipment($this->requestlist_equipment);
+        
+        $this->dispatch('-count', total_count: count($this->requestlist_equipment))->to(Navbar::class);
+
     }
 
 

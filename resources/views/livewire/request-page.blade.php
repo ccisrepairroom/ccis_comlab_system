@@ -33,7 +33,7 @@
                   <td class="py-4 px-2 whitespace-nowrap">{{ $item['serial_no'] ?? 'N/A' }}</td>
                   <td class="py-4 px-2 whitespace-nowrap">{{ $item['property_no'] ?? 'N/A'}}</td>
                   <td class="py-4 px-2">
-                    <button class="bg-orange-500 text-white border-2 border-orange-400 rounded-lg px-3 py-1 text-xs sm:text-sm hover:bg-red-500 hover:text-white hover:border-red-500">Remove</button>
+                    <button wire:click='removeItem ({{ $item['equipment_id'] }})' class="bg-orange-500 text-white border-2 border-orange-400 rounded-lg px-3 py-1 text-xs sm:text-sm hover:bg-red-500 hover:text-white hover:border-red-500">Remove</button>
                   </td>
                 </tr>
                 @empty
@@ -66,7 +66,9 @@
             <span class="font-semibold">Total</span>
             <span class="font-semibold">4</span>
           </div>
+          @if ($requestlist_equipment)
           <button class="bg-orange-500 text-white py-2 px-4 rounded-lg mt-4 w-full">Proceed</button>
+          @endif
         </div>
       </div>
     </div>

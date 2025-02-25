@@ -65,6 +65,7 @@ class RequestManagement {
         }
         self::addRequestListEquipmentToCookie($requestlist_equipment);
         return $requestlist_equipment;
+        
     }
 
     //add requestlist equipment to cookie
@@ -125,6 +126,23 @@ class RequestManagement {
     // Save updated request list to cookie
     self::addRequestListEquipmentToCookie($requestlist_equipment);
     return $requestlist_equipment;
+    }
+
+    // Group equipment by category and get totals
+    public static function calculateTotalByCategory()
+    {
+        $requestlist_equipment = self::getRequestListEquipmentFromCookie();
+        $category_totals = [];
+
+        foreach ($requestlist_equipment as $equipment) {
+            $category = $equipment['category_description'] ?? 'Uncategorized';
+            if (!isset($category_totals[$category])) {
+                $category_totals[$category] = 0;
+            }
+            $category_totals[$category] += $equipment['quantity'];
+        }
+
+        return $category_totals;
     }
 
     //calculate total equipment
