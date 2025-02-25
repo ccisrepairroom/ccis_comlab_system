@@ -4,7 +4,7 @@
     <div class="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
       <div>
         <h1 class="block text-3xl font-bold text-gray-800 sm:text-4xl lg:text-6xl lg:leading-tight dark:text-white">Request resources with <span class="text-orange-600">CCIS ERMA</span></h1>
-        <p class="mt-3 text-lg text-gray-800 dark:text-gray-400">Explore a wide varities of electronics products like Smartphones, Laptops, Smartwatches, Television and many more.</p>
+        <p class="mt-3 text-lg text-gray-800 dark:text-gray-400">Request facilities and borrow college equipment with ease. Track your requests and manage borrowed items hassle-free.</p>
 
         <!-- Buttons -->
         <div class="mt-7 grid gap-3 w-full sm:inline-flex">
@@ -51,9 +51,14 @@
           </svg>
         </div> -->
         <!-- End SVG-->
+
+        
       </div>
       <!-- End Col -->
     </div>
     <!-- End Grid -->
+
+    
   </div>
 </div>
+
