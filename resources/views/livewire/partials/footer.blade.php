@@ -1,3 +1,5 @@
+
+
 <footer class="bg-gray-900 w-full">
   <div class="w-full max-w-[85rem] py-6 px-4 sm:px-6 lg:px-8 mx-auto text-center">
     <div class="w-full flex flex-col items-center">
