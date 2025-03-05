@@ -1,6 +1,6 @@
 <div class="p-8 bg-white">
 <div class="text-center mb-4">
-        <img src="{{ asset('images/ccisheader.png') }}" alt="CCIS Header" class="mx-auto w-full max-w-6xl">
+        <!-- <img src="{{ asset('images/ccisheader.png') }}" alt="CCIS Header" class="mx-auto w-full max-w-6xl"> -->
     </div>
     <h3 class="text-lg font-semibold mb-4 text-center">Monitoring Records</h3>
     

@@ -606,14 +606,17 @@ class EquipmentResource extends Resource
                     ->stacked()
                     ->sortable(query: function ($query, $direction) {
                         $query->orderByRaw("ISNULL(main_image) $direction, main_image $direction");
-                    }),
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ImageColumn::make('alternate_images')
                     ->stacked()
                     ->sortable(query: function ($query, $direction) {
                         $query->orderByRaw("ISNULL(alternate_images) $direction, alternate_images $direction");
-                    }),
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ImageColumn::make('qr_code')
-                    ->stacked(),
+                    ->stacked()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('po_number')
                     ->label('PO Number')
                     ->searchable()
@@ -627,7 +630,7 @@ class EquipmentResource extends Resource
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('brand_name')
                     ->label('Brand Name')
                     ->searchable()
@@ -644,7 +647,7 @@ class EquipmentResource extends Resource
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false)
-                    ->limit(50)
+                    ->limit(9)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
                         return strlen($state) > $column->getCharacterLimit() ? $state : null;
@@ -710,7 +713,7 @@ class EquipmentResource extends Resource
                     ->label('Control Number')
                     ->sortable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('serial_no')
                     ->searchable()
                     ->label('Serial Number')
@@ -759,7 +762,7 @@ class EquipmentResource extends Resource
                         $state = $column->getState();
                         return strlen($state) > $column->getCharacterLimit() ? $state : null;
                     })
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->sortable()
@@ -880,40 +883,41 @@ class EquipmentResource extends Resource
                     // ->icon('heroicon-s-qr-code')
                     // ->url(fn (Equipment $record) => route('filament.resources.equipment-resource.pages.view-qr-code', $record)),
                     
-                    Tables\Actions\ViewAction::make('view')
-                    ->url(fn (Equipment $record) => route('equipment-monitoring-page', ['equipment' => $record->id]))
-                    ->openUrlInNewTab(),
+                    // Tables\Actions\ViewAction::make('view')
+                    // ->url(fn (Equipment $record) => route('equipment-monitoring-page', ['equipment' => $record->id]))
+                    // ->openUrlInNewTab(),
                
-                    Tables\Actions\Action::make('View QR Code')
-                    ->label('View QR Code')
-                    ->icon('heroicon-s-qr-code')
-                    ->modalHeading('QR Code')
-                    ->modalContent(function ($record) {
-                        // Here, $record will automatically be passed into the closure
-                        return view('filament.resources.equipment-resource.views.view-qr-code', [
-                            'equipment' => $record,
-                        ]);
-                    })
-                    ->action(function (Equipment $record) {
-                        // You can add additional logic here if needed
-                    }),
-
-                    // Tables\Actions\Action::make('view_monitoring')
-                    // ->label(' ')
-                    // ->icon('fas-eye')
-                    // ->color('info')
-                    // ->modalSubmitAction(false)
-                    // ->modalCancelAction(false)
-                    // ->modalHeading('')
+                    // Tables\Actions\Action::make('View QR Code')
+                    // ->label('View QR Code')
+                    // ->icon('heroicon-s-qr-code')
+                    // ->modalHeading('QR Code')
                     // ->modalContent(function ($record) {
-                    //     $equipmentId = $record->id;
-                    //     $monitorings = EquipmentMonitoring::with('equipment.facility', 'user')
-                    //         ->where('equipment_id', $equipmentId)
-                    //         ->get();
-                    //     return view('filament.resources.equipment-monitoring-modal', [
-                    //         'monitorings' => $monitorings,
+                    //     // Here, $record will automatically be passed into the closure
+                    //     return view('filament.resources.equipment-resource.views.view-qr-code', [
+                    //         'equipment' => $record,
                     //     ]);
+                    // })
+                    // ->action(function (Equipment $record) {
+                    //     // You can add additional logic here if needed
                     // }),
+
+                    Tables\Actions\Action::make('view_monitoring')
+                    ->label(' ')
+                    ->tooltip('View Equipment Details and Monitoring')
+                    ->icon('fas-eye')
+                    ->color('info')
+                    ->modalSubmitAction(false)
+                    ->modalCancelAction(false)
+                    ->modalHeading('')
+                    ->modalContent(function ($record) {
+                        $equipmentId = $record->id;
+                        $monitorings = EquipmentMonitoring::with('equipment.facility', 'user')
+                            ->where('equipment_id', $equipmentId)
+                            ->get();
+                        return view('filament.resources.equipment-monitoring-modal', [
+                            'monitorings' => $monitorings,
+                        ]);
+                    }),
 
                    
                    
@@ -1030,8 +1034,12 @@ class EquipmentResource extends Resource
                           
                        
                             // ->hidden(fn () => $isFaculty),
-                            Tables\Actions\EditAction::make(),
-                            Tables\Actions\DeleteAction::make(),
+                            Tables\Actions\EditAction::make()
+                                ->label('')
+                                ->tooltip('Edit Equipment'),
+                            Tables\Actions\DeleteAction::make()
+                                ->label('')
+                                ->tooltip('Delete Equipment'),
                             
 
                     ])
