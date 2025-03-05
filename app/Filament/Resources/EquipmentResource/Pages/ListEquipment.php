@@ -13,6 +13,8 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Components\Tab;
 use App\Models\Equipment;
 use App\Models\Borroweditems;
+use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
 
 
 class ListEquipment extends ListRecords
@@ -21,7 +23,10 @@ class ListEquipment extends ListRecords
     protected static ?string $pollingInterval = '1s';
     protected static bool $isLazy = false;
   
-
+    // protected function paginateTableQuery(Builder $query): Paginator
+    // {
+    //     return $query->simplePaginate(($this->getTableRecordsPerPage() === 'all') ? $query->count() : $this->getTableRecordsPerPage());
+    // }
     protected function getHeaderActions(): array
     {
         $user = auth()->user(); // Retrieve the currently authenticated user
