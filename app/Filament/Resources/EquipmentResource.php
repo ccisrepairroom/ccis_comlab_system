@@ -961,9 +961,9 @@ class EquipmentResource extends Resource
     {
         return [
             'index' => Pages\ListEquipment::route('/'),
-            'create' => Pages\CreateEquipment::route('/create'),
+            // 'create' => Pages\CreateEquipment::route('/create'),
             'view' => Pages\ViewEquipment::route('/{record}'),
-            'edit' => Pages\EditEquipment::route('/{record}/edit'),
+            // 'edit' => Pages\EditEquipment::route('/{record}/edit'),
             'qr-code' => Pages\ViewQrCode::route('/{record}/qr-code'),
         ];
     }
