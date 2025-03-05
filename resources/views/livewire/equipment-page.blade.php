@@ -77,39 +77,37 @@
             <p class="text-center text-gray-500 mb-4">No equipment found.</p>
         @endif
       <!-- Start Equipment Card Section -->
-<div x-data="{ open: false }" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 lg:gap-1">
-      @foreach($equipment as $equip)
-          <div class="p-4 sm:p-3 md:p-2 lg:p-2" wire:key="{{ $equip->id }}">
-              <a  href="#" @click.prevent="open = true" href="#" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
-                  <!-- Image Container -->
-                  <div class="h-48 sm:h-40 md:h-36 lg:h-36 mt-3 bg-white flex items-center justify-center">
-                      <img src="{{ url('storage', $equip->main_image) }}" alt="{{ $equip->name }}" 
-                          class="w-full h-full object-contain">
-                  </div>
-                  <div class="lg:p-2 sm:pl-3 md:pl-2 pl-5 my-3">
-                      <div class="flex flex-wrap gap-1 lg:gap-0.5 mb-2 ml-2">
-                          <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" title="{{ $equip->category->description }}">
-                              {{ Str::limit($equip->category->description, 13, '...') }}
-                          </span>
-                          <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" title="{{ $equip->facility->name }}">
-                              {{ Str::limit($equip->facility->name, 13, '...') }}
-                          </span>
-                      </div>
+      <div x-data="{ open: false }" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 lg:gap-1">
+    @foreach($equipment as $equip)
+        <div class="p-4 sm:p-3 md:p-2 lg:p-2" wire:key="{{ $equip->id }}">
+            <a href="#" @click.prevent="open = true" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
+                <div class="flex items-center gap-3 p-3">
+                    <!-- Image Container (1x1 ratio) -->
+                    <div class="w-24 h-24 flex-shrink-0 bg-white flex items-center justify-center">
+                        <img src="{{ url('storage', $equip->main_image) }}" alt="{{ $equip->name }}" class="w-full h-full object-contain">
+                    </div>
+                    
+                    <!-- Text Content -->
+                    <div class="flex-1">
+                        <div class="flex flex-wrap gap-1 mb-2">
+                            <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" title="{{ $equip->category->description }}">
+                                {{ Str::limit($equip->category->description, 13, '...') }}
+                            </span>
+                            <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" title="{{ $equip->facility->name }}">
+                                {{ Str::limit($equip->facility->name, 13, '...') }}
+                            </span>
+                        </div>
 
-                      <h2 class="font-bold text-lg sm:text-md md:text-sm lg:text-md mb-1 px-2">{{ Str::upper($equip->brand_name) }}</h2>
-                      <!-- Modal Triggered by See More -->
-                      <div x-data="{ open: false }">
-                      <p class="text-sm sm:text-xs md:text-xs text-gray-600 mb-2 px-2 text-justify">
-                          @if($equip->description)
-                              {{ Str::limit($equip->description, 27) }}
-                          @else
-                              Description is not available.
-                          @endif
-                          
-                          <span class="text-orange-500 underline cursor-pointer" @click="open = true">
-                              See more
-                          </span>
-                          </p>
+                        <h2 class="font-bold text-lg sm:text-md md:text-sm lg:text-md mb-1">{{ Str::upper($equip->brand_name) }}</h2>
+
+                        <p class="text-sm sm:text-xs md:text-xs text-gray-600 mb-2 text-justify">
+                            @if($equip->description)
+                                {{ Str::limit($equip->description, 27) }}
+                            @else
+                                Description is not available.
+                            @endif
+                            <span class="text-orange-500 underline cursor-pointer" @click="open = true">See more</span>
+                        </p>
                       <!-- modal -->
                       <div x-show="open" id="seemore-modal" name="seemore-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                           <div class="relative p-4 w-full max-w-2xl max-h-full mt-16">
