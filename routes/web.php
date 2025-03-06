@@ -140,6 +140,8 @@ Route::get('/cancel', CancelPage::class);
 
 
 
+
+
 // Route::get('/downloadpdf', [FacilityMonitoringPage::class, 'downloadpdf'])->name('downloadpdf');
 
 

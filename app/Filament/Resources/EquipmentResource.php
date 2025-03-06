@@ -776,10 +776,10 @@ class EquipmentResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),*/
                 
                 ])
-                // ->recordUrl(fn ($record) => route('equipment-monitoring-page', ['equipment' => $record->id]))
+                // ->recordUrl(fn ($record) => route('filament.resources.equipment-monitoring.modal', ['equipment' => $record->id]))
                 // ->openRecordUrlInNewTab()
                 ->defaultSort('created_at', 'desc')
-                ->deferLoading()
+                ->recordAction('view_monitoring') 
 
             
                 ->filters([
@@ -962,7 +962,7 @@ class EquipmentResource extends Resource
         return [
             'index' => Pages\ListEquipment::route('/'),
             // 'create' => Pages\CreateEquipment::route('/create'),
-            'view' => Pages\ViewEquipment::route('/{record}'),
+            // 'view' => Pages\ViewEquipment::route('/{record}'),
             // 'edit' => Pages\EditEquipment::route('/{record}/edit'),
             'qr-code' => Pages\ViewQrCode::route('/{record}/qr-code'),
         ];
