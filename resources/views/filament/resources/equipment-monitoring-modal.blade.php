@@ -1,6 +1,6 @@
 <div class="p-8 bg-white">
-<button class="absolute top-2 right-2 text-gray-600 hover:text-gray-900 bg-gray-300 mr-5 mt-5"  onclick="closeModal()">
-        ✖
+<button class="absolute top-2 right-2  text-white text-opacity-100 hover:text-gray-900 bg-gray-300 mr-5 mt-5"  onclick="closeModal()">
+    ✖ 
     </button>
 
 <!-- <div class="text-center mb-4">
