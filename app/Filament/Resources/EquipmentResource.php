@@ -232,29 +232,8 @@ class EquipmentResource extends Resource
                                     ->validationMessages([
                                         'unique' => 'This serial number already exists.',
                                     ]),
-                                   
-                                    
-                                /*Forms\Components\Select::make('no_of_stocks')
-                                    ->label('No. of Stocks')
-                                    ->options(array_combine(range(1, 1000), range(1, 1000))),
-                                Forms\Components\Select::make('stock_unit_id')
-                                    ->label('Stock Unit')
-                                    ->relationship('stockUnit', 'description')
-                                    ->createOptionForm([
-                                        Forms\Components\TextInput::make('description')
-                                        ->label('Create Stock Unit')
-                                        ->required()
-                                        ->maxLength(255),
-                                    ]),
-                                       
-                                Forms\Components\Select::make('restocking_point')
-                                    ->label('Restocking Point')
-                                    ->options(array_combine(range(1, 1000), range(1, 1000))),*/
-                                Forms\Components\TextInput::make('person_liable')
-                                    ->label('Person Liable')
-                                    ->placeholder('Refer to the Equipment sticker.')
-                                    ->maxLength(255),
-                                Forms\Components\Select::make('user_id')
+                               
+                                Forms\Components\Select::make('person_liable')
                                     ->relationship('user', 'name')
                                     ->createOptionForm([
                                         Forms\Components\TextInput::make('name')
@@ -480,11 +459,11 @@ class EquipmentResource extends Resource
                         ->visible(fn ($get) => in_array('serial_no', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('serial_no', $get('fields_to_update') ?? [])),
 
-                    Forms\Components\TextInput::make('person_liable')
-                        ->label('Person Liable')
+                    Forms\Components\Select::make('person_liable')
+                        ->relationship('user', 'name')
                         ->visible(fn ($get) => in_array('person_liable', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('person_liable', $get('fields_to_update') ?? [])),
-        
+                        
                     Forms\Components\Textarea::make('remarks')
                         ->label('Remarks')
                         ->rows(3)
@@ -812,7 +791,8 @@ class EquipmentResource extends Resource
                         return "{$record->restocking_point} {$stockUnitDescription}";
                     })                    
                     ->toggleable(isToggledHiddenByDefault: true),*/
-                Tables\Columns\TextColumn::make('person_liable')
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Person Liable')
                     ->searchable()
                     ->sortable()
                     ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
