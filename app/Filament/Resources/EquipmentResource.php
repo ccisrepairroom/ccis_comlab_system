@@ -779,7 +779,7 @@ class EquipmentResource extends Resource
                 // ->recordUrl(fn ($record) => route('filament.resources.equipment-monitoring.modal', ['equipment' => $record->id]))
                 // ->openRecordUrlInNewTab()
                 ->defaultSort('created_at', 'desc')
-                ->recordAction('view_monitoring') 
+                ->recordAction('view_equipment') 
 
             
                 ->filters([
@@ -904,7 +904,7 @@ class EquipmentResource extends Resource
                     //     // You can add additional logic here if needed
                     // }),
 
-                    Tables\Actions\Action::make('view_monitoring')
+                    Tables\Actions\Action::make('view_equipment')
                     ->label(' ')
                     ->tooltip('View Equipment Details and Monitoring')
                     ->icon('fas-eye')
@@ -913,19 +913,22 @@ class EquipmentResource extends Resource
                     ->modalCancelAction(false)
                     ->modalHeading('')
                     ->modalContent(function ($record) {
-                        $equipmentId = $record->id;
-                        $monitorings = EquipmentMonitoring::with('equipment.facility', 'user')
-                            ->where('equipment_id', $equipmentId)
+                        $equipment = $record->load(['facility', 'category']); // Ensure related data is loaded
+                        $monitorings = EquipmentMonitoring::with('facility', 'user')
+                            ->where('equipment_id', $record->id)
                             ->get();
+                
                         return view('filament.resources.equipment-monitoring-modal', [
+                            'equipment' => $equipment,
                             'monitorings' => $monitorings,
                         ]);
                     }),
 
-                    Tables\Actions\EditAction::make()
+                    Tables\Actions\EditAction::make('edit_equipment')
                         ->label('')
-                        ->tooltip('Edit Equipment'),
-                    Tables\Actions\DeleteAction::make()
+                        ->tooltip('Edit Equipment')
+                        ->slideOver(),
+                    Tables\Actions\DeleteAction::make('delete_equipment')
                         ->label('')
                         ->tooltip('Delete Equipment'),
                      
