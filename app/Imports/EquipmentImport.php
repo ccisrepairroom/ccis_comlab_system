@@ -27,6 +27,7 @@ class EquipmentImport implements ToModel, WithHeadingRow
                 ->title('Duplicate Serial Number')
                 ->body("Equipment with Serial Number: {$serialNumber} already exists.")
                 ->danger()
+                ->duration(5000)
                 ->send();
 
             return null; // Skip inserting this duplicate record
@@ -111,28 +112,6 @@ class EquipmentImport implements ToModel, WithHeadingRow
         return $category->id;
     }
 
-    public function getUserId($user)
-    {
-        if (!$user) {
-            return null;
-        }
-
-        // Check if the user exists
-        $existingUser = User::where('name', $user)->first();
-
-        if (!$existingUser) {
-            // Send notification immediately if user does not exist
-            Notification::make()
-                ->title('Person Liable Not Found')
-                ->body("Person Liable '{$user}' does not have an account.")
-                ->danger() // Makes it an error-like notification
-                ->send();
-
-            return null; // Prevents Laravel from throwing an exception
-        }
-
-        return $existingUser->id;
-    }
-
+    
 
     }

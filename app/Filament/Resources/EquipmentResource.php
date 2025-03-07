@@ -147,6 +147,8 @@ class EquipmentResource extends Resource
                                     
                                 Forms\Components\Select::make('facility_id')
                                     ->relationship('facility', 'name')
+                                    ->searchable()
+                                    ->preload()
                                     ->createOptionForm([
                                         Forms\Components\TextInput::make('name')
                                         ->label('Create Facility')
@@ -158,6 +160,8 @@ class EquipmentResource extends Resource
                                    
                                 Forms\Components\Select::make('category_id')
                                     ->relationship('category', 'description')
+                                    ->searchable()
+                                    ->preload()
                                     ->createOptionForm([
                                         Forms\Components\TextInput::make('description')
                                         ->label('Create Category')
@@ -234,6 +238,9 @@ class EquipmentResource extends Resource
                                     ]),
                                
                                 Forms\Components\Select::make('user_id')
+                                    ->label('Person Liable')
+                                    ->searchable()
+                                    ->preload()
                                     ->relationship('user', 'name')
                                     ->createOptionForm([
                                         Forms\Components\TextInput::make('name')
