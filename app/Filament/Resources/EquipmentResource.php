@@ -254,6 +254,68 @@ class EquipmentResource extends Resource
                                     ->label('Person Liable')
                                     ->placeholder('Refer to the Equipment sticker.')
                                     ->maxLength(255),
+                                Forms\Components\Select::make('user_id')
+                                    ->relationship('user', 'name')
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('name')
+                                        ->required()
+                                        ->default(null)
+                                        //->unique('users', 'name')
+                                        //->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
+            
+                                        ->maxLength(255),
+                                    Forms\Components\TextInput::make('email')
+                                        ->email()
+                                        ->rules([
+                                            'regex:/^[\w\.-]+@carsu\.edu\.ph$/', // Custom regex for domain check
+                                        ])
+                                        ->default(''),
+                                    Forms\Components\Select::make('roles')
+                                        ->label('Role')
+                                        ->relationship('roles', 'name')
+                                        ->preload()
+                                        ->default([])
+                                        ->searchable(),
+                                    Forms\Components\Select::make('department')
+                                        ->options([
+                                            'Not Applicable'=> 'Not Applicable',
+                                            'Information System' => 'Information System',
+                                            'Information Technology' => 'Information Technology',
+                                            'Computer Science' => 'Computer Science',
+                                        ]),
+                                    Forms\Components\Select::make('designation')
+                                        //->required()
+                                        ->options([
+                                            'CCIS Dean'=>    'CCIS Dean',
+                                            'Lab Technician' =>  'Lab Technician',
+                                            'Comlab Adviser' =>'Comlab Adviser' ,
+                                            'Department Chairperson' =>  'Department Chairperson',
+                                            'Associate Dean' =>    'Associate Dean',
+                                            'College Clerk' => 'College Clerk',
+                                            'Student Assistant' => 'Student Assistant',
+                                            'Instructor' => 'Instructor',
+                                            'Lecturer' => 'Lecturer' ,
+                                            'Other' => 'Other',
+                
+                                            
+                                        ]),
+                                        Forms\Components\TextInput::make('password')->confirmed()
+                                        ->password()
+                                        ->required()
+                                        ->revealable()
+                                        //->default(fn($record) => $record->password)  
+                                        ->dehydrateStateUsing(fn($state) => Hash::make($state)),
+                                        // ->visible(fn ($livewire) =>$livewire instanceof Pages\CreateUser),
+                                        Forms\Components\TextInput::make('password_confirmation')
+                                        ->password()
+                                        //->same('password')                          
+                                        ->requiredWith('password')
+                                        ->revealable()
+                                        ->visible(fn ($livewire) =>$livewire instanceof Pages\CreateUser),
+                                
+                                    ]),
+                                 
+                                   
                                 Forms\Components\Textarea::make('remarks')
                                     ->placeholder('Anything that describes the Equipment.')
                                     ->columnSpanFull(),
