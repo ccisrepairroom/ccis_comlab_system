@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('property_no')->nullable()->index('equip_property_no');
             $table->string('control_no')->nullable()->index('equip_control_no');
             $table->string('serial_no')->nullable()->index('equip_serial_no');
-            $table->string('person_liable')->nullable()->index('equip_person_liable');
+            // $table->string('person_liable')->nullable()->index('equip_person_liable');
             $table->text('remarks')->nullable()->index('equip_remarks');
             $table->timestamps();
         });

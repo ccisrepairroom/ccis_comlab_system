@@ -233,7 +233,7 @@ class EquipmentResource extends Resource
                                         'unique' => 'This serial number already exists.',
                                     ]),
                                
-                                Forms\Components\Select::make('person_liable')
+                                Forms\Components\Select::make('user_id')
                                     ->relationship('user', 'name')
                                     ->createOptionForm([
                                         Forms\Components\TextInput::make('name')
@@ -350,7 +350,7 @@ class EquipmentResource extends Resource
                             'control_no' => 'Control No.',
                             'property_no' => 'Property No.',
                             'serial_no' => 'Serial No.',
-                            'person_liable' => 'Person Liable',
+                            'user_id' => 'Person Liable',
                             'remarks' => 'Remarks',
                         ])
                         ->columns(2)
@@ -459,10 +459,12 @@ class EquipmentResource extends Resource
                         ->visible(fn ($get) => in_array('serial_no', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('serial_no', $get('fields_to_update') ?? [])),
 
-                    Forms\Components\Select::make('person_liable')
-                        ->relationship('user', 'name')
-                        ->visible(fn ($get) => in_array('person_liable', $get('fields_to_update') ?? []))
-                        ->required(fn ($get) => in_array('person_liable', $get('fields_to_update') ?? [])),
+                    
+                    Forms\Components\Select::make('user_id')
+                        ->label('Person Liable')
+                        ->options(\App\Models\User::all()->pluck('name', 'id'))
+                        ->visible(fn ($get) => in_array('user_id', $get('fields_to_update') ?? []))
+                        ->required(fn ($get) => in_array('user_id', $get('fields_to_update') ?? [])),
                         
                     Forms\Components\Textarea::make('remarks')
                         ->label('Remarks')
@@ -526,8 +528,8 @@ class EquipmentResource extends Resource
                     if (in_array('serial_no', $data['fields_to_update'])) {
                         $updateData['serial_no'] = $data['serial_no'];
                     }
-                    if (in_array('person_liable', $data['fields_to_update'])) {
-                        $updateData['person_liable'] = $data['person_liable'];
+                    if (in_array('user_id', $data['fields_to_update'])) {
+                        $updateData['user_id'] = $data['user_id'];
                     }
                     if (in_array('remarks', $data['fields_to_update'])) {
                         $updateData['remarks'] = $data['remarks'];
@@ -856,14 +858,13 @@ class EquipmentResource extends Resource
                     //->searchable ()
                     SelectFilter::make('Facility')
                     ->relationship('facility','name'),
-                    SelectFilter::make('person_liable')
-                    ->label('Person Liable')
-                    ->options(
-                        Equipment::query()
-                            ->whereNotNull('person_liable') // Filter out null values
-                            ->pluck('person_liable', 'person_liable')
-                            ->toArray()
-                    ),
+
+                    // SelectFilter::make('Person Liable')
+                    // ->relationship('user','name'),
+                   
+                
+
+                
                     SelectFilter::make('unit_no')
                     ->label('Unit No.')
                     ->options(
@@ -904,24 +905,9 @@ class EquipmentResource extends Resource
                             ->pluck('description', 'description')
                             ->toArray()
                     ), 
-                        /*SelectFilter::make('created_at')
-                    ->label('Created At')
-                    ->options(
-                        Category::query()
-                            ->whereNotNull('created_at') // Filter out null values
-                            ->get(['created_at']) // Fetch the 'created_at' values
-                            ->mapWithKeys(function ($user) {
-                                $date = $user->created_at; // Access the created_at field
-                                $formattedDate = \Carbon\Carbon::parse($date)->format('F j, Y');
-                                return [$date->toDateString() => $formattedDate]; // Use string representation as key
-                            })
-                            ->toArray()
-                    ),*/
-                    
+                       
                 ])
-                /*->recordUrl(function ($record) {
-                    return Pages\ViewEquipment::getUrl([$record->id]);
-                })*/
+               
                 ->actions([
                     // Tables\Actions\Action::make('View QR Code')
                     // ->label('View QR Code')
@@ -990,7 +976,10 @@ class EquipmentResource extends Resource
 
 
 
-
+    public function getPersonLiableAttribute()
+    {
+        return $this->user ? $this->user->name : 'Unknown';
+    }
 
 
     public static function getRelations(): array
