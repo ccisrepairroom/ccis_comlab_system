@@ -14,10 +14,14 @@ class RequestPage extends Component
 {
     public $requestlist_equipment =[];
     public $total_request;
+    public $category_totals = [];
+
 
     public function mount(){
         $this->requestlist_equipment = RequestManagement::getRequestListEquipmentFromCookie();
         $this->total_request = RequestManagement::calculateTotalRequestedEquipment($this->requestlist_equipment);
+        $this->category_totals = RequestManagement::calculateTotalByCategory();
+
 
         $this->dispatch('update-requests-count', total_count: count($this->requestlist_equipment))->to(Navbar::class);
 
@@ -27,6 +31,8 @@ class RequestPage extends Component
     public function removeItem($equipment_id){
         $this->requestlist_equipment = RequestManagement::removeRequestListEquipment($equipment_id);
         $this->total_request = RequestManagement::calculateTotalRequestedEquipment($this->requestlist_equipment);
+        $this->category_totals = RequestManagement::calculateTotalByCategory();
+
         
         $this->dispatch('update-requests-count', total_count: count($this->requestlist_equipment))->to(Navbar::class);
 
@@ -35,7 +41,10 @@ class RequestPage extends Component
 
     public function render()
     {
-        return view('livewire.request-page');
+        return view('livewire.request-page',[
+            // 'category_totals' => $this->category_totals
+
+        ]);
     }
 }
 

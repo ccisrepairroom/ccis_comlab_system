@@ -49,22 +49,17 @@
       <div class="md:w-1/4">
         <div class="bg-white rounded-lg shadow-md p-6">
           <h2 class="text-lg font-semibold mb-4">Summary</h2>
+          @foreach ($category_totals as $category => $quantity)
           <div class="flex justify-between mb-2">
-            <span>Keyboard</span>
-            <span>2</span>
+            <span>{{ $category }}</span>
+            <span>{{ $quantity }}</span>
           </div>
-          <div class="flex justify-between mb-2">
-            <span>Projector</span>
-            <span>1</span>
-          </div>
-          <div class="flex justify-between mb-2">
-            <span>Mouse</span>
-            <span>1</span>
-          </div>
+          @endforeach
+
           <hr class="my-2">
           <div class="flex justify-between mb-2">
-            <span class="font-semibold">Total</span>
-            <span class="font-semibold">4</span>
+            <span class="font-semibold">Total Equipment</span>
+            <span class="font-semibold">{{ $total_request }}</span>
           </div>
           @if ($requestlist_equipment)
           <button class="bg-orange-500 text-white py-2 px-4 rounded-lg mt-4 w-full">Proceed</button>

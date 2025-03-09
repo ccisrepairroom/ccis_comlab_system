@@ -33,6 +33,9 @@ class EquipmentPage extends Component
 
     public $alternateImages = [];
 
+    public $requestedEquipmentIds = [];
+
+
     //add to request list method
     public function addToRequestList($equipment_id){
         $total_count = RequestManagement::addEquipmentToRequestList($equipment_id);
@@ -45,6 +48,11 @@ class EquipmentPage extends Component
         //     'toast' => true
         // ]);
     }
+
+    // public function mount()
+    // {
+    //     $this->requestedEquipmentIds = RequestManagement::getRequestedEquipmentIds();
+    // }
 
     public function render()
     {
@@ -113,6 +121,9 @@ class EquipmentPage extends Component
             'facilities' => Facility::whereHas('equipment')->get(),
             'noEquipmentFound' => $noEquipmentFound,
             // 'equipment' => $equipment->orderBy('id')->cursorPaginate(15, ['*'], 'cursor', 'id'),
+            // $requestedEquipmentIds = RequestManagement::getRequestedEquipmentIds(),
+
+
 
 
 

@@ -175,6 +175,10 @@
 
                 <!-- Request button -->
                 <div class="flex justify-end mt-1 mb-5 mr-5">
+                  
+                        <!-- <button class="bg-gray-400 text-white font-bold py-2 px-4 rounded" disabled>
+                            Requested
+                        </button> -->
                           <button wire:click.prevent='addToRequestList({{$equip->id}})' class="flex items-center gap-1  px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold hover:bg-orange-600 transition-colors">
                               Request 
                               <x-heroicon-o-plus class="w-4 h-4" />

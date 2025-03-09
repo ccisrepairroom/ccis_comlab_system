@@ -15,22 +15,24 @@ class RequestManagement {
     public static function addEquipmentToRequestList($equipment_id)
     {
         $requestlist_equipment = self::getRequestListEquipmentFromCookie();
-
+    
         $existing_requestlist_equipment = null;
-
+    
         foreach ($requestlist_equipment as $key => $equipment) {
             if ($equipment['equipment_id'] == $equipment_id) {
                 $existing_requestlist_equipment = $key;
                 break;
             }
         }
-
+    
         if ($existing_requestlist_equipment !== null) {
-            // Increase quantity if item already exists
-            $requestlist_equipment[$existing_requestlist_equipment]['quantity']++;
+            // Do nothing if the equipment is already in the request list
         } else {
             // Fetch equipment details from the database
-            $equip = Equipment::with(['category', 'facility'])->where('id', $equipment_id)->first(['id', 'brand_name', 'serial_no', 'property_no', 'main_image', 'category_id', 'facility_id']);
+            $equip = Equipment::with(['category', 'facility'])
+                ->where('id', $equipment_id)
+                ->first(['id', 'brand_name', 'serial_no', 'property_no', 'main_image', 'category_id', 'facility_id']);
+            
             if ($equip) {
                 $requestlist_equipment[] = [
                     'equipment_id' => $equipment_id,
@@ -38,15 +40,14 @@ class RequestManagement {
                     'serial_no' => $equip->serial_no,
                     'property_no' => $equip->property_no,
                     'main_image' => $equip->main_image ?? null,
-                    'quantity' => 1,
+                    'quantity' => 1, // Stays as 1, does not increase
                     'category_description' => $equip->category->description ?? 'N/A', 
                     'facility_name' => $equip->facility->name ?? 'N/A', 
-
-
                 ];
             }
         }
-
+    
+    
         // Update the cookie with the modified request list
         self::addRequestListEquipmentToCookie($requestlist_equipment);
 
@@ -152,6 +153,13 @@ class RequestManagement {
 
     // Sum all quantities in the request list
     return array_sum(array_column($requestlist_equipment, 'quantity'));
+    }
+    
+    public static function getRequestedEquipmentIds()
+    {
+        $requestlist_equipment = self::getRequestListEquipmentFromCookie();
+
+        return array_column($requestlist_equipment, 'equipment_id');
     }
 
 }
