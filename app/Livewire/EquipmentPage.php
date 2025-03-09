@@ -33,14 +33,23 @@ class EquipmentPage extends Component
 
     public $alternateImages = [];
 
-    public $requestedEquipmentIds = [];
+    public $requestedEquipments = [];
 
+    public function mount()
+    {
+        // Load requested equipment IDs from the cookie
+        $this->requestedEquipments = RequestManagement::getRequestedEquipmentIds();
+    }
 
     //add to request list method
     public function addToRequestList($equipment_id){
         $total_count = RequestManagement::addEquipmentToRequestList($equipment_id);
 
+ // Update Livewire state to reflect the change
+        $this->requestedEquipments = RequestManagement::getRequestedEquipmentIds();
+
         $this->dispatch('update-requests-count', total_count: $total_count)->to(Navbar::class);
+        $this->dispatch('equipment-requested', equipmentId: $equipment_id);
 
         // $this->alert('success', 'Equipment added to your request list', [
         //     'position' => 'top-right',
@@ -49,10 +58,6 @@ class EquipmentPage extends Component
         // ]);
     }
 
-    // public function mount()
-    // {
-    //     $this->requestedEquipmentIds = RequestManagement::getRequestedEquipmentIds();
-    // }
 
     public function render()
     {

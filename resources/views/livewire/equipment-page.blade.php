@@ -79,6 +79,9 @@
       <!-- Start Equipment Card Section -->
       <div x-data="{ open: false }" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 lg:gap-1">
       @foreach($equipment as $equip)
+        @php
+          $isRequested = in_array($equip->id, $requestedEquipments);
+        @endphp
           <div class="p-4 sm:p-3 md:p-2 lg:p-2" wire:key="{{ $equip->id }}">
               <a  href="#" @click.prevent="open = true" href="#" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
                   <!-- Image Container -->
@@ -176,13 +179,35 @@
                 <!-- Request button -->
                 <div class="flex justify-end mt-1 mb-5 mr-5">
                   
-                        <!-- <button class="bg-gray-400 text-white font-bold py-2 px-4 rounded" disabled>
-                            Requested
-                        </button> -->
-                          <button wire:click.prevent='addToRequestList({{$equip->id}})' class="flex items-center gap-1  px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold hover:bg-orange-600 transition-colors">
-                              Request 
-                              <x-heroicon-o-plus class="w-4 h-4" />
-                          </button>
+             
+                <button 
+    wire:click="addToRequestList({{ $equip->id }})" 
+    wire:key="request-button-{{ $equip->id }}"
+    class="flex items-center gap-1 px-3 py-1.5 text-white text-xs font-semibold transition-colors"
+    x-data="{ requested: @entangle('requestedEquipments') }"
+    :class="requested.includes({{ $equip->id }}) ? 'bg-gray-400 cursor-not-allowed' : 'bg-orange-500 hover:bg-orange-600'"
+    :disabled="requested.includes({{ $equip->id }})"
+>
+
+    <span wire:loading wire:target="addToRequestList({{ $equip->id }})">Requesting...</span>
+
+    <span wire:loading.remove wire:target="addToRequestList({{ $equip->id }})" 
+          x-text="requested.includes({{ $equip->id }}) ? 'Requested' : 'Request'">
+    </span>
+
+    <x-heroicon-o-plus class="w-4 h-4" />
+</button>
+
+
+
+
+
+
+
+                          <!-- <button  class="flex items-center gap-1  px-3 py-1.5 bg-gray-500 text-white text-xs font-semibold disabled">
+                              Requested
+                              <x-heroicon-s-arrow-uturn-right  class="w-4 h-4"/>
+                          </button> -->
                       </div>
               </a>
           </div>

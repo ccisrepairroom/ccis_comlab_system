@@ -52,10 +52,10 @@
             </a>
 
 
-            <a  wire:navigate class="font-medium flex items-center text-gray-500 hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/request">
+            <a  class="font-medium flex items-center text-gray-500 hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/request">
               <x-heroicon-o-plus class="flex-shrink-0 w-5 h-5 mr-0" />
               <span class="mr-1">Requests</span>
-              <span class="py-0.5 px-1.5 rounded-full text-xs font-medium bg-orange-50 border border-orange-200 text-orange-600">{{$total_count}}</span>
+              <span wire:poll.keep-alive.1500ms class="py-0.5 px-1.5 rounded-full text-xs font-medium bg-orange-50 border border-orange-200 text-orange-600">{{$total_count}}</span>
             </a>
 
             <div class="pt-3 md:pt-0">
