@@ -180,22 +180,19 @@
                 <div class="flex justify-end mt-1 mb-5 mr-5">
                   
              
+          
+
+
+
                 <button 
     wire:click="addToRequestList({{ $equip->id }})" 
-    wire:key="request-button-{{ $equip->id }}"
-    class="flex items-center gap-1 px-3 py-1.5 text-white text-xs font-semibold transition-colors"
-    x-data="{ requested: @entangle('requestedEquipments') }"
-    :class="requested.includes({{ $equip->id }}) ? 'bg-gray-400 cursor-not-allowed' : 'bg-orange-500 hover:bg-orange-600'"
-    :disabled="requested.includes({{ $equip->id }})"
+    x-data="{ requested: {{ in_array($equip->id, $requestedEquipments) ? 'true' : 'false' }} }"
+    x-text="requested ? 'Requested' : 'Request'"
+    :disabled="requested"
+    x-on:click="requested = true"
+    class="flex items-center gap-1 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
 >
-
-    <span wire:loading wire:target="addToRequestList({{ $equip->id }})">Requesting...</span>
-
-    <span wire:loading.remove wire:target="addToRequestList({{ $equip->id }})" 
-          x-text="requested.includes({{ $equip->id }}) ? 'Requested' : 'Request'">
-    </span>
-
-    <x-heroicon-o-plus class="w-4 h-4" />
+    <x-heroicon-o-plus class="w-4 h-4" x-show="!requested" />
 </button>
 
 
@@ -203,11 +200,10 @@
 
 
 
-
                           <!-- <button  class="flex items-center gap-1  px-3 py-1.5 bg-gray-500 text-white text-xs font-semibold disabled">
-                              Requested
-                              <x-heroicon-s-arrow-uturn-right  class="w-4 h-4"/>
-                          </button> -->
+                              Request
+                              <x-heroicon-o-plus class="w-4 h-4" />
+                              </button> -->
                       </div>
               </a>
           </div>

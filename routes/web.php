@@ -115,7 +115,7 @@ Route::get('/', HomePage::class);
 Route::get('/equipment', EquipmentPage::class);
 // Route::get('/facilities', FacilitiesPage::class);
 Route::get('/supplies-and-materials', SuppliesAndMaterialsPage::class);
-Route::get('/request', RequestPage::class);
+Route::get('/requests', RequestPage::class);
 Route::get('/request-form', RequestFillPage::class);
 Route::get('/success', SuccessPage::class);
 

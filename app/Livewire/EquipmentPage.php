@@ -37,9 +37,15 @@ class EquipmentPage extends Component
 
     public function mount()
     {
-        // Load requested equipment IDs from the cookie
         $this->requestedEquipments = RequestManagement::getRequestedEquipmentIds();
     }
+    
+
+    public function isRequested($equipmentId)
+{
+    return in_array($equipmentId, $this->requestedEquipments);
+}
+
 
     //add to request list method
     public function addToRequestList($equipment_id){

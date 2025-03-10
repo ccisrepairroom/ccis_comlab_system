@@ -3,23 +3,14 @@ import 'preline';
 import 'flowbite';
 import "@hotwired/turbo";
 
-
-// Reinitialize scripts on Turbo navigation
+// Optimize Turbo navigation performance
 document.addEventListener("turbo:load", () => {
-    if (typeof window.livewire !== "undefined") {
-        window.livewire.rescan();
-    }
-    if (typeof window.HSStaticMethods !== "undefined") {
-        window.HSStaticMethods.autoInit();
-    }
-    if (typeof window.initFlowbite === "function") {
-        window.initFlowbite();
-    }
+    window.livewire?.rescan();
+    window.HSStaticMethods?.autoInit();
+    window.initFlowbite?.();
 });
 
 // Prevent Turbo from interfering with Livewire
 document.addEventListener("turbo:before-render", () => {
-    if (typeof window.livewire !== "undefined") {
-        window.livewire.stop();
-    }
+    window.livewire?.stop();
 });
