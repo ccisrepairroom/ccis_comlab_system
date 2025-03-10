@@ -58,6 +58,18 @@ class EquipmentPage extends Component
         // ]);
     }
 
+    public function removeFromRequestList($equipment_id)
+{
+    RequestManagement::removeRequestListEquipment($equipment_id);
+
+    // Update Livewire state
+    $this->requestedEquipments = RequestManagement::getRequestedEquipmentIds();
+
+    // Dispatch event to update the frontend
+    $this->dispatch('equipment-removed', equipmentId: $equipment_id);
+}
+
+
 
     public function render()
     {

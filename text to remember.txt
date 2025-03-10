@@ -861,3 +861,8 @@ public function mount(){
         }
 --yt to watch ..https://www.youtube.com/watch?v=OxB0-DbNbcg
 --turbo link for SPA...https://github.com/turbolinks/turbolinks
+--turbo: 
+npm install @hotwired/turbo
+//in app.js
+import "@hotwired/turbo";
+

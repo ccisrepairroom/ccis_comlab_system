@@ -3,7 +3,6 @@ import 'preline';
 import 'flowbite';
 import "@hotwired/turbo";
 
-Turbo.start();
 
 // Reinitialize scripts on Turbo navigation
 document.addEventListener("turbo:load", () => {
