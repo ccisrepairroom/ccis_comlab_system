@@ -12,6 +12,7 @@
                 Claire P. Nakila</p>
               <p class="text-sm leading-4 text-gray-600 dark:text-gray-400">Phone: 09918895966</p>
               <p class="text-sm leading-4 text-gray-600 dark:text-gray-400">CCIS-Information System</p>
+              <!-- <p class="text-sm leading-4 cursor-pointer dark:text-gray-400">Start date and Time of Use</p> -->
             </div>
           </div>
         </div>
@@ -42,47 +43,15 @@
             Lecture Discussion </p>
         </div>
       </div>
-      <div class="px-4 mb-10 flex">
-        <div class="flex-1">
-          <h2 class="mb-2 text-xl font-semibold text-gray-700 dark:text-gray-400">Requested Items</h2>
-          <div class="flex flex-col items-center justify-center w-full pb-4 space-y-4 border-b border-gray-200 dark:border-gray-700">
-            <table class="w-full min-w-[600px] sm:min-w-full">
-              <thead class="bg-gray-100">
-                <tr>
-                  <th class="text-left font-semibold p-2 whitespace-nowrap">Items</th>
-                  <th class="text-left font-semibold p-2 whitespace-nowrap">Category</th>
-                  <th class="text-left font-semibold p-2 whitespace-nowrap">Facility</th>
-                  <th class="text-left font-semibold p-2 whitespace-nowrap">Serial No.</th>
-                  <th class="text-left font-semibold p-2 whitespace-nowrap">Property No.</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-b text-sm sm:text-base">
-                  <td class="py-4 px-2">
-                    <div class="flex flex-col items-center text-center">
-                      <img class="h-12 w-12 sm:h-16 sm:w-16 rounded-lg mb-2" 
-                          src="" 
-                          alt="">
-                      <span class="font-semibold"></span>
-                    </div>
-                  </td>
-                  <td class="py-4 px-2 whitespace-nowrap"></td>
-                  <td class="py-4 px-2 whitespace-nowrap"></td>
-                  <td class="py-4 px-2 whitespace-nowrap"></td>
-                  <td class="py-4 px-2 whitespace-nowrap"></td>
-                  <td class="py-4 px-2"></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="w-1/4 border border-black p-4 ml-4">
-          <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-400">Rules and Regulations</h2>
-          <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">1. Equipment must be returned on time.</p>
-          <p class="text-sm text-gray-600 dark:text-gray-400">2. Any damage must be reported immediately.</p>
-          <p class="text-sm text-gray-600 dark:text-gray-400">3. Only authorized personnel may use the equipment.</p>
-        </div>
-      </div>
+      <div class="px-4 mb-10">
+        <div class="flex flex-col items-stretch justify-center w-full space-y-4 md:flex-row md:space-y-0 md:space-x-8">
+          <div class="flex flex-col w-full space-y-6 ">
+            <h2 class="mb-2 text-xl font-semibold text-gray-700 dark:text-gray-400">Requested  Items</h2>
+            <div class="flex flex-col items-center justify-center w-full pb-4 space-y-4 border-b border-gray-200 dark:border-gray-700">
+          
+
+
+
       <div class="flex items-center justify-start gap-4 px-4 mt-6 ">
         <a href="/products" class="w-full text-center px-4 py-2 text-orange-500 border border-orange-500 rounded-md md:w-auto hover:text-white hover:bg-orange-600 dark:border-gray-700 dark:hover:bg-gray-700 dark:text-gray-300">
           Go to home
