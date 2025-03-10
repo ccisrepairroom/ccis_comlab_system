@@ -1,13 +1,13 @@
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto min-h-screen flex flex-col ">
   <div class="container mx-auto px-4">
-    <h1 class="text-2xl font-semibold text-orange-500 mb-4">Requests List</h1>
-    <div class="flex flex-col md:flex-row gap-4">
+  <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Request List</h1>    
+  <div class="flex flex-col md:flex-row gap-4">
       <div class="md:w-3/4">
         <div class="bg-white overflow-x-auto rounded-lg shadow-md p-6 mb-4">
           <!-- Added min-w-full and block table wrapper -->
           <div class="overflow-x-auto">
             <table class="w-full min-w-[600px] sm:min-w-full">
-              <thead>
+              <thead class="bg-gray-100">
                 <tr>
                   <th class="text-left font-semibold p-2 whitespace-nowrap">Items</th>
                   <th class="text-left font-semibold p-2 whitespace-nowrap">Category</th>
@@ -62,7 +62,7 @@
             <span class="font-semibold">{{ $total_request }}</span>
           </div>
           @if ($requestlist_equipment)
-          <button class="bg-orange-500 text-white py-2 px-4 rounded-lg mt-4 w-full">Proceed</button>
+          <button onclick="window.location.href='/request-form'"  class="bg-orange-500 text-white py-2 px-4 rounded-lg mt-4 w-full hover:bg-orange-600">Proceed</button>
           @endif
         </div>
       </div>

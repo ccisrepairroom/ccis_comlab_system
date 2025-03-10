@@ -55,11 +55,11 @@
             <a  class="font-medium flex items-center text-gray-500 hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/request">
               <x-heroicon-o-plus class="flex-shrink-0 w-5 h-5 mr-0" />
               <span class="mr-1">Requests</span>
-              <span wire:poll.keep-alive.1500ms class="py-0.5 px-1.5 rounded-full text-xs font-medium bg-orange-50 border border-orange-200 text-orange-600">{{$total_count}}</span>
+              <span class="py-0.5 px-1.5 rounded-full text-xs font-medium bg-orange-50 border border-orange-200 text-orange-600">{{$total_count}}</span>
             </a>
 
             <div class="pt-3 md:pt-0">
-              <a class="py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/login">
+              <a class="py-2.5 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/login">
                 <svg class="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
                   <circle cx="12" cy="7" r="4" />
