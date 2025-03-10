@@ -23,7 +23,7 @@
                   <td class="py-4 px-2">
                     <div class="flex flex-col items-center text-center">
                       <img class="h-12 w-12 sm:h-16 sm:w-16 rounded-lg mb-2" 
-                          src="{{ url('storage', $item['main_image']) }}" 
+                          src="{{ url('storage/' . $item['main_image']) }}" 
                           alt="{{ $item['brand_name']}}">
                       <span class="font-semibold">{{ $item['brand_name']}}</span>
                     </div>
@@ -34,8 +34,6 @@
                   <td class="py-4 px-2 whitespace-nowrap">{{ $item['property_no'] ?? 'N/A'}}</td>
                   <td class="py-4 px-2">
                     <button wire:click='removeItem ({{ $item['equipment_id'] }})' class="bg-orange-500 text-white border-2 border-orange-400 rounded-lg px-3 py-1 text-xs sm:text-sm hover:bg-red-500 hover:text-white hover:border-red-500">Remove</button>
-                    <span wire:loading.remove wire:target='removeItem({{$equipment_id}})'>Add to Cart</span>
-                    <span wire:loading wire:target='addToCart({{$product->id}})' class="text-blue-600 dark:text-blue-600">Adding...</span>
                   </td>
                 </tr>
                 @empty
