@@ -19,7 +19,9 @@
     },
     "dependencies": {
         "@fancyapps/fancybox": "^3.5.7",
+        "@hotwired/turbo": "^8.0.13",
         "flowbite": "^3.1.1",
-        "preline": "^2.7.0"
+        "preline": "^2.7.0",
+        "turbolinks": "^5.2.0"
     }
 }

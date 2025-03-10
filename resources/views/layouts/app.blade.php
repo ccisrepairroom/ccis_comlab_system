@@ -15,6 +15,8 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+    <script src="{{asset('js/app.js')}}"></script>
+
 </head>
 
 <body class="bg-slate-200 dark:bg-slate-200" >

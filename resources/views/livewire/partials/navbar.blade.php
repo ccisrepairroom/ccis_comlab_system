@@ -43,11 +43,11 @@
 
             <a class="font-medium {{ request()->is('equipment')? 'text-orange-600' : 'text-gray-500 '}} py-3 md:py-6 dark:text-orange-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/equipment" aria-current="page">Equipment</a>
             
-            <a wire:navigate class="font-medium {{ request()->is('supplies-and-materials')? 'text-orange-600' : 'text-gray-500 '}} hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/supplies-and-materials">
+            <a  class="font-medium {{ request()->is('supplies-and-materials')? 'text-orange-600' : 'text-gray-500 '}} hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/supplies-and-materials">
               Supplies & Materials
             </a>
 
-            <a wire:navigate class="font-medium {{ request()->is('facilities') ? 'text-orange-600' : 'text-gray-500 '}} hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/facilities">
+            <a class="font-medium {{ request()->is('facilities') ? 'text-orange-600' : 'text-gray-500 '}} hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/facilities">
               Facilities
             </a>
 

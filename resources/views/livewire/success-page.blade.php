@@ -48,9 +48,6 @@
           <div class="flex flex-col w-full space-y-6 ">
             <h2 class="mb-2 text-xl font-semibold text-gray-700 dark:text-gray-400">Requested  Items</h2>
             <div class="flex flex-col items-center justify-center w-full pb-4 space-y-4 border-b border-gray-200 dark:border-gray-700">
-          
-
-
 
       <div class="flex items-center justify-start gap-4 px-4 mt-6 ">
         <a href="/products" class="w-full text-center px-4 py-2 text-orange-500 border border-orange-500 rounded-md md:w-auto hover:text-white hover:bg-orange-600 dark:border-gray-700 dark:hover:bg-gray-700 dark:text-gray-300">
