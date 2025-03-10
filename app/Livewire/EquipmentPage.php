@@ -40,42 +40,39 @@ class EquipmentPage extends Component
         $this->requestedEquipments = RequestManagement::getRequestedEquipmentIds();
     }
     
-
     public function isRequested($equipmentId)
-{
-    return in_array($equipmentId, $this->requestedEquipments);
-}
-
-
-    //add to request list method
-    public function addToRequestList($equipment_id){
+    {
+        return in_array($equipmentId, $this->requestedEquipments);
+    }
+    
+    // Add to request list method
+    public function addToRequestList($equipment_id)
+    {
         $total_count = RequestManagement::addEquipmentToRequestList($equipment_id);
-
- // Update Livewire state to reflect the change
-        $this->requestedEquipments = RequestManagement::getRequestedEquipmentIds();
-
+    
+        // Directly update the array instead of refetching everything
+        if (!in_array($equipment_id, $this->requestedEquipments)) {
+            $this->requestedEquipments[] = $equipment_id;
+        }
+    
+        // Dispatch events for real-time updates
         $this->dispatch('update-requests-count', total_count: $total_count)->to(Navbar::class);
         $this->dispatch('equipment-requested', equipmentId: $equipment_id);
-
-        // $this->alert('success', 'Equipment added to your request list', [
-        //     'position' => 'top-right',
-        //     'timer' => 3000,
-        //     'toast' => true
-        // ]);
     }
-
+    
+    // Remove from request list method
     public function removeFromRequestList($equipment_id)
-{
-    RequestManagement::removeRequestListEquipment($equipment_id);
-
-    // Update Livewire state
-    $this->requestedEquipments = RequestManagement::getRequestedEquipmentIds();
-
-    // Dispatch event to update the frontend
-    $this->dispatch('equipment-removed', equipmentId: $equipment_id);
-}
-
-
+    {
+        $total_count = RequestManagement::removeRequestListEquipment($equipment_id);
+    
+        // Remove the equipment ID from the local array
+        $this->requestedEquipments = array_diff($this->requestedEquipments, [$equipment_id]);
+    
+        // Dispatch events for real-time updates
+        $this->dispatch('equipment-removed', equipmentId: $equipment_id);
+        $this->dispatch('update-requests-count', total_count: $total_count)->to(Navbar::class);
+    }
+    
 
     public function render()
     {
