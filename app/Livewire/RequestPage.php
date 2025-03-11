@@ -38,6 +38,11 @@ class RequestPage extends Component
 
     }
 
+    public function proceed()
+    {
+        return redirect()->to('/request-form'); // Redirect without full page reload
+    }
+
 
     public function render()
     {

@@ -33,7 +33,10 @@
                   <td class="py-4 px-2 whitespace-nowrap">{{ $item['serial_no'] ?? 'N/A' }}</td>
                   <td class="py-4 px-2 whitespace-nowrap">{{ $item['property_no'] ?? 'N/A'}}</td>
                   <td class="py-4 px-2">
-                    <button wire:click='removeItem ({{ $item['equipment_id'] }})' class="bg-orange-500 text-white border-2 border-orange-400 rounded-lg px-3 py-1 text-xs sm:text-sm hover:bg-red-500 hover:text-white hover:border-red-500">Remove</button>
+                    <button wire:click='removeItem({{ $item['equipment_id'] }})' class="bg-orange-500 text-white border-2 border-orange-400 rounded-lg px-3 py-1 text-xs sm:text-sm hover:bg-red-500 hover:text-white hover:border-red-500">
+                    <span wire:loading.remove wire:target='removeItem({{ $item['equipment_id'] }})'>Remove</span>
+                    <span wire:loading wire:target='removeItem({{ $item['equipment_id'] }})' class="text-white">Removing...</span>                   
+                   </button>
                   </td>
                 </tr>
                 @empty
@@ -62,7 +65,11 @@
             <span class="font-semibold">{{ $total_request }}</span>
           </div>
           @if ($requestlist_equipment)
-          <button onclick="window.location.href='/request-form'"  class="bg-orange-500 text-white py-2 px-4 rounded-lg mt-4 w-full hover:bg-orange-600">Proceed</button>
+          <button wire:click="proceed" class="bg-orange-500 text-white py-2 px-4 rounded-lg mt-4 w-full hover:bg-orange-600">
+    Proceed
+</button>
+
+
           @endif
         </div>
       </div>
