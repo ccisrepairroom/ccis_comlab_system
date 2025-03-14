@@ -49,22 +49,33 @@
           </div>
         </div>
       </div>
-      <div class="md:w-1/4">
-        <div class="bg-white rounded-lg shadow-md p-6">
-          <h2 class="text-lg font-semibold mb-4">Summary</h2>
-          @foreach ($category_totals as $category => $quantity)
-          <div class="flex justify-between mb-2">
-            <span>{{ $category }}</span>
-            <span>{{ $quantity }}</span>
-          </div>
-          @endforeach
-
-          <hr class="my-2">
-          <div class="flex justify-between mb-2">
-            <span class="font-semibold">Total Equipment</span>
-            <span class="font-semibold">{{ $total_request }}</span>
-          </div>
-          @if ($requestlist_equipment)
+      <div class="md:col-span-12 lg:col-span-4 col-span-12">
+			<div class="bg-white rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">
+				<div class="text-xl font-bold underline text-gray-700 dark:text-white mb-2">
+					 REQUEST LIST SUMMARY
+				</div>
+        @if ($requestlist_equipment)		
+				@foreach ($category_totals as $category => $quantity)
+				<div class="flex justify-between mb-2 font-bold">
+        <span>
+					{{$category}}
+					</span>
+					<span>
+						{{$quantity}}
+					</span>
+				</div>
+				@endforeach
+				<hr class="bg-slate-400 my-4 h-1 rounded">
+				<div class="flex justify-between mb-2 font-bold">
+        <span>
+						Total Equipment
+					</span>
+					<span>
+					{{$total_request }}
+					</span>
+				</div>
+				</hr>
+			</div>
           <button wire:click="proceed" class="bg-orange-500 text-white py-2 px-4 rounded-lg mt-4 w-full hover:bg-orange-600">
     Proceed
 </button>
