@@ -124,8 +124,10 @@ Route::get('/success', SuccessPage::class);
 Route::get('/equipment/{equip}', EquipmentDetailPage::class);
 
 
-Route::get('/public-login', LoginPage::class);
-Route::get('/register-page', RegisterPage::class);
+Route::get('/login', function () {
+    return view('livewire.auth.login-page');
+});
+Route::get('/register', RegisterPage::class);
 Route::get('/forgot-password-page', ForgotPasswordPage::class);
 Route::get('/reset-password-page', ResetPasswordPage::class);
 

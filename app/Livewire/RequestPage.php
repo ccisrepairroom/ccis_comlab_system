@@ -9,7 +9,7 @@ use App\Livewire\Partials\Navbar;
 
 
 
-#[Title('Requests - CCIS ERMA')]
+#[Title('Request - CCIS ERMA')]
 class RequestPage extends Component
 {
     public $requestlist_equipment =[];

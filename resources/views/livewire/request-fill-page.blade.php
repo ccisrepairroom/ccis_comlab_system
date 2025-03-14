@@ -82,21 +82,23 @@
 				<div class="text-xl font-bold underline text-gray-700 dark:text-white mb-2">
 					REQUEST SUMMARY
 				</div>
+				@foreach ($category_totals as $category => $quantity)
 				<div class="flex justify-between mb-2 font-bold">
 					<span>
-						Keyboard
+					{{$category}}
 					</span>
 					<span>
-						5
+						{{$quantity}}
 					</span>
 				</div>
+				@endforeach
 				<hr class="bg-slate-400 my-4 h-1 rounded">
 				<div class="flex justify-between mb-2 font-bold">
 					<span>
 						Total Equipment
 					</span>
 					<span>
-						5
+					{{$total_request }}
 					</span>
 				</div>
 				</hr>
@@ -110,15 +112,16 @@
 					ITEMS REQUESTED
 				</div>
 				<ul class="divide-y divide-gray-200 dark:divide-gray-700" role="list">
-					<li class="py-3 sm:py-4">
+					@foreach($requestlist_equipment as $re)
+					<li class="py-3 sm:py-4" wire:key='{{$re['equipment_id']}}'>
 						<div class="flex items-center">
 							<div class="flex-shrink-0">
-								<img alt="Neil image" class="w-12 h-12 rounded-full" src="https://iplanet.one/cdn/shop/files/iPhone_15_Pro_Max_Blue_Titanium_PDP_Image_Position-1__en-IN_1445x.jpg?v=1695435917">
+								<img alt="{{$re['brand_name']}}" class="w-12 h-12 rounded-full" src="{{url('storage', $re['main_image'])}}">
 								</img>
 							</div>
 							<div class="flex-1 min-w-0 ms-4">
 								<p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-									ACER
+								{{$re['brand_name']}}
 								</p>
 								<p class="text-sm text-gray-500 truncate dark:text-gray-400">
 									Quantity: 1
@@ -127,6 +130,7 @@
 						</div>
 					</li>
 				</ul>
+				@endforeach
 			</div>
 		</div>
 	</div>
