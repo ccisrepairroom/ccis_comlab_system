@@ -71,7 +71,7 @@
 						<input class="w-full focus:border-orange-500 focus:ring-orange-500 rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="purpose" type="text">
 						</input>
 
-						<label class="block text-gray-700 dark:text-white mb-1" for="notes">
+						<label class="block text-gray-700 dark:text-white mb-1 mt-4" for="notes">
 							Notes
 						</label>
 						<input class="w-full focus:border-orange-500 focus:ring-orange-500 rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="notes" type="text">
