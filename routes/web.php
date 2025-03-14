@@ -116,24 +116,32 @@ Route::get('/equipment', EquipmentPage::class);
 // Route::get('/facilities', FacilitiesPage::class);
 Route::get('/supplies-and-materials', SuppliesAndMaterialsPage::class);
 Route::get('/requests', RequestPage::class);
-Route::get('/request-form', RequestFillPage::class);
-Route::get('/success', SuccessPage::class);
-
-// Route::get('/my-requests', MyRequestsPage::class);
-// Route::get('/my-request-detail', MyRequestDetailPage::class);
 Route::get('/equipment/{equip}', EquipmentDetailPage::class);
 
 
-Route::get('/login', function () {
-    return view('livewire.auth.login-page');
+
+
+
+
+Route::middleware('guest')->group(function(){
+    Route::get('/login-page', LoginPage::class);
+    Route::get('/forgot-password-page', ForgotPasswordPage::class);
+    Route::get('/reset-password-page', ResetPasswordPage::class);
 });
-Route::get('/register', RegisterPage::class);
-Route::get('/forgot-password-page', ForgotPasswordPage::class);
-Route::get('/reset-password-page', ResetPasswordPage::class);
 
-Route::get('/success', SuccessPage::class);
-Route::get('/cancel', CancelPage::class);
+Route::middleware('auth')->group(function(){
+    Route::get('/logout', function(){
+        auth()->logout();
+        return redirect('/');
+    });
+    Route::get('/request-form', RequestFillPage::class);
+    // Route::get('/my-requests', MyRequestsPage::class);
+    // Route::get('/my-request-detail', MyRequestDetailPage::class);
+    Route::get('/success', SuccessPage::class);
+    Route::get('/cancel', CancelPage::class);
+ 
 
+});
 
 
 

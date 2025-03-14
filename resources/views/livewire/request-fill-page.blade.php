@@ -11,30 +11,27 @@
 					<h2 class="text-xl font-bold underline text-gray-700 dark:text-white mb-2">
 						Fill in 
 					</h2>
+					@auth
 					<div class="grid grid-cols-2 gap-4">
 						<div>
-							<label class="block text-gray-700 dark:text-white mb-1" for="first_name">
-								First Name
+							<label class="block text-gray-700 dark:text-white mb-1" for="name">
+							 Name
 							</label>
-							<input class="w-full rounded-lg border py-2 px-3 dark:bg-orange-500 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="first_name" type="text">
+							<input class="w-full rounded-lg border py-2 px-3 dark:bg-orange-500 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="name" type="text">
 							</input>
 						</div>
-						<div>
-							<label class="block text-gray-700 dark:text-white mb-1" for="last_name">
-								Last Name
-							</label>
-							<input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white  dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="last_name" type="text">
-							</input>
-						</div>
-					</div>
-					<div class="grid grid-cols-2 gap-4 mt-4">
+						@endauth
 						<div>
 							<label class="block text-gray-700 dark:text-white mb-1" for="date">
 								Date
 							</label>
-							<input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white  dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="date" type="text">
+							<input value="{{ now()->setTimezone('Asia/Manila')->format('F d, Y h:i A') }}" readonly class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white  dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="date" type="text">
 							</input>
 						</div>
+						
+					</div>
+					<div class="grid grid-cols-2 gap-4 mt-4">
+						
 						<div>
 							<label class="block text-gray-700 dark:text-white mb-1" for="college_department">
 								College/Department
@@ -42,22 +39,16 @@
 							<input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white  dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="college_department" type="text">
 							</input>
 						</div>
+
+						<div>
+							<label class="block text-gray-700 dark:text-white mb-1" for="phone_number">
+								Phone Number
+							</label>
+							<input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white  dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="college_department" type="text">
+							</input>
+						</div>
 					</div>
-					<div class="mt-4">
-						<label class="block text-gray-700 dark:text-white mb-1" for="phone_number">
-							Phone Number
-						</label>
-						<input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white  dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="phone_number" type="text">
-						</input>
-					</div>
-					<div class="mt-4">
-						<label class="block text-gray-700 dark:text-white mb-1" for="purpose">
-							Purpose
-						</label>
-						<input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white  dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="phone_number" type="text">
-						</input>
-					</div>
-					<div class="grid grid-cols-1 gap-4 mt-4">
+					<div class="grid grid-cols-2 gap-4 mt-4">
 						<div>
 							<label class="block text-gray-700 dark:text-white mb-1" for="state">
 								Start Date and Time of Use
@@ -72,6 +63,19 @@
 							<input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white  dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="zip" type="text">
 							</input>
 						</div>
+					</div>	
+					<div class="mt-4">
+						<label class="block text-gray-700 dark:text-white mb-1" for="purpose">
+							Purpose
+						</label>
+						<input class="w-full focus:border-orange-500 focus:ring-orange-500 rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="purpose" type="text">
+						</input>
+
+						<label class="block text-gray-700 dark:text-white mb-1" for="notes">
+							Notes
+						</label>
+						<input class="w-full focus:border-orange-500 focus:ring-orange-500 rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="notes" type="text">
+						</input>
 					</div>
 				</div>
 			</div>
