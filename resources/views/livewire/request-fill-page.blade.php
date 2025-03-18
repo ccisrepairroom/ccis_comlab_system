@@ -103,9 +103,9 @@
 				</div>
 				</hr>
 			</div>
-			<button type="submit" onclick="window.location.href='/success'" class="bg-orange-500 mt-4 w-full p-3 rounded-lg text-lg text-white hover:bg-orange-600">
-			<span wire:loading.remove>Submit Request</span>
-			<span wire:loading>Processing...</span>
+			<button wire:click="submit" type="submit" onclick="window.location.href='/success'" class="bg-orange-500 mt-4 w-full p-3 rounded-lg text-lg text-white hover:bg-orange-600">
+			<span wire:loading.remove wire:target='submit'>Submit Request</span>
+			<span wire:loading wire:target='submit'>Submmitting Request...</span>
 			</button>
 			<div class="bg-white mt-4 rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">
 				<div class="text-xl font-bold underline text-gray-700 dark:text-white mb-2">

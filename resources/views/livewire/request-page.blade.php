@@ -77,8 +77,9 @@
 				</hr>
 			</div>
           <button wire:click="proceed" class="bg-orange-500 text-white py-2 px-4 rounded-lg mt-4 w-full hover:bg-orange-600">
-    Proceed
-</button>
+            <span wire:loading.remove wire:target='proceed' >Proceed</span>
+            <span wire:loading wire:target='proceed'>Proceeding</span>
+        </button>
 
 
           @endif
