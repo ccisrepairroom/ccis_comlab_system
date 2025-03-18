@@ -22,6 +22,7 @@
         "filament/infolists": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "3.2",
         "guzzlehttp/guzzle": "^7.2",
+        "jantinnerezo/livewire-alert": "^4.0",
         "joaopaulolndev/filament-edit-profile": "^1.0",
         "lara-zeus/qr": "^1.1",
         "laravel/framework": "^10.10",

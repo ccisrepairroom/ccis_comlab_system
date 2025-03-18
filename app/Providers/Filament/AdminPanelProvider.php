@@ -36,7 +36,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('ccis_erma')
+            ->path('ccis_erma/management')
             //->path('admin')
             //->login( )
             ->login()

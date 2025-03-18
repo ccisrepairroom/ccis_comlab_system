@@ -25,7 +25,8 @@
    {{ $slot }}
    </main>
     @livewireScripts
-   
+    @livewire('partials.navbar')
+
 </body>
 
 </html>
