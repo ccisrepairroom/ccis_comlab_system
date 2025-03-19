@@ -40,9 +40,13 @@ class RequestPage extends Component
 
     public function proceed()
     {
-        return redirect()->to('/request-form'); // Redirect without full page reload
+        if (!auth()->check()) {
+            return redirect()->to('/login-page'); // Redirect to login if not authenticated
+        }
+    
+        return redirect()->to('/request-form');
     }
-
+    
 
     public function render()
     {
