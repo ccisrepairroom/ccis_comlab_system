@@ -3,6 +3,7 @@
 @endphp
 
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
+<x-loading-indicator wire:loading />
   <section class="py-10 bg-gray-50 font-poppins dark:bg-gray-800 rounded-lg">
     <div class="px-4 py-4 mx-auto max-w-7xl lg:py-6 md:px-6">
       <div class="flex flex-wrap mb-24 -mx-3">
@@ -178,12 +179,7 @@
 
                 <!-- Request button -->
                 <div class="flex justify-end mt-1 mb-5 mr-5">
-                  
-             
-          
-
-
-
+                
                 <button 
     wire:click="addToRequestList({{ $equip->id }})" 
     x-data="{ requested: {{ in_array($equip->id, $requestedEquipments) ? 'true' : 'false' }} }"
@@ -193,6 +189,7 @@
     class="flex items-center gap-1 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
 >
     <x-heroicon-o-plus class="w-4 h-4" x-show="!requested" />
+
 </button>
 
 

@@ -867,3 +867,5 @@ npm install @hotwired/turbo
 import "@hotwired/turbo";
 
 --video 19, user authentication
+--loading
+//yt:https://labs.danielcardoso.net/load-awesome/animations.html

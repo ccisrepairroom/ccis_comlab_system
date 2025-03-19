@@ -12,6 +12,9 @@
         @livewireStyles
 
         <script src="{{asset('js/app.js')}}"></script>
+        <livewire:styles />
+        @stack('styles')
+   
     </head>
     <body class="bg-slate-200 dark:bg-slate-200" >
     @if (!request()->routeIs(['facility-monitoring-page', 'equipment-monitoring-page', 'supplies-and-materials-monitoring'])) 

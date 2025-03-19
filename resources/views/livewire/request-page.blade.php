@@ -1,5 +1,7 @@
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto min-h-screen flex flex-col ">
-  <div class="container mx-auto px-4">
+
+
+<div class="container mx-auto px-4">
   <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Request List</h1>    
   <div class="flex flex-col md:flex-row gap-4">
       <div class="md:w-3/4">
@@ -76,12 +78,11 @@
 				</div>
 				</hr>
 			</div>
-          <button wire:click="proceed" class="bg-orange-500 text-white py-2 px-4 rounded-lg mt-4 w-full hover:bg-orange-600">
-            <span wire:loading.remove wire:target='proceed' >Proceed</span>
-            <span wire:loading wire:target='proceed'>Proceeding</span>
-        </button>
-
-
+      <button wire:click.prevent="proceed"
+    class="bg-orange-500 text-white py-2 px-4 rounded-lg mt-4 w-full hover:bg-orange-600">
+    <span wire:loading.remove>Proceed</span>
+    <x-loading-indicator wire:loading />
+</button>
           @endif
         </div>
       </div>
