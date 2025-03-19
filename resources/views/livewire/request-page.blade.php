@@ -78,7 +78,7 @@
 				</div>
 				</hr>
 			</div>
-      <button wire:click.prevent="proceed"
+      <button wire:click.prevent="proceed" 
     class="bg-orange-500 text-white py-2 px-4 rounded-lg mt-4 w-full hover:bg-orange-600">
     <span wire:loading.remove>Proceed</span>
     <x-loading-indicator wire:loading />
