@@ -1,6 +1,5 @@
 <div class="w-full h-screen bg-gradient-to-r from-orange-200 to-amber-200 py-10 px-4 sm:px-6 lg:px-8 mx-auto">
   <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
-  <x-loading-indicator wire:loading />
     <!-- Grid -->
     <div class="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
       <div>
@@ -15,6 +14,7 @@
             <svg class="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="m9 18 6-6-6-6" />
             </svg>
+            <x-loading-indicator wire:loading />
           </a>
           @endguest
           @auth

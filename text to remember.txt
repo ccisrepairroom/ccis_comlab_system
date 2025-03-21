@@ -886,3 +886,6 @@ Edit
 Consider encrypting cookies in Laravel using EncryptCookies middleware.
 --https://youtu.be/dWVTfY6cMBs?si=TEq_YRrVBKv8_GCR
 https://chatgpt.com/c/67dccfe3-5414-800c-866a-25aa43c812b0
+
+---messaging
+//yt:https://www.youtube.com/watch?v=ucWE5nDTrbk
