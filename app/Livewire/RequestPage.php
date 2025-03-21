@@ -29,15 +29,20 @@ class RequestPage extends Component
     }
 
     public function removeItem($equipment_id){
+        // Remove the item and update the list
         $this->requestlist_equipment = RequestManagement::removeRequestListEquipment($equipment_id);
-        $this->total_request = RequestManagement::calculateTotalRequestedEquipment($this->requestlist_equipment);
-        $this->category_totals = RequestManagement::calculateTotalByCategory();
-
         
+        // Recalculate totals based on the updated list
+        $this->total_request = RequestManagement::calculateTotalRequestedEquipment($this->requestlist_equipment);
+        $this->category_totals = RequestManagement::calculateTotalByCategory($this->requestlist_equipment);
+    
+        // Dispatch update event for UI changes
         $this->dispatch('update-requests-count', total_count: count($this->requestlist_equipment))->to(Navbar::class);
-
+        
+        // Force re-rendering
+        $this->dispatch('refresh');
     }
-
+    
     public function proceed()
     {
         if (!auth()->check()) {
