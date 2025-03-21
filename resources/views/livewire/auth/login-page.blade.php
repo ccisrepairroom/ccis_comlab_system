@@ -64,8 +64,22 @@
                 <p class=" text-xs text-red-600 mt-2" id="password-error">{{$message}}</p>
               @enderror
               </div>
+              <div class="row">
+                  <div class="col-8">
+                      <div class="icheck-primary">
+                      <input type="checkbox" checked="checked" class="checkbox border-orange-500  checked:bg-orange-500 checked:text-orange-500 checked:border-orange-500 focus:ring-1 focus:outline-none focus:ring-orange-500  " />
+
+                          <label for="remember" class="text-gray-500 text-sm"> Remember Me </label>
+                      </div>
+                  </div>
+              </div>
+
+
+
+
+
               <!-- End Form Group -->
-              <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">Sign in</button>
+              <button type="submit" class="w-full mt-4 py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">Sign in</button>
             </div>
           </form>
           <!-- End Form -->
