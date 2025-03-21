@@ -20,7 +20,6 @@ class LoginPage extends Component
         // Retrieve remembered credentials
         $credentials = LoginManagement::getRememberedCredentials();
         $this->email = $credentials['email'];
-        $this->password = $credentials['password'];
     }
 
     public function save()
@@ -45,7 +44,7 @@ class LoginPage extends Component
         }
 
          // Save credentials if "Remember Me" is checked
-        LoginManagement::rememberUser($this->email, $this->password, $this->remember);
+        LoginManagement::rememberUser($this->email, $this->remember);
 
         return redirect('http://127.0.0.1:8000')->intended();
     }
