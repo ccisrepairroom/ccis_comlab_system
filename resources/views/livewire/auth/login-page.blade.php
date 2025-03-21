@@ -48,7 +48,7 @@
               <div>
                 <div class="flex justify-between items-center">
                     <label for="password" class="block text-sm mb-2 dark:text-white">Password</label>
-                    <a class="text-sm text-orange-500 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/forgot">Forgot password?</a>
+                    <a class="text-sm text-orange-500 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/recover-account">Forgot password?</a>
                 </div>
                 <div x-data="{ show: false }" class="relative">
                     <input :type="show ? 'text' : 'password'" name="password" autocomplete="current-password" placeholder="(6+ characters required)" id="password" wire:model="password"
@@ -86,13 +86,13 @@
               </div>
 
               <div x-data="{ remembered: true }" class="row">
-                <div class="col-8">
+                <div class="col-8 mt-4">
                     <div class="icheck-primary">
                         <input type="checkbox" id="remember" wire:model="remember" 
                             @click="remembered = !remembered"
                             class="checkbox border-orange-500 checked:bg-orange-500 checked:text-orange-500 checked:border-orange-500 focus:ring-1 focus:outline-none focus:ring-orange-500" />
                         <label for="remember" class="text-gray-500 text-sm"> Remember Me </label>
-                    </div>
+                    </div> 
                 </div>
             </div>
 

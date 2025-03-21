@@ -55,9 +55,12 @@ class EquipmentPage extends Component
             $this->requestedEquipments[] = $equipment_id;
         }
     
+
         // Dispatch events for real-time updates
         $this->dispatch('update-requests-count', total_count: $total_count)->to(Navbar::class);
         $this->dispatch('equipment-requested', equipmentId: $equipment_id);
+
+
     }
     
     // Remove from request list method
