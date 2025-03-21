@@ -890,4 +890,15 @@ https://chatgpt.com/c/67dccfe3-5414-800c-866a-25aa43c812b0
 ---messaging
 //yt:https://www.youtube.com/watch?v=ucWE5nDTrbk
 
---video 20
+--video 20, mail ,forgot password.
+
+--mailtrap
+//account:github-ccisrepairroom
+//create email testing inbox, click inbox then choose laravel 9+
+//copy credentiasls and paste in env, from mailer to encryption
+# Looking to send emails in production? Check out our Email API/SMTP product!
+MAIL_MAILER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=998cdeb563fba1
+MAIL_PASSWORD=52bdf347cda4a8

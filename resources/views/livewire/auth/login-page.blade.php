@@ -7,9 +7,9 @@
             <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Sign in</h1>
             <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
               Don't have an account yet?
-              <a class="text-orange-500 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="https://www.facebook.com/cciscarsu">
+              <!-- <a class="text-orange-500 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="https://www.facebook.com/cciscarsu">
                 Contact Admin
-              </a>
+              </a> -->
             </p>
           </div>
 
@@ -48,7 +48,7 @@
               <div>
                 <div class="flex justify-between items-center">
                     <label for="password" class="block text-sm mb-2 dark:text-white">Password</label>
-                    <a class="text-sm text-orange-500 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/recover-account">Forgot password?</a>
+                    <!-- <a class="text-sm text-orange-500 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/recover-account">Forgot password?</a> -->
                 </div>
                 <div x-data="{ show: false }" class="relative">
                     <input :type="show ? 'text' : 'password'" name="password" autocomplete="current-password" placeholder="(6+ characters required)" id="password" wire:model="password"

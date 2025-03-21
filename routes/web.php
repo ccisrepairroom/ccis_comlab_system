@@ -25,7 +25,7 @@ use App\Livewire\EquipmentDetailPage;
 use App\Livewire\Auth\LoginPage;
 use App\Livewire\Auth\RegisterPage;
 use App\Livewire\Auth\RecoverAccountPage;
-use App\Livewire\Auth\UpdatePasswordPage;
+use App\Livewire\Auth\ResetPasswordPage;
 use App\Livewire\SuccessPage;
 use App\Livewire\CancelPage;
 
@@ -107,8 +107,8 @@ Route::get('/equipment/{equip}', EquipmentDetailPage::class);
 
 Route::middleware('guest')->group(function(){
     Route::get('/signin', LoginPage::class)->middleware('throttle:5,2');
-    Route::get('/recover-account', RecoverAccountPage::class)->name('password.request');
-    Route::get('/update-password', UpdatePasswordPage::class);
+    // Route::get('/recover-account', RecoverAccountPage::class)->name('password.request');
+    // Route::get('/reset/{token}',ResetPasswordPage::class)->name('password.reset');
 });
 
 Route::middleware('auth')->group(function(){
