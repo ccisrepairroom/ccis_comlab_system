@@ -67,7 +67,7 @@
               <div class="row">
                   <div class="col-8">
                       <div class="icheck-primary">
-                      <input type="checkbox" checked="checked" class="checkbox border-orange-500  checked:bg-orange-500 checked:text-orange-500 checked:border-orange-500 focus:ring-1 focus:outline-none focus:ring-orange-500  " />
+                      <input type="checkbox" wire:model="remember" checked="checked" class="checkbox border-orange-500  checked:bg-orange-500 checked:text-orange-500 checked:border-orange-500 focus:ring-1 focus:outline-none focus:ring-orange-500  " />
 
                           <label for="remember" class="text-gray-500 text-sm"> Remember Me </label>
                       </div>

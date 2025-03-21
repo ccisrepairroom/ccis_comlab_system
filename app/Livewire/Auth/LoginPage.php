@@ -5,12 +5,23 @@ namespace App\Livewire\Auth;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use App\Models\User;
+use App\Helpers\LoginManagement;
+
 
 #[Title('Login - CCIS ERMA')]
 class LoginPage extends Component
 {
     public $email;
     public $password;
+    public $remember = false;
+
+    public function mount()
+    {
+        // Retrieve remembered credentials
+        $credentials = LoginManagement::getRememberedCredentials();
+        $this->email = $credentials['email'];
+        $this->password = $credentials['password'];
+    }
 
     public function save()
     {
@@ -32,6 +43,9 @@ class LoginPage extends Component
             session()->flash('error', 'Invalid credentials.');
             return;
         }
+
+         // Save credentials if "Remember Me" is checked
+        LoginManagement::rememberUser($this->email, $this->password, $this->remember);
 
         return redirect('http://127.0.0.1:8000')->intended();
     }
