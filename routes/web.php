@@ -58,12 +58,6 @@ use App\Livewire\CancelPage;
 Route::get('/admin', function () {
     return redirect('ccis_erma/login');
 });
-/*Route::middleware(['auth', 'verified'])->group(function () {
-    Route::prefix('ccis_comlab_system')->group(function () {
-        // Define the route for the Filament profile page
-        Route::get('/profile', EditProfile::class)->name('filament.admin.auth.profile');
-    });
-});*/
 
 Route::get('download-request-form', function () {
     // Define the path to the file stored in the 'app/Filament/Resources/request_form'
@@ -89,17 +83,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
        
     });
 });
-/*
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/equipment-monitorings', [MonitoringController::class, 'index'])->name('equipment-monitorings.index');
-});*/
 
 
 
@@ -110,7 +93,6 @@ Route::get('/supplies-and-materials-monitoring/{supply}', SuppliesAndMaterialsMo
 
 
 
-// Route::get('/', [Home::class, 'render'])->name('home');
 Route::get('/', HomePage::class);
 Route::get('/equipment', EquipmentPage::class);
 // Route::get('/facilities', FacilitiesPage::class);
@@ -124,13 +106,13 @@ Route::get('/equipment/{equip}', EquipmentDetailPage::class);
 
 
 Route::middleware('guest')->group(function(){
-    Route::get('/login-page', LoginPage::class);
+    Route::get('/signin', LoginPage::class);
     Route::get('/forgot-password-page', ForgotPasswordPage::class);
     Route::get('/reset-password-page', ResetPasswordPage::class);
 });
 
 Route::middleware('auth')->group(function(){
-    Route::get('/logout', function(){
+    Route::get('/signout', function(){
         auth()->logout();
         return redirect('/');
     });
@@ -146,15 +128,6 @@ Route::middleware('auth')->group(function(){
 
 
 
-
-
-
-
-
-
-
-
-// Route::get('/downloadpdf', [FacilityMonitoringPage::class, 'downloadpdf'])->name('downloadpdf');
 
 
 
