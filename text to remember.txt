@@ -869,3 +869,20 @@ import "@hotwired/turbo";
 --video 19, user authentication
 --loading
 //yt:https://labs.danielcardoso.net/load-awesome/animations.html
+
+---
+2. Securing Cookies
+Set cookies as HttpOnly, Secure, and SameSite=Strict in your Laravel app:
+php
+Copy
+Edit
+'session' => [
+    'driver' => env('SESSION_DRIVER', 'file'),
+    'secure' => env('SESSION_SECURE_COOKIE', true),
+    'same_site' => 'strict',
+    'http_only' => true,
+],
+---Security
+Consider encrypting cookies in Laravel using EncryptCookies middleware.
+--https://youtu.be/dWVTfY6cMBs?si=TEq_YRrVBKv8_GCR
+https://chatgpt.com/c/67dccfe3-5414-800c-866a-25aa43c812b0

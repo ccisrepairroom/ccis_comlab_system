@@ -6,7 +6,8 @@ use Livewire\Component;
 use Livewire\Attributes\Title;
 use App\Models\User;
 use App\Helpers\LoginManagement;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 
 #[Title('Login - CCIS ERMA')]
 class LoginPage extends Component
@@ -17,9 +18,11 @@ class LoginPage extends Component
 
     public function mount()
     {
-        // Retrieve remembered credentials
+        // Retrieve remembered credentials securely
         $credentials = LoginManagement::getRememberedCredentials();
-        $this->email = $credentials['email'];
+        if (!empty($credentials['email'])) {
+            $this->email = Crypt::decryptString($credentials['email']);
+        }
     }
 
     public function save()
@@ -38,15 +41,21 @@ class LoginPage extends Component
             'email.exists' => 'This email does not exist in our database.',
         ]);
 
-        if (!auth()->attempt(['email' => $this->email, 'password' => $this->password])) {
+        $user = User::where('email', $this->email)->first();
+
+        if (!$user || !Hash::check($this->password, $user->password)) {
             session()->flash('error', 'Invalid credentials.');
             return;
         }
 
-         // Save credentials if "Remember Me" is checked
-        LoginManagement::rememberUser($this->email, $this->remember);
+        auth()->login($user);
 
-        return redirect('http://127.0.0.1:8000')->intended();
+        // Securely save credentials if "Remember Me" is checked
+        if ($this->remember) {
+            LoginManagement::rememberUser(Crypt::encryptString($this->email), true);
+        }
+
+        return redirect()->intended('/');
     }
 
     public function render()

@@ -86,22 +86,22 @@
               </div>
 
               <div x-data="{ remembered: true }" class="row">
-    <div class="col-8">
-        <div class="icheck-primary">
-            <input type="checkbox" id="remember" wire:model="remember" 
-                @click="remembered = !remembered"
-                class="checkbox border-orange-500 checked:bg-orange-500 checked:text-orange-500 checked:border-orange-500 focus:ring-1 focus:outline-none focus:ring-orange-500" />
-            <label for="remember" class="text-gray-500 text-sm"> Remember Me </label>
-        </div>
-    </div>
-</div>
+                <div class="col-8">
+                    <div class="icheck-primary">
+                        <input type="checkbox" id="remember" wire:model="remember" 
+                            @click="remembered = !remembered"
+                            class="checkbox border-orange-500 checked:bg-orange-500 checked:text-orange-500 checked:border-orange-500 focus:ring-1 focus:outline-none focus:ring-orange-500" />
+                        <label for="remember" class="text-gray-500 text-sm"> Remember Me </label>
+                    </div>
+                </div>
+            </div>
 
 <!-- Forgot Credentials -->
-<div x-show="remembered" class="mt-2">
+<!-- <div x-show="remembered" class="mt-2">
     <a class="text-sm text-orange-500 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/forgot">
         Forgot credentials?
     </a>
-</div>
+</div> -->
 
 
 
