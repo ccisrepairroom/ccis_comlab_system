@@ -6,18 +6,18 @@
                 <div class="mb-6">
                     <h2 class="text-xl font-bold underline text-gray-700 dark:text-white mb-2">Fill in</h2>
                     @auth
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-gray-700 dark:text-white mb-1" for="name">Name</label>
                             <input class="w-full rounded-lg border py-2 px-3 dark:bg-orange-500 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="name" type="text">
                         </div>
-                        @endauth
+                    @endauth
                         <div>
                             <label for="date_requested" class="block text-gray-700 dark:text-white mb-1">Date</label>
                             <input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="date_requested" type="datetime-local" name="date_requested" wire:model="date_requested" value="{{ now('Asia/Manila')->format('Y-m-d\TH:i') }}">
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                         <div>
                             <label class="block text-gray-700 dark:text-white mb-1" for="college_department">College/Department</label>
                             <input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="college_department" type="text">
@@ -27,7 +27,7 @@
                             <input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="phone_number" type="text">
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                         <div>
                             <label for="start_date" class="block text-gray-700 dark:text-white mb-1">Start Date and Time of Use</label>
                             <input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="start_date" type="datetime-local" name="start_date">
