@@ -35,6 +35,16 @@ class HomePage extends Component
 
     public $alternateImages = [];
 
+    public function redirectToSignIn()
+    {
+        return redirect('/signin');
+    }
+    public function redirectToEquipment()
+    {
+        return redirect('/equipment');
+    }
+
+
     //add to request list method
     public function addToRequestList($equipment_id){
         $total_count = RequestManagement::addEquipmentToRequestList($equipment_id);
