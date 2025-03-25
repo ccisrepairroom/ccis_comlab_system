@@ -20,7 +20,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                         <div>
                             <label class="block text-gray-700 dark:text-white mb-1" for="college_department">College/Department</label>
-                            <input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="college_department" type="text">
+                            <textarea class="h-11 w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="college_department" type="text"></textarea>
                         </div>
                         <div>
                             <label class="block text-gray-700 dark:text-white mb-1" for="phone_number">Phone Number</label>
@@ -39,9 +39,9 @@
                     </div>
                     <div class="mt-4">
                         <label class="block text-gray-700 dark:text-white mb-1" for="purpose">Purpose</label>
-                        <input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none focus:ring-orange-500 focus:border-orange-500" id="purpose" type="text">
+                        <textarea  class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none focus:ring-orange-500 focus:border-orange-500" id="purpose" type="text"></textarea>
                         <label class="block text-gray-700 dark:text-white mb-1 mt-4" for="notes">Notes</label>
-                        <input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none focus:ring-orange-500 focus:border-orange-500" id="notes" type="text">
+                        <textarea class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none focus:ring-orange-500 focus:border-orange-500" id="notes" type="text"></textarea>
                     </div>
                 </div>
             </div>
