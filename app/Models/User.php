@@ -97,5 +97,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+     
+    public function requests()
+    {
+        return $this->hasMany(Request::class);
+    }
 
 }

@@ -16,9 +16,9 @@ class RequestFillPage extends Component
     public $requestlist_equipment =[];
     public $total_request;
     public $category_totals = [];
-    public $first_name;
-    public $last_name;
     public $date_requested;
+    public $name;
+
 
 
     public function mount(){
@@ -33,6 +33,8 @@ class RequestFillPage extends Component
             return redirect('equipment');
         }
     }
+
+     
 
 
 

@@ -7,10 +7,25 @@
                     <h2 class="text-xl font-bold underline text-gray-700 dark:text-white mb-2">Fill in</h2>
                     @auth
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-gray-700 dark:text-white mb-1" for="name">Name</label>
-                            <input class="w-full rounded-lg border py-2 px-3 dark:bg-orange-500 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="name" type="text" placeholder="Rosalyn Banguis">
-                        </div>
+                       <div>
+    <label class="block text-gray-700 dark:text-white mb-1" for="name">Name</label>
+    <div class="relative" wire:model="name">
+        <input wire:model.defer="name" class="w-full rounded-lg border py-2 px-3 dark:bg-orange-500 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="name" type="text" placeholder="Rosalyn Banguis" aria-describedby="name-error">
+        
+        @error('name')
+        <div class="absolute inset-y-0 right-3 flex items-center">
+            <svg class="h-5 w-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+            </svg>
+        </div>
+        @enderror
+    </div>
+
+    @error('name')
+    <p class="text-xs text-red-600 mt-2">{{$message}}</p>
+    @enderror
+</div>
+
                     @endauth
                         <div>
                             <label for="date_requested" class="block text-gray-700 dark:text-white mb-1">Date</label>
@@ -62,7 +77,7 @@
                     <span>{{$total_request }}</span>
                 </div>
             </div>
-            <button wire:click="submit" type="submit" onclick="window.location.href='/success'" class="bg-orange-500 mt-4 w-full p-3 rounded-lg text-lg text-white hover:bg-orange-600">
+            <button wire:click="save" type="submit" onclick="window.location.href='/success'" class="bg-orange-500 mt-4 w-full p-3 rounded-lg text-lg text-white hover:bg-orange-600">
                 <span wire:loading.remove wire:target='submit'>Submit Request</span>
                 <span wire:loading wire:target='submit'>Submitting Request...</span>
             </button>

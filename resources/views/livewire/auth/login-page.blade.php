@@ -95,19 +95,6 @@
                     </div> 
                 </div>
             </div>
-
-<!-- Forgot Credentials -->
-<!-- <div x-show="remembered" class="mt-2">
-    <a class="text-sm text-orange-500 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/forgot">
-        Forgot credentials?
-    </a>
-</div> -->
-
-
-
-
-
-
               <!-- End Form Group -->
               <button type="submit" name="signin" class="w-full mt-4 py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">Sign in</button>
               <x-loading-indicator wire:loadingtarget="signin" />
