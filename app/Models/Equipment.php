@@ -41,7 +41,7 @@ class Equipment extends Model
         'description',
         'facility_id',
         'category_id',
-        'user_id',
+        'user_id',  
         'status',
         'date_acquired',
         'supplier',
@@ -70,7 +70,10 @@ class Equipment extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    public function liableUser()
+    {
+        return $this->belongsTo(User::class, 'person_liable');
+    }
     public function facility()
     {
         return $this->belongsTo(Facility::class);

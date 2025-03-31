@@ -8,6 +8,7 @@ use App\Models\Equipment;
 use Illuminate\Support\Carbon;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class PersonLiable extends BaseWidget
 {
@@ -17,44 +18,32 @@ class PersonLiable extends BaseWidget
     protected int | string | array $columnSpan = 3;
     protected static bool $isLazy = false;
 
-    // Ensure each record has a unique key
-    public function getTableRecordKey($record): string
+    public function getTableQuery(): Builder
     {
-        // Use person_liable as a unique key for this example, or you can use any other field that is unique per record
-        return $record->person_liable ?? ''; // Ensure that the key is a string
+        $unknownUserId = \App\Models\User::where('name', 'Unknown')->value('id') ?? 0;
+
+        return Equipment::query()
+            ->selectRaw("COALESCE(user_id, ?) as user_id, COUNT(*) as equipment_count", [$unknownUserId])
+            ->groupBy('user_id')
+            ->orderByDesc('equipment_count');
     }
 
-    protected function getTableQuery(): Builder
-    {
-        
-        // Get start and end dates from the page filters
-        $startDate = $this->filters['startDate'] ?? null;
-        $endDate = $this->filters['endDate'] ?? null;
-        return Equipment::query()
-        ->when($startDate, function (Builder $query) use ($startDate) {
-            // Apply the start date filter
-            $query->whereDate('date_acquired', '>=', Carbon::parse($startDate));
-        })
-        ->when($endDate, function (Builder $query) use ($endDate) {
-            // Apply the end date filter
-            $query->whereDate('date_acquired', '<=', Carbon::parse($endDate));
-        })
-        ->selectRaw('person_liable, COUNT(*) as equipment_count')  // Use a different alias for clarity
-        ->groupBy('person_liable');
-}
-    protected function getTableColumns(): array
+    public function getTableColumns(): array
     {
         return [
-            Tables\Columns\TextColumn::make('person_liable')
-            ->label('Person Liable')
-            ->sortable()
-            ->searchable(),
+            Tables\Columns\TextColumn::make('user_id')
+                ->label('Person Liable')
+                ->formatStateUsing(fn ($state) => \App\Models\User::find($state)?->name ?? 'Unknown')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('equipment_count')
+                ->label('Equipment Count')
+                ->sortable(),
+        ];
+    }
 
-        // Display the count of equipment assigned to each person
-        Tables\Columns\TextColumn::make('equipment_count')
-            ->label('Equipment Count')
-            
-         
-    ];
+    public function getTableRecordKey(Model $record): string
+    {
+        return (string) $record->user_id; // Ensure it's a string
     }
 }

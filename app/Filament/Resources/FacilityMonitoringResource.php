@@ -63,7 +63,8 @@ class FacilityMonitoringResource extends Resource
                 )
             ->description('This page contains the history of facility monitoring. For more information, go to the dashboard to download the user manual.')
             ->columns([
-                Tables\Columns\TextColumn::make('monitored_date')
+                Tables\Columns\TextColumn::make('created_at')
+                ->label('Monitored Date')
                 ->sortable()
                 ->searchable()
                 ->toggleable(isToggledHiddenByDefault: false)
@@ -86,6 +87,7 @@ class FacilityMonitoringResource extends Resource
                 ->sortable()
                 ->searchable()
                 ->toggleable(isToggledHiddenByDefault: false)
+                ->formatStateUsing(fn ($state) => strip_tags($state))
                 ->sortable(),
             ])
             ->filters([
