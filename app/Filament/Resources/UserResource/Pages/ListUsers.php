@@ -5,8 +5,8 @@ namespace App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use Spatie\Permission\Models\Role; 
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Filament\Resources\Components\Tab;
 use Filament\Actions\Action;
 use App\Imports\UserImport;
@@ -21,21 +21,22 @@ class ListUsers extends ListRecords
     protected function getHeaderActions(): array
     {
         $user = auth()->user(); // Retrieve the currently authenticated user
-        $isFaculty = $user->hasRole('faculty'); // Check if the user has the 'panel_user' role
+        $isFaculty = $user->hasRole('faculty'); // Check if the user has the 'faculty' role
 
         $actions = [
             Actions\CreateAction::make()
-            ->label('Create'),
+                ->label('Create'),
         ];
+
         /*if (!$isFaculty) {
-            // Only add the import action if the user is not a panel_user
+            // Only add the import action if the user is not faculty
             $actions[] = Action::make('importUsers')
                 ->label('Import')
                 ->color('success')
                 ->button()
                 ->form([
                     FileUpload::make('attachment')
-                    ->label('Import an Excel file. Column headers must include: Name, Role, Email, and Password.'),
+                        ->label('Import an Excel file. Column headers must include: Name, Role, Email, and Password.'),
                 ])
                 ->action(function (array $data) {
                     $file = public_path('storage/' . $data['attachment']);
@@ -48,21 +49,24 @@ class ListUsers extends ListRecords
                         ->send();
                 });
         }*/
-        
 
         return $actions;
-    
-
     }
 
     public function getTabs(): array
     {
-        // Fetch all roles
-        $roles = Role::all();
-        
+        // Fetch role counts based on role_id
+        $roleCounts = User::select('role_id')
+            ->selectRaw('COUNT(*) as count')
+            ->groupBy('role_id')
+            ->pluck('count', 'role_id');
+
+        // Fetch all roles that have users
+        $roles = Role::whereIn('id', $roleCounts->keys())->get();
+
         // Create an array of tabs
         $tabs = [];
-        
+
         // Add an "All" tab to show all users
         $tabs[] = Tab::make('All')
             ->badge(User::count())
@@ -70,10 +74,8 @@ class ListUsers extends ListRecords
 
         foreach ($roles as $role) {
             $tabs[] = Tab::make($this->formatLabel($role->name)) // Format the role name
-                ->badge($role->users()->count()) 
-                ->modifyQueryUsing(fn($query) => $query->whereHas('roles', function($q) use ($role) {
-                    $q->where('name', $role->name);
-                }));
+                ->badge($roleCounts[$role->id] ?? 0)
+                ->modifyQueryUsing(fn($query) => $query->where('role_id', $role->id));
         }
 
         return $tabs;
@@ -84,6 +86,7 @@ class ListUsers extends ListRecords
     {
         return ucwords(str_replace('_', ' ', $label)); // Replace underscores with spaces and capitalize
     }
+
     public function getBreadcrumbs(): array
     {
         return [];
