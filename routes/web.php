@@ -8,7 +8,6 @@ use Filament\Facades\Filament;
 use Filament\Actions\Action;
 use App\Filament\Pages\Auth\EditProfile;
 use App\Models\Facility;
-
 use Livewire\Livewire;
 use App\Livewire\HomePage;
 use App\Livewire\EquipmentPage;
@@ -94,7 +93,7 @@ Route::get('/supplies-and-materials-monitoring/{supply}', SuppliesAndMaterialsMo
 
 
 Route::get('/', HomePage::class);
-Route::get('/equipment', EquipmentPage::class);
+Route::get('/equipment', EquipmentPage::class)->name('equipment');
 // Route::get('/facilities', FacilitiesPage::class);
 Route::get('/supplies-and-materials', SuppliesAndMaterialsPage::class);
 Route::get('/requests', RequestPage::class);
@@ -119,7 +118,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/request-form', RequestFillPage::class);
     // Route::get('/my-requests', MyRequestsPage::class);
     // Route::get('/my-request-detail', MyRequestDetailPage::class);
-    Route::get('/success', SuccessPage::class);
+    Route::get('/success', SuccessPage::class)->name('success');
     Route::get('/cancel', CancelPage::class);
  
 

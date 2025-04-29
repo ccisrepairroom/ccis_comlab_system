@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('borrowed_items', function (Blueprint $table) {
-            $table->string('request_code', 10)->unique()->after('id');
+            $table->string('request_code', 10)->after('id')->nullable(false);
         });
     }
 

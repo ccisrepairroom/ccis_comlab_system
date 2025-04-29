@@ -14,6 +14,7 @@ class BorrowedItems extends ApprovableModel
 
     protected $fillable = [
         'user_id',
+        'request_code',
         'borrowed_by',
         'equipment_id',
         'facility_id',

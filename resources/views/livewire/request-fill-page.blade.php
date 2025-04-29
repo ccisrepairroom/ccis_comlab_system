@@ -5,65 +5,71 @@
             <div class="bg-white rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">
                 <div class="mb-6">
                     <h2 class="text-xl font-bold underline text-gray-700 dark:text-white mb-2">Fill in</h2>
+                    <h2 class="text-xl font-bold text-gray-300 dark:text-white mb-5 text-right">
+                        Request Code: {{ $nextRequestCode }}  <!-- Here, the request_code will be displayed -->
+                    </h2>                    
                     @auth
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                        <div>
-    <label class="block text-gray-700 dark:text-white mb-1" for="name">Name</label>
-    <div class="relative" wire:model="name">
-        <input wire:model.defer="name" class="w-full rounded-lg border py-2 px-3 dark:bg-orange-500 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="name" type="text" placeholder="Juan Dela Cruz" aria-describedby="name-error">
-        
-        @error('name')
-        <div class="absolute inset-y-0 right-3 flex items-center">
-            <svg class="h-5 w-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-            </svg>
-        </div>
-        @enderror
-    </div>
-
-    @error('name')
-    <p class="text-xs text-red-600 mt-2">{{$message}}</p>
-    @enderror
-</div>
-
-                    @endauth
-                    <div>
-                            <label class="block text-gray-700 dark:text-white mb-1" for="phone_number">Phone Number</label>
-                            <input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="phone_number" type="text" placeholder="09918898988">
+                            <label class="block text-gray-700 dark:text-white mb-1" for="name">Name</label>
+                            <div class="relative">
+                                <input wire:model.defer="name" class="w-full rounded-lg border py-2 px-3 dark:bg-orange-500 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="name" type="text" placeholder="Juan Dela Cruz" aria-describedby="name-error">
+                                
+                                @error('name')
+                                <div class="absolute inset-y-0 right-3 flex items-center">
+                                    <svg class="h-5 w-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                                    </svg>
+                                </div>
+                                @enderror
+                            </div>
+                            @error('name')
+                            <p class="text-xs text-red-600 mt-2">{{$message}}</p>
+                            @enderror
                         </div>
-                       
+                    @endauth
+
+                    <div>
+                        <label class="block text-gray-700 dark:text-white mb-1" for="phone_number">Phone Number</label>
+                        <input wire:model.defer="phone_number" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="phone_number" type="text" placeholder="09918898988">
                     </div>
+                    </div>
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                         <div>
                             <label class="block text-gray-700 dark:text-white mb-1" for="college_department">College/Department</label>
-                            <textarea class="h-11 w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="college_department" type="text" placeholder="CCIS - Computer Science"></textarea>
+                            <textarea wire:model.defer="college_department" class="h-11 w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="college_department" type="text" placeholder="CCIS - Computer Science"></textarea>
                         </div>
-                        <div>
-                            <label for="date_requested" class="block text-gray-700 dark:text-white mb-1">Expected Return Date</label>
-                            <input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="expected_return_date" type="datetime-local" name="expected_return_date" wire:model="expected_return_date">
-                        </div>
-                       
 
+                        <div>
+                            <label for="expected_return_date" class="block text-gray-700 dark:text-white mb-1">Expected Return Date</label>
+                            <input wire:model.defer="expected_return_date" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="expected_return_date" type="datetime-local" name="expected_return_date">
+                        </div>
                     </div>
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                         <div>
                             <label for="start_date" class="block text-gray-700 dark:text-white mb-1">Start Date and Time of Use</label>
-                            <input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="start_date" type="datetime-local" name="start_date">
+                            <input wire:model.defer="start_date" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="start_date" type="datetime-local" name="start_date">
                         </div>
+
                         <div>
                             <label for="end_date" class="block text-gray-700 dark:text-white mb-1">End Date and Time of Use</label>
-                            <input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="end_date" type="datetime-local" name="end_date">
+                            <input wire:model.defer="end_date" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="end_date" type="datetime-local" name="end_date">
                         </div>
                     </div>
+
                     <div class="mt-4">
                         <label class="block text-gray-700 dark:text-white mb-1" for="purpose">Purpose</label>
-                        <textarea  class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none focus:ring-orange-500 focus:border-orange-500" id="purpose" type="text" placeholder="Describe the purpose of this request..."></textarea>
-                        <label class="block text-gray-700 dark:text-white mb-1 mt-4" for="notes">Remarks</label>
-                        <textarea class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none focus:ring-orange-500 focus:border-orange-500" id="remarks" type="text" placeholder="Add any additional details..."></textarea>
+                        <textarea wire:model.defer="purpose" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none focus:ring-orange-500 focus:border-orange-500" id="purpose" placeholder="Describe the purpose of this request..."></textarea>
+
+                        <label class="block text-gray-700 dark:text-white mb-1 mt-4" for="remarks">Remarks</label>
+                        <textarea wire:model.defer="remarks" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none focus:ring-orange-500 focus:border-orange-500" id="remarks" placeholder="Add any additional details..."></textarea>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="md:col-span-12 lg:col-span-4 col-span-12">
             <div class="bg-white rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">
                 <div class="text-xl font-bold underline text-gray-700 dark:text-white mb-2">REQUEST SUMMARY</div>
@@ -79,12 +85,14 @@
                     <span>{{$total_request }}</span>
                 </div>
             </div>
-            <button wire:click="save" type="submit" onclick="window.location.href='/success'" class="bg-orange-500 mt-4 w-full p-3 rounded-lg text-lg text-white hover:bg-orange-600">
+
+            <button wire:click="save" type="submit" class="bg-orange-500 mt-4 w-full p-3 rounded-lg text-lg text-white hover:bg-orange-600">
                 <span wire:loading.remove wire:target='submit'>Submit Request</span>
                 <span wire:loading wire:target='submit'>Submitting Request...</span>
             </button>
+
             <div class="bg-white mt-4 rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">
-                <div class="text-xl font-bold underline text-gray-700 dark:text-white mb-2">ITEMS </div>
+                <div class="text-xl font-bold underline text-gray-700 dark:text-white mb-2">ITEMS</div>
                 <ul class="divide-y divide-gray-200 dark:divide-gray-700" role="list">
                     @foreach($requestlist_equipment as $re)
                     <li class="py-3 sm:py-4" wire:key='{{$re['equipment_id']}}'>
