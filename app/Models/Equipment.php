@@ -83,11 +83,6 @@ class Equipment extends Model
         return $this->hasMany(EquipmentMonitoring::class);
     }
 
-    /*public function stockUnit()
-    {
-        return $this->belongsTo(StockUnit::class, 'stock_unit_id');
-    }
-*/
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->timezone('Asia/Manila')->format('F d, Y h:i A');
@@ -101,64 +96,6 @@ class Equipment extends Model
     {
         return $this->hasMany(BorrowedItems::class);
     }
-    /*public function getDateAcquiredAttribute($value)
-    {
-        // Check if the value is numeric (Excel-style date)
-        if (is_numeric($value)) {
-            // Convert the numeric date (Excel date) to a proper date format
-            $excelStartDate = Carbon::createFromFormat('Y-m-d', '1900-01-01');
-            $date = $excelStartDate->addDays($value - 2); // Adjust for Excel's leap year bug
-            return $date->timezone('Asia/Manila')->format('M-d-y');
-        }
-
-        // If it's not numeric, parse it as a normal date
-        return Carbon::parse($value)->timezone('Asia/Manila')->format('M-d-y');
-    }*/
-
-    /*protected static function booted()
-    {
-        static::creating(function ($equipment) {
-            // Validate using the custom rule before saving the record
-            $validator = Validator::make($equipment->attributesToArray(), [
-                'property_no' => [
-                    'required',
-                    new UniquePropertyCategoryEquipment($equipment->category_id),
-                ],
-            ]);
-
-            if ($validator->fails()) {
-                throw new \Illuminate\Validation\ValidationException($validator);
-            }
-        });
-    }*/
-
-  
-
-    // protected static function booted()
-    // {
-    //     static::creating(function ($equipment) {
-    //         $equipment->generateQrCode();
-    //     });
-
-    //     static::updating(function ($equipment) {
-    //         $equipment->generateQrCode();
-    //     });
-    // }
-
-    // public function generateQrCode()
-    // {
-    //     // Generate a QR code with equipment details
-    //     $qrContent = "Equipment ID: {$this->id}, Name: {$this->name}, Serial No: {$this->serial_no}";
-        
-    //     // Save the QR code image in storage
-    //     $qrImage = QrCode::format('png')->size(200)->generate($qrContent);
-
-    //     $filePath = 'qr_codes/equipment_' . $this->id . '.png';
-    //     Storage::disk('public')->put($filePath, $qrImage);
-        
-    //     // Update the qr_code field in the database
-    //     $this->qr_code = $filePath;
-    // }
 
     protected $casts = [
         'alternate_images' => 'array'
