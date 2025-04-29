@@ -41,15 +41,17 @@ class BorrowedItemsResource extends Resource
     protected static ?string $pollingInterval = '1s';
     public static function getNavigationBadge(): ?string
     {
-        // Check if the user is authenticated and has the 'panel_user' role
-        if (Auth::check() && Auth::user()->hasRole('panel_user')) {
-            // Count only the records where 'user_id' matches the logged-in user's ID
-            return static::getModel()::where('user_id', Auth::id())->count();
-        }
-
-        // If the user is not a 'panel_user', return the total count
-        return static::getModel()::count();
+        return static::getModel()::where('request_status', 'Pending')->count();
     }
+    
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'info';
+    }
+    protected static ?string $navigationBadgeTooltip = 'Pending Requests';
+
+
+    
     /*
     public static function form(Form $form): Form
     {
