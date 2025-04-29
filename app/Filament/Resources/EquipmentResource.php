@@ -720,28 +720,28 @@ class EquipmentResource extends Resource
            For more information, go to the dashboard to download the user manual.')
             ->columns([
                 Tables\Columns\TextColumn::make('borrowedItems.status')
-                    ->label('Availability')
-                    ->sortable()
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: false)
-                    ->formatStateUsing(fn (string $state): string => ucfirst(strtolower($state)))
-                    ->badge()
-                    ->color(fn (string $state): string => match (strtolower($state)) {
-                        'available' => 'success',
-                        'borrowed' => 'warning',
-                        'unavailable' => 'danger',
-                    })
-                    ->getStateUsing(function (Equipment $equipment) {
-                        $status = strtolower($equipment->status);
+                ->label('Availability')
+                ->sortable()
+                ->searchable()
+                ->toggleable(isToggledHiddenByDefault: false)
+                ->formatStateUsing(fn (string $state): string => ucfirst(strtolower($state)))
+                ->badge()
+                ->color(fn (string $state): string => match (strtolower($state)) {
+                    'available' => 'success',
+                    'borrowed' => 'warning',
+                    'unavailable' => 'danger',
+                })
+                ->getStateUsing(function (Equipment $equipment) {
+                    $status = strtolower($equipment->status);
 
-                        if ($status !== 'working') {
-                            return 'unavailable';
-                        }
+                    if ($status !== 'working') {
+                        return 'unavailable';
+                    }
 
-                        return $equipment->borrowedItems()->where('status', 'unreturned')->exists()
-                            ? 'borrowed'
-                            : 'available';
-                    }),
+                    return $equipment->borrowedItems()->where('status', 'unreturned')->exists()
+                        ? 'borrowed'
+                        : 'available';
+                }),
 
 
 
