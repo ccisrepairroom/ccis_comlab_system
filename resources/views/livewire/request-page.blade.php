@@ -16,7 +16,7 @@
                   <th class="text-left font-semibold p-2 whitespace-nowrap">Facility</th>
                   <th class="text-left font-semibold p-2 whitespace-nowrap">Serial No.</th>
                   <th class="text-left font-semibold p-2 whitespace-nowrap">Property No.</th>
-                  <th class="text-left font-semibold p-2 whitespace-nowrap">Remove</th>
+                  <th class="text-left font-semibold p-2 whitespace-nowrap">Action</th>
                 </tr>
               </thead>
               <tbody>

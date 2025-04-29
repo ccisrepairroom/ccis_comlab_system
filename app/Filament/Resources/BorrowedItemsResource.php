@@ -349,7 +349,7 @@ class BorrowedItemsResource extends Resource
                 // ),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\Action::make('viewPdf')
-                        ->label('Download Form')
+                        ->label('Print Request Form')
                         ->icon('heroicon-o-document-text')
                         ->action(function ($record) {
                             // Generate the download URL

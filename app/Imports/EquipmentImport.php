@@ -20,67 +20,86 @@ class EquipmentImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-        $serialNumber = $row['serial_number'] ?? null;
-
-        if ($serialNumber && Equipment::where('serial_no', $serialNumber)->exists()) {
-            Notification::make()
-                ->title('Duplicate Serial Number')
-                ->body("Equipment with Serial Number: {$serialNumber} already exists.")
-                ->danger()
-                ->duration(5000)
-                ->send();
-
-            return null; // Skip inserting this duplicate record
+        // Skip rows where brand_name is missing
+        if (empty($row['brand_name'])) {
+            return null;
         }
 
-        // Check if person liable exists
-        $userName = trim($row['person_liable'] ?? '');
-        if ($userName && !User::where('name', $userName)->exists()) {
-            if (!in_array($userName, $this->missingUsers)) {
-                $this->missingUsers[] = $userName;
+        $serialNumber = $row['serial_number'] ?? null;
+        $status = strtolower(trim($row['status'] ?? ''));
+
+        // Check if an equipment with the same serial number exists
+        $existingEquipment = Equipment::where('serial_no', $serialNumber)->first();
+
+        if ($existingEquipment && !in_array(strtolower($serialNumber), ['n/a'])) {
+            // If the status is the same, show notification and skip
+            if (strtolower($existingEquipment->status) === $status) {
+                Notification::make()
+                    ->title('Duplicate Serial Number')
+                    ->body("Equipment with Serial Number: {$serialNumber} and Status: {$status} already exists.")
+                    ->danger()
+                    ->duration(5000)
+                    ->send();
+
+                return null; // Skip inserting this duplicate record
+            }
+
+            // If status in Excel is 'for disposal' or 'disposed', update existing record
+            if (in_array($status, ['for disposal', 'disposed'])) {
+                $existingEquipment->update(['status' => $status]);
+                return null; // Skip inserting a duplicate entry
             }
         }
 
-        // If any user is missing, stop the import
-        if (!empty($this->missingUsers)) {
-            Notification::make()
-                ->title('Import Canceled')
-                ->body('Import failed! The following Persons Liable do not have accounts: ' . implode(', ', $this->missingUsers))
-                ->danger()
-                ->duration(5000)
-                ->send();
+    // Check if person liable exists, if not create a user
+    $userName = trim($row['person_liable'] ?? '');
 
-            throw new Exception('Import canceled due to missing users.');
+    if ($userName) {
+        $existingUser = User::where('name', $userName)->first();
+
+        if (!$existingUser) {
+            // Create a new user with default attributes
+            $newUser = User::create([
+                'name' => $userName,
+                'email' => strtolower(str_replace(' ', '', $userName)) . '@carsu.edu.ph',
+                'role_id' => 5,
+                'designation' => 'other',
+                'department' => 'not_applicable',
+                'password' => bcrypt('manana'),
+            ]);
         }
-
-        $facilityName = trim($row['facility'] ?? '');
-        $categoryDescription = trim($row['category'] ?? '');
-
-        $facility = $facilityName ? Facility::firstOrCreate(['name' => $facilityName], ['name' => $facilityName]) : null;
-        $category = $categoryDescription ? Category::firstOrCreate(['description' => $categoryDescription], ['description' => $categoryDescription]) : null;
-
-        $data = [
-            'unit_no' => $row['unit_number'] ?? null,
-            'brand_name' => $row['brand_name'] ?? null,
-            'description' => $row['description'] ?? null,
-            'user_id' => User::where('name', $userName)->value('id') ?? null,
-            'facility_id' => $facility ? $facility->id : null,
-            'category_id' => $category ? $category->id : null,
-            'status' => $row['status'] ?? null,
-            'date_acquired' => $row['date_acquired'] ?? null,
-            'supplier' => $row['supplier'] ?? null,
-            'amount' => $row['amount'] ?? null,
-            'estimated_life' => $row['estimated_life'] ?? null,
-            'item_no' => $row['item_number'] ?? null,
-            'po_number' => $row['po_number'] ?? null,
-            'property_no' => $row['property_number'] ?? null,
-            'control_no' => $row['control_number'] ?? null,
-            'serial_no' => $serialNumber,
-            'remarks' => $row['remarks'] ?? null,
-        ];
-
-        return new Equipment($data);
     }
+
+    $facilityName = trim($row['facility'] ?? '');
+    $categoryDescription = trim($row['category'] ?? '');
+
+    $facility = $facilityName ? Facility::firstOrCreate(['name' => $facilityName], ['name' => $facilityName]) : null;
+    $category = $categoryDescription ? Category::firstOrCreate(['description' => $categoryDescription], ['description' => $categoryDescription]) : null;
+
+    $data = [
+        'unit_no' => $row['unit_number'] ?? null,
+        'brand_name' => $row['brand_name'] ?? null,
+        'description' => $row['description'] ?? null,
+        'user_id' => User::where('name', $userName)->value('id') ?? null,
+        'facility_id' => $facility ? $facility->id : null,
+        'category_id' => $category ? $category->id : null,
+        'status' => $status,
+        'date_acquired' => $row['date_acquired'] ?? null,
+        'supplier' => $row['supplier'] ?? null,
+        'amount' => $row['amount'] ?? null,
+        'estimated_life' => $row['estimated_life'] ?? null,
+        'item_no' => $row['item_number'] ?? null,
+        'po_number' => $row['po_number'] ?? null,
+        'property_no' => $row['property_number'] ?? null,
+        'control_no' => $row['control_number'] ?? null,
+        'serial_no' => $serialNumber,
+        'remarks' => $row['remarks'] ?? null,
+    ];
+
+    return new Equipment($data);
+}
+
+
 
 
     public function getFacilityId($location)
