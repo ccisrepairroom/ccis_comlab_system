@@ -16,6 +16,7 @@ class BorrowedItems extends ApprovableModel
         'user_id',
         'request_code',
         'borrowed_by',
+        'phone_number',
         'equipment_id',
         'facility_id',
         'request_status',

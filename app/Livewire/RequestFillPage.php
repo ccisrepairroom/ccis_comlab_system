@@ -80,6 +80,7 @@ class RequestFillPage extends Component
             'remarks' => $this->remarks,
             'status' => 'Unreturned',
             'borrowed_by' => $this->name,
+            'phone_number' => $this->phone_number,
             'request_code' => $nextRequestCode,  // Ensure the request_code is passed here
         ]);
     }
