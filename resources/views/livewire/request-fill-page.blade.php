@@ -10,7 +10,7 @@
                        <div>
     <label class="block text-gray-700 dark:text-white mb-1" for="name">Name</label>
     <div class="relative" wire:model="name">
-        <input wire:model.defer="name" class="w-full rounded-lg border py-2 px-3 dark:bg-orange-500 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="name" type="text" placeholder="Rosalyn Banguis" aria-describedby="name-error">
+        <input wire:model.defer="name" class="w-full rounded-lg border py-2 px-3 dark:bg-orange-500 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="name" type="text" placeholder="Juan Dela Cruz" aria-describedby="name-error">
         
         @error('name')
         <div class="absolute inset-y-0 right-3 flex items-center">
@@ -27,20 +27,22 @@
 </div>
 
                     @endauth
-                        <div>
-                            <label for="date_requested" class="block text-gray-700 dark:text-white mb-1">Date</label>
-                            <input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="date_requested" type="datetime-local" name="date_requested" wire:model="date_requested" value="{{ now('Asia/Manila')->format('Y-m-d\TH:i') }}">
+                    <div>
+                            <label class="block text-gray-700 dark:text-white mb-1" for="phone_number">Phone Number</label>
+                            <input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="phone_number" type="text" placeholder="09918898988">
                         </div>
+                       
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                         <div>
                             <label class="block text-gray-700 dark:text-white mb-1" for="college_department">College/Department</label>
                             <textarea class="h-11 w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="college_department" type="text" placeholder="CCIS - Computer Science"></textarea>
                         </div>
-                       <div>
-                            <label class="block text-gray-700 dark:text-white mb-1" for="phone_number">Phone Number</label>
-                            <input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="phone_number" type="text" placeholder="09918898988">
+                        <div>
+                            <label for="date_requested" class="block text-gray-700 dark:text-white mb-1">Expected Return Date</label>
+                            <input class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="expected_return_date" type="datetime-local" name="expected_return_date" wire:model="expected_return_date">
                         </div>
+                       
 
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
@@ -56,8 +58,8 @@
                     <div class="mt-4">
                         <label class="block text-gray-700 dark:text-white mb-1" for="purpose">Purpose</label>
                         <textarea  class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none focus:ring-orange-500 focus:border-orange-500" id="purpose" type="text" placeholder="Describe the purpose of this request..."></textarea>
-                        <label class="block text-gray-700 dark:text-white mb-1 mt-4" for="notes">Notes</label>
-                        <textarea class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none focus:ring-orange-500 focus:border-orange-500" id="notes" type="text" placeholder="Add any additional details..."></textarea>
+                        <label class="block text-gray-700 dark:text-white mb-1 mt-4" for="notes">Remarks</label>
+                        <textarea class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none focus:ring-orange-500 focus:border-orange-500" id="remarks" type="text" placeholder="Add any additional details..."></textarea>
                     </div>
                 </div>
             </div>
@@ -82,7 +84,7 @@
                 <span wire:loading wire:target='submit'>Submitting Request...</span>
             </button>
             <div class="bg-white mt-4 rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">
-                <div class="text-xl font-bold underline text-gray-700 dark:text-white mb-2">ITEMS REQUESTED</div>
+                <div class="text-xl font-bold underline text-gray-700 dark:text-white mb-2">ITEMS </div>
                 <ul class="divide-y divide-gray-200 dark:divide-gray-700" role="list">
                     @foreach($requestlist_equipment as $re)
                     <li class="py-3 sm:py-4" wire:key='{{$re['equipment_id']}}'>

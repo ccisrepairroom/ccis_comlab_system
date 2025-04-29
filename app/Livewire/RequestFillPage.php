@@ -25,7 +25,6 @@ class RequestFillPage extends Component
         $this->requestlist_equipment = RequestManagement::getRequestListEquipmentFromCookie();
         $this->total_request = RequestManagement::calculateTotalRequestedEquipment($this->requestlist_equipment);
         $this->category_totals = RequestManagement::calculateTotalByCategory();
-        $this->date_requested = Carbon::now('Asia/Manila')->format('Y-m-d\TH:i');
 
         
         $requestlist_equipment = RequestManagement::getRequestListEquipmentFromCookie();
