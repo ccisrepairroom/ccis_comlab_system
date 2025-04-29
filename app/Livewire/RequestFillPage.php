@@ -42,7 +42,7 @@ class RequestFillPage extends Component
     public function save()
 {
     $user = Auth::user();
-
+    
     // Validate required fields (adjust as necessary)
     $this->validate([
         'name' => 'required|string|max:255',
@@ -54,14 +54,14 @@ class RequestFillPage extends Component
         'purpose' => 'required|string',
         'remarks' => 'nullable|string',
     ]);
-
+    
     // Generate the unique request code
     $latestRequestCode = BorrowedItems::latest()->first();  // Get the most recent request_code
     $nextRequestCode = $latestRequestCode ? str_pad((int)substr($latestRequestCode->request_code, 1) + 1, 5, '0', STR_PAD_LEFT) : '00001';
-
+    
     // Log the generated request code for debugging
     Log::info('Generated Request Code: ' . $nextRequestCode);
-
+    
     // Loop through each item in the request list and save them with the generated request_code
     foreach ($this->requestlist_equipment as $equipment) {
         BorrowedItems::create([
@@ -83,24 +83,31 @@ class RequestFillPage extends Component
             'request_code' => $nextRequestCode,  // Ensure the request_code is passed here
         ]);
     }
-
-   // Save the request data to the session
-   session()->put('success_request', [
-    'request_code' => $nextRequestCode,
-    'name' => $this->name,
-    'phone_number' => $this->phone_number,
-    'college_department' => $this->college_department,
-    'purpose' => $this->purpose,
-    'start_date' => $this->start_date,
-    'end_date' => $this->end_date,
-    'expected_return_date' => $this->expected_return_date,
-]);
-
+    
+    // Clear the request list from the cookie
+    RequestManagement::clearRequestListEquipment();
+    
+    // Optionally, clear the request session data as well
+    session()->forget('success_request');
+    
+    // Save the request data to the session
+    session()->put('success_request', [
+        'request_code' => $nextRequestCode,
+        'name' => $this->name,
+        'phone_number' => $this->phone_number,
+        'college_department' => $this->college_department,
+        'purpose' => $this->purpose,
+        'start_date' => $this->start_date,
+        'end_date' => $this->end_date,
+        'expected_return_date' => $this->expected_return_date,
+    ]);
+    
     // Optionally, you can redirect to a success page or show a message
     session()->flash('message', 'Request submitted successfully!');
     return redirect()->route('success');  // Or any route you want after submission
 }
 
+    
 
 public function render()
 {

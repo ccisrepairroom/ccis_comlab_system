@@ -115,21 +115,24 @@ class BorrowedItemsResource extends Resource
                 }
             })*/
                 Tables\Columns\TextColumn::make('borrowed_date')
-                    ->label('Date Borrowed')
+                    ->label('Date Requested')
                     ->searchable()
                     ->sortable()
                     
-                    ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A'))
                     
                     ->toggleable(isToggledHiddenByDefault: false),
-
+                Tables\Columns\TextColumn::make('request_code')
+                    ->label('Request Code')    
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Created By')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('borrowed_by')
-                    ->label('Borrowed By')    
+                    ->label('Borrower')    
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
@@ -150,7 +153,7 @@ class BorrowedItemsResource extends Resource
                 Tables\Columns\TextColumn::make('equipment.unit_no')
                     ->label('Unit Number')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.category.description')
                     ->label('Category')
@@ -252,6 +255,7 @@ class BorrowedItemsResource extends Resource
 
                 // \EightyNine\Approvals\Tables\Columns\ApprovalStatusColumn::make("approvalStatus.status"),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 SelectFilter::make('borrowed_date')
                 ->label('Date Created')
