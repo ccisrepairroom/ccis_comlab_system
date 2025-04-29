@@ -560,16 +560,16 @@ class EquipmentResource extends Resource
                     ->success()
                     ->send();
             }),
-            Tables\Actions\BulkAction::make('add_to_request_list')
-            ->label('Request')
+            Tables\Actions\BulkAction::make('add_to_borrowed_items')
+            ->label('Borrow')
             ->icon('heroicon-o-plus')
-            ->color('primary')
+            ->color('success')
             ->requiresConfirmation()
             ->modalIcon('heroicon-o-check')
-            ->modalHeading('Add to Request List')
-            ->modalDescription('Confirm to add selected items to your request list')
+            ->modalHeading('Confirm Borrow Request')
+            ->modalDescription('Please confirm to borrow the selected equipment.')
             ->form([
-                Forms\Components\Grid::make([ 'default' => 2 ])->schema([
+                Forms\Components\Grid::make(['default' => 2])->schema([
                     Forms\Components\TextInput::make('borrowed_by')
                         ->required()
                         ->label('Name')
@@ -599,84 +599,41 @@ class EquipmentResource extends Resource
                         ->timezone('Asia/Manila'),
                     Forms\Components\TextArea::make('purpose')
                         ->required()
-                        ->label('Purpose')
-                        ->placeholder('Enter purpose'),
+                        ->label('Purpose'),
                     Forms\Components\TextArea::make('remarks')
                         ->label('Remarks'),
-                ])
+                ]),
             ])
             ->action(function ($data, $records) {
-                // Initialize variables
-                $added = false;
                 $unreturnedItems = [];
                 $nonWorkingItems = [];
-                
-                // Generate the unique request code
-                $latestRequestCode = BorrowedItems::latest()->first();  // Get the most recent request_code
-                $nextRequestCode = $latestRequestCode
-                    ? str_pad((int)substr($latestRequestCode->request_code, 1) + 1, 5, '0', STR_PAD_LEFT)
+                $successfulEntries = false;
+        
+                // Generate unique request code
+                $latestRecord = BorrowedItems::latest()->first();
+                $requestCode = $latestRecord
+                    ? str_pad((int)substr($latestRecord->request_code, 1) + 1, 5, '0', STR_PAD_LEFT)
                     : '00001';
-                
-                // Loop through the selected records
+        
+                // Loop through each selected equipment record
                 foreach ($records as $record) {
                     $equipmentId = $record->id;
         
-                    // Check if the equipment is borrowed and unreturned
-                    $borrowedItem = BorrowedItems::where('equipment_id', $equipmentId)
+                    // Skip if equipment is already borrowed and not yet returned
+                    if (BorrowedItems::where('equipment_id', $equipmentId)
                         ->where('status', 'unreturned')
-                        ->first();
-        
-                    if ($borrowedItem) {
+                        ->exists()) {
                         $unreturnedItems[] = $record->brand_name;
-                        continue; // Skip this record if borrowed and unreturned
+                        continue;
                     }
         
-                    // Check if the equipment is working
+                    // Skip if equipment is not in working condition
                     if (strtolower($record->status) !== 'working') {
                         $nonWorkingItems[] = $record->brand_name;
-                        continue; // Skip this record if it's not working
+                        continue;
                     }
         
-                    // Create the request list entry
-                    $categoryId = $record->category_id;
-                    $facilityId = $record->facility_id;
-        
-                    RequestList::updateOrCreate([
-                        'user_id' => auth()->id(),
-                        'equipment_id' => $equipmentId,
-                        'facility_id' => $facilityId ?? null,
-                    ]);
-        
-                    $added = true; // Mark that we added at least one item
-                }
-        
-                // Send notifications based on the results
-                if (count($unreturnedItems) > 0) {
-                    Notification::make()
-                        ->warning()
-                        ->title('Cannot be Added')
-                        ->body(implode(', ', $unreturnedItems) . ' are unreturned and cannot be added to the request list.')
-                        ->send();
-                }
-        
-                if (count($nonWorkingItems) > 0) {
-                    Notification::make()
-                        ->warning()
-                        ->title('Cannot be Added')
-                        ->body(implode(', ', $nonWorkingItems) . ' are not working and cannot be added to the request list.')
-                        ->send();
-                }
-        
-                if ($added) {
-                    Notification::make()
-                        ->success()
-                        ->title('Success')
-                        ->body('Selected items have been added to Borrowed Items.')
-                        ->send();
-                }
-        
-                // Process the form data and save it to the database for each equipment item
-                foreach ($records as $record) {
+                    // Create new BorrowedItems entry for the valid equipment
                     BorrowedItems::create([
                         'user_id' => auth()->id(),
                         'borrowed_by' => $data['borrowed_by'],
@@ -687,15 +644,44 @@ class EquipmentResource extends Resource
                         'end_date_and_time_of_use' => $data['end_date_and_time_of_use'],
                         'purpose' => $data['purpose'],
                         'remarks' => $data['remarks'],
-                        'request_code' => $nextRequestCode,  // Assign the generated request code here
-                        'equipment_id' => $record->id,  // Save the equipment_id for the specific equipment
-                        'request_status' => 'Pending',  // Set request_status to 'Pending'
-                        'status' => 'Unreturned',  // Set status to 'Unreturned'
+                        'request_code' => $requestCode,
+                        'equipment_id' => $equipmentId,
+                        'request_status' => 'Pending',
+                        'status' => 'Unreturned',
                     ]);
+        
+                    $successfulEntries = true;
                 }
         
-               
+                // Notify if some equipment were not borrowed
+                if (count($unreturnedItems)) {
+                    Notification::make()
+                        ->warning()
+                        ->title('Borrowed')
+                        ->body(implode(', ', $unreturnedItems) . ' is still unreturned.')
+                        ->send();
+                }
+        
+                if (count($nonWorkingItems)) {
+                    Notification::make()
+                        ->warning()
+                        ->title('Unavailable')
+                        ->body(implode(', ', $nonWorkingItems) . ' is not working.')
+                        ->send();
+                }
+        
+                // Notify if borrow action was successful
+                if ($successfulEntries) {
+                    Notification::make()
+                        ->success()
+                        ->title(' Request Submitted')
+                        ->body('The equipment has been successfully added to your borrowed items.')
+                        ->send();
+                }
             })
+        
+               
+            
             ->hidden(fn () => $isFaculty)
             ->color('success'),
         
