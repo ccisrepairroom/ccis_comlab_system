@@ -560,87 +560,152 @@ class EquipmentResource extends Resource
                     ->success()
                     ->send();
             }),
-        
             Tables\Actions\BulkAction::make('add_to_request_list')
-                ->label('Add to Request List')
-                ->icon('heroicon-o-plus')
-                ->action(function (Collection $records) {
-                    $added = false; // Flag to track if any items were successfully added
-                    $unreturnedItems = []; // Array to track unreturned items
-                    $nonWorkingItems = []; // Array to track non-working items
+            ->label('Request')
+            ->icon('heroicon-o-plus')
+            ->color('primary')
+            ->requiresConfirmation()
+            ->modalIcon('heroicon-o-check')
+            ->modalHeading('Add to Request List')
+            ->modalDescription('Confirm to add selected items to your request list')
+            ->form([
+                Forms\Components\Grid::make([ 'default' => 2 ])->schema([
+                    Forms\Components\TextInput::make('borrowed_by')
+                        ->required()
+                        ->label('Name')
+                        ->placeholder('Enter your name'),
+                    Forms\Components\TextInput::make('phone_number')
+                        ->required()
+                        ->label('Phone Number')
+                        ->maxLength(15),
+                    Forms\Components\TextArea::make('college_department')
+                        ->required()
+                        ->label('College/Department')
+                        ->placeholder('Enter your department'),
+                    Forms\Components\DateTimePicker::make('expected_return_date')
+                        ->required()
+                        ->label('Expected Return Date')
+                        ->default(now('Asia/Manila'))
+                        ->timezone('Asia/Manila'),
+                    Forms\Components\DateTimePicker::make('start_date_and_time_of_use')
+                        ->required()
+                        ->label('Start Date and Time of Use')
+                        ->default(now('Asia/Manila'))
+                        ->timezone('Asia/Manila'),
+                    Forms\Components\DateTimePicker::make('end_date_and_time_of_use')
+                        ->required()
+                        ->label('End Date and Time of Use')
+                        ->default(now('Asia/Manila'))
+                        ->timezone('Asia/Manila'),
+                    Forms\Components\TextArea::make('purpose')
+                        ->required()
+                        ->label('Purpose')
+                        ->placeholder('Enter purpose'),
+                    Forms\Components\TextArea::make('remarks')
+                        ->label('Remarks'),
+                ])
+            ])
+            ->action(function ($data, $records) {
+                // Initialize variables
+                $added = false;
+                $unreturnedItems = [];
+                $nonWorkingItems = [];
                 
-                    foreach ($records as $record) {
-                        // Get the equipment ID
-                        $equipmentId = $record->id;
+                // Generate the unique request code
+                $latestRequestCode = BorrowedItems::latest()->first();  // Get the most recent request_code
+                $nextRequestCode = $latestRequestCode
+                    ? str_pad((int)substr($latestRequestCode->request_code, 1) + 1, 5, '0', STR_PAD_LEFT)
+                    : '00001';
                 
-                        // Check if the equipment is currently borrowed and has a status of "unreturned"
-                        $borrowedItem = BorrowedItems::where('equipment_id', $equipmentId)
-                            ->where('status', 'unreturned')
-                            ->first();
-                
-                        if ($borrowedItem) {
-                            // Track unreturned items
-                            $unreturnedItems[] = $record->brand_name;  // Assuming 'brand_name' is a field on the equipment record
-                            continue; // Skip this record and proceed with the next one
-                        }
-                
-                        // Check if the equipment status is "working"
-                        if  (strtolower($record->status) !== 'working'){
-                            // Track non-working items
-                            $nonWorkingItems[] = $record->brand_name;  // Assuming 'brand_name' is a field on the equipment record
-                            continue; // Skip this record if not working
-                        }
-                        
-                        // If the equipment is not unreturned and is working, add it to the request list
-                        $categoryId = $record->category_id; 
-                        $facilityId = $record->facility_id; 
-                
-                        RequestList::updateOrCreate(
-                            [
-                                'user_id' => auth()->id(),
-                                'equipment_id' => $equipmentId,
-                                'facility_id' => $facilityId ?? null,
-                            ]
-                        );
-                
-                        $added = true; // Mark that we added at least one item
+                // Loop through the selected records
+                foreach ($records as $record) {
+                    $equipmentId = $record->id;
+        
+                    // Check if the equipment is borrowed and unreturned
+                    $borrowedItem = BorrowedItems::where('equipment_id', $equipmentId)
+                        ->where('status', 'unreturned')
+                        ->first();
+        
+                    if ($borrowedItem) {
+                        $unreturnedItems[] = $record->brand_name;
+                        continue; // Skip this record if borrowed and unreturned
                     }
-                
-                    // Notify for unreturned items first
-                    if (count($unreturnedItems) > 0) {
-                        Notification::make()
-                            ->warning()
-                            ->title('Cannot be Added')
-                            ->body(implode(', ', $unreturnedItems) . ' are unreturned and cannot be added to the request list.')
-                            ->send();
+        
+                    // Check if the equipment is working
+                    if (strtolower($record->status) !== 'working') {
+                        $nonWorkingItems[] = $record->brand_name;
+                        continue; // Skip this record if it's not working
                     }
-                
-                    // Notify for non-working items
-                    if (count($nonWorkingItems) > 0) {
-                        Notification::make()
-                            ->warning()
-                            ->title('Cannot be Added')
-                            ->body(implode(', ', $nonWorkingItems) . ' are not working and cannot be added to the request list.')
-                            ->send();
-                    }
-                
-                    // Only send success notification if any item was successfully added
-                    if ($added) {
-                        Notification::make()
-                            ->success()
-                            ->title('Success')
-                            ->body('Selected items have been added to your request list.')
-                            ->send();
-                    }
-                })
-                ->color('primary')
-                ->requiresConfirmation()
-                ->modalIcon('heroicon-o-check')
-                ->modalHeading('Add to Request List')
-                ->modalDescription('Confirm to add selected items to your request list'),
+        
+                    // Create the request list entry
+                    $categoryId = $record->category_id;
+                    $facilityId = $record->facility_id;
+        
+                    RequestList::updateOrCreate([
+                        'user_id' => auth()->id(),
+                        'equipment_id' => $equipmentId,
+                        'facility_id' => $facilityId ?? null,
+                    ]);
+        
+                    $added = true; // Mark that we added at least one item
+                }
+        
+                // Send notifications based on the results
+                if (count($unreturnedItems) > 0) {
+                    Notification::make()
+                        ->warning()
+                        ->title('Cannot be Added')
+                        ->body(implode(', ', $unreturnedItems) . ' are unreturned and cannot be added to the request list.')
+                        ->send();
+                }
+        
+                if (count($nonWorkingItems) > 0) {
+                    Notification::make()
+                        ->warning()
+                        ->title('Cannot be Added')
+                        ->body(implode(', ', $nonWorkingItems) . ' are not working and cannot be added to the request list.')
+                        ->send();
+                }
+        
+                if ($added) {
+                    Notification::make()
+                        ->success()
+                        ->title('Success')
+                        ->body('Selected items have been added to Borrowed Items.')
+                        ->send();
+                }
+        
+                // Process the form data and save it to the database for each equipment item
+                foreach ($records as $record) {
+                    BorrowedItems::create([
+                        'user_id' => auth()->id(),
+                        'borrowed_by' => $data['borrowed_by'],
+                        'phone_number' => $data['phone_number'],
+                        'college_department' => $data['college_department'],
+                        'expected_return_date' => $data['expected_return_date'],
+                        'start_date_and_time_of_use' => $data['start_date_and_time_of_use'],
+                        'end_date_and_time_of_use' => $data['end_date_and_time_of_use'],
+                        'purpose' => $data['purpose'],
+                        'remarks' => $data['remarks'],
+                        'request_code' => $nextRequestCode,  // Assign the generated request code here
+                        'equipment_id' => $record->id,  // Save the equipment_id for the specific equipment
+                        'request_status' => 'Pending',  // Set request_status to 'Pending'
+                        'status' => 'Unreturned',  // Set status to 'Unreturned'
+                    ]);
+                }
+        
+               
+            })
+            ->hidden(fn () => $isFaculty)
+            ->color('success'),
+        
+        
+
+
+];
                 
         
-        ];
+        
         
         // Conditionally add ExportBulkAction
         if (!$isFaculty) {
