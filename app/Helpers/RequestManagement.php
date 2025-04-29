@@ -129,10 +129,10 @@ class RequestManagement {
     return $requestlist_equipment;
     }
 
-    // Group equipment by category and get totals
-    public static function calculateTotalByCategory()
+   // Group equipment by category and get totals
+    public static function calculateTotalByCategory(array $requestlist_equipment = null)
     {
-        $requestlist_equipment = self::getRequestListEquipmentFromCookie();
+        $requestlist_equipment = $requestlist_equipment ?? self::getRequestListEquipmentFromCookie();
         $category_totals = [];
 
         foreach ($requestlist_equipment as $equipment) {
@@ -140,26 +140,27 @@ class RequestManagement {
             if (!isset($category_totals[$category])) {
                 $category_totals[$category] = 0;
             }
-            $category_totals[$category] += $equipment['quantity'];
+            $category_totals[$category] += $equipment['quantity'] ?? 1;
         }
 
         return $category_totals;
     }
 
-    //calculate total equipment
-    public static function calculateTotalRequestedEquipment()
+    // Calculate total equipment
+    public static function calculateTotalRequestedEquipment(array $requestlist_equipment = null)
     {
-    $requestlist_equipment = self::getRequestListEquipmentFromCookie();
+        $requestlist_equipment = $requestlist_equipment ?? self::getRequestListEquipmentFromCookie();
 
-    // Sum all quantities in the request list
-    return array_sum(array_column($requestlist_equipment, 'quantity'));
+        return array_sum(array_column($requestlist_equipment, 'quantity'));
     }
-    
-    public static function getRequestedEquipmentIds()
+
+    // Just in case you want to make this flexible too:
+    public static function getRequestedEquipmentIds(array $requestlist_equipment = null)
     {
-        $requestlist_equipment = self::getRequestListEquipmentFromCookie();
+        $requestlist_equipment = $requestlist_equipment ?? self::getRequestListEquipmentFromCookie();
 
         return array_column($requestlist_equipment, 'equipment_id');
     }
+
 
 }

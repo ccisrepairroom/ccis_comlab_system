@@ -20,7 +20,7 @@ class RequestPage extends Component
     public function mount(){
         $this->requestlist_equipment = RequestManagement::getRequestListEquipmentFromCookie();
         $this->total_request = RequestManagement::calculateTotalRequestedEquipment($this->requestlist_equipment);
-        $this->category_totals = RequestManagement::calculateTotalByCategory();
+        $this->category_totals = RequestManagement::calculateTotalByCategory($this->requestlist_equipment);
 
 
         $this->dispatch('update-requests-count', total_count: count($this->requestlist_equipment))->to(Navbar::class);

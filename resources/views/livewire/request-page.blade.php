@@ -11,7 +11,7 @@
             <table class="w-full min-w-[600px] sm:min-w-full">
               <thead class="bg-gray-100">
                 <tr>
-                  <th class="text-left font-semibold p-2 whitespace-nowrap">Items</th>
+                  <th class="text-left font-semibold p-2 whitespace-nowrap">Item</th>
                   <th class="text-left font-semibold p-2 whitespace-nowrap">Category</th>
                   <th class="text-left font-semibold p-2 whitespace-nowrap">Facility</th>
                   <th class="text-left font-semibold p-2 whitespace-nowrap">Serial No.</th>
