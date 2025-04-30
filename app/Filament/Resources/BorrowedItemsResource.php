@@ -125,6 +125,7 @@ class BorrowedItemsResource extends Resource
                 foreach ($records as $record) {
                     $record->update([
                         'request_status' => 'rejected',
+                        'status' => '------',
                         'remarks' => $remarks,  
                     ]);
                 }
@@ -232,7 +233,6 @@ class BorrowedItemsResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable()
-                    ->formatStateUsing(fn(string $state): string => ucfirst(strtolower($state)))
                     ->badge()
                     ->color(fn(string $state): string => match (strtolower($state)) {
                         'returned' => 'success',

@@ -10,6 +10,31 @@ use App\Helpers\RequestManagement;
 class Navbar extends Component
 {
     public $total_count=0;
+    public function redirectToDashboard()
+    {
+        $this->js("window.open('http://127.0.0.1:8000/ccis_erma/management', '_blank')");
+    }
+  
+    public function redirectToMyRequests()
+    {
+        return redirect('/my-requests');
+    }
+    public function redirectToMyProfile()
+    {
+        return redirect('/my-profile');
+    }
+    public function redirectToHome()
+    {
+        return redirect('/');
+    }
+    public function redirectToEquipment()
+    {
+        return redirect('/equipment');
+    }
+    public function signout()
+    {
+        return redirect('/signout');
+    }
 
     public function mount(){
         $this->total_count = count(RequestManagement::getRequestListEquipmentFromCookie());

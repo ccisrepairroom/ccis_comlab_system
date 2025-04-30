@@ -116,7 +116,7 @@ Route::middleware('auth')->group(function(){
         return redirect('/');
     });
     Route::get('/request-form', RequestFillPage::class);
-    // Route::get('/my-requests', MyRequestsPage::class);
+    Route::get('/my-requests', MyRequestsPage::class)->name('myrequests');
     // Route::get('/my-request-detail', MyRequestDetailPage::class);
     Route::get('/success', SuccessPage::class)->name('success');
     Route::get('/cancel', CancelPage::class);

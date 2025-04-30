@@ -52,4 +52,8 @@ class BorrowedItems extends ApprovableModel
     {
         return $this->belongsTo(BorrowList::class);
     }
+    protected $casts = [
+        'start_date_and_time_of_use' => 'datetime',
+        'end_date_and_time_of_use' => 'datetime',
+    ];
 }

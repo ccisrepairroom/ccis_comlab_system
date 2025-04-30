@@ -54,12 +54,13 @@
       
         <!-- Buttons -->
         <div class="flex justify-start gap-4 px-4 mt-6">
-          <a href="/" class="px-4 py-2 text-orange-500 border border-orange-500 rounded-md hover:text-white hover:bg-orange-600 dark:border-gray-700 dark:hover:bg-gray-700 dark:text-gray-300">
+          <a wire:click="redirectToHome" class="px-4 py-2 text-orange-500 border border-orange-500 rounded-md hover:text-white hover:bg-orange-600 dark:border-gray-700 dark:hover:bg-gray-700 dark:text-gray-300">
             Go to home
           </a>
-          <a href="/orders" class="px-4 py-2 bg-orange-500 rounded-md text-gray-50 hover:bg-orange-600 dark:hover:bg-gray-700 dark:bg-gray-800">
+          <a wire:click="redirectToMyRequests" class="px-4 py-2 bg-orange-500 rounded-md text-gray-50 hover:bg-orange-600 dark:hover:bg-gray-700 dark:bg-gray-800">
             View My Requests
           </a>
+          <x-loading-indicator wire:loading />
         </div>
       </div>
     </div>

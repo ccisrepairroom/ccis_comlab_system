@@ -646,8 +646,8 @@ class EquipmentResource extends Resource
                         'remarks' => $data['remarks'],
                         'request_code' => $requestCode,
                         'equipment_id' => $equipmentId,
-                        'request_status' => 'Pending',
-                        'status' => 'Unreturned',
+                        'request_status' => 'pending',
+                        'status' => '------',
                     ]);
         
                     $successfulEntries = true;

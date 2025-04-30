@@ -10,6 +10,16 @@ class SuccessPage extends Component
 {
     public $requestDetails;
 
+    public function redirectToMyRequests()
+    {
+        return redirect('/my-requests');
+    }
+    public function redirectToHome()
+    {
+        return redirect('/');
+    }
+    
+
     public function mount()
     {
         // Retrieve the request data from the session

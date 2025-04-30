@@ -16,19 +16,21 @@
         @stack('styles')
    
     </head>
-    <body class="bg-slate-200 dark:bg-slate-200" >
-    @if (!request()->routeIs(['facility-monitoring-page', 'equipment-monitoring-page', 'supplies-and-materials-monitoring'])) 
+    <body class="bg-slate-200 dark:bg-slate-200 min-h-screen flex flex-col">
+   @if (!request()->routeIs(['facility-monitoring-page', 'equipment-monitoring-page', 'supplies-and-materials-monitoring'])) 
         @livewire('partials.navbar')
-    @endif
-   <main>
-   {{ $slot }}
+   @endif
+
+   <main class="flex-grow">
+       {{ $slot }}
    </main>
+
    @if (!request()->routeIs(['facility-monitoring-page', 'equipment-monitoring-page', 'supplies-and-materials-monitoring'])) 
         @livewire('partials.footer')
-    @endif
+   @endif
 
-    @livewireScripts
-
+   @livewireScripts
 </body>
+
 
 </html>
