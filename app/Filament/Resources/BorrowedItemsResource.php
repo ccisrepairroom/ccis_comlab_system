@@ -99,19 +99,21 @@ class BorrowedItemsResource extends Resource
             ->label('Approve Selected')
             ->icon('heroicon-o-check')
             ->action(function (Collection $records) {
-                // Loop through the selected records and update their status to 'approved'
                 foreach ($records as $record) {
-                    $record->update(['request_status' => 'approved']);
+                    $record->update([
+                        'request_status' => 'approved',
+                        'status' => 'Unreturned', 
+                    ]);
                 }
                 Notification::make()
                 ->title('Request Approved')
                 ->icon('heroicon-o-check')
-                ->warning()  // You can also use ->danger(), ->warning(), etc.
+                ->warning() 
                 ->body('The selected request(s) have been successfully approved.')
                 ->send();
                 })
-            ->requiresConfirmation() // Optional: You can require confirmation before performing the action
-            ->color('warning'),  // Optional: Set color for the button (e.g., 'success', 'primary', etc.)
+            ->requiresConfirmation() 
+            ->color('success'),  
 
             Tables\Actions\BulkAction::make('reject')
             ->label('Reject Selected')
@@ -159,7 +161,7 @@ class BorrowedItemsResource extends Resource
 
                 foreach ($records as $record) {
                     $record->update([
-                        'status' => 'returned',
+                        'status' => 'Returned',
                         'received_by' => $receivedby,
                         'returned_date' => $returnedDate,  // Set the returned_date
                     ]);
@@ -222,7 +224,7 @@ class BorrowedItemsResource extends Resource
                     ->formatStateUsing(fn(string $state): string => ucfirst(strtolower($state)))
                     ->badge()
                     ->color(fn(string $state): string => match (strtolower($state)) {
-                        'approved' => 'warning',
+                        'approved' => 'success',
                         'pending' => 'info',
                         'rejected' => 'danger',
                         default => 'secondary',  
