@@ -84,7 +84,12 @@
                       'expected_return_date' => \Carbon\Carbon::parse($request->expected_return_date)->format('F j, Y h:i A'),
                       'status' => $request->status,
                       'request_status' => $request->request_status,
-                     
+                      'equipment_brand_name' => $request->equipment?->brand_name ?? 'N/A',
+                      'equipment_serial_no' => $request->equipment?->serial_no ?? 'N/A',
+                      'equipment_property_no' => $request->equipment?->property_no ?? 'N/A',
+                      'facility_name' => $request->equipment?->facility?->name ?? 'N/A',
+                      'category_description' => $request->equipment?->category?->description ?? 'N/A',
+                                      
                     ]) }}"
                     class="cursor-pointer bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500"
                   >

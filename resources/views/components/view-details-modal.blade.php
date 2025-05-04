@@ -31,6 +31,27 @@
                 <span x-text="selectedRequest?.start_date_and_time_of_use + ' - ' + selectedRequest?.end_date_and_time_of_use"></span>
         </p>
         <p><strong>Expected Return Date:</strong> <span x-text="selectedRequest?.expected_return_date"></span></p>
+        
+        <p class="pt-7">Equipment/Facility Requested:</p> 
+       <table class="min-w-full border border-gray-300 text-sm">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="border px-4 py-2 text-left">Equipment </th>
+                    <th class="border px-4 py-2 text-left">Facility</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Example row, replace with dynamic data -->
+                <tr>
+                    <td class="border px-4 py-2" 
+                        x-text="(selectedRequest?.equipment_brand_name || 'N/A') + ' (' + (selectedRequest?.category_description || 'N/A') + ')'">
+                    </td>
+                    <td class="border px-4 py-2" x-text="selectedRequest?.facility_name"></td>
+                </tr>
+                <!-- Add more rows dynamically -->
+            </tbody>
+        </table>
+
         <p><strong>Remarks:</strong> <span x-text="selectedRequest?.remarks"></span></p>
       </div>
 
@@ -64,7 +85,7 @@
                 loss, damage, or theft that may occur while the
                 equipment is off campus.
           </li>
-                        <!-- Add more conditions as needed -->
+                        
         </ol>
         <p class="text-sm mb-2 pr-1">
            I have read and understood the terms and conditions outlined
