@@ -70,19 +70,19 @@
                 </td> -->
                 <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{{optional($request->returned_date)->format('m-d-Y')}}</td> -->
                 <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                   <a 
-                    @click="open = true; selectedRequest = {{ json_encode([
-                      'remarks' => $request->remarks,
-                      'request_code' => $request->request_code,
-                      'borrowed_by' => $request->borrowed_by,
-                      'college_department' => $request->college_department,
-                      'phone_number' => $request->phone_number,
-                      'college_department' => $request->college_department,
-                    ]) }}"
-                    class="cursor-pointer bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500"
-                  >
-                      View Details
-                  </a>
+                  <a 
+  @click.prevent="open = true; selectedRequest = {{ json_encode([
+    'remarks' => $request->remarks,
+    'request_code' => $request->request_code,
+    'borrowed_by' => $request->borrowed_by,
+    'college_department' => $request->college_department,
+    'phone_number' => $request->phone_number,
+  ]) }}"
+  class="cursor-pointer bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500"
+>
+  View Details
+</a>
+
 
                                   
                 </td>
@@ -96,60 +96,8 @@
     </div>
   </div>
 
-   <!-- Modal -->
-<div 
-  x-show="open"
-  style="display: none"
-  class="fixed inset-0 flex items-start justify-center backdrop-brightness-75 z-50"
-  x-cloak
->
-
-  <div class="relative p-4 w-full max-w-[300mm] max-h-[400mm] top-0">
-    <div class="my-10 bg-white p-6 rounded shadow-lg max-h-full overflow-y-auto">
-      <h3 class="text-xl font-semibold" x-text="'Request Code: ' + (selectedRequest?.request_code ?? '')"></h3>
-      <p class="text-gray-600 text-sm pt-5">
-        <strong>Borrower:</strong> <span x-text="selectedRequest?.borrowed_by"></span><br>
-        <strong>College/Department:</strong> <span x-text="selectedRequest?.college_department"></span><br>
-        <strong>Phone Number:</strong> <span x-text="selectedRequest?.phone_number"></span><br></p>
-
-<table class="min-w-full divide-y divide-gray-200">
-            <thead>
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PO Number</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Number</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Brand Name</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Property Number</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Control Number</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Serial Number</th>
-                </tr>
-            </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">ob_end_clean</td>
-                        <td class="px-6 py-4 whitespace-nowrap"></td>
-                        <td class="px-6 py-4 whitespace-nowrap"></td>
-                        <td class="px-6 py-4 whitespace-nowrap"></td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                           
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap"></td>
-                        <td class="px-6 py-4 whitespace-nowrap"></td>
-                        <td class="px-6 py-4 whitespace-nowrap"></td>
-                        <td class="px-6 py-4 whitespace-nowrap"></td>
-                    </tr>
-            </tbody>
-        </table>
-
-        
-        <strong>Remarks:</strong><br>
-        <span x-text="selectedRequest?.remarks"></span>
-      </p>  
-      <div class="flex justify-end">
-        <button class="mt-4 px-4 py-2 bg-orange-500 text-white rounded" @click="open = false">Close</button>
-      </div> 
+  <x-view-details-modal :showVar="'open'" :dataVar="'selectedRequest'" />
+ 
     </div>
   </div>
 </div>
