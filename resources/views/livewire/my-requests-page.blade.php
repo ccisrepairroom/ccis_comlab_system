@@ -1,4 +1,7 @@
-<div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
+<div 
+    x-data="{ open: false, selectedRequest: null }"
+    class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto"
+>
   <h1 class="text-4xl font-bold text-slate-500">My Requests</h1>
   <div class="flex flex-col bg-white p-5 rounded mt-4 shadow-lg">
     <div class="-m-1.5 overflow-x-auto">
@@ -14,12 +17,12 @@
                 <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Borrower</th>
                 <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Item Name</th>
                 <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Facility</th>
-                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Serial Number</th>
-                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Property Number</th>
-                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Purpose</th>
+                <!-- <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Serial Number</th> -->
+                <!-- <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Property Number</th> -->
+                <!-- <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Purpose</th>
                 <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Remarks</th>
                 <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Date and Time of Use</th>
-                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Date Returned</th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Date Returned</th> -->
 
                 <!-- <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Purpose</th> -->
 
@@ -57,17 +60,28 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 capitalize">{{$request->borrowed_by}}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 uppercase">{{$request->equipment->brand_name}}- {{$request->equipment->category->description}}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 ">{{$request->equipment->facility->name}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 ">{{$request->equipment->serial_no}}</td>
+                <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 ">{{$request->equipment->serial_no}}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 ">{{$request->equipment->property_no}}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 ">{{$request->purpose}}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 ">{{$request->remarks}}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
                     {{ \Carbon\Carbon::parse($request->start_date_and_time_of_use)->format('m-d-Y h:i A') }} to 
                     {{ \Carbon\Carbon::parse($request->end_date_and_time_of_use)->format('m-d-Y h:i A') }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{{optional($request->returned_date)->format('m-d-Y')}}</td>
+                </td> -->
+                <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{{optional($request->returned_date)->format('m-d-Y')}}</td> -->
                 <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                  <a href="/my-requests/{{$request->id}}" class="bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500">View Details</a>
+                   <a 
+                    @click="open = true; selectedRequest = {{ json_encode([
+                      'remarks' => $request->remarks,
+                      'code' => $request->request_code,
+                      'borrowed_by' => $request->borrowed_by,
+                    ]) }}"
+                    class="cursor-pointer bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500"
+                  >
+                      View Details
+                  </a>
+
+                                  
                 </td>
               </tr>
             @endforeach
@@ -78,4 +92,30 @@
       {{$borrowed_items->links()}}
     </div>
   </div>
+
+   <!-- Modal -->
+<div 
+  x-show="open"
+  x-transition
+  style="display: none"
+  class="fixed inset-0 flex items-center justify-center backdrop-brightness-75 z-50"
+  x-cloak
+>
+
+    <div class="relative p-4 w-full max-w-2xl max-h-full mt-16">
+      <div class="my-10 bg-white p-6 rounded shadow-lg max-h-[80vh] overflow-y-auto">
+        <h3 class="text-xl font-semibold" x-text="'Request Code: ' + (selectedRequest?.code ?? '')"></h3>
+        <p class="text-gray-600 text-sm pt-5">
+          <strong>Borrower:</strong> <span x-text="selectedRequest?.borrowed_by"></span><br>
+          <strong>Remarks:</strong><br>
+          <span x-text="selectedRequest?.remarks"></span>
+        </p>  
+        <div class="flex justify-end">
+          <button class="mt-4 px-4 py-2 bg-orange-500 text-white rounded" @click="open = false">Close</button>
+        </div> 
+      </div>
+    </div>
+  </div>
 </div>
+</div>
+
