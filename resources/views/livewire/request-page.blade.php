@@ -41,11 +41,11 @@
                    </button>
                   </td>
                 </tr>
-                @empty
+                 @empty
                 <tr>
-                  <td colspan="6" class="text-center py-4 text-gray-500">No items in request list.</td>
+                  <td colspan="7" class="px-6 py-4 text-center text-sm font-medium text-gray-800 dark:text-gray-200">No items have been listed for request.</td>
                 </tr>
-                @endforelse
+              @endforelse
               </tbody>
             </table>
           </div>

@@ -26,6 +26,13 @@
           <span x-text="(selectedRequest?.start_date_and_time_of_use || 'N/A') + ' - ' + (selectedRequest?.end_date_and_time_of_use || 'N/A')"></span>
         </p>
         <p><strong>Expected Return Date:</strong> <span x-text="selectedRequest?.expected_return_date || 'N/A'"></span></p>
+        <p x-show="selectedRequest?.returned_date" class="text-sm">
+          <strong>Date Returned:</strong> <span x-text="selectedRequest?.returned_date"></span>
+        </p>
+
+        <p x-show="selectedRequest?.received_by" class="text-sm">
+          <strong>Received By:</strong> <span x-text="selectedRequest?.received_by"></span>
+        </p>
 
         <!-- Equipment/Facility Requested -->
         <p class="pt-7 font-semibold">Equipment/Facility Requested:</p>

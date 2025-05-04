@@ -17,87 +17,56 @@
                 <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Borrower</th>
                 <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Item Name</th>
                 <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Facility</th>
-                <!-- <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Serial Number</th> -->
-                <!-- <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Property Number</th> -->
-                <!-- <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Purpose</th>
-                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Remarks</th>
-                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Date and Time of Use</th>
-                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Date Returned</th> -->
-
-                <!-- <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Purpose</th> -->
-
                 <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">Action</th>
               </tr>
             </thead>
             <tbody>
-            @foreach ($borrowed_items as $request)
-            @php
-            $status = '';
-            $request_status = '';
+              @forelse ($borrowed_items as $request)
+                @php
+                $status = '';
+                $request_status = '';
 
-            if(strtolower($request->status) == 'returned'){
-              $status ='<span class="bg-green-500 py-1 px-3 rounded text-white shadow">Returned</span>'; 
-             }
-            if(strtolower($request->status) == 'unreturned'){
-              $status ='<span class="bg-red-500 py-1 px-3 rounded text-white shadow">Unreturned</span>'; 
-             }
-             
-            if(strtolower($request->request_status) == 'pending'){
-              $request_status ='<span class="bg-blue-500 py-1 px-3 rounded text-white shadow">Pending</span>'; 
-             }
-            if(strtolower($request->request_status) == 'approved'){
-              $request_status ='<span class="bg-green-500 py-1 px-3 rounded text-white shadow">Approved</span>'; 
-             }
-            if(strtolower($request->request_status) == 'rejected'){
-              $request_status ='<span class="bg-red-500 py-1 px-3 rounded text-white shadow">Rejected</span>'; 
-             }
-            @endphp
-              <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-900 dark:even:bg-slate-800" wire:key='{{$request->id}}'>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">{{$request->request_code}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{{$request->created_at->format('m-d-Y')}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{!! $request_status !!}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{!! $status !!}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 capitalize">{{$request->borrowed_by}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 uppercase">{{$request->equipment->brand_name}}- {{$request->equipment->category->description}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 ">{{$request->equipment->facility->name}}</td>
-                <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 ">{{$request->equipment->serial_no}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 ">{{$request->equipment->property_no}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 ">{{$request->purpose}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 ">{{$request->remarks}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    {{ \Carbon\Carbon::parse($request->start_date_and_time_of_use)->format('m-d-Y h:i A') }} to 
-                    {{ \Carbon\Carbon::parse($request->end_date_and_time_of_use)->format('m-d-Y h:i A') }}
-                </td> -->
-                <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{{optional($request->returned_date)->format('m-d-Y')}}</td> -->
-                <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                  <a 
-                    @click.prevent="open = true; selectedRequest = {{ json_encode([
-                      'remarks' => $request->remarks,
-                      'request_code' => $request->request_code,
-                      'borrowed_by' => $request->borrowed_by,
-                      'college_department' => $request->college_department,
-                      'phone_number' => $request->phone_number,
-                      'purpose' => $request->purpose,
-                      'created_at' => \Carbon\Carbon::parse($request->created_at)->format('F j, Y'),
-                      'start_date_and_time_of_use' => \Carbon\Carbon::parse($request->start_date_and_time_of_use)->format('F j, Y h:i A'),
-                      'end_date_and_time_of_use' => \Carbon\Carbon::parse($request->end_date_and_time_of_use)->format('F j, Y h:i A'),
-                      'expected_return_date' => \Carbon\Carbon::parse($request->expected_return_date)->format('F j, Y h:i A'),
-                      'status' => $request->status,
-                      'request_status' => $request->request_status,
-                      'equipment_brand_name' => $request->equipment?->brand_name ?? 'N/A',
-                      'equipment_serial_no' => $request->equipment?->serial_no ?? 'N/A',
-                      'equipment_property_no' => $request->equipment?->property_no ?? 'N/A',
-                      'facility_name' => $request->equipment?->facility?->name ?? 'N/A',
-                      'category_description' => $request->equipment?->category?->description ?? 'N/A',
-                                      
-                    ]) }}"
-                    class="cursor-pointer bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500"
-                  >
-                    View Details
-                  </a>               
-                </td>
-              </tr>
-            @endforeach
+                if(strtolower($request->status) == 'returned'){
+                  $status ='<span class="bg-green-500 py-1 px-3 rounded text-white shadow">Returned</span>'; 
+                 }
+                if(strtolower($request->status) == 'unreturned'){
+                  $status ='<span class="bg-red-500 py-1 px-3 rounded text-white shadow">Unreturned</span>'; 
+                 }
+                 
+                if(strtolower($request->request_status) == 'pending'){
+                  $request_status ='<span class="bg-blue-500 py-1 px-3 rounded text-white shadow">Pending</span>'; 
+                 }
+                if(strtolower($request->request_status) == 'approved'){
+                  $request_status ='<span class="bg-green-500 py-1 px-3 rounded text-white shadow">Approved</span>'; 
+                 }
+                if(strtolower($request->request_status) == 'rejected'){
+                  $request_status ='<span class="bg-red-500 py-1 px-3 rounded text-white shadow">Rejected</span>'; 
+                 }
+                @endphp
+                  <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-900 dark:even:bg-slate-800" wire:key='{{$request->id}}'>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">{{$request->request_code}}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{{$request->created_at->format('m-d-Y')}}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{!! $request_status !!}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{!! $status !!}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 capitalize">{{$request->borrowed_by}}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 uppercase">{{$request->equipment->brand_name}}- {{$request->equipment->category->description}}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 ">{{$request->equipment->facility->name}}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                      <a 
+                        @click.prevent="open = true; selectedRequest = {{ json_encode([ 
+                          // Your request data...
+                        ]) }}"
+                        class="cursor-pointer bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500"
+                      >
+                        View Details
+                      </a>               
+                    </td>
+                  </tr>
+              @empty
+                <tr>
+                  <td colspan="7" class="px-6 py-4 text-center text-sm font-medium text-gray-800 dark:text-gray-200">No requests have been made."</td>
+                </tr>
+              @endforelse
             </tbody>
           </table>
         </div>
@@ -107,22 +76,4 @@
   </div>
 
   <x-view-details-modal :showVar="'open'" :dataVar="'selectedRequest'" />
- 
-    </div>
-  </div>
 </div>
-
-<script>
-  document.addEventListener('alpine:init', () => {
-    Alpine.data('view-details-modal', () => ({
-      formatDateTime(dateStr) {
-        if (!dateStr) return '';
-        const options = { 
-          year: 'numeric', month: 'long', day: 'numeric', 
-          hour: 'numeric', minute: '2-digit', hour12: true 
-        };
-        return new Date(dateStr).toLocaleString('en-US', options);
-      },
-    }));
-  });
-</script>
