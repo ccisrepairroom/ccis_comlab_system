@@ -100,7 +100,7 @@
     <div class="mt-4 text-end">
       <button 
         @click="open = false" 
-        class="bg-slate-600 text-white px-4 py-2 rounded hover:bg-slate-500">
+        class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
         Close
       </button>
     </div>

@@ -56,7 +56,7 @@
                         @click.prevent="open = true; selectedRequest = {{ json_encode([ 
                           // Your request data...
                         ]) }}"
-                        class="cursor-pointer bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500"
+                        class="cursor-pointer bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600"
                       >
                         View Details
                       </a>               
