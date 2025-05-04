@@ -76,6 +76,8 @@
                       'request_code' => $request->request_code,
                       'borrowed_by' => $request->borrowed_by,
                       'college_department' => $request->college_department,
+                      'phone_number' => $request->phone_number,
+                      'college_department' => $request->college_department,
                     ]) }}"
                     class="cursor-pointer bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500"
                   >
@@ -108,7 +110,40 @@
       <p class="text-gray-600 text-sm pt-5">
         <strong>Borrower:</strong> <span x-text="selectedRequest?.borrowed_by"></span><br>
         <strong>College/Department:</strong> <span x-text="selectedRequest?.college_department"></span><br>
+        <strong>Phone Number:</strong> <span x-text="selectedRequest?.phone_number"></span><br></p>
 
+<table class="min-w-full divide-y divide-gray-200">
+            <thead>
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PO Number</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Number</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Brand Name</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Property Number</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Control Number</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Serial Number</th>
+                </tr>
+            </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">ob_end_clean</td>
+                        <td class="px-6 py-4 whitespace-nowrap"></td>
+                        <td class="px-6 py-4 whitespace-nowrap"></td>
+                        <td class="px-6 py-4 whitespace-nowrap"></td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                           
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap"></td>
+                        <td class="px-6 py-4 whitespace-nowrap"></td>
+                        <td class="px-6 py-4 whitespace-nowrap"></td>
+                        <td class="px-6 py-4 whitespace-nowrap"></td>
+                    </tr>
+            </tbody>
+        </table>
+
+        
         <strong>Remarks:</strong><br>
         <span x-text="selectedRequest?.remarks"></span>
       </p>  

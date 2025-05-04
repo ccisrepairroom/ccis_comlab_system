@@ -561,7 +561,7 @@ class EquipmentResource extends Resource
                     ->send();
             }),
             Tables\Actions\BulkAction::make('add_to_borrowed_items')
-            ->label('Borrow')
+            ->label('Request')
             ->icon('heroicon-o-plus')
             ->color('success')
             ->requiresConfirmation()
