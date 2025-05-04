@@ -31,7 +31,7 @@ class BorrowedItems extends ApprovableModel
         'end_date_and_time_of_use',
         'expected_return_date',
         'received_by',
-        'college_department_office'
+        'college_department'
     ];
 
     public function user()

@@ -73,8 +73,9 @@
                    <a 
                     @click="open = true; selectedRequest = {{ json_encode([
                       'remarks' => $request->remarks,
-                      'code' => $request->request_code,
+                      'request_code' => $request->request_code,
                       'borrowed_by' => $request->borrowed_by,
+                      'college_department' => $request->college_department,
                     ]) }}"
                     class="cursor-pointer bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500"
                   >
@@ -103,9 +104,11 @@
 
   <div class="relative p-4 w-full max-w-[300mm] max-h-[400mm] top-0">
     <div class="my-10 bg-white p-6 rounded shadow-lg max-h-full overflow-y-auto">
-      <h3 class="text-xl font-semibold" x-text="'Request Code: ' + (selectedRequest?.code ?? '')"></h3>
+      <h3 class="text-xl font-semibold" x-text="'Request Code: ' + (selectedRequest?.request_code ?? '')"></h3>
       <p class="text-gray-600 text-sm pt-5">
         <strong>Borrower:</strong> <span x-text="selectedRequest?.borrowed_by"></span><br>
+        <strong>College/Department:</strong> <span x-text="selectedRequest?.college_department"></span><br>
+
         <strong>Remarks:</strong><br>
         <span x-text="selectedRequest?.remarks"></span>
       </p>  

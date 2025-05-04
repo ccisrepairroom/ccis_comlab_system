@@ -75,7 +75,7 @@ class RequestFillPage extends Component
             'end_date_and_time_of_use' => $this->end_date,
             'expected_return_date' => $this->expected_return_date,
             'received_by' => null, // Add logic if required
-            'college_department_office' => $this->college_department,
+            'college_department' => $this->college_department,
             'borrowed_date' => Carbon::now()->toDateString(),
             'remarks' => $this->remarks,
             'status' => 'Unreturned',

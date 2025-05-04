@@ -18,8 +18,7 @@ class RequestList extends Model
         'start_date_and_time_of_use',
         'end_date_and_time_of_use',
         'expected_return_date',
-        'college_department_office',
-        'request_form',
+        'college_department'
     ];
 
     public function equipment()
