@@ -71,20 +71,25 @@
                 <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{{optional($request->returned_date)->format('m-d-Y')}}</td> -->
                 <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                   <a 
-  @click.prevent="open = true; selectedRequest = {{ json_encode([
-    'remarks' => $request->remarks,
-    'request_code' => $request->request_code,
-    'borrowed_by' => $request->borrowed_by,
-    'college_department' => $request->college_department,
-    'phone_number' => $request->phone_number,
-  ]) }}"
-  class="cursor-pointer bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500"
->
-  View Details
-</a>
-
-
-                                  
+                    @click.prevent="open = true; selectedRequest = {{ json_encode([
+                      'remarks' => $request->remarks,
+                      'request_code' => $request->request_code,
+                      'borrowed_by' => $request->borrowed_by,
+                      'college_department' => $request->college_department,
+                      'phone_number' => $request->phone_number,
+                      'purpose' => $request->purpose,
+                      'created_at' => \Carbon\Carbon::parse($request->created_at)->format('F j, Y'),
+                      'start_date_and_time_of_use' => \Carbon\Carbon::parse($request->start_date_and_time_of_use)->format('F j, Y h:i A'),
+                      'end_date_and_time_of_use' => \Carbon\Carbon::parse($request->end_date_and_time_of_use)->format('F j, Y h:i A'),
+                      'expected_return_date' => \Carbon\Carbon::parse($request->expected_return_date)->format('F j, Y h:i A'),
+                      'status' => $request->status,
+                      'request_status' => $request->request_status,
+                     
+                    ]) }}"
+                    class="cursor-pointer bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500"
+                  >
+                    View Details
+                  </a>               
                 </td>
               </tr>
             @endforeach
@@ -101,3 +106,18 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('view-details-modal', () => ({
+      formatDateTime(dateStr) {
+        if (!dateStr) return '';
+        const options = { 
+          year: 'numeric', month: 'long', day: 'numeric', 
+          hour: 'numeric', minute: '2-digit', hour12: true 
+        };
+        return new Date(dateStr).toLocaleString('en-US', options);
+      },
+    }));
+  });
+</script>
