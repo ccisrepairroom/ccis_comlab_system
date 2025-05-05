@@ -85,24 +85,26 @@ class UserResource extends Resource
                             ->searchable(),
                         Forms\Components\Select::make('department')
                             ->options([
-                                'not_applicable'=> 'Not Applicable',
-                                'information_system' => 'Information System',
-                                'information_technology' => 'Information Technology',
-                                'computer_science' => 'Computer Science',
+                                'Not Applicable'=> 'Not Applicable',
+                                'Information Systems' => 'Information Systems',
+                                'Information Technology' => 'Information Technology',
+                                'Computer Science' => 'Computer Science',
+                                'Other Department'=> 'Other Department',
                             ]),
                         Forms\Components\Select::make('designation')
                             //->required()
                             ->options([
-                                'ccis_dean'=>    'CCIS Dean',
-                                'lab_technician' =>  'Lab Technician',
-                                'comlab_adviser' =>'Comlab Adviser' ,
-                                'department_chairperson' =>  'Department Chairperson',
-                                'associate_dean' =>    'Associate Dean',
-                                'college_clerk' => 'College Clerk',
-                                'student_assistant' => 'Student Assistant',
-                                'instructor' => 'Instructor',
-                                'lecturer' => 'Lecturer' ,
-                                'other' => 'Other',
+                                'CCIS Dean'=>    'CCIS Dean',
+                                'Lab Technician' =>  'Lab Technician',
+                                'Comlab Adviser' =>'Comlab Adviser' ,
+                                'Department Chairperson' =>  'Department Chairperson',
+                                'Associate Dean' =>    'Associate Dean',
+                                'College Clerk' => 'College Clerk',
+                                'Student Assistant' => 'Student Assistant',
+                                'Instructor' => 'Instructor',
+                                'Lecturer' => 'Lecturer' ,
+                                'Student' => 'Student' ,
+                                'Other' => 'Other',
     
                                 
                             ]),

@@ -34,8 +34,8 @@
 
                     <div class="mb-4 flex items-center justify-center text-gray-700 text-sm">
                         <x-entypo-briefcase class="w-5 h-5 mr-2 text-gray-600" />
-                        <span>{{ $department }}</span> - <span>{{ $designation }}</span> 
-                    </div>
+                        <span style="display: inline;">{{ $designation }}</span> - <span style="display: inline;">{{ $department }}</span> 
+                        </div>
                 </div>
             </div>
 
@@ -52,30 +52,32 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
     <div>
-        <label class="block text-sm font-medium mb-1" for="department">Department</label>
+        <label class="block text-sm font-medium mb-1" >Department</label>
         <select wire:model="department" id="department" class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300">
             <option value="">Select Department</option>
-            <option value="not_applicable">Not Applicable</option>
-            <option value="information_system">Information System</option>
-            <option value="information_technology">Information Technology</option>
-            <option value="computer_science">Computer Science</option>
+            <option value="Not Applicable">Not Applicable</option>
+            <option value="Information Systems">Information Systems</option>
+            <option value="Information Technology">Information Technology</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Other Department">Other Department</option>
         </select>
     </div>
 
     <div>
-        <label class="block text-sm font-medium mb-1" for="designation">Designation</label>
+        <label class="block text-sm font-medium mb-1" >Designation</label>
         <select wire:model="designation" id="designation" class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300">
             <option value="">Select Designation</option>
-            <option value="ccis_dean">CCIS Dean</option>
-            <option value="lab_technician">Lab Technician</option>
-            <option value="comlab_adviser">Comlab Adviser</option>
-            <option value="department_chairperson">Department Chairperson</option>
-            <option value="associate_dean">Associate Dean</option>
-            <option value="college_clerk">College Clerk</option>
-            <option value="student_assistant">Student Assistant</option>
-            <option value="instructor">Instructor</option>
-            <option value="lecturer">Lecturer</option>
-            <option value="other">Other</option>
+            <option value="CCIS Dean">CCIS Dean</option>
+            <option value="Lab Technician">Lab Technician</option>
+            <option value="Comlab Adviser">Comlab Adviser</option>
+            <option value="Department Chairperson">Department Chairperson</option>
+            <option value="Associate Dean">Associate Dean</option>
+            <option value="College Clerk">College Clerk</option>
+            <option value="Student Assistant">Student Assistant</option>
+            <option value="Instructor">Instructor</option>
+            <option value="Lecturer">Lecturer</option>
+            <option value="Student">Student</option>
+            <option value="Other">Other</option>
         </select>
     </div>
 </div>
@@ -96,26 +98,55 @@
 
 
                 <!-- Password details card -->
-                <div class="bg-white shadow-md rounded-lg p-6">
-                    <h2 class="text-lg font-semibold mb-4">Password Details</h2>
-                    <form wire:submit.prevent="updatePassword">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label class="block text-sm font-medium mb-1" for="password">New Password</label>
-                                <input wire:model="password" class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="password" type="password">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1" for="confirmNewPassword">Confirm New Password</label>
-                                <input wire:model="confirmPassword" class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="confirmNewPassword" type="password">
-                            </div>
-                        </div>
-                        <div class="flex justify-end">
-                            <button class="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 transition" type="submit">
-                                Save changes
-                            </button>
-                        </div>
-                    </form>
+                <!-- Password details card -->
+<div class="bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-lg font-semibold mb-4">Password Details</h2>
+    <form wire:submit.prevent="updatePassword">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div x-data="{ show: false }">
+                <label class="block text-sm font-medium mb-1" for="password">New Password</label>
+                <div class="relative">
+                    <input :type="show ? 'text' : 'password'" wire:model="password" class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="password" placeholder="(6+ characters required)">
+                    <button type="button" @click="show = !show" class="absolute inset-y-0 end-0 flex items-center px-3 text-gray-500 hover:text-gray-700">
+                        <!-- Hidden (Eye Off) Icon -->
+                        <x-heroicon-m-eye-slash x-show="!show" class="w-5 h-5" />
+                        
+                        <!-- Visible (Full Eye) Icon -->
+                        <svg x-show="show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 4c4.97 0 9.13 3.07 10.94 7.36a1.003 1.003 0 010 .68C21.13 16.93 16.97 20 12 20c-4.97 0-9.13-3.07-10.94-7.36a1.003 1.003 0 010-.68C2.87 7.07 7.03 4 12 4zM12 9a3 3 0 100 6 3 3 0 000-6z"></path>
+                        </svg>
+                    </button>
                 </div>
+            </div>
+
+            <div x-data="{ show: false }">
+                <label class="block text-sm font-medium mb-1" for="confirmNewPassword">Confirm New Password</label>
+                <div class="relative">
+                    <input :type="show ? 'text' : 'password'" wire:model="confirmPassword" class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="confirmNewPassword">
+                    <button type="button" @click="show = !show" class="absolute inset-y-0 end-0 flex items-center px-3 text-gray-500 hover:text-gray-700">
+                        <!-- Hidden (Eye Off) Icon -->
+                        <x-heroicon-m-eye-slash x-show="!show" class="w-5 h-5" />
+                        
+                        <!-- Visible (Full Eye) Icon -->
+                        <svg x-show="show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 4c4.97 0 9.13 3.07 10.94 7.36a1.003 1.003 0 010 .68C21.13 16.93 16.97 20 12 20c-4.97 0-9.13-3.07-10.94-7.36a1.003 1.003 0 010-.68C2.87 7.07 7.03 4 12 4zM12 9a3 3 0 100 6 3 3 0 000-6z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-end">
+            <button class="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 transition" type="submit">
+                Save changes
+            </button>
+        </div>
+    </form>
+</div>
+
+
             </div>
         </div>
     </div>

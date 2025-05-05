@@ -19,6 +19,9 @@ class MyProfilePage extends Component
     public $password;
     public $confirmPassword;
     public $role;
+ 
+
+
 
     public function mount()
     {
@@ -28,6 +31,10 @@ class MyProfilePage extends Component
         $this->department = $user->department;
         $this->designation = $user->designation;
         $this->role = $user->getRoleNames()->first();
+
+
+   
+
     }
 
     public function save()
