@@ -1,7 +1,20 @@
 <div 
-    x-data="{ open: false, selectedRequest: null }"
+    x-data="{ 
+        open: false, 
+        selectedRequest: null,
+        formatDateTime(datetime) {
+            if (!datetime) return 'N/A';
+            const options = {
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit',
+                hour12: true,
+            };
+            return new Date(datetime).toLocaleString('en-US', options);
+        }
+    }"
     class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto"
 >
+
   <h1 class="text-4xl font-bold text-slate-500">My Requests</h1>
   <div class="flex flex-col bg-white p-5 rounded mt-4 shadow-lg">
     <div class="-m-1.5 overflow-x-auto">
@@ -53,9 +66,30 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 ">{{$request->equipment->facility->name}}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                       <a 
-                        @click.prevent="open = true; selectedRequest = {{ json_encode([ 
-                          // Your request data...
-                        ]) }}"
+                      @click.prevent="open = true; selectedRequest = {{ 
+                          json_encode([
+                            'request_code' => $request->request_code,
+                            'created_at' => $request->created_at->format('F d, Y h:i A'),
+                            'borrowed_by' => $request->borrowed_by,
+                            'college_department' => $request->college_department,
+                            'phone_number' => $request->phone_number,
+                            'purpose' => $request->purpose,
+                            'start_date_and_time_of_use' => $request->start_date_and_time_of_use,
+                            'end_date_and_time_of_use' => $request->end_date_and_time_of_use,
+                            'expected_return_date' => $request->expected_return_date,
+                            'returned_date' => $request->returned_date,
+                            'received_by' => $request->received_by,
+                            'remarks' => $request->remarks,
+                            'equipment_brand_name' => $request->equipment->brand_name,
+                            'equipment_serial_no' => $request->equipment->serial_no,
+                            'equipment_property_no' => $request->equipment->property_no,
+                            'category_description' => $request->equipment->category->description,
+                            'facility_name' => $request->equipment->facility->name,
+                            'request_status' => $request->request_status,
+                            'status' => $request->status,
+                          ]) 
+                        }}"
+
                         class="cursor-pointer bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600"
                       >
                         View Details

@@ -3,6 +3,7 @@
   x-show="open" 
   class="fixed inset-0 flex items-center justify-center backdrop-brightness-75 bg-opacity-50 z-50"
   style="display: none;"
+  
 >
   <div 
     class="bg-white p-6 rounded shadow-lg w-full max-w-screen-xl mx-4 overflow-y-auto max-h-[90vh]" 
@@ -22,12 +23,19 @@
         <p><strong>College/Department:</strong> <span x-text="selectedRequest?.college_department || 'N/A'"></span></p>
         <p><strong>Phone Number:</strong> <span x-text="selectedRequest?.phone_number || 'N/A'"></span></p>
         <p><strong>Purpose:</strong> <span x-text="selectedRequest?.purpose || 'N/A'"></span></p>
-        <p><strong>Date and Time of Use:</strong>
-          <span x-text="(selectedRequest?.start_date_and_time_of_use || 'N/A') + ' - ' + (selectedRequest?.end_date_and_time_of_use || 'N/A')"></span>
+        <p>
+          <strong>Date and Time of Use:</strong>
+          <span x-text="formatDateTime(selectedRequest?.start_date_and_time_of_use) + ' - ' + formatDateTime(selectedRequest?.end_date_and_time_of_use)"></span>
         </p>
-        <p><strong>Expected Return Date:</strong> <span x-text="selectedRequest?.expected_return_date || 'N/A'"></span></p>
+
+        <p>
+          <strong>Expected Return Date:</strong>
+          <span x-text="formatDateTime(selectedRequest?.expected_return_date)"></span>
+        </p>
+
         <p x-show="selectedRequest?.returned_date" class="text-sm">
-          <strong>Date Returned:</strong> <span x-text="selectedRequest?.returned_date"></span>
+          <strong>Date Returned:</strong>
+          <span x-text="formatDateTime(selectedRequest?.returned_date)"></span>
         </p>
 
         <p x-show="selectedRequest?.received_by" class="text-sm">
