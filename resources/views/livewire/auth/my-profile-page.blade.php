@@ -39,17 +39,17 @@
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div>
-                            <label class="block text-sm font-medium mb-1" for="name">Department</label>
-                            <input class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="name" type="text" >
+                            <label class="block text-sm font-medium mb-1" for="department">Department</label>
+                            <input class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="department" type="text" >
                         </div>
                         <div>
-                            <label class="block text-sm font-medium mb-1" for="inputLastName">Designation</label>
-                            <input class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="inputLastName" type="text">
+                            <label class="block text-sm font-medium mb-1" for="designation">Designation</label>
+                            <input class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="designation" type="text">
                         </div>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1" for="inputEmailAddress">Email address</label>
-                        <input class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="inputEmailAddress" type="email" >
+                        <label class="block text-sm font-medium mb-1" for="email">Email address</label>
+                        <input class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="email" type="email" >
                     </div>
                     <div class="flex justify-end">
                         <button class="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 transition" type="submit">
@@ -65,12 +65,12 @@
                 <form>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div>
-                            <label class="block text-sm font-medium mb-1" for="newPassword">New Password</label>
-                            <input class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="currentPassword" type="password">
+                            <label class="block text-sm font-medium mb-1" for="password">New Password</label>
+                            <input class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="password" type="password">
                         </div>
                         <div>
                             <label class="block text-sm font-medium mb-1" for="confirmNewPassword">Confirm New Password</label>
-                            <input class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="newPassword" type="password">
+                            <input class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="confirmNewPassword" type="password">
                         </div>
                     </div>
                     <div class="flex justify-end">
