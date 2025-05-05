@@ -25,6 +25,7 @@ use App\Livewire\Auth\LoginPage;
 use App\Livewire\Auth\RegisterPage;
 use App\Livewire\Auth\RecoverAccountPage;
 use App\Livewire\Auth\ResetPasswordPage;
+use App\Livewire\Auth\MyProfilePage;
 use App\Livewire\SuccessPage;
 use App\Livewire\CancelPage;
 
@@ -120,6 +121,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/my-request-detail', MyRequestDetailPage::class);
     Route::get('/success', SuccessPage::class)->name('success');
     Route::get('/cancel', CancelPage::class);
+    Route::get('/my-profile', MyProfilePage::class);
  
 
 });
