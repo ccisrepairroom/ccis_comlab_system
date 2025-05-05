@@ -95,7 +95,7 @@ Route::get('/supplies-and-materials-monitoring/{supply}', SuppliesAndMaterialsMo
 
 Route::get('/', HomePage::class);
 Route::get('/equipment', EquipmentPage::class)->name('equipment');
-// Route::get('/facilities', FacilitiesPage::class);
+Route::get('/facilities', FacilitiesPage::class);
 Route::get('/supplies-and-materials', SuppliesAndMaterialsPage::class);
 Route::get('/requests', RequestPage::class);
 Route::get('/equipment/{equip}', EquipmentDetailPage::class);

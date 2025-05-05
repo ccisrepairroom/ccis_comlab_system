@@ -16,13 +16,10 @@
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
             <!-- Profile picture card -->
             <div class="bg-white shadow-md rounded-lg p-6">
-                <h2 class="text-lg font-semibold mb-4">Profile Picture</h2>
                 <div class="flex flex-col items-center text-center">
-                    <img class="w-40 h-40 rounded-full object-cover mb-4" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="Avatar">
+                    <img class="w-40 h-40 rounded-full object-cover mb-4" src="{{ asset('images/profile_avatar.png') }}"  alt="Avatar">
                     <p class="text-xl text-black font-bold">{{ $name }}</p>
                     <p class="text-sm text-gray-500 mb-4">{{ Str::headline($role) }}</p>
-                    <p class="text-sm text-gray-500 mb-4">JPG or PNG no larger than 5 MB</p>
-                    <button class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition">Upload new image</button>
                 </div>
 
                 <!-- Contact and Department Info -->
@@ -43,7 +40,7 @@
             <div class="xl:col-span-2 flex flex-col gap-6">
                 <!-- Account details card -->
                 <div class="bg-white shadow-md rounded-lg p-6">
-    <h2 class="text-lg font-semibold mb-4">Account Details</h2>
+    <h2 class="text-lg font-semibold mb-4">Edit Account Details</h2>
     <form wire:submit.prevent="save">
         <div class="mb-4">
             <label class="block text-sm font-medium mb-1" for="name">Full Name</label>
@@ -112,7 +109,7 @@
                 <!-- Password details card -->
                 <!-- Password details card -->
 <div class="bg-white shadow-md rounded-lg p-6">
-    <h2 class="text-lg font-semibold mb-4">Password Details</h2>
+    <h2 class="text-lg font-semibold mb-4">Edit Password Details</h2>
     <form wire:submit.prevent="updatePassword">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div x-data="{ show: false }">
@@ -141,7 +138,7 @@
             <div x-data="{ show: false }">
                 <label class="block text-sm font-medium mb-1" for="confirmNewPassword">Confirm New Password</label>
                 <div class="relative">
-                    <input :type="show ? 'text' : 'password'" wire:model="confirmPassword" class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="confirmNewPassword">
+                    <input :type="show ? 'text' : 'password'" wire:model="confirmPassword" class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" placeholder="(Same with the new password)" id="confirmNewPassword">
                     <button type="button" @click="show = !show" class="absolute inset-y-0 end-0 flex items-center px-3 text-gray-500 hover:text-gray-700">
                         <!-- Hidden (Eye Off) Icon -->
                         <x-heroicon-m-eye-slash x-show="!show" class="w-5 h-5" />

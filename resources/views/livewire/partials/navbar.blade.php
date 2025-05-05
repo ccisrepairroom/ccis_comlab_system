@@ -37,23 +37,39 @@
 
       <div id="navbar-collapse-with-animation" class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow md:block">
         <div class="overflow-hidden overflow-y-auto max-h-[75vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-slate-700 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500">
-        <div class="flex flex-col gap-x-0 mt-5 divide-y divide-dashed divide-gray-200 md:flex-row md:items-center md:justify-end md:gap-x-7 md:mt-0 md:ps-7 md:divide-y-0 md:divide-solid dark:divide-gray-700">
-          
+          <div class="flex flex-col gap-x-0 mt-5 divide-y divide-dashed divide-gray-200 md:flex-row md:items-center md:justify-end md:gap-x-7 md:mt-0 md:ps-7 md:divide-y-0 md:divide-solid dark:divide-gray-700">
+
             <a class="font-medium {{ request()->is('/')? 'text-orange-600' : 'text-gray-500 '}} py-3 md:py-6 dark:text-orange-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/" aria-current="page">Home</a>
 
-            <a class="font-medium {{ request()->is('equipment')? 'text-orange-600' : 'text-gray-500 '}} py-3 md:py-6 dark:text-orange-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/equipment" aria-current="page">Equipment</a>
-            
-            <!-- <a  class="font-medium {{ request()->is('supplies-and-materials')? 'text-orange-600' : 'text-gray-500 '}} hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/supplies-and-materials">
-              Supplies & Materials
-            </a>
+            <div class="hs-dropdown [--strategy:static] md:[--strategy:fixed] [--adaptive:none] [--trigger:click] md:py-4">
+              <button type="button" class="flex items-center w-full text-gray-500 hover:text-gray-400 font-medium dark:text-gray-400 dark:hover:text-gray-500">
+                Resources
+                <svg class="ms-2 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
 
-            <a class="font-medium {{ request()->is('facilities') ? 'text-orange-600' : 'text-gray-500 '}} hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/facilities">
-              Facilities
-            </a> -->
+              <div class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] md:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 md:w-48 hidden z-10 bg-white md:shadow-md rounded-lg p-2 dark:bg-gray-800 md:dark:border dark:border-gray-700 dark:divide-gray-700 before:absolute top-full md:border before:-top-5 before:start-0 before:w-full before:h-5">
+                
+                <!-- Equipment Link -->
+                <a href="/equipment" class="cursor-pointer flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm {{ request()->is('equipment') ? 'text-orange-600' : 'text-gray-800' }} hover:bg-gray-100 focus:ring-2 focus:ring-orange-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                  Equipment
+                </a>
 
+                <!-- Facilities Link -->
+                <!-- <a href="/facilities" class="cursor-pointer flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm {{ request()->is('facilities') ? 'text-orange-600' : 'text-gray-800' }} hover:bg-gray-100 focus:ring-2 focus:ring-orange-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                  Facilities
+                </a> -->
+
+                <!-- Supplies & Materials Link -->
+                <!-- <a href="/supplies-and-materials" class="cursor-pointer flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm {{ request()->is('supplies') ? 'text-orange-600' : 'text-gray-800' }} hover:bg-gray-100 focus:ring-2 focus:ring-orange-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                  Supplies & Materials
+                </a> -->
+              </div>
+            </div>
 
             <a  class="font-medium flex items-center {{ request()->is('requests') ? 'text-orange-600' : 'text-gray-500 '}} hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/requests">
-              <x-heroicon-o-plus class="flex-shrink-0 w-5 h-5 mr-0" />
+              <!-- <x-heroicon-o-plus class="flex-shrink-0 w-5 h-5 mr-0" /> -->
               <span class="mr-1">Requests</span>
               <span class="py-0.5 px-1.5 rounded-full text-xs font-medium bg-orange-50 border border-orange-200 text-orange-600">{{$total_count}}</span>
             </a>
