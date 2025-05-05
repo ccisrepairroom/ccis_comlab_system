@@ -22,10 +22,14 @@ class RequestFillPage extends Component
     public $phone_number;
     public $college_department;
     public $expected_return_date;
-    public $start_date;
-    public $end_date;
+    public $start_date_and_time_of_use;
+    public $end_date_and_time_of_use;
     public $purpose;
     public $remarks;
+    public $status;
+
+    public $request_status;
+
 
     public function mount()
     {
@@ -45,15 +49,37 @@ class RequestFillPage extends Component
     
     // Validate required fields (adjust as necessary)
     $this->validate([
-        'name' => 'required|string|max:255',
-        'phone_number' => 'required|string|max:15',
+        'name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9 .]+$/'],
+        'phone_number' => ['required', 'regex:/^[0-9]+$/', 'max:11'],
         'college_department' => 'required|string|max:255',
-        'expected_return_date' => 'required|date',
-        'start_date' => 'required|date',
-        'end_date' => 'required|date',
+        'start_date_and_time_of_use' => 'required|date|before:end_date_and_time_of_use',
+        'end_date_and_time_of_use' => 'required|date',
+        'expected_return_date' => 'required|date|after_or_equal:end_date_and_time_of_use',
         'purpose' => 'required|string',
         'remarks' => 'nullable|string',
+    ], [
+        'name.required' => 'The name field is required.',
+        'name.regex' => 'The name may only contain letters, numbers, spaces, and dots.',
+        'name.max' => 'The name may not be greater than 255 characters.',
+        'phone_number.required' => 'The phone number field is required.',
+        'phone_number.regex' => 'The phone number may only contain numbers.',
+        'phone_number.max' => 'The phone number may not be greater than 11 digits.',
+        'college_department.required' => 'The college department field is required.',
+        'college_department.string' => 'The college department must be a valid string.',
+        'college_department.max' => 'The college department may not be greater than 255 characters.',
+        'start_date.required' => 'The start date field is required.',
+        'start_date_and_time_of_use.date' => 'The start date must be a valid date.',
+        'start_date_and_time_of_use.before' => 'The start date must be earlier than the end date.',
+        'end_date_and_time_of_use.required' => 'The end date field is required.',
+        'end_date_and_time_of_use.date' => 'The end date must be a valid date.',
+        'expected_return_date.required' => 'The expected return date field is required.',
+        'expected_return_date.date' => 'The expected return date must be a valid date.',
+        'expected_return_date.after_or_equal' => 'The expected return date must be the same or after the end date.',
+        'purpose.required' => 'The purpose field is required.',
+        'purpose.string' => 'The purpose must be a valid string.',
+        'remarks.string' => 'The remarks must be a valid string.',
     ]);
+    
     
     // Generate the unique request code
     $latestRequestCode = BorrowedItems::latest()->first();  // Get the most recent request_code
@@ -66,19 +92,19 @@ class RequestFillPage extends Component
     foreach ($this->requestlist_equipment as $equipment) {
         BorrowedItems::create([
             'user_id' => $user->id,
-            'equipment_id' => $equipment['equipment_id'],  // Assuming equipment_id is passed in the request
+            'equipment_id' => $equipment['equipment_id'], 
             'request_status' => 'Pending',
-            'request_form' => 'Request Form Data', // Optional, add data if needed
+            'request_form' => 'Request Form Data', 
             'date' => Carbon::now()->toDateString(),
             'purpose' => $this->purpose,
-            'start_date_and_time_of_use' => $this->start_date,
-            'end_date_and_time_of_use' => $this->end_date,
+            'start_date_and_time_of_use' => $this->start_date_and_time_of_use,
+            'end_date_and_time_of_use' => $this->end_date_and_time_of_use,
             'expected_return_date' => $this->expected_return_date,
             'received_by' => null, // Add logic if required
             'college_department' => $this->college_department,
             'borrowed_date' => Carbon::now()->toDateString(),
             'remarks' => $this->remarks,
-            'status' => 'Unreturned',
+            'status' => '------',
             'borrowed_by' => $this->name,
             'phone_number' => $this->phone_number,
             'request_code' => $nextRequestCode,  // Ensure the request_code is passed here
@@ -98,8 +124,8 @@ class RequestFillPage extends Component
         'phone_number' => $this->phone_number,
         'college_department' => $this->college_department,
         'purpose' => $this->purpose,
-        'start_date' => $this->start_date,
-        'end_date' => $this->end_date,
+        'start_date_and_time_of_use' => $this->start_date_and_time_of_use,
+        'end_date_and_time_of_use' => $this->end_date_and_time_of_use,
         'expected_return_date' => $this->expected_return_date,
     ]);
     
@@ -118,7 +144,7 @@ public function render()
 
     return view('livewire.request-fill-page', [
         'requestlist_equipment' => $this->requestlist_equipment,
-        'nextRequestCode' => $nextRequestCode,  // Pass the request_code to the view
+        'nextRequestCode' => $nextRequestCode,  
     ]);
 }
 

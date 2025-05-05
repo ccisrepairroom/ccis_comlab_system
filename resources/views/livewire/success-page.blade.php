@@ -30,14 +30,14 @@
           <div class="w-full px-4 mb-4 md:w-1/4">
           <p class="mb-2 text-sm leading-5 text-gray-600 dark:text-gray-400">Start Date and Time of Use: </p>
           <p class="text-base font-semibold leading-4 text-gray-800 dark:text-gray-400">
-            {{ \Carbon\Carbon::parse($requestDetails['start_date'])->format('F j, Y, g:i A') }}
+            {{ \Carbon\Carbon::parse($requestDetails['start_date_and_time_of_use'])->format('F j, Y, g:i A') }}
           </p>
           </div>
 
           <div class="w-full px-4 mb-4 md:w-1/4">
           <p class="mb-2 text-sm leading-5 text-gray-600 dark:text-gray-400">End Date and Time of Use: </p>
           <p class="text-base font-semibold leading-4 text-gray-800 dark:text-gray-400">
-            {{ \Carbon\Carbon::parse($requestDetails['end_date'])->format('F j, Y, g:i A') }}
+            {{ \Carbon\Carbon::parse($requestDetails['end_date_and_time_of_use'])->format('F j, Y, g:i A') }}
           </p>
           </div>
           <div class="w-full px-4 mb-4 md:w-1/4">
@@ -46,11 +46,9 @@
           </div>
         </div>
       
-        <!-- Requested Items Table -->
-        <div class="px-4 mb-10">
+        <!-- <div class="px-4 mb-10">
           <h2 class="mb-2 text-xl font-semibold text-gray-700 dark:text-gray-400">Requested Items</h2>
-          <!-- Populate requested items here -->
-        </div>
+        </div> -->
       
         <!-- Buttons -->
         <div class="flex justify-start gap-4 px-4 mt-6">

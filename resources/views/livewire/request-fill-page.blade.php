@@ -13,15 +13,8 @@
                        <div>
                             <label class="block text-gray-700 dark:text-white mb-1" for="name">Name</label>
                             <div class="relative">
-                                <input wire:model.defer="name" class="w-full rounded-lg border py-2 px-3 dark:bg-orange-500 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="name" type="text" placeholder="Juan Dela Cruz" aria-describedby="name-error">
-                                
-                                @error('name')
-                                <div class="absolute inset-y-0 right-3 flex items-center">
-                                    <svg class="h-5 w-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                                    </svg>
-                                </div>
-                                @enderror
+                                <input wire:model.defer="name" class="w-full rounded-lg border py-2 px-3 dark:bg-orange-500 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="name" type="text" placeholder="Juan Dela Cruz" >
+                                  
                             </div>
                             @error('name')
                             <p class="text-xs text-red-600 mt-2">{{$message}}</p>
@@ -32,37 +25,55 @@
                     <div>
                         <label class="block text-gray-700 dark:text-white mb-1" for="phone_number">Phone Number</label>
                         <input wire:model.defer="phone_number" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="phone_number" type="text" placeholder="09918898988">
+                            @error('phone_number')
+                            <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
-                    </div>
+                    
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                         <div>
                             <label class="block text-gray-700 dark:text-white mb-1" for="college_department">College/Department</label>
                             <textarea wire:model.defer="college_department" class="h-11 w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="college_department" type="text" placeholder="CCIS - Computer Science"></textarea>
+                            @error('college_department')
+                            <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div>
                             <label for="expected_return_date" class="block text-gray-700 dark:text-white mb-1">Expected Return Date</label>
                             <input wire:model.defer="expected_return_date" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="expected_return_date" type="datetime-local" name="expected_return_date">
+                            @error('expected_return_date')
+                            <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                         <div>
-                            <label for="start_date" class="block text-gray-700 dark:text-white mb-1">Start Date and Time of Use</label>
-                            <input wire:model.defer="start_date" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="start_date" type="datetime-local" name="start_date">
+                            <label for="start_date_and_time_of_use" class="block text-gray-700 dark:text-white mb-1">Start Date and Time of Use</label>
+                            <input wire:model.defer="start_date_and_time_of_use" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="start_date_and_time_of_use" type="datetime-local" name="start_date_and_time_of_use">
+                            @error('start_date_and_time_of_use')
+                            <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div>
-                            <label for="end_date" class="block text-gray-700 dark:text-white mb-1">End Date and Time of Use</label>
-                            <input wire:model.defer="end_date" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="end_date" type="datetime-local" name="end_date">
+                            <label for="end_date_and_time_of_use" class="block text-gray-700 dark:text-white mb-1">End Date and Time of Use</label>
+                            <input wire:model.defer="end_date_and_time_of_use" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="end_date_and_time_of_use" type="datetime-local" name="end_date_and_time_of_use">
+                            @error('end_date_and_time_of_use')
+                            <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="mt-4">
                         <label class="block text-gray-700 dark:text-white mb-1" for="purpose">Purpose</label>
                         <textarea wire:model.defer="purpose" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none focus:ring-orange-500 focus:border-orange-500" id="purpose" placeholder="Describe the purpose of this request..."></textarea>
-
+                        @error('purpose')
+                            <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
+                            @enderror
                         <label class="block text-gray-700 dark:text-white mb-1 mt-4" for="remarks">Remarks</label>
                         <textarea wire:model.defer="remarks" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none focus:ring-orange-500 focus:border-orange-500" id="remarks" placeholder="Add any additional details..."></textarea>
                     </div>
