@@ -9,7 +9,7 @@ use App\Helpers\LoginManagement;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 
-#[Title('Login - CCIS ERMA')]
+#[Title('Sign In - CCIS ERMA')]
 class LoginPage extends Component
 {
     public $email;

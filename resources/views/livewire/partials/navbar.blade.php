@@ -13,12 +13,7 @@
             <img src="{{ asset('images/ermashortlogo.png') }}" alt="SM Supermarket Logo" class="h-12 md:h-16 lg:h-20 w-auto">
         </a>
         <!-- End Logo Section -->
-        <!-- Search bar Section -->
-
-
-        <!-- <input type="text" wire:model.live="search" class="w-60 ml-4 px-4 py-2 border border-orange-300 dark:bg-orange-800 dark:text-orange-100" placeholder="Search product name..."> --> 
-        <!-- End Search Bar Section -->
-          
+       
 
         <div class="md:hidden">
           <button type="button" class="hs-collapse-toggle flex justify-center items-center w-9 h-9 text-sm font-semibold rounded-lg border border-gray-200 text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" data-hs-collapse="#navbar-collapse-with-animation" aria-controls="navbar-collapse-with-animation" aria-label="Toggle navigation">
