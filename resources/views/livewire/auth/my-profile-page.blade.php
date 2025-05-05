@@ -48,6 +48,9 @@
         <div class="mb-4">
             <label class="block text-sm font-medium mb-1" for="name">Full Name</label>
             <input wire:model="name" class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="name" type="text">
+            @error('name')
+                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+            @enderror
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -61,6 +64,9 @@
             <option value="Computer Science">Computer Science</option>
             <option value="Other Department">Other Department</option>
         </select>
+        @error('department')
+            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+        @enderror
     </div>
 
     <div>
@@ -79,6 +85,9 @@
             <option value="Student">Student</option>
             <option value="Other">Other</option>
         </select>
+        @error('designation')
+            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+        @enderror
     </div>
 </div>
 
@@ -86,6 +95,9 @@
         <div class="mb-4">
             <label class="block text-sm font-medium mb-1" for="email">Email address</label>
             <input wire:model="email" class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="email" type="email">
+            @error('email')
+                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+            @enderror
         </div>
 
         <div class="flex justify-end">
@@ -106,7 +118,9 @@
             <div x-data="{ show: false }">
                 <label class="block text-sm font-medium mb-1" for="password">New Password</label>
                 <div class="relative">
+
                     <input :type="show ? 'text' : 'password'" wire:model="password" class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="password" placeholder="(6+ characters required)">
+                    
                     <button type="button" @click="show = !show" class="absolute inset-y-0 end-0 flex items-center px-3 text-gray-500 hover:text-gray-700">
                         <!-- Hidden (Eye Off) Icon -->
                         <x-heroicon-m-eye-slash x-show="!show" class="w-5 h-5" />
@@ -117,7 +131,11 @@
                                 d="M12 4c4.97 0 9.13 3.07 10.94 7.36a1.003 1.003 0 010 .68C21.13 16.93 16.97 20 12 20c-4.97 0-9.13-3.07-10.94-7.36a1.003 1.003 0 010-.68C2.87 7.07 7.03 4 12 4zM12 9a3 3 0 100 6 3 3 0 000-6z"></path>
                         </svg>
                     </button>
+
                 </div>
+                @error('password')
+                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div x-data="{ show: false }">
@@ -135,6 +153,9 @@
                         </svg>
                     </button>
                 </div>
+                @error('password.same')
+                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                @enderror
             </div>
         </div>
 
