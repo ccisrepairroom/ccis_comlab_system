@@ -17,7 +17,7 @@
             <!-- Profile picture card -->
             <div class="bg-white shadow-md rounded-lg p-6">
                 <div class="flex flex-col items-center text-center">
-                    <img class="w-40 h-40 rounded-full object-cover mb-4" src="{{ asset('images/profile_avatar.png') }}"  alt="Avatar">
+                    <img class="w-40 h-40 rounded-full object-cover mb-4 mt-6" src="{{ asset('images/profile_avatar.png') }}"  alt="Avatar">
                     <p class="text-xl text-black font-bold">{{ $name }}</p>
                     <p class="text-sm text-gray-500 mb-4">{{ Str::headline($role) }}</p>
                 </div>
