@@ -76,29 +76,33 @@
       
       <!-- Start Equipment Card Section -->
       <div x-data="{ open: false }" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 lg:gap-1">
-      
-          <div class="p-4 sm:p-3 md:p-2 lg:p-2" wire:key="">
+      @foreach($facilities as $facility)
+          <div class="p-4 sm:p-3 md:p-2 lg:p-2" wire:key="{{ $facility->id }}">
               <a  href="#" @click.prevent="open = true" href="#" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
                   <!-- Image Container -->
                   <div class="h-48 sm:h-40 md:h-36 lg:h-36 mt-3 bg-white flex items-center justify-center">
-                      <img src="" alt="" 
+                      <img src="{{ url('storage', $facility->main_image) }}" alt="{{ $facility->name }}" 
                           class="w-full h-full object-contain">
                   </div>
                   <div class="lg:p-2 sm:pl-3 md:pl-2 pl-5 my-3">
                       <div class="flex flex-wrap gap-1 lg:gap-0.5 mb-2 ml-2">
                           <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" title="">
-                         
+                          {{ Str::limit($facility->facility_type, 13, '...') }}
                         </span>
                           <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" title="">
-                          
+                          {{ Str::limit($facility->connection_type, 13, '...') }}
                           </span>
                       </div>
 
-                      <h2 class="font-bold text-lg sm:text-md md:text-sm lg:text-md mb-1 px-2">CL1</h2>
+                      <h2 class="font-bold text-lg sm:text-md md:text-sm lg:text-md mb-1 px-2">{{ Str::upper($facility->name) }}</h2>
                       <!-- Modal Triggered by See More -->
                       <div x-data="{ open: false }">
                       <p class="text-sm sm:text-xs md:text-xs text-gray-600 mb-2 px-2 text-justify">
-                        
+                          @if($facility->remarks)
+                                  {{ Str::limit($facility->remarks, 27) }}
+                              @else
+                                  Remarks is not available.
+                              @endif
                           
                           <span class="text-orange-500 underline cursor-pointer" @click="open = true">
                               See more
@@ -108,26 +112,28 @@
                       <div x-show="open" id="seemore-modal" name="seemore-modal" class="fixed inset-0 flex items-center justify-center  backdrop-brightness-75 bg-opacity-50 z-50">
                           <div class="relative p-4 w-full max-w-2xl max-h-full mt-16">
                               <div class="my-10 bg-white p-6 rounded shadow-lg max-h-[80vh] overflow-y-auto">
-                                  <h3 class="text-xl font-semibold">hkh</h3>
-                                  
+                                  <h3 class="text-xl font-semibold">{{Str::upper($facility->name)}}</h3>
+                                 
                                   <!-- carousel -->
                                   <div class="flex justify-center items-center h-full p-4">
                                   <div class="carousel relative w-full max-w-2xl">
                                     <div class="overflow-hidden bg-gray-300 rounded-xl ">
                                       <div class="carousel-slides relative w-full flex gap-6 snap-x snap-mandatory scroll-smooth overflow-x-auto -mb-10 pt-2 pb-12 px-2">
-                                                                         
+                                          @if(!empty($facility->alternate_images))
+                                          @foreach($facility->alternate_images as $image)                              
                                           <div class="snap-always snap-center shrink-0 relative overflow-hidden aspect-[3/2] w-full rounded-lg bg-gray-200">
-                                            <img class="shrink-0 my-0 object-contain w-full h-full" src=""  alt="">
+                                            <img class="shrink-0 my-0 object-contain w-full h-full" src="{{ url('storage', $image) }}"  alt="{{ $facility->name }}">
                                           </div>
-                                          
+                                          @endforeach
+                                          @else
                                           <div class="flex justify-center items-center w-full">
                                               <p class="text-gray-500">No alternate images available.</p>
                                           </div>                                         
-                                                      
+                                          @endif              
                                                                             
                                         </div>
                                     </div>
-                                    
+                                    @if (!empty($facility->alternate_images))
                                     <div class="carousel-nav flex justify-center gap-2 pt-2">
                                       <button type="button" class="carousel-nav-prev rounded-full bg-gray-200 p-1.5 text-gray-600 shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-gray-200 transition-all duration-300">
                                         <svg class="lucide lucide-chevron-left w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
@@ -136,25 +142,19 @@
                                         <svg class="lucide lucide-chevron-right w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                                       </button>
                                     </div>
-
+                                    @endif
                                   </div>
                                 </div>
-                                  <p class="text-gray-600 py-6 text-justify">gd</p>
+                                  <p class="text-gray-600 py-6 text-justify">{{$facility->remarks}}</p>
                                   <p class="text-gray-600 text-sm">
-                                      Serial Number: <br>
-                                      Property Number: <br>
-                                      Control Number:  <br>
-                                      PO Number:   <br>
-                                      Item Number: <br>
-                                      Unit Number:  <br>
-                                      Date Acquired: <br>
-                                      Amount:   <br>
-                                      Estimated Life:  <br>
-                                      Supplier:  <br>
-                                      Person Liable: <br>
+                                      Facility Type: {{Str::upper($facility->serial_no ?? 'N/A')}}<br>
+                                      Connection Type: <br>
+                                      Cooling Tools:  <br>
+                                      Floor Level:   <br>
+                                      Building: <br>
                                   </p>
                                   <p class="text-gray-600 text-sm text-justify pt-5">
-                                      Remarks:   <br>
+                                      Remarks: {{Str::title($facility->remarks ?? 'N/A')}}   <br>
                                   </p>
                                   <div class="flex justify-end">
                                   <button class=" mt-4 px-4 py-2 bg-orange-500 text-white rounded" @click="open = false">Close</button>
@@ -187,12 +187,13 @@
                       </div>
               </a>
           </div>
-
+          @endforeach
   </div>
 
 
     <!-- pagination start -->
     <div class="flex justify-end mt-6">
+    {{ $facilities->links() }}
             </div>
             <!-- pagination end -->
 

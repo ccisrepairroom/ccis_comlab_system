@@ -42,10 +42,11 @@ class FacilityResource extends Resource
             ->schema([
                 Section::make('Facility Image')
                 ->schema([
-                    Forms\Components\FileUpload::make('facility_img')
+                    Forms\Components\FileUpload::make('main_image')
                     ->label('Main Image')
                     ->imageEditor()
                     ->deletable()
+                    ->required()
                     ->preserveFilenames(),
  
                     ])
