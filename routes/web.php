@@ -55,9 +55,9 @@ use App\Livewire\CancelPage;
 |
 */
 
-Route::get('/admin', function () {
-    return redirect('ccis_erma/login');
-});
+// Route::get('/admin', function () {
+//     return redirect('ccis_erma/login');
+// });
 
 Route::get('download-request-form', function () {
     // Define the path to the file stored in the 'app/Filament/Resources/request_form'
