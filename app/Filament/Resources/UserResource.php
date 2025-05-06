@@ -73,9 +73,9 @@ class UserResource extends Resource
                             ->maxLength(255),
                         Forms\Components\TextInput::make('email')
                             ->email()
-                            ->rules([
-                                'regex:/^[\w\.-]+@carsu\.edu\.ph$/', // Custom regex for domain check
-                            ])
+                            // ->rules([
+                            //     'regex:/^[\w\.-]+@carsu\.edu\.ph$/', // Custom regex for domain check
+                            // ])
                             ->default(''),
                         Forms\Components\Select::make('role_id')
                             ->label('Role')

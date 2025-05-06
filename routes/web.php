@@ -121,7 +121,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/my-request-detail', MyRequestDetailPage::class);
     Route::get('/success', SuccessPage::class)->name('success');
     Route::get('/cancel', CancelPage::class);
-    Route::get('/my-profile', MyProfilePage::class);
+    Route::get('/account-details', MyProfilePage::class);
  
 
 });
