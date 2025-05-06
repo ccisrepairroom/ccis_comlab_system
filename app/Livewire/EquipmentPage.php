@@ -55,24 +55,24 @@ class EquipmentPage extends Component
         //     ->toArray();
 
         // Get the requested, unreturned, and pending equipment IDs globally
-    $this->requestedEquipments = RequestManagement::getRequestedEquipmentIds();
+        $this->requestedEquipments = RequestManagement::getRequestedEquipmentIds();
 
-    // Get equipment IDs that are currently borrowed (unreturned)
-    $this->unreturnedEquipments = \App\Models\BorrowedItems::where('status', 'Unreturned')
-        ->pluck('equipment_id')
-        ->toArray();
+        // Get equipment IDs that are currently borrowed (unreturned)
+        $this->unreturnedEquipments = \App\Models\BorrowedItems::where('status', 'Unreturned')
+            ->pluck('equipment_id')
+            ->toArray();
 
-    // Get equipment IDs that are currently pending a request
-    $this->pendingEquipments = \App\Models\BorrowedItems::where('request_status', 'Pending')
-        ->pluck('equipment_id')
-        ->toArray();
+        // Get equipment IDs that are currently pending a request
+        $this->pendingEquipments = \App\Models\BorrowedItems::where('request_status', 'Pending')
+            ->pluck('equipment_id')
+            ->toArray();
 
-    // Combine all the requested, unreturned, and pending equipment IDs into one array
-    $this->allRequestedEquipments = array_unique(array_merge(
-        $this->requestedEquipments,
-        $this->unreturnedEquipments,
-        $this->pendingEquipments
-    ));
+        // Combine all the requested, unreturned, and pending equipment IDs into one array
+        $this->allRequestedEquipments = array_unique(array_merge(
+            $this->requestedEquipments,
+            $this->unreturnedEquipments,
+            $this->pendingEquipments
+        ));
 
     }
 
