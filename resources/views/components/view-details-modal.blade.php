@@ -54,9 +54,9 @@
           </thead>
           <tbody>
             <tr>
-              <td class="border px-4 py-2 w-full md:w-1/3 break-words">
+              <td class="border px-4 py-2 w-full md:w-1/3 break-words text-xs sm:text-sm md:text-base">
                 <div x-text="(selectedRequest?.equipment_brand_name || 'N/A') + ' (' + (selectedRequest?.category_description || 'N/A') + ')'"></div>
-                <div class="text-sm text-gray-600">
+                <div class="text-gray-600">
                   <div class="flex flex-wrap gap-2">
                     <span class="block w-full sm:inline sm:w-auto">
                       Serial No.: <span x-text="selectedRequest?.equipment_serial_no || 'N/A'"></span>
@@ -67,8 +67,9 @@
                   </div>
                 </div>
               </td>
-              <td class="border px-4 py-2 w-full md:w-1/3 text-center" x-text="selectedRequest?.facility_name || 'N/A'"></td>
-              <td class="border px-4 py-2 w-full md:w-1/3">
+              <td class="border px-4 py-2 w-full md:w-1/3 text-center text-xs sm:text-sm md:text-base" 
+                  x-text="selectedRequest?.facility_name || 'N/A'"></td>
+              <td class="border px-4 py-2 w-full md:w-1/3 text-xs sm:text-sm md:text-base">
                 <div x-text="((selectedRequest?.request_status || 'N/A') + ' (' + (selectedRequest?.status || 'N/A') + ')').replace(/^./, c => c.toUpperCase())"></div>
               </td>
             </tr>

@@ -70,7 +70,7 @@
 				<hr class="bg-slate-400 my-4 h-1 rounded">
 				<div class="flex justify-between mb-2 font-bold">
         <span>
-						Total Equipment
+						Total Items
 					</span>
 					<span>
 					{{$total_request }}
