@@ -48,10 +48,18 @@ class FacilityResource extends Resource
                     ->deletable()
                     ->required()
                     ->preserveFilenames(),
+
+                    Forms\Components\FileUpload::make('alternate_images')
+                    ->imageEditor()
+                    ->deletable()
+                    ->multiple()
+                    ->required()
+                    ->preserveFilenames(),
+
  
                     ])
-                    ->columnSpan(1)
-                    ->columns(1)
+                    ->columnSpan(2)
+                    ->columns(2)
                     ->collapsible(),
 
                 Section::make('Facility Information')
@@ -177,6 +185,14 @@ class FacilityResource extends Resource
                             ->visible(fn ($get) => in_array('main_image', $get('fields_to_update') ?? [])) 
                             ->required(fn ($get) => in_array('main_image', $get('fields_to_update') ?? [])),
 
+                        Forms\Components\FileUpload::make('alternate_images')
+                            ->label('Alternate Images')
+                            ->imageEditor()
+                            ->deletable()
+                            ->preserveFilenames()
+                            ->visible(fn ($get) => in_array('alternate_images', $get('fields_to_update') ?? [])) 
+                            ->required(fn ($get) => in_array('alternate_images', $get('fields_to_update') ?? [])),
+
                         Forms\Components\Select::make('connection_type')
                             ->options([
                                 'None' => 'None',
@@ -244,6 +260,9 @@ class FacilityResource extends Resource
 
                             if (in_array('main_image', $data['fields_to_update'])) {
                                 $updateData['main_image'] = $data['main_image'];
+                            }
+                            if (in_array('alternate_images', $data['fields_to_update'])) {
+                                $updateData['alternate_images'] = $data['alternate_images'];
                             }
                             if (in_array('connection_type', $data['fields_to_update'])) {
                                 $updateData['connection_type'] = $data['connection_type'];
@@ -320,6 +339,10 @@ class FacilityResource extends Resource
             ->query(Facility::with('user'))
             ->columns([
                 Tables\Columns\ImageColumn::make('main_image')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->stacked(),
+                Tables\Columns\ImageColumn::make('alternate_images')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->stacked(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Name')

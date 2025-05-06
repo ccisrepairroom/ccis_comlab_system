@@ -98,7 +98,7 @@
                   </tr>
               @empty
                 <tr>
-                  <td colspan="7" class="px-6 py-4 text-center text-sm font-medium text-gray-800 dark:text-gray-200">No requests have been made."</td>
+                  <td colspan="7" class="px-6 py-4 text-center text-sm font-medium text-gray-800 dark:text-gray-200">No requests have been made.</td>
                 </tr>
               @endforelse
             </tbody>
