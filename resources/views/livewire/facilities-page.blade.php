@@ -151,7 +151,6 @@
                                     @endif
                                   </div>
                                 </div>
-                                  <p class="text-gray-600 py-6 text-justify">{{$facility->remarks}}</p>
                                   <p class="text-gray-600 text-sm">
                                       Facility Type: {{Str::Title($facility->facility_type ?? 'N/A')}}<br>
                                       Connection Type: {{Str::Title($facility->connection_type ?? 'N/A')}}<br>
@@ -160,7 +159,7 @@
                                       Building: {{Str::Title($facility->building ?? 'N/A')}}<br>
                                   </p>
                                   <p class="text-gray-600 text-sm text-justify pt-5">
-                                      Remarks: {{Str::title($facility->remarks ?? 'N/A')}}   <br>
+                                      Remarks: {{ Str::title(strip_tags($facility->remarks ?? 'N/A')) }}<br>
                                   </p>
                                   <div class="flex justify-end">
                                   <button class=" mt-4 px-4 py-2 bg-orange-500 text-white rounded" @click="open = false">Close</button>
