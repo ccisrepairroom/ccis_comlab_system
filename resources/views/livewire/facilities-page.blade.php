@@ -86,24 +86,30 @@
                   </div>
                   <div class="lg:p-2 sm:pl-3 md:pl-2 pl-5 my-3">
                       <div class="flex flex-wrap gap-1 lg:gap-0.5 mb-2 ml-2">
-                          <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" title="">
+                      <span 
+                          class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" 
+                          title="{{ $facility->facility_type }}"
+                      >
                           {{ Str::limit($facility->facility_type, 13, '...') }}
-                        </span>
-                          <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" title="">
+                      </span>
+                      <span 
+                          class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" 
+                          title="{{ $facility->connection_type }}"
+                      >
                           {{ Str::limit($facility->connection_type, 13, '...') }}
-                          </span>
-                      </div>
+                      </span>
+                    </div>
 
                       <h2 class="font-bold text-lg sm:text-md md:text-sm lg:text-md mb-1 px-2">{{ Str::upper($facility->name) }}</h2>
+                      
                       <!-- Modal Triggered by See More -->
                       <div x-data="{ open: false }">
                       <p class="text-sm sm:text-xs md:text-xs text-gray-600 mb-2 px-2 text-justify">
                           @if($facility->remarks)
-                                  {{ Str::limit($facility->remarks, 27) }}
-                              @else
-                                  Remarks is not available.
-                              @endif
-                          
+                              {{ Str::title(Str::limit(strip_tags($facility->remarks), 27)) }}
+                          @else
+                              Remarks is not available.
+                          @endif                         
                           <span class="text-orange-500 underline cursor-pointer" @click="open = true">
                               See more
                           </span>
@@ -121,7 +127,7 @@
                                       <div class="carousel-slides relative w-full flex gap-6 snap-x snap-mandatory scroll-smooth overflow-x-auto -mb-10 pt-2 pb-12 px-2">
                                           @if(!empty($facility->alternate_images))
                                           @foreach($facility->alternate_images as $image)                              
-                                          <div class="snap-always snap-center shrink-0 relative overflow-hidden aspect-[3/2] w-full rounded-lg bg-gray-200">
+                                          <div class="snap-always snap-center shrink-0 relative overflow-hidden aspect-[3/2] w-full rounded-lg bg-white">
                                             <img class="shrink-0 my-0 object-contain w-full h-full" src="{{ url('storage', $image) }}"  alt="{{ $facility->name }}">
                                           </div>
                                           @endforeach

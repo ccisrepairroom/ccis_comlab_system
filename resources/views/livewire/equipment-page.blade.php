@@ -126,7 +126,7 @@
                                       <div class="carousel-slides relative w-full flex gap-6 snap-x snap-mandatory scroll-smooth overflow-x-auto -mb-10 pt-2 pb-12 px-2">
                                       @if(!empty($equip->alternate_images))
                                           @foreach($equip->alternate_images as $image)                                        
-                                          <div class="snap-always snap-center shrink-0 relative overflow-hidden aspect-[3/2] w-full rounded-lg bg-gray-200">
+                                          <div class="snap-always snap-center shrink-0 relative overflow-hidden aspect-[3/2] w-full rounded-lg bg-white">
                                             <img class="shrink-0 my-0 object-contain w-full h-full" src="{{ url('storage', $image) }}"  alt="{{ $equip->brand_name }}">
                                           </div>
                                           @endforeach
