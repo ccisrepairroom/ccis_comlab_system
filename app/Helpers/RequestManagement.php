@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Cookie;
 use App\Models\Equipment;
 use App\Models\Category;
 use App\Models\Facility;
+use App\Models\BorrowedItems;
+
 
 class RequestManagement
 {
@@ -153,10 +155,42 @@ class RequestManagement
     }
 
     // Get requested equipment IDs
+    // public static function getRequestedEquipmentIds(array $requestlist_equipment = null)
+    // {
+    //     $requestlist_equipment = $requestlist_equipment ?? self::getRequestListEquipmentFromCookie();
+
+    //     return array_column($requestlist_equipment, 'equipment_id');
+    // }
+
     public static function getRequestedEquipmentIds(array $requestlist_equipment = null)
     {
+        // Get equipment IDs from the request list (either from passed argument or from cookie)
         $requestlist_equipment = $requestlist_equipment ?? self::getRequestListEquipmentFromCookie();
+        $cookieEquipmentIds = array_column($requestlist_equipment, 'equipment_id');
 
-        return array_column($requestlist_equipment, 'equipment_id');
+        // Get equipment that is either returned or has pending request status
+        $borrowedEquipmentIds = \App\Models\BorrowedItems::where(function ($query) {
+            $query->where('status', 'Unreturned')
+                ->orWhere('request_status', 'Pending');
+        })
+        ->pluck('equipment_id')
+        ->toArray();
+
+        // Merge and return unique equipment IDs from both sources
+        return array_unique(array_merge($cookieEquipmentIds, $borrowedEquipmentIds));
+    }
+
+
+    public static function getAllRequestedAndBorrowedEquipmentIds()
+    {
+        $cookieRequested = self::getRequestedEquipmentIds();
+        $sessionRequested = Session::get('requested_equipments', []);
+
+        $borrowed = BorrowedItems::where('status', 'Unreturned')
+            ->where('request_status', 'Pending')
+            ->pluck('equipment_id')
+            ->toArray();
+
+        return array_unique(array_merge($cookieRequested, $sessionRequested, $borrowed));
     }
 }

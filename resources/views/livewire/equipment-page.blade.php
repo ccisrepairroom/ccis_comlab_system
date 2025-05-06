@@ -176,22 +176,26 @@
                       </div> 
                   </div>
 
-                <!-- Request button -->
-                <div class="flex justify-end mt-1 mb-5 mr-5">
-                <button 
-                  wire:click="addToRequestList({{ $equip->id }})" 
-                  x-data="{ requested: {{ in_array($equip->id, $requestedEquipments) ? 'true' : 'false' }} }"
-                  x-text="requested ? 'Requested' : 'Request'"
-                  :disabled="requested"
-                  x-on:click="requested = true"
-                  class="flex items-center gap-1 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed">
-                  <x-heroicon-o-plus class="w-4 h-4" x-show="!requested" />
-              </button>
-              @if (session()->has('message'))
-    <div class="alert alert-success">
-        <span>{{ session('message') }}</span>
-    </div>
-@endif
+                    <!-- Request button -->
+                    <div class="flex justify-end mt-1 mb-5 mr-5">
+    <button 
+        wire:click="addToRequestList({{ $equip->id }})"
+        x-data="{
+            requested: {{ in_array($equip->id, $allRequestedEquipments) ? 'true' : 'false' }}
+        }"
+        x-text="requested ? 'Requested' : 'Request'"
+        :disabled="requested"
+        x-on:click="requested = true"
+        class="flex items-center gap-1 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+        <x-heroicon-o-plus class="w-4 h-4" x-show="!requested" />
+    </button>
+
+                              @if (session()->has('message'))
+                    <div class="alert alert-success">
+                        <span>{{ session('message') }}</span>
+                    </div>
+                @endif
 
 
 

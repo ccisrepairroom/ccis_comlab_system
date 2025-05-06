@@ -646,7 +646,7 @@ class EquipmentResource extends Resource
                         'remarks' => $data['remarks'],
                         'request_code' => $requestCode,
                         'equipment_id' => $equipmentId,
-                        'request_status' => 'pending',
+                        'request_status' => 'Pending',
                         'status' => '------',
                     ]);
         

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\Equipment;
 use App\Models\Category;
 use App\Models\Facility;
+use App\Models\BorrowedItems;
 use App\Helpers\RequestManagement;
 use App\Livewire\Partials\Navbar;
 
@@ -35,15 +36,56 @@ class EquipmentPage extends Component
 
     public $requestedEquipments = [];
 
+    public $unreturnedEquipments = [];
+    public $pendingEquipments = [];
+    public $allRequestedEquipments = [];
+
+
     public function mount()
     {
-        $this->requestedEquipments = RequestManagement::getRequestedEquipmentIds();
+        // $this->requestedEquipments = RequestManagement::getRequestedEquipmentIds();
+
+        //   // You might need to define the logic for getting unreturned and pending equipment IDs
+        // $this->unreturnedEquipments = \App\Models\BorrowedItems::where('status', 'Unreturned')
+        //     ->pluck('equipment_id')
+        //     ->toArray();
+
+        // $this->pendingEquipments = \App\Models\BorrowedItems::where('request_status', 'Pending')
+        //     ->pluck('equipment_id')
+        //     ->toArray();
+
+        // Get the requested, unreturned, and pending equipment IDs globally
+    $this->requestedEquipments = RequestManagement::getRequestedEquipmentIds();
+
+    // Get equipment IDs that are currently borrowed (unreturned)
+    $this->unreturnedEquipments = \App\Models\BorrowedItems::where('status', 'Unreturned')
+        ->pluck('equipment_id')
+        ->toArray();
+
+    // Get equipment IDs that are currently pending a request
+    $this->pendingEquipments = \App\Models\BorrowedItems::where('request_status', 'Pending')
+        ->pluck('equipment_id')
+        ->toArray();
+
+    // Combine all the requested, unreturned, and pending equipment IDs into one array
+    $this->allRequestedEquipments = array_unique(array_merge(
+        $this->requestedEquipments,
+        $this->unreturnedEquipments,
+        $this->pendingEquipments
+    ));
+
+    }
+
+    public function isUnreturned($equipmentId)
+    {
+        return in_array($equipmentId, $this->unreturnedEquipments);
     }
     
     public function isRequested($equipmentId)
     {
         return in_array($equipmentId, $this->requestedEquipments);
     }
+    
     
     // Add to request list method
     public function addToRequestList($equipment_id)
