@@ -148,10 +148,10 @@
                                   <p class="text-gray-600 py-6 text-justify">{{$facility->remarks}}</p>
                                   <p class="text-gray-600 text-sm">
                                       Facility Type: {{Str::upper($facility->serial_no ?? 'N/A')}}<br>
-                                      Connection Type: <br>
-                                      Cooling Tools:  <br>
-                                      Floor Level:   <br>
-                                      Building: <br>
+                                      Connection Type: {{Str::upper($facility->connection_type ?? 'N/A')}}<br>
+                                      Cooling Tools:  {{Str::upper($facility->cooling_tools ?? 'N/A')}}<br>
+                                      Floor Level:   {{Str::upper($facility->floor_level ?? 'N/A')}}<br>
+                                      Building: {{Str::upper($facility->building ?? 'N/A')}}<br>
                                   </p>
                                   <p class="text-gray-600 text-sm text-justify pt-5">
                                       Remarks: {{Str::title($facility->remarks ?? 'N/A')}}   <br>

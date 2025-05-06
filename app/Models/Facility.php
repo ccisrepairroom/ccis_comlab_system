@@ -18,6 +18,7 @@ class Facility extends Model
         'building',
         'remarks',
         'main_image',
+        'alternate_images',
     ];
     public function user()
 {
@@ -25,13 +26,17 @@ class Facility extends Model
 }
 
 public function equipment()
-    {
-        return $this->hasMany(Equipment::class, 'facility_id');
-    }
+{
+    return $this->hasMany(Equipment::class, 'facility_id');
+}
 
-    public function monitorings()
+public function monitorings()
 {
     return $this->hasMany(FacilityMonitoring::class);
 }
+
+protected $casts = [
+    'alternate_images' => 'array'
+];
 
 }

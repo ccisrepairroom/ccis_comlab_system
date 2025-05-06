@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('borrowed_items', function (Blueprint $table) {
-            $table->string('request_status')->default('pending')->change();
-            $table->string('status')->default('unreturned')->change();
+            $table->string('request_status')->default('Pending')->change();
+            $table->string('status')->default('Unreturned')->change();
         });
     }
 
