@@ -172,12 +172,42 @@
 
                     <!-- Request button -->
                     <div class="flex justify-end mt-1 mb-5 mr-5">
-    <button 
-      
+                    <div x-data="{ openModal: false }">
+    <!-- Button to trigger the modal -->
+    <button
+        @click="openModal = true"
         class="flex items-center gap-1 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
     >
-        <x-heroicon-o-plus class="w-4 h-4"  />Request
+        <x-heroicon-o-plus class="w-4 h-4" />Request
     </button>
+
+    <!-- Modal -->
+    <div
+    x-show="openModal"
+    class="fixed inset-0 flex items-center justify-center backdrop-brightness-75 bg-opacity-50 z-50"
+    @click.self="openModal = false"
+>
+    <div class="bg-white p-4 sm:p-6 rounded-sm shadow-lg max-w-xs sm:max-w-sm w-full mx-auto">
+        <p class="text-sm sm:text-lg font-semibold pb-4 sm:pb-6 ">
+            Are you sure you want to request {{ strtoupper($facility->name) }}?
+        </p>
+        <div class="mt-4 flex justify-end gap-2 sm:gap-3">
+            <button
+                @click="openModal = false"
+                class="px-3 py-2 sm:px-4 sm:py-2 bg-gray-300 rounded-md text-xs sm:text-sm text-gray-700"
+            >
+                No
+            </button>
+            <button
+                @click="openModal = false"
+                class="px-3 py-2 sm:px-4 sm:py-2 bg-orange-500 rounded-md text-xs sm:text-sm text-white" href="/request-form"
+            >
+                Yes
+            </button>
+        </div>
+    </div>
+</div>
+</div>
 
                
 
