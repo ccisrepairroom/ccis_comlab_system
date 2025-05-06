@@ -52,9 +52,9 @@
                 </a>
 
                 <!-- Facilities Link -->
-                <!-- <a href="/facilities" class="cursor-pointer flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm {{ request()->is('facilities') ? 'text-orange-600' : 'text-gray-800' }} hover:bg-gray-100 focus:ring-2 focus:ring-orange-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                <a href="/facilities" class="cursor-pointer flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm {{ request()->is('facilities') ? 'text-orange-600' : 'text-gray-800' }} hover:bg-gray-100 focus:ring-2 focus:ring-orange-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
                   Facilities
-                </a> -->
+                </a>
 
                 <!-- Supplies & Materials Link -->
                 <!-- <a href="/supplies-and-materials" class="cursor-pointer flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm {{ request()->is('supplies') ? 'text-orange-600' : 'text-gray-800' }} hover:bg-gray-100 focus:ring-2 focus:ring-orange-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
