@@ -55,25 +55,24 @@
                     </ul>
                 </div>
                 </div>
-                </div>
-                </div>
+              
                 <!-- End Floor Level Dropdown Section -->
 
                 <!-- Start Building  Dropdown Section -->
                 <div class="pl-10 mt-4">      
-                    <button id="floorLevelDropdownCheckboxButton" data-dropdown-toggle="floorLevelDropdownDefaultCheckbox" class="w-36 text-white bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:bg-orange-600 dark:hover:bg-orange-600 dark:focus:ring-orange-800" type="button">Floor Level <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <button id="buildingsDropdownCheckboxButton" data-dropdown-toggle="buildingsDropdownDefaultCheckbox" class="w-36 text-white bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:bg-orange-600 dark:hover:bg-orange-600 dark:focus:ring-orange-800" type="button">Building <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                     </svg>
                     </button>
 
                 <!-- Dropdown menu -->
-                <div id="floorLevelDropdownDefaultCheckbox" class=" pl-9 z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600">
-                    <ul class="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="floorLevelDropdownCheckboxButton">
-                    @foreach ($floorLevels as $flevel) 
+                <div id="buildingsDropdownDefaultCheckbox" class=" pl-9 z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600">
+                    <ul class="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="buildingsDropdownCheckboxButton">
+                    @foreach ($buildings as $building) 
                     <li>
-                        <div class="flex items-center" wire:key ="{{ $flevel }}">
-                            <input id="floor_level_{{ $loop->index }}" name = "floor_levels[]"   value="{{ $flevel }}" type="checkbox" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                            <label for="floor_level_{{ $loop->index }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $flevel }}</label>
+                        <div class="flex items-center" wire:key ="{{ $building }}">
+                            <input id="building_{{ $loop->index }}" name = "buildings[]"   value="{{ $building }}" type="checkbox" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                            <label for="building_{{ $loop->index }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $building }}</label>
                         </div>
                         </li>
                         @endforeach

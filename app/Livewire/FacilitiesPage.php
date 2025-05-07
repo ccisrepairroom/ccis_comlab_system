@@ -26,10 +26,16 @@ class FacilitiesPage extends Component
                                 ->whereNotNull('floor_level')
                                 ->pluck('floor_level');
 
+        $buildings = Facility::select('building')
+                                ->distinct()
+                                ->whereNotNull('building')
+                                ->pluck('building');
+
         return view('livewire.facilities-page', [
             'facilities' => $facilities,
             'facilityTypes' => $facilityTypes,
             'floorLevels' => $floorLevels,
+            'buildings' => $buildings,
         ]);
     }
 
