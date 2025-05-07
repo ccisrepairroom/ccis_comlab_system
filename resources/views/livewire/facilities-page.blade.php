@@ -92,11 +92,13 @@
                     
                     
                         <!-- Search Input (below dropdown on small screens) -->
-                        <input type="text" id ="search" name ="search" wire:model.live="search" class="w-full md:w-46 px-4 py-2 border border-orange-300 dark:bg-orange-500 dark:text-gray-100 focus:ring-2 focus:ring-orange-500 rounded-md text-sm" placeholder="Search keyword for an equipment brand name, category name and etc.">
+                        <input type="text" id ="search" name ="search" wire:model.live="search" class="w-full md:w-46 px-4 py-2 border border-orange-300 dark:bg-orange-500 dark:text-gray-100 focus:ring-2 focus:ring-orange-500 rounded-md text-sm" placeholder="Search keyword for a facility name, building, floor level and etc.">
                     </div>
                 </div>
 
-      
+                @if ($noFacilityFound)
+                    <p class="text-center text-gray-500 mb-4">No facility found.</p>
+                @endif
       <!-- Start Equipment Card Section -->
       <div x-data="{ open: false }" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 lg:gap-1">
       @foreach($facilities as $facility)
