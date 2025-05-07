@@ -297,7 +297,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
             function resetAutoSlide() {
                 clearInterval(autoSlide);
-                autoSlide = setInterval(nextSlide, 4000);
+                autoSlide = setInterval(nextSlide, 1000);
+            }
+
+            // Modal open event - start autoplay
+            const modalOpenButton = document.querySelector('[@click="open = true"]'); // Adjust this selector based on your modal trigger
+            const modal = document.getElementById('seemore-modal'); // Ensure this matches the ID of your modal
+            
+            if (modalOpenButton) {
+                modalOpenButton.addEventListener('click', function () {
+                    modal.style.display = 'block'; // Show modal
+                    autoSlide = setInterval(nextSlide, 4000); // Start autoplay when modal opens
+                });
+            }
+
+            // Modal close event - stop autoplay
+            const modalCloseButton = modal.querySelector('.close-modal'); // Adjust this to the actual close button inside the modal
+            if (modalCloseButton) {
+                modalCloseButton.addEventListener('click', function () {
+                    modal.style.display = 'none'; // Hide modal
+                    clearInterval(autoSlide); // Stop autoplay when modal closes
+                });
             }
         });
     }
@@ -310,6 +330,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+
 
 
   </body>
