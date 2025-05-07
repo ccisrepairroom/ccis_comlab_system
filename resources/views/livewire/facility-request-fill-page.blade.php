@@ -1,5 +1,5 @@
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
-    <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Request Form</h1>
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Facility Request Form</h1>
     <div class="grid grid-cols-12 gap-4">
         <div class="md:col-span-12 lg:col-span-8 col-span-12">
             <div class="bg-white rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">
@@ -11,10 +11,9 @@
                     @auth
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                        <div>
-                            <label class="block text-gray-700 dark:text-white mb-1" for="name">Name</label>
+                            <label class="block text-gray-700 dark:text-white mb-1" for="name">Name*</label>
                             <div class="relative">
                                 <input wire:model.defer="name" class="w-full rounded-lg border py-2 px-3 dark:bg-orange-500 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="name" type="text" placeholder="Juan Dela Cruz" >
-                                  
                             </div>
                             @error('name')
                             <p class="text-xs text-red-600 mt-2">{{$message}}</p>
@@ -23,7 +22,7 @@
                     @endauth
 
                     <div>
-                        <label class="block text-gray-700 dark:text-white mb-1" for="phone_number">Phone Number</label>
+                        <label class="block text-gray-700 dark:text-white mb-1" for="phone_number">Phone Number*</label>
                         <input wire:model.defer="phone_number" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="phone_number" type="text" placeholder="09918898988">
                             @error('phone_number')
                             <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
@@ -34,17 +33,17 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                         <div>
-                            <label class="block text-gray-700 dark:text-white mb-1" for="college_department">College/Department</label>
-                            <textarea wire:model.defer="college_department" class="h-11 w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="college_department" type="text" placeholder="CCIS - Computer Science"></textarea>
-                            @error('college_department')
+                            <label class="block text-gray-700 dark:text-white mb-1" for="facility_name">Facility Name*</label>
+                            <textarea wire:model.defer="facility_name" class="h-11 w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="facility_name" type="text" placeholder="Building A - Conference Room"></textarea>
+                            @error('facility_name')
                             <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div>
-                            <label for="expected_return_date" class="block text-gray-700 dark:text-white mb-1">Expected Return Date</label>
-                            <input wire:model.defer="expected_return_date" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="expected_return_date" type="datetime-local" name="expected_return_date">
-                            @error('expected_return_date')
+                            <label for="facility_type" class="block text-gray-700 dark:text-white mb-1">Facility Type*</label>
+                            <input wire:model.defer="facility_type" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="facility_type" type="text" name="facility_type" placeholder="Meeting Room">
+                            @error('facility_type')
                             <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
                             @enderror
                         </div>
@@ -52,24 +51,24 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                         <div>
-                            <label for="start_date_and_time_of_use" class="block text-gray-700 dark:text-white mb-1">Start Date and Time of Use</label>
-                            <input wire:model.defer="start_date_and_time_of_use" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="start_date_and_time_of_use" type="datetime-local" name="start_date_and_time_of_use">
-                            @error('start_date_and_time_of_use')
+                            <label for="start_date_and_time" class="block text-gray-700 dark:text-white mb-1">Start Date and Time*</label>
+                            <input wire:model.defer="start_date_and_time" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="start_date_and_time" type="datetime-local" name="start_date_and_time">
+                            @error('start_date_and_time')
                             <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div>
-                            <label for="end_date_and_time_of_use" class="block text-gray-700 dark:text-white mb-1">End Date and Time of Use</label>
-                            <input wire:model.defer="end_date_and_time_of_use" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="end_date_and_time_of_use" type="datetime-local" name="end_date_and_time_of_use">
-                            @error('end_date_and_time_of_use')
+                            <label for="end_date_and_time" class="block text-gray-700 dark:text-white mb-1">End Date and Time*</label>
+                            <input wire:model.defer="end_date_and_time" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-orange-500 focus:ring-orange-500 focus:border-orange-500" id="end_date_and_time" type="datetime-local" name="end_date_and_time">
+                            @error('end_date_and_time')
                             <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
 
                     <div class="mt-4">
-                        <label class="block text-gray-700 dark:text-white mb-1" for="purpose">Purpose</label>
+                        <label class="block text-gray-700 dark:text-white mb-1" for="purpose">Purpose*</label>
                         <textarea wire:model.defer="purpose" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none focus:ring-orange-500 focus:border-orange-500" id="purpose" placeholder="Describe the purpose of this request..."></textarea>
                         @error('purpose')
                             <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
@@ -84,16 +83,14 @@
         <div class="md:col-span-12 lg:col-span-4 col-span-12">
             <div class="bg-white rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">
                 <div class="text-xl font-bold underline text-gray-700 dark:text-white mb-2">REQUEST SUMMARY</div>
-                @foreach ($category_totals as $category => $quantity)
                 <div class="flex justify-between mb-2 font-bold">
-                    <span>{{$category}}</span>
-                    <span>{{$quantity}}</span>
+                    <span></span>
+                    <span></span>
                 </div>
-                @endforeach
                 <hr class="bg-slate-400 my-4 h-1 rounded">
                 <div class="flex justify-between mb-2 font-bold">
-                    <span>Total Equipment</span>
-                    <span>{{$total_request }}</span>
+                    <span>Total Items</span>
+                    <span></span>
                 </div>
             </div>
 
@@ -101,25 +98,6 @@
                 <span wire:loading.remove wire:target='submit'>Submit Request</span>
                 <span wire:loading wire:target='submit'>Submitting Request...</span>
             </button>
-
-            <div class="bg-white mt-4 rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">
-                <div class="text-xl font-bold underline text-gray-700 dark:text-white mb-2">ITEMS</div>
-                <ul class="divide-y divide-gray-200 dark:divide-gray-700" role="list">
-                    @foreach($requestlist_equipment as $re)
-                    <li class="py-3 sm:py-4" wire:key='{{$re['equipment_id']}}'>
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <img alt="{{$re['brand_name']}}" class="w-12 h-12 rounded-full" src="{{url('storage', $re['main_image'])}}">
-                            </div>
-                            <div class="flex-1 min-w-0 ms-4">
-                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">{{$re['brand_name']}}</p>
-                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">Quantity: 1</p>
-                            </div>
-                        </div>
-                    </li>
-                    @endforeach
-                </ul>
-            </div>
         </div>
     </div>
 </div>
