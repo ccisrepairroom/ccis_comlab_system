@@ -36,40 +36,66 @@
 
                 <!-- Start Floor Level Dropdown Section -->
                 <div class="pl-10 mt-4">      
-                    <button id="facilityDropdownCheckboxButton" data-dropdown-toggle="facilityDropdownDefaultCheckbox" class="w-36 text-white bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:bg-orange-600 dark:hover:bg-orange-600 dark:focus:ring-orange-800" type="button">Facilities <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <button id="floorLevelDropdownCheckboxButton" data-dropdown-toggle="floorLevelDropdownDefaultCheckbox" class="w-36 text-white bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:bg-orange-600 dark:hover:bg-orange-600 dark:focus:ring-orange-800" type="button">Floor Level <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                     </svg>
                     </button>
 
-      <!-- Dropdown menu -->
-      <div id="floorLevelDropdownDefaultCheckbox" class=" pl-9 z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600">
-          <ul class="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="facilityDropdownCheckboxButton">
-          <li>
-              <div class="flex items-center" wire:key ="">
-                <input id="facility" name = "" type="checkbox" wire:model.live= "" value="" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                <label for="facility" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Cli</label>
-              </div>
-            </li>
-            
-          </ul>
-      </div>
-      </div>
-      </div>
-      </div>
-      <!-- End Facility Dropdown Section -->
+                <!-- Dropdown menu -->
+                <div id="floorLevelDropdownDefaultCheckbox" class=" pl-9 z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600">
+                    <ul class="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="floorLevelDropdownCheckboxButton">
+                    @foreach ($floorLevels as $flevel) 
+                    <li>
+                        <div class="flex items-center" wire:key ="{{ $flevel }}">
+                            <input id="floor_level_{{ $loop->index }}" name = "floor_levels[]"   value="{{ $flevel }}" type="checkbox" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                            <label for="floor_level_{{ $loop->index }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $flevel }}</label>
+                        </div>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+                </div>
+                </div>
+                </div>
+                <!-- End Floor Level Dropdown Section -->
+
+                <!-- Start Building  Dropdown Section -->
+                <div class="pl-10 mt-4">      
+                    <button id="floorLevelDropdownCheckboxButton" data-dropdown-toggle="floorLevelDropdownDefaultCheckbox" class="w-36 text-white bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:bg-orange-600 dark:hover:bg-orange-600 dark:focus:ring-orange-800" type="button">Floor Level <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                    </svg>
+                    </button>
+
+                <!-- Dropdown menu -->
+                <div id="floorLevelDropdownDefaultCheckbox" class=" pl-9 z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600">
+                    <ul class="p-3 space-y-3 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="floorLevelDropdownCheckboxButton">
+                    @foreach ($floorLevels as $flevel) 
+                    <li>
+                        <div class="flex items-center" wire:key ="{{ $flevel }}">
+                            <input id="floor_level_{{ $loop->index }}" name = "floor_levels[]"   value="{{ $flevel }}" type="checkbox" class="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-orange-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                            <label for="floor_level_{{ $loop->index }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $flevel }}</label>
+                        </div>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+                </div>
+                </div>
+                </div>
+                <!-- End Building Dropdown Section -->
 
             
-      <!-- Start Sorting Section  -->
-      <div class="w-full px-3 lg:w-3/4">
-        <div class="px-3 mb-4">
-          <!-- Ensure flex layout changes based on screen size -->
-          <div class="flex flex-col md:flex-row items-start md:items-center gap-3 px-3 py-2 bg-orange-100 dark:bg-gray-900 rounded-md shadow-sm">
-        
-           
-            <!-- Search Input (below dropdown on small screens) -->
-            <input type="text" id ="search" name ="search" wire:model.live="search" class="w-full md:w-46 px-4 py-2 border border-orange-300 dark:bg-orange-500 dark:text-gray-100 focus:ring-2 focus:ring-orange-500 rounded-md text-sm" placeholder="Search keyword for an equipment brand name, category name and etc.">
-          </div>
-        </div>
+                <!-- Start Sorting Section  -->
+                <div class="w-full px-3 lg:w-3/4">
+                    <div class="px-3 mb-4">
+                    <!-- Ensure flex layout changes based on screen size -->
+                    <div class="flex flex-col md:flex-row items-start md:items-center gap-3 px-3 py-2 bg-orange-100 dark:bg-gray-900 rounded-md shadow-sm">
+                    
+                    
+                        <!-- Search Input (below dropdown on small screens) -->
+                        <input type="text" id ="search" name ="search" wire:model.live="search" class="w-full md:w-46 px-4 py-2 border border-orange-300 dark:bg-orange-500 dark:text-gray-100 focus:ring-2 focus:ring-orange-500 rounded-md text-sm" placeholder="Search keyword for an equipment brand name, category name and etc.">
+                    </div>
+                </div>
 
       
       <!-- Start Equipment Card Section -->
