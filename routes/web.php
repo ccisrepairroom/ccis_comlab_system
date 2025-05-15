@@ -107,8 +107,6 @@ Route::get('/equipment/{equip}', EquipmentDetailPage::class);
 
 Route::middleware('guest')->group(function(){
     Route::get('/signin', LoginPage::class)->middleware('throttle:5,2');
-    // Route::get('/recover-account', RecoverAccountPage::class)->name('password.request');
-    // Route::get('/reset/{token}',ResetPasswordPage::class)->name('password.reset');
 });
 
 Route::middleware('auth')->group(function(){
