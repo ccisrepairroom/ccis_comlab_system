@@ -1,45 +1,89 @@
 <?php
+
 namespace App\Imports;
+
 use Maatwebsite\Excel\Concerns\Importable;
 use App\Models\Equipment;
 use App\Models\Facility;
 use App\Models\Category;
-use App\Models\StockUnit;
+use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Filament\Notifications\Notification;
+use Exception;
 
 class EquipmentImport implements ToModel, WithHeadingRow
 {
     use Importable;
 
-    /**
-     * @param array $row
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
+    protected $missingUsers = [];
+
     public function model(array $row)
-{
-    $userId = auth()->id(); 
-    // Trim and retrieve related models
-    $facilityName = trim($row['facility_id'] ?? '');
-    $categoryDescription = trim($row['category_id'] ?? '');
-    //$stockUnitDescription = trim($row['stock_unit_id'] ?? '');
-  //  \Log::info('Facility ID:', ['facility_id' => $facilityName]);
-    //\Log::info('Category ID:', ['category_id' => $categoryDescription]);
- 
+    {
+        // Skip rows where brand_name is missing
+        if (empty($row['brand_name'])) {
+            return null;
+        }
+
+        $serialNumber = $row['serial_number'] ?? null;
+        $status = strtolower(trim($row['status'] ?? ''));
+
+        // Check if an equipment with the same serial number exists
+        $existingEquipment = Equipment::where('serial_no', $serialNumber)->first();
+
+        if ($existingEquipment && !in_array(strtolower($serialNumber), ['n/a'])) {
+            // If the status is the same, show notification and skip
+            if (strtolower($existingEquipment->status) === $status) {
+                Notification::make()
+                    ->title('Duplicate Serial Number')
+                    ->body("Equipment with Serial Number: {$serialNumber} and Status: {$status} already exists.")
+                    ->danger()
+                    ->duration(5000)
+                    ->send();
+
+                return null; // Skip inserting this duplicate record
+            }
+
+            // If status in Excel is 'for disposal' or 'disposed', update existing record
+            if (in_array($status, ['for disposal', 'disposed'])) {
+                $existingEquipment->update(['status' => $status]);
+                return null; // Skip inserting a duplicate entry
+            }
+        }
+
+    // Check if person liable exists, if not create a user
+    $userName = trim($row['person_liable'] ?? '');
+
+    if ($userName) {
+        $existingUser = User::where('name', $userName)->first();
+
+        if (!$existingUser) {
+            // Create a new user with default attributes
+            $newUser = User::create([
+                'name' => $userName,
+                'email' => strtolower(str_replace(' ', '', $userName)) . '@carsu.edu.ph',
+                'role_id' => 5,
+                'designation' => 'other',
+                'department' => 'not_applicable',
+                'password' => bcrypt('manana'),
+            ]);
+        }
+    }
+
+    $facilityName = trim($row['facility'] ?? '');
+    $categoryDescription = trim($row['category'] ?? '');
+
     $facility = $facilityName ? Facility::firstOrCreate(['name' => $facilityName], ['name' => $facilityName]) : null;
     $category = $categoryDescription ? Category::firstOrCreate(['description' => $categoryDescription], ['description' => $categoryDescription]) : null;
-    //$stock_unit = $stockUnitDescription ? StockUnit::firstOrCreate(['description' => $stockUnitDescription], ['description' => $stockUnitDescription]) : null;
 
-    // Prepare data array with null checks
     $data = [
-       
         'unit_no' => $row['unit_number'] ?? null,
         'brand_name' => $row['brand_name'] ?? null,
         'description' => $row['description'] ?? null,
-        'facility_id' => $this->getFacilityId($row['facility']) ?? null,
-        //'facility_id' => $facility ? $facility->id : null,
-        'category_id' =>  $this->getCategoryId($row['category']) ?? null,
-        'status' => $row['status'] ?? null,
+        'user_id' => User::where('name', $userName)->value('id') ?? null,
+        'facility_id' => $facility ? $facility->id : null,
+        'category_id' => $category ? $category->id : null,
+        'status' => $status,
         'date_acquired' => $row['date_acquired'] ?? null,
         'supplier' => $row['supplier'] ?? null,
         'amount' => $row['amount'] ?? null,
@@ -48,52 +92,16 @@ class EquipmentImport implements ToModel, WithHeadingRow
         'po_number' => $row['po_number'] ?? null,
         'property_no' => $row['property_number'] ?? null,
         'control_no' => $row['control_number'] ?? null,
-        'serial_no' => $row['serial_number'] ?? null,
-        //'no_of_stocks' => $row['no_of_stocks'] ?? null,
-        //'restocking_point' => $row['restocking_point'] ?? null,
-        //'stock_unit_id' => $stock_unit ? $stock_unit->id : null,
-        'person_liable' => $row['person_liable'] ?? null,
-        'user_id' => $userId ?? null, 
+        'serial_no' => $serialNumber,
         'remarks' => $row['remarks'] ?? null,
     ];
 
-    // Define essential fields to check
-    $essentialFields = [
-        'unit_no',
-        'description',
-        'brand_name',
-        'description',
-        'facility_id',
-        'category_id',
-        'status',
-        'date_acquired',
-        'supplier',
-        'amount',
-        'estimated_life',
-        'item_no',
-        'po_number',
-        'property_no',
-        'control_no',
-        'serial_no',
-        //'no_of_stocks',
-        //'restocking_point',
-        //'stock_unit_id',
-        'person_liable',
-        'remarks',
-    ];
-
-    // Extract only the essential fields
-    $filteredData = array_intersect_key($data, array_flip($essentialFields));
-
-    // Check if any of the essential fields have meaningful data
-    if (!array_filter($filteredData, fn($value) => !is_null($value) && $value !== '')) {
-        // If the row is blank, return null to skip insertion
-        return null;
-    }
-
-    // Create and return new Equipment instance if the row has data
     return new Equipment($data);
 }
+
+
+
+
     public function getFacilityId($location)
     {
         // Check if location exists, else return null
@@ -122,4 +130,7 @@ class EquipmentImport implements ToModel, WithHeadingRow
         $category = Category::firstOrCreate(['description' => $category], ['description' => $category]);
         return $category->id;
     }
+
+    
+
     }

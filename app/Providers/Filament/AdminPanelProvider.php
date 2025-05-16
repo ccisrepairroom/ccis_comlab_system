@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-//use Pboivin\FilamentPeek\Tables\Actions\ListPreviewAction;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -25,6 +24,8 @@ use App\Filament\Widgets\EquipmentsPerFacility;
 use App\Filament\Widgets\FacilityPerFacilityType;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use App\Filament\Pages\Auth\EditProfile;
+use Filament\Navigation\MenuItem;
+
 
 
 
@@ -36,15 +37,13 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('ccis_erma')
+            ->path('ccis_erma/management')
             //->path('admin')
-            //->login( )
-            ->login()
-            //->passwordReset()
+            // ->login()
             ->brandName('CCIS ERMA')
             ->favicon(asset('images/ccis.png'))
             ->sidebarCollapsibleOnDesktop()
-            ->profile()
+            // ->profile()
             ->brandLogo(asset('images/ccis_orangelogo.png'))
             ->darkModeBrandLogo(asset('images/darklogo.png'))
             ->brandLogoHeight(20)
@@ -52,6 +51,15 @@ class AdminPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => Color::Amber,
+            ])
+            ->userMenuItems([
+                'logout' => MenuItem::make()
+                    ->label('Log out')
+                    ->url('/signout'),
+                '/' => MenuItem::make()
+                    ->label('Back to Home')
+                    ->url('/')
+                    ->icon('heroicon-o-arrow-left-circle'),
             ])
 
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -61,31 +69,15 @@ class AdminPanelProvider extends PanelProvider
                
             ])
             
-                //Pages\Dashboard::class,
-            //])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
-                //->setNavigationGroup('User Management'),
-                //FilamentEditProfilePlugin::make(),
-                //FilamentPeekPlugin::make()
-                // \EightyNine\Approvals\ApprovalPlugin::make(),
+
 
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
 
-                //\App\Filament\Widgets\TotalUserWidget::class,
-                // Widgets\AccountWidget::class,
-                // Widgets\FilamentInfoWidget::class,
-
-                //App\Filament\Widgets\EquipmentPerFacility::class,
-                //Widgets\EquipmentPerCategory::class,
-                //UserStatsWidget::class,
-                //BorrowStatsWidget::class,
-                //EquipmentsPerCategory::class,
-
-                //EquipmentStatusChart::class,
-                //FacilityPerFacilityType::class,
+                
             ])
             ->middleware([
                 EncryptCookies::class,

@@ -23,6 +23,7 @@ use Filament\Tables\Columns\TextColumn;
 
 
 
+
 class BorrowedItemsResource extends Resource
 {
     protected static ?string $model = BorrowedItems::class;
@@ -40,15 +41,17 @@ class BorrowedItemsResource extends Resource
     protected static ?string $pollingInterval = '1s';
     public static function getNavigationBadge(): ?string
     {
-        // Check if the user is authenticated and has the 'panel_user' role
-        if (Auth::check() && Auth::user()->hasRole('panel_user')) {
-            // Count only the records where 'user_id' matches the logged-in user's ID
-            return static::getModel()::where('user_id', Auth::id())->count();
-        }
-
-        // If the user is not a 'panel_user', return the total count
-        return static::getModel()::count();
+        return static::getModel()::where('request_status', 'Pending')->count();
     }
+    
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'info';
+    }
+    protected static ?string $navigationBadgeTooltip = 'Pending Requests';
+
+
+    
     /*
     public static function form(Form $form): Form
     {
@@ -92,7 +95,94 @@ class BorrowedItemsResource extends Resource
          // Define the bulk actions array
          $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
-            //Tables\Actions\ExportBulkAction::make()
+            Tables\Actions\BulkAction::make('approve')
+            ->label('Approve Selected')
+            ->icon('heroicon-o-check')
+            ->action(function (Collection $records) {
+                foreach ($records as $record) {
+                    $record->update([
+                        'request_status' => 'approved',
+                        'status' => 'Unreturned', 
+                    ]);
+                }
+                Notification::make()
+                ->title('Request Approved')
+                ->icon('heroicon-o-check')
+                ->warning() 
+                ->body('The selected request(s) have been successfully approved.')
+                ->send();
+                })
+            ->requiresConfirmation() 
+            ->color('success'),  
+
+            Tables\Actions\BulkAction::make('reject')
+            ->label('Reject Selected')
+            ->icon('heroicon-c-x-circle')
+            ->action(function (Collection $records, array $data) {
+                $remarks = $data['remarks'] ?? null;
+                if (!$remarks) {
+                    throw new \Exception('Remarks are required for rejection.');
+                }
+
+                foreach ($records as $record) {
+                    $record->update([
+                        'request_status' => 'rejected',
+                        'status' => '------',
+                        'remarks' => $remarks,  
+                    ]);
+                }
+                Notification::make()
+                ->title('Request Rejected')
+                ->danger()  
+                ->body('The selected request(s) have been rejected.')
+                ->send();
+            })
+            ->form([
+                Forms\Components\TextArea::make('remarks')
+                    ->label('Remarks')
+                    ->required()  
+                    ->placeholder('Enter remarks for rejection...')
+                    ->rows(4)
+            ])
+            ->requiresConfirmation() 
+            ->color('danger'),  
+            Tables\Actions\BulkAction::make('returned')
+            ->label('Mark as Returned')
+            ->icon('heroicon-o-check')
+            ->color('success')
+            ->action(function (Collection $records, array $data) {
+                $receivedby = $data['received_by'] ?? null;
+                if (!$receivedby) {
+                    throw new \Exception('Received By is required when returning items.');
+                }
+
+                // Get the current date and time for the returned_date
+                $returnedDate = now();  // You can also use \Carbon\Carbon::now() if needed
+
+                foreach ($records as $record) {
+                    $record->update([
+                        'status' => 'Returned',
+                        'received_by' => $receivedby,
+                        'returned_date' => $returnedDate,  // Set the returned_date
+                    ]);
+                }
+
+                // Send a notification after updating the records
+                Notification::make()
+                    ->title('Items Returned')
+                    ->success()  
+                    ->body('The selected items have been returned.')
+                    ->send();
+            })
+            ->form([
+                Forms\Components\TextArea::make('received_by')
+                    ->label('Received By')
+                    ->required()  
+                    ->placeholder('Enter details...')
+                    ->rows(4)
+            ])
+            ->color('success'), 
+            
 
          ];
                  // Conditionally add ExportBulkAction
@@ -115,23 +205,58 @@ class BorrowedItemsResource extends Resource
                 }
             })*/
                 Tables\Columns\TextColumn::make('borrowed_date')
-                    ->label('Date Borrowed')
+                    ->label('Date Requested')
                     ->searchable()
                     ->sortable()
                     
-                    ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A'))
                     
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('request_code')
+                    ->label('Request Code')    
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('request_status')
+                    ->label('Request Status')    
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->sortable()
+                    ->formatStateUsing(fn(string $state): string => ucfirst(strtolower($state)))
+                    ->badge()
+                    ->color(fn(string $state): string => match (strtolower($state)) {
+                        'approved' => 'success',
+                        'pending' => 'info',
+                        'rejected' => 'danger',
+                        default => 'secondary',  
 
+                    }),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Availability')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->searchable()
+                    ->badge()
+                    ->color(fn(string $state): string => match (strtolower($state)) {
+                        'returned' => 'success',
+                        'unreturned' => 'danger',
+                        default => 'secondary',  
+
+                    }),
+                    //Tables\Columns\TextColumn::make('request_status'),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Created By')
                     ->searchable()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('borrowed_by')
-                    ->label('Borrowed By')    
+                    ->label('Borrower')    
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('phone_number')
+                    ->label('Phone Number')    
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('equipment.brand_name')
                     ->label('Requested Equipment')
@@ -139,19 +264,6 @@ class BorrowedItemsResource extends Resource
                     ->sortable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->toggleable(isToggledHiddenByDefault: false),
-
-                Tables\Columns\TextColumn::make('facility.name')
-                    ->label('Assigned/Requested Facility')
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false)
-                    ->formatStateUsing(fn ($state) => $state ? strtoupper($state) : 'N/A'),
-
-                Tables\Columns\TextColumn::make('equipment.unit_no')
-                    ->label('Unit Number')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false)
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.category.description')
                     ->label('Category')
                     ->sortable()
@@ -162,23 +274,19 @@ class BorrowedItemsResource extends Resource
                         return strlen($state) > $column->getCharacterLimit() ? $state : null;
                     })
                     ->searchable(),
-                /*Tables\Columns\TextColumn::make('equipment.status')
-                    ->label('Status')
-                    ->sortable()
-                    ->badge()
-                    ->toggleable(isToggledHiddenByDefault: false)
-
+                Tables\Columns\TextColumn::make('facility.name')
+                    ->label('Assigned/Requested Facility')
                     ->searchable()
-                    ->color(fn(string $state): string => match (strtolower($state)) {
-                        'working' => 'success',
-                        'for repair' => 'warning',
-                        'for replacement' => 'primary',
-                        'lost' => 'danger',
-                        'for disposal' => 'primary',
-                        'disposed' => 'danger',
-                        'borrowed' => 'indigo',
-                        default=>'default',
-                    }),*/
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->formatStateUsing(fn ($state) => $state ? strtoupper($state) : 'N/A'),
+
+                Tables\Columns\TextColumn::make('equipment.unit_no')
+                    ->label('Unit Number')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+               
                 Tables\Columns\TextColumn::make('equipment.control_no')
                     ->label('Control Number')
                     ->sortable()
@@ -201,17 +309,22 @@ class BorrowedItemsResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('request_form')
-                ->label('Signed Request Form')
-                ->sortable()
+                // Tables\Columns\TextColumn::make('request_form')
+                // ->label('Signed Request Form')
+                // ->sortable()
                 
-                ->toggleable(isToggledHiddenByDefault: false)
-                ->formatStateUsing(fn (string $state): string => basename($state)),
+                // ->toggleable(isToggledHiddenByDefault: false)
+                // ->formatStateUsing(fn (string $state): string => basename($state)),
 
                 Tables\Columns\TextColumn::make('purpose')
                 ->searchable()
                 ->toggleable(isToggledHiddenByDefault: false)
                 ->sortable(),
+                Tables\Columns\TextColumn::make('remarks')
+                ->label('Remarks')
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: false)
+                ->searchable(),
                 Tables\Columns\TextColumn::make('start_date_and_time_of_use')
                 ->searchable()
                 ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A'))
@@ -227,17 +340,6 @@ class BorrowedItemsResource extends Resource
                 ->toggleable(isToggledHiddenByDefault: false)
                 ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A'))
                 ->sortable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->label('Availability')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false)
-                    ->searchable(),
-                    //Tables\Columns\TextColumn::make('request_status'),
-                Tables\Columns\TextColumn::make('remarks')
-                ->label('Remarks')
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault: false)
-                ->searchable(),
                 Tables\Columns\TextColumn::make('returned_date')
                 ->label('Date Returned')
                 ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A'))
@@ -246,12 +348,12 @@ class BorrowedItemsResource extends Resource
                 Tables\Columns\TextColumn::make('received_by')
                 ->label('Received By')
                 ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true)
+                ->toggleable(isToggledHiddenByDefault: false)
                 ->searchable(),
                
 
-                // \EightyNine\Approvals\Tables\Columns\ApprovalStatusColumn::make("approvalStatus.status"),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 SelectFilter::make('borrowed_date')
                 ->label('Date Created')
@@ -347,107 +449,8 @@ class BorrowedItemsResource extends Resource
                 //         Tables\Actions\ViewAction::make()
                 //     ]
                 // ),
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('viewPdf')
-                        ->label('Download Form')
-                        ->icon('heroicon-o-document-text')
-                        ->action(function ($record) {
-                            // Generate the download URL
-                            $url = asset('storage/' . $record->request_form);
-
-                            // Redirect to the PDF URL to trigger the download
-                           return redirect()->away($url);
-                        })
-                        ->color('info'),
-                    Tables\Actions\Action::make('updateStatus')
-                        ->label('Update Return Status')
-                        ->color('danger')
-                        ->icon('heroicon-o-pencil')
-                        ->form([
-                            Forms\Components\Grid::make(2)
-                                ->schema([
-                                    Forms\Components\Select::make('status')
-                                        ->label('Availability')
-                                        ->options([
-                                            'Returned' => 'Returned',
-                                            'Unreturned' => 'Unreturned',
-                                        ])
-                                        ->reactive()
-                                        ->default('Unreturned')
-                                        ->default(fn($record) => $record->status)
-                                        ->required(),
-                                    /*Forms\Components\Select::make('request_status')
-                                        ->label('Request Status')
-                                        ->options([
-                                            'Pending' => 'Pending',
-                                            'Approved' => 'Approved',
-                                            'Rejected' => 'Rejected',
-                                            // Add more options if needed
-                                        ])
-                                        ->reactive()
-                                        ->required()
-                                        ->disabled(fn(callable $get) => $get('record.request_status') === 'Approved')
-                                        ->default(fn($record) => $record->request_status),*/
-                                    
-                                    Forms\Components\DateTimePicker::make('returned_date')
-                                        ->label('Returned Date')
-                                        ->visible(fn(callable $get) => $get('status') === 'Returned')
-                                        ->required(fn(callable $get) => $get('status') === 'Returned')
-                                        ->placeholder('Select return date')
-                                        ->default(fn() => now('Asia/Manila')),
-                                        
-  
-                                    Forms\Components\TextInput::make('remarks')
-                                        ->default(fn($record) => $record->remarks !== 'test' ? $record->remarks : '')
-                                        ->visible(fn(callable $get) => $get('status') === 'Returned')
-                                        ->required(fn(callable $get) => $get('status') === 'Returned')
-                                        ->columnSpanFull(),
-                                
-                                Forms\Components\TextInput::make('received_by')
-                                ->default(fn($record) => $record->received_by !== 'test' ? $record->received_by : '')
-                                ->visible(fn(callable $get) => $get('status') === 'Returned')
-                                ->required(fn(callable $get) => $get('status') === 'Returned')
-                                ->columnSpanFull()
-                        ]),
-                        ])
-                        ->action(function ($record, $data) {
-                            // Log the data for debugging purposes
-                            Log::info('Updating record', [
-                                'record_id' => $record->id,
-                                'status' => $data['status'],
-                                'returned_date' => $data['returned_date']?? null,
-                                'remarks' => $data['remarks']?? null,
-                                'received_by' => $data['received_by']?? null,
-                            ]);
-
-                            // Update the record with the new status, returned date, and remarks
-                            $record->update([
-                                //'request_status' => $data['request_status'],
-                                'status' => $data['status'],
-                                'returned_date' => $data['status'] === 'Returned' ? $data['returned_date'] : null,
-                                'remarks' => $data['status'] === 'Returned' ? $data['remarks'] : null,
-                                'received_by' => $data['status'] === 'Returned' ? $data['received_by'] : null,
-                            ]);
-
-                            // Check if the record was updated successfully
-                            if ($record->wasChanged()) {
-                                Notification::make()
-                                    ->title('Return Status Updated')
-                                    ->success()
-                                    ->body('The return status has been updated successfully.')
-                                    ->send();
-                            } else {
-                                Notification::make()
-                                    ->title('No Changes Detected')
-                                    ->warning()
-                                    ->body('The return status did not change.')
-                                    ->send();
-                            }
-                        })
-                        ->hidden(fn () => $isFaculty)
-                        ->modalHeading('Update Equipment Return Status')
-                        ->color('success'),
-                ]),
+                
+                    
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make($bulkActions)

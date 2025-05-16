@@ -17,7 +17,8 @@ class Facility extends Model
         'floor_level',
         'building',
         'remarks',
-        'facility_img',
+        'main_image',
+        'alternate_images',
     ];
     public function user()
 {
@@ -25,7 +26,17 @@ class Facility extends Model
 }
 
 public function equipment()
-    {
-        return $this->hasMany(Equipment::class, 'facility_id');
-    }
+{
+    return $this->hasMany(Equipment::class, 'facility_id');
+}
+
+public function monitorings()
+{
+    return $this->hasMany(FacilityMonitoring::class);
+}
+
+protected $casts = [
+    'alternate_images' => 'array'
+];
+
 }

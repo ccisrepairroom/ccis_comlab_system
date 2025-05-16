@@ -14,7 +14,9 @@ class BorrowedItems extends ApprovableModel
 
     protected $fillable = [
         'user_id',
+        'request_code',
         'borrowed_by',
+        'phone_number',
         'equipment_id',
         'facility_id',
         'request_status',
@@ -29,7 +31,7 @@ class BorrowedItems extends ApprovableModel
         'end_date_and_time_of_use',
         'expected_return_date',
         'received_by',
-        'college_department_office'
+        'college_department'
     ];
 
     public function user()
@@ -50,4 +52,8 @@ class BorrowedItems extends ApprovableModel
     {
         return $this->belongsTo(BorrowList::class);
     }
+    protected $casts = [
+        'start_date_and_time_of_use' => 'datetime',
+        'end_date_and_time_of_use' => 'datetime',
+    ];
 }

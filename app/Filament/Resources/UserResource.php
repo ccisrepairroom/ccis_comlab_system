@@ -26,6 +26,8 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Illuminate\Validation\Rules\Password;
 use Filament\Tables\Columns\TextInputColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Spatie\Permission\Models\Role;
+
 
 class UserResource extends Resource
 {
@@ -71,22 +73,23 @@ class UserResource extends Resource
                             ->maxLength(255),
                         Forms\Components\TextInput::make('email')
                             ->email()
-                            ->rules([
-                                'regex:/^[\w\.-]+@carsu\.edu\.ph$/', // Custom regex for domain check
-                            ])
+                            // ->rules([
+                            //     'regex:/^[\w\.-]+@carsu\.edu\.ph$/', // Custom regex for domain check
+                            // ])
                             ->default(''),
-                        Forms\Components\Select::make('roles')
+                        Forms\Components\Select::make('role_id')
                             ->label('Role')
-                            ->relationship('roles', 'name')
+                            ->relationship('role', 'name')
                             ->preload()
                             ->default([])
                             ->searchable(),
                         Forms\Components\Select::make('department')
                             ->options([
                                 'Not Applicable'=> 'Not Applicable',
-                                'Information System' => 'Information System',
+                                'Information Systems' => 'Information Systems',
                                 'Information Technology' => 'Information Technology',
                                 'Computer Science' => 'Computer Science',
+                                'Other Department'=> 'Other Department',
                             ]),
                         Forms\Components\Select::make('designation')
                             //->required()
@@ -100,6 +103,7 @@ class UserResource extends Resource
                                 'Student Assistant' => 'Student Assistant',
                                 'Instructor' => 'Instructor',
                                 'Lecturer' => 'Lecturer' ,
+                                'Student' => 'Student' ,
                                 'Other' => 'Other',
     
                                 
@@ -109,18 +113,14 @@ class UserResource extends Resource
                         Forms\Components\TextInput::make('password')->confirmed()
                             ->password()
                             ->required()
-                            ->revealable()
-                            //->default(fn($record) => $record->password)  
-                            ->dehydrateStateUsing(fn($state) => Hash::make($state))
-                            ->visible(fn ($livewire) =>$livewire instanceof Pages\CreateUser),
-                            //->rule(Password::default ())
-                            //->hiddenOn('edit'),
+                            ->revealable(),
+                           
                         Forms\Components\TextInput::make('password_confirmation')
                             ->password()
                             //->same('password')                          
                             ->requiredWith('password')
                             ->revealable()
-                            ->visible(fn ($livewire) =>$livewire instanceof Pages\CreateUser),
+                            // ->visible(fn ($livewire) =>$livewire instanceof Pages\CreateUser),
                     ]),
                     /*Section::make('User New Password')->schema([
                         
@@ -218,7 +218,7 @@ class UserResource extends Resource
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('roles.name')->label('Role')
+                Tables\Columns\TextColumn::make('role.name')->label('Role')
                     ->formatStateUsing(fn($state): string => Str::headline($state))
                     ->colors(['info'])
                     ->sortable()
@@ -278,7 +278,8 @@ class UserResource extends Resource
                     ),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                ->slideOver(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make($bulkActions)
@@ -303,8 +304,8 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            // 'create' => Pages\CreateUser::route('/create'),
+            // 'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

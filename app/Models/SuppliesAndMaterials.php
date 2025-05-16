@@ -12,16 +12,17 @@ class SuppliesAndMaterials extends Model
 {
     use HasFactory;
     protected $fillable = [
+        
+        'main_image',
         'item',
-        'quantity',
+        'description',
         'category_id',
+        'facility_id',
+        'quantity',
         'stocking_point',
         'stock_unit_id',
-        'facility_id',
-        'category_id',
-        'user_id',
+        'date_aquired',
         'supplier',
-        'item_img',
         'remarks',
         'created_at'
     ];

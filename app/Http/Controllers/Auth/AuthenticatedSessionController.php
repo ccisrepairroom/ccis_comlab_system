@@ -9,15 +9,19 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Livewire\Auth\LoginPage;
+
 
 class AuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
      */
+
     public function create(): View
     {
-        return view('auth.login');
+
+        return view('livewire.auth.login-page');
     }
 
     /**

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Rules\UniquePropertyCategoryEquipment;
 use Illuminate\Support\Facades\Validator;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 
 class Equipment extends Model
@@ -33,10 +35,13 @@ class Equipment extends Model
     protected $fillable = [
         'unit_no',
         'brand_name',
+        'main_image',
+        'alternate_images',
+        'qr_code',
         'description',
         'facility_id',
         'category_id',
-        'user_id',
+        'user_id',  
         'status',
         'date_acquired',
         'supplier',
@@ -65,7 +70,10 @@ class Equipment extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    public function liableUser()
+    {
+        return $this->belongsTo(User::class, 'person_liable');
+    }
     public function facility()
     {
         return $this->belongsTo(Facility::class);
@@ -75,11 +83,6 @@ class Equipment extends Model
         return $this->hasMany(EquipmentMonitoring::class);
     }
 
-    /*public function stockUnit()
-    {
-        return $this->belongsTo(StockUnit::class, 'stock_unit_id');
-    }
-*/
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->timezone('Asia/Manila')->format('F d, Y h:i A');
@@ -93,35 +96,10 @@ class Equipment extends Model
     {
         return $this->hasMany(BorrowedItems::class);
     }
-    /*public function getDateAcquiredAttribute($value)
-    {
-        // Check if the value is numeric (Excel-style date)
-        if (is_numeric($value)) {
-            // Convert the numeric date (Excel date) to a proper date format
-            $excelStartDate = Carbon::createFromFormat('Y-m-d', '1900-01-01');
-            $date = $excelStartDate->addDays($value - 2); // Adjust for Excel's leap year bug
-            return $date->timezone('Asia/Manila')->format('M-d-y');
-        }
 
-        // If it's not numeric, parse it as a normal date
-        return Carbon::parse($value)->timezone('Asia/Manila')->format('M-d-y');
-    }*/
+    protected $casts = [
+        'alternate_images' => 'array'
+    ];
 
-    /*protected static function booted()
-    {
-        static::creating(function ($equipment) {
-            // Validate using the custom rule before saving the record
-            $validator = Validator::make($equipment->attributesToArray(), [
-                'property_no' => [
-                    'required',
-                    new UniquePropertyCategoryEquipment($equipment->category_id),
-                ],
-            ]);
-
-            if ($validator->fails()) {
-                throw new \Illuminate\Validation\ValidationException($validator);
-            }
-        });
-    }*/
 
 }

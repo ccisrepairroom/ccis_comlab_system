@@ -23,7 +23,7 @@ class ListFacilities extends ListRecords
     protected static string $resource = FacilityResource::class;
 
    
-
+  
     protected function getHeaderActions(): array
     {
         $user = auth()->user(); // Retrieve the currently authenticated user
@@ -124,14 +124,6 @@ class ListFacilities extends ListRecords
             
         ];
     }
-    protected function getTableActions(): array
-    {
-        return []; // This disables any default row actions (such as view)
-    }
-
-
-
-    
    
 }
 

@@ -252,3 +252,653 @@ in the last add thisline
 **** if black screen
 composer require spatie/laravel-permission
 php artisan shield:install
+
+
+------------------------------
+video 10...livewire video
+video 11: navbar
+
+php artisan make:livewire partials.navbar
+CLASS: app/Livewire//Partials/Navbar.php
+VIEW:  C:\Users\Student\Videos\ccis_comlab_system\resources\views/livewire/partials\navbar.blade.php
+
+https://github.com/DCodeMania/ecommerce-ui-resources
+
+make code in navbar blade. now go back to app.blade.php and insert the partials.navbar under body class
+the app.blade is located in res/views/components/layouts/app.bladde.php
+
+-----------------------
+install flowbite
+
+npm install flowbite
+in tailwind.config.js, add the flowbite
+========================================================================
+import defaultTheme from 'tailwindcss/defaultTheme';
+import forms from '@tailwindcss/forms';
+
+/** @type {import('tailwindcss').Config} */
+export default {
+    content: [
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './storage/framework/views/*.php',
+        './resources/views/**/*.blade.php',
+        "./resources/**/*.{html,js}",
+         'node_modules/preline/dist/*.js',
+         "./node_modules/flowbite/**/*.js",
+
+         
+    ],
+    darkMode:'class',
+    theme: {
+        extend: {
+            fontFamily: {
+                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+            },
+        },
+    },
+
+    plugins: [
+        // forms,
+        require('preline/plugin'),
+        require('flowbite/plugin'),
+    ],
+};
+=============================================
+Then in app.js, import flowbite
+=========================================
+import './bootstrap';
+
+
+import Alpine from 'alpinejs';
+import 'preline';
+import 'flowbite';
+
+
+
+window.Alpine = Alpine;
+
+Alpine.start();
+===========================================
+iterator error:
+
+paste this in srtableiterator
+===============================================================================
+<?php
+
+/*
+ * This file is part of the Symfony package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+ namespace Symfony\Component\Finder\Iterator;
+
+ class SortableIterator implements \IteratorAggregate
+ {
+     public const SORT_BY_NONE = 0;
+     public const SORT_BY_NAME = 1;
+     public const SORT_BY_TYPE = 2;
+     public const SORT_BY_ACCESSED_TIME = 3;
+     public const SORT_BY_CHANGED_TIME = 4;
+     public const SORT_BY_MODIFIED_TIME = 5;
+     public const SORT_BY_NAME_NATURAL = 6;
+     public const SORT_BY_NAME_CASE_INSENSITIVE = 7;
+     public const SORT_BY_NAME_NATURAL_CASE_INSENSITIVE = 8;
+     public const SORT_BY_EXTENSION = 9;
+     public const SORT_BY_SIZE = 10;
+ 
+     private \Traversable $iterator;
+     private \Closure|int $sort;
+ 
+     public function __construct(\Traversable $iterator, int|callable $sort, bool $reverseOrder = false)
+     {
+         $this->iterator = $iterator;
+         $order = $reverseOrder ? -1 : 1;
+ 
+         // Cache file properties to reduce system calls
+         $cache = [];
+ 
+         $getPath = function (\SplFileInfo $file) use (&$cache) {
+             return $cache[$file->getPathname()] ??= $file->getRealPath() ?: $file->getPathname();
+         };
+ 
+         if ($sort === self::SORT_BY_NAME) {
+             $this->sort = fn($a, $b) => $order * strcmp($getPath($a), $getPath($b));
+         } elseif ($sort === self::SORT_BY_NAME_NATURAL) {
+             $this->sort = fn($a, $b) => $order * strnatcmp($getPath($a), $getPath($b));
+         } elseif ($sort === self::SORT_BY_NAME_CASE_INSENSITIVE) {
+             $this->sort = fn($a, $b) => $order * strcasecmp($getPath($a), $getPath($b));
+         } elseif ($sort === self::SORT_BY_NAME_NATURAL_CASE_INSENSITIVE) {
+             $this->sort = fn($a, $b) => $order * strnatcasecmp($getPath($a), $getPath($b));
+         } elseif ($sort === self::SORT_BY_TYPE) {
+             $this->sort = fn($a, $b) => ($a->isDir() !== $b->isDir()) ? ($a->isDir() ? -$order : $order) : $order * strcmp($getPath($a), $getPath($b));
+         } elseif ($sort === self::SORT_BY_ACCESSED_TIME) {
+             $this->sort = fn($a, $b) => $order * ($a->getATime() - $b->getATime());
+         } elseif ($sort === self::SORT_BY_CHANGED_TIME) {
+             $this->sort = fn($a, $b) => $order * ($a->getCTime() - $b->getCTime());
+         } elseif ($sort === self::SORT_BY_MODIFIED_TIME) {
+             $this->sort = fn($a, $b) => $order * ($a->getMTime() - $b->getMTime());
+         } elseif ($sort === self::SORT_BY_EXTENSION) {
+             $this->sort = fn($a, $b) => $order * strnatcmp($a->getExtension(), $b->getExtension());
+         } elseif ($sort === self::SORT_BY_SIZE) {
+             $this->sort = fn($a, $b) => $order * ($a->getSize() - $b->getSize());
+         } elseif ($sort === self::SORT_BY_NONE) {
+             $this->sort = $order;
+         } elseif (is_callable($sort)) {
+             $this->sort = $reverseOrder ? fn($a, $b) => -$sort($a, $b) : $sort;
+         } else {
+             throw new \InvalidArgumentException('Invalid sort type or callable provided.');
+         }
+     }
+ 
+     public function getIterator(): \Traversable
+     {
+         if ($this->sort === 1) {
+             return $this->iterator;
+         }
+ 
+         // Convert to array for sorting
+         $array = iterator_to_array($this->iterator, true);
+ 
+         if ($this->sort === -1) {
+             $array = array_reverse($array);
+         } else {
+             uasort($array, $this->sort);
+         }
+ 
+         return new \ArrayIterator($array);
+     }
+ }
+ ======================================================================================================
+
+ making QR code
+
+ composer require simplesoftwareio/simple-qrcode
+
+ --watch this video:https://www.youtube.com/watch?v=nLNClenxwSs
+--in this case i use larazeus
+  php artisan make:filament-page ViewQrCode --resource=EquipmentResource --type=ViewRecord
+  --register the view in getpagges of equipment
+              'qr-code' => Pages\ViewQrCode::route('/{record}/qr-code'),
+
+--create a table action
+--then in equipment resource fin the custom page
+in views create a view in res/views/filament/resources/equipment-resource/views/view-qr-code.blade.php
+    in view qr-code resource,insert this 
+    protected static string $view = 'filament.resources.equipment-resource..pages.view-qr-code';
+
+    --in view, 
+--1. Install Imagick
+--First, update your package list:
+
+sudo apt update
+sudo service php8.2.12-fpm restart
+sudo yum install php-pecl-imagick
+sudo systemctl restart php-fpm
+
+=---install imagick
+--watch yt:    https://www.imagemagick.org/script/download.php#windows
+
+1- Pre-installation
+  - PHP version
+  - Architecture (64/86)
+  - Thread Safety (enabled)
+2- Download and install ImageMagick for Windows
+   https://www.imagemagick.org/script/download.php#windows
+
+3- Download Imagick for PHP
+  https://pecl.php.net/package/imagick/3.7.0/windows
+  - copy php_imagick.dll and pass into C:\xampp\php\ext
+  - open php.ini (Dynamic Extensions) in last module settings
+    extension=php_imagick.dll
+
+4- Download required Imagick binaries
+  https://windows.php.net/downloads/pecl/deps/
+  - copy all CORE_* in bin and IM_MOD_* file and pass into C:\xampp\apache\bin
+161 items
+  C:\Program Files\ImageMagick-7.1.1-Q16-HDRI
+  to confirm installation, check localhost search for imagick
+
+  https://www.youtube.com/watch?v=y_OHy5qNJlQ--yt watch for qr code
+
+
+  ---------------------------------------------------
+  performance tips
+
+  --yt https://www.youtube.com/watch?v=LA2jgtAn4Sc&list=PL1TrjkMQ8UbWRZ4tv4GW_KwbyavOxt6bc
+
+  ------------------------------------
+  laravel dompdf for print and download
+  -yt:https://www.youtube.com/watch?v=3_I7UHSV9l0&t=334s
+  composer require barryvdh/laravel-dompdf
+    use Barryvdh\DomPDF\Facade\Pdf;
+
+
+  ------------------------browsershot
+  composer require spatie/browsershot
+  https://www.youtube.com/watch?v=a6pVPcUiQ9U
+
+-------------------make active links in nav bar with color
+--go to home anchor in navbar
+use the request
+
+ <a class="font-medium {{ request()->is('facilities') ? 'text-orange-600' : 'text-gray-500 '}} hover:text-gray-400 py-3 md:py-6 dark:text-gray-400 dark:hover:text-gray-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/facilities">
+----------making page in livewire
+php artisan make livewire EquipmentPage
+--in controller fetch the model
+ public function render()
+    {
+        return view('livewire.supplies-and-materials-page', [
+            'supplies' => SuppliesAndMaterials::all(),
+        ]);
+    }
+--in page blade make it singular like supplies as supply for the loop
+--then go to web.php for routing and 
+Route::get('/facilities', FacilitiesPage::class);
+Route::get('/supplies-and-materials', SuppliesAndMaterialsPage::class);
+-----------------to prevent loading of whole page, use
+wire:navigate
+--in anchor tag before class
+------------------
+
+--video 11, making pages
+--video 12, wire:navigate
+--video 13, fetching data
+--to ferch data make a variable in controller plural in render
+
+  public function render()
+    {
+        $equipment = Equipment::all();
+
+        return view('livewire.home-page', [
+            'equipment' => $equipment,
+        ]);
+    }
+
+--go to blade use 
+@foreach ($brands as $brand)
+@endforeach
+--in div class use 
+wire:key="{{$brand->id}}"...........to fetch every id
+
+----video 14 
+--active link stucked fix, go to livewire/navigate, dont rely on dom 
+
+document.addEventListener('livewire:navigated', () => { 
+    // ...
+})
+
+--in app.js, use these to reinitialize using pre and flow:
+
+document.addEventListener('livewire:navigated', () => { 
+    window.HSStaticMethods.autoInit();
+});
+document.addEventListener("livewire:navigated", () => {
+    if (typeof window.initFlowbite === "function") {
+            window.initFlowbite(); // Reinitialize Flowbite components
+        }
+    });
+
+--Pagination
+--use ->paginate(12) in below render, and below class Page, use-> use WithPagination, and import use/livewire/WithPagination
+--just use query and 1 column indicator to paginate it.
+        $equipment = Equipment::query()->where('status', 'working');
+
+                return view('livewire.home-page', [
+            'equipment' => $equipment->paginate(12),
+--go to blade div to apply pagination, after the endforeach</div>
+ <!-- pagination start -->
+  <div class="flex justify-end mt-6">
+    {{ $equipment->links() }}
+          </div>
+          <!-- pagination end -->
+--to customize pagination
+php artisan livewire:publish --pagination
+--to format description based on filament editor
+{!! Str::markdown($equip->description) !!}
+
+---------video 15, filtering
+--go to blade, in its input type section, the value must have the model->id
+--in category loop div class and input  put these:
+ wire:key ="$category->id"
+  id="{{ $category->alias }}"
+  value="{{ $category->id }}"
+  label for="{{ $category->alias}}"
+
+--in input type use:
+wire:model.live= "selected_categories"
+--this will be used in livewire controller, in under class use:
+    public $selected_categories = [];
+--in blade, in category dropdown div class start, use the array selected_categories
+      {{ json_encode ($selected_categories) }}    
+--that is only for testing just clear it., To work, go to controller, then use URL trait above the variable def.
+    #[Url]
+--and import the class
+use Livewire\Attributes\Url;
+--then add a method in the render of equipment to fetch the category of every equipment:
+ if(!empty($this->selected_categories)){
+            $equipment-> whereIn('category_id', $this->selected_categories);
+        }
+
+--if using preline
+data-hs-overlay="id modal">
+--if flow,
+data-model-target="id"
+data-model-toggle="id">
+
+--more html:https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
+
+---making modals
+--put this in the div of where you want t click
+ <div x-data="{ open: false }">
+ --then put this to an item ku will click
+  @click="open = true"
+--then put this in modal in div:
+x-show="open" id="seemore-modal"
+
+--video 16 helpers, 
+make helpers in app/helpers/RequestManagement.php
+
+//in helpers, first put //add request equipment to cookie
+//then     //clear requestlist equipment from cookie
+//then     //get all requestlist equipment  from cookie
+//then     //add equipment to requestlist
+//then     //remove equipment from requestlist
+//then     //increment equipment quantity
+
+--video 17, add to request button working,
+//find the request button, add this 
+wire:click.prevent='addToRequestList({{$equip->id}})'
+//then add to the component controller:addToRequestList
+
+ //add to request list method
+    public function addToRequestList($equipment_id){
+        dd($equipment_id);
+        $total_count = CartManagement::addEquipmentToRequestList($equipment_id);
+
+        $this->dispatch('update-request-list-count', total_count: $total_count)->to(Navbar::class);
+
+        $this->alert('success', 'Equipment added to your request list', [
+            'position' => 'top-right',
+            'timer' => 3000,
+            'toast' => true
+        ]);
+    }
+//import the helpers class
+use App\Helpers\RequestManagement;
+
+//go to navbar to update request list count
+
+public $total_count=0;
+
+    public function mount(){
+        $this->total_count = count(RequestManagement::getRequestListEquipmentFromCookie());
+    }
+//in navbar.blade modify the static count
+
+--video 18, quantity add to cart, request page
+//make a variable in controller, then in blade, under tbody, make forelse
+//copy the tr inside the forelse, then it will loop the number of requests
+//in tr put wire key 
+              <tr wire:key='{{ $item['equipment_id'] }}'>
+//in image, 
+ src="{{ url('storage', $item['main_image']) }}"
+ //add this to button, to proceed only when items are available
+     @if ($requestlist_equipment)
+          <button class="bg-orange-500 text-white py-2 px-4 rounded-lg mt-4 w-full">Proceed</button>
+          @endif
+
+//remove button, add this 
+wire:click='removeItem ({{ $item['product_id'] }})'
+//then make a function in controller
+public function mount(){
+        $this->requestlist_equipment = RequestManagement::getRequestListEquipmentFromCookie();
+        $this->total_request = RequestManagement::calculateTotalRequestedEquipment($this->requestlist_equipment);
+
+        $this->dispatch('update-requests-count', total_count: count($this->requestlist_equipment))->to(Navbar::class);
+
+       
+    }
+
+//goto the navbar controller, and there must be update count function
+
+
+---equipment card
+ <!-- Start Equipment Card Section -->
+<div x-data="{ open: false }" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 lg:gap-1">
+      @foreach($equipment as $equip)
+          <div class="p-4 sm:p-3 md:p-2 lg:p-2" wire:key="{{ $equip->id }}">
+              <a  href="#" @click.prevent="open = true" href="#" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
+                  <!-- Image Container -->
+                  <div class="h-48 sm:h-40 md:h-36 lg:h-36 mt-3 bg-white flex items-center justify-center">
+                      <img src="{{ url('storage', $equip->main_image) }}" alt="{{ $equip->name }}" 
+                          class="w-full h-full object-contain">
+                  </div>
+                  <div class="lg:p-2 sm:pl-3 md:pl-2 pl-5 my-3">
+                      <div class="flex flex-wrap gap-1 lg:gap-0.5 mb-2 ml-2">
+                          <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" title="{{ $equip->category->description }}">
+                              {{ Str::limit($equip->category->description, 13, '...') }}
+                          </span>
+                          <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" title="{{ $equip->facility->name }}">
+                              {{ Str::limit($equip->facility->name, 13, '...') }}
+                          </span>
+                      </div>
+
+                      <h2 class="font-bold text-lg sm:text-md md:text-sm lg:text-md mb-1 px-2">{{ Str::upper($equip->brand_name) }}</h2>
+                      <!-- Modal Triggered by See More -->
+                      <div x-data="{ open: false }">
+                      <p class="text-sm sm:text-xs md:text-xs text-gray-600 mb-2 px-2 text-justify">
+                          @if($equip->description)
+                              {{ Str::limit($equip->description, 27) }}
+                          @else
+                              Description is not available.
+                          @endif
+                          
+                          <span class="text-orange-500 underline cursor-pointer" @click="open = true">
+                              See more
+                          </span>
+                          </p>
+                      <!-- modal -->
+                      <div x-show="open" id="seemore-modal" name="seemore-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                          <div class="relative p-4 w-full max-w-2xl max-h-full mt-16">
+                              <div class="my-10 bg-white p-6 rounded shadow-lg max-h-[80vh] overflow-y-auto">
+                                  <h3 class="text-xl font-semibold">{{Str::upper($equip->brand_name)}}</h3>
+                                  
+                                  <!-- carousel -->
+                                  <div class="flex justify-center items-center h-full p-4">
+                                  <div class="carousel relative w-full max-w-2xl">
+                                    <div class="overflow-hidden bg-gray-300 rounded-xl ">
+                                      <div class="carousel-slides relative w-full flex gap-6 snap-x snap-mandatory scroll-smooth overflow-x-auto -mb-10 pt-2 pb-12 px-2">
+                                      @if(!empty($equip->alternate_images))
+                                          @foreach($equip->alternate_images as $image)                                        
+                                          <div class="snap-always snap-center shrink-0 relative overflow-hidden aspect-[3/2] w-full rounded-lg bg-gray-200">
+                                            <img class="shrink-0 my-0 object-contain w-full h-full" src="{{ url('storage', $image) }}"  alt="{{ $equip->brand_name }}">
+                                          </div>
+                                          @endforeach
+                                          @else
+                                          <div class="flex justify-center items-center w-full">
+                                              <p class="text-gray-500">No alternate images available.</p>
+                                          </div>                                         
+                                          @endif                
+                                                                            
+                                        </div>
+                                    </div>
+                                    @if (!empty($equip->alternate_images))
+                                    <div class="carousel-nav flex justify-center gap-2 pt-2">
+                                      <button type="button" class="carousel-nav-prev rounded-full bg-gray-200 p-1.5 text-gray-600 shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-gray-200 transition-all duration-300">
+                                        <svg class="lucide lucide-chevron-left w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                                      </button>
+                                      <button type="button" class="carousel-nav-next rounded-full bg-gray-200 p-1.5 text-gray-600 shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-gray-200 transition-all duration-300">
+                                        <svg class="lucide lucide-chevron-right w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                                      </button>
+                                    </div>
+                                    @endif
+                                  </div>
+                                </div>
+                                  <p class="text-gray-600 py-6 text-justify">{{$equip->description}}</p>
+                                  <p class="text-gray-600 text-sm">
+                                      Serial Number: {{Str::upper($equip->serial_no ?? 'N/A')}} <br>
+                                      Property Number: {{Str::upper($equip->property_no ?? 'N/A')}} <br>
+                                      Control Number: {{Str::upper($equip->control_no ?? 'N/A')}}  <br>
+                                      PO Number: {{Str::upper($equip->po_number ?? 'N/A')}}  <br>
+                                      Item Number: {{Str::upper($equip->po_number ?? 'N/A')}}  <br>
+                                      Unit Number: {{Str::upper($equip->item_no ?? 'N/A')}} - {{Str::upper($equip->facility->name ?? 'N/A')}}  <br>
+                                      Date Acquired: {{Str::upper($equip->date_acquired ?? 'N/A')}} <br>
+                                      Amount: {{Str::upper($equip->amount ?? 'N/A')}}  <br>
+                                      Estimated Life: {{Str::upper($equip->estimated_life ?? 'N/A')}}  <br>
+                                      Supplier: {{Str::upper($equip->supplier ?? 'N/A')}}  <br>
+                                      Person Liable: {{Str::upper($equip->person_liable ?? 'N/A')}} <br>
+                                  </p>
+                                  <p class="text-gray-600 text-sm text-justify pt-5">
+                                      Remarks:  {{Str::title($equip->remarks ?? 'N/A')}} <br>
+                                  </p>
+                                  <div class="flex justify-end">
+                                  <button class=" mt-4 px-4 py-2 bg-orange-500 text-white rounded" @click="open = false">Close</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      </div> 
+                  </div>
+
+                <!-- Request button -->
+                <div class="flex justify-end mt-1 mb-5 mr-5">
+                          <button wire:click.prevent='addToRequestList({{$equip->id}})' class="flex items-center gap-1  px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold hover:bg-orange-600 transition-colors">
+                              Request 
+                              <x-heroicon-o-plus class="w-4 h-4" />
+                          </button>
+                      </div>
+              </a>
+          </div>
+
+      @endforeach
+  </div>
+
+  --landscape equip card
+  <div x-data="{ open: false }" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 lg:gap-1">
+    @foreach($equipment as $equip)
+        <div class="p-4 sm:p-3 md:p-2 lg:p-2" wire:key="{{ $equip->id }}">
+            <a href="#" @click.prevent="open = true" class="block bg-white shadow-md hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
+                <div class="flex items-center gap-3 p-3">
+                    <!-- Image Container (1x1 ratio) -->
+                    <div class="w-24 h-24 flex-shrink-0 bg-white flex items-center justify-center">
+                        <img src="{{ url('storage', $equip->main_image) }}" alt="{{ $equip->name }}" class="w-full h-full object-contain">
+                    </div>
+                    
+                    <!-- Text Content -->
+                    <div class="flex-1">
+                        <div class="flex flex-wrap gap-1 mb-2">
+                            <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" title="{{ $equip->category->description }}">
+                                {{ Str::limit($equip->category->description, 13, '...') }}
+                            </span>
+                            <span class="px-2 py-1 bg-orange-200 text-orange-800 rounded-full font-semibold uppercase text-xs sm:text-[10px] md:text-xs cursor-pointer" title="{{ $equip->facility->name }}">
+                                {{ Str::limit($equip->facility->name, 13, '...') }}
+                            </span>
+                        </div>
+
+                        <h2 class="font-bold text-lg sm:text-md md:text-sm lg:text-md mb-1">{{ Str::upper($equip->brand_name) }}</h2>
+
+                        <p class="text-sm sm:text-xs md:text-xs text-gray-600 mb-2 text-justify">
+                            @if($equip->description)
+                                {{ Str::limit($equip->description, 27) }}
+                            @else
+                                Description is not available.
+                            @endif
+                            <span class="text-orange-500 underline cursor-pointer" @click="open = true">See more</span>
+                        </p>
+
+                        <!-- Request Button (Aligned to Right) -->
+                        <div class="flex justify-end mt-1">
+                            <button wire:click.prevent='addToRequestList({{ $equip->id }})' class="flex items-center gap-1 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold hover:bg-orange-600 transition-colors">
+                                Request 
+                                <x-heroicon-o-plus class="w-4 h-4" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    @endforeach
+</div>
+
+---add  to requestlistincrease quantity
+ public static function addEquipmentToRequestList($equipment_id)
+    {
+        $requestlist_equipment = self::getRequestListEquipmentFromCookie();
+
+        $existing_requestlist_equipment = null;
+
+        foreach ($requestlist_equipment as $key => $equipment) {
+            if ($equipment['equipment_id'] == $equipment_id) {
+                $existing_requestlist_equipment = $key;
+                break;
+            }
+        }
+
+        if ($existing_requestlist_equipment !== null) {
+            // Increase quantity if item already exists
+            $requestlist_equipment[$existing_requestlist_equipment]['quantity']++;
+        } else {
+            // Fetch equipment details from the database
+            $equip = Equipment::with(['category', 'facility'])->where('id', $equipment_id)->first(['id', 'brand_name', 'serial_no', 'property_no', 'main_image', 'category_id', 'facility_id']);
+            if ($equip) {
+                $requestlist_equipment[] = [
+                    'equipment_id' => $equipment_id,
+                    'brand_name' => $equip->brand_name,
+                    'serial_no' => $equip->serial_no,
+                    'property_no' => $equip->property_no,
+                    'main_image' => $equip->main_image ?? null,
+                    'quantity' => 1,
+                    'category_description' => $equip->category->description ?? 'N/A', 
+                    'facility_name' => $equip->facility->name ?? 'N/A', 
+
+
+                ];
+            }
+        }
+--yt to watch ..https://www.youtube.com/watch?v=OxB0-DbNbcg
+--turbo link for SPA...https://github.com/turbolinks/turbolinks
+--turbo: 
+npm install @hotwired/turbo
+//in app.js
+import "@hotwired/turbo";
+
+--video 19, user authentication
+--loading
+//yt:https://labs.danielcardoso.net/load-awesome/animations.html
+
+---
+2. Securing Cookies
+Set cookies as HttpOnly, Secure, and SameSite=Strict in your Laravel app:
+php
+Copy
+Edit
+'session' => [
+    'driver' => env('SESSION_DRIVER', 'file'),
+    'secure' => env('SESSION_SECURE_COOKIE', true),
+    'same_site' => 'strict',
+    'http_only' => true,
+],
+---Security
+Consider encrypting cookies in Laravel using EncryptCookies middleware.
+--https://youtu.be/dWVTfY6cMBs?si=TEq_YRrVBKv8_GCR
+https://chatgpt.com/c/67dccfe3-5414-800c-866a-25aa43c812b0
+
+---messaging
+//yt:https://www.youtube.com/watch?v=ucWE5nDTrbk
+
+--video 20, mail ,forgot password.
+
+--mailtrap
+//account:github-ccisrepairroom
+//create email testing inbox, click inbox then choose laravel 9+
+//copy credentiasls and paste in env, from mailer to encryption
+# Looking to send emails in production? Check out our Email API/SMTP product!
+MAIL_MAILER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=998cdeb563fba1
+MAIL_PASSWORD=52bdf347cda4a8

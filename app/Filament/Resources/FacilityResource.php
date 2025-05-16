@@ -14,12 +14,15 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Section;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\Grid;
 use Filament\Notifications\Notification;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Enums\ActionsPosition;
+
 
 
 class FacilityResource extends Resource
@@ -39,6 +42,28 @@ class FacilityResource extends Resource
     {
         return $form
             ->schema([
+                Section::make('Facility Image')
+                ->schema([
+                    Forms\Components\FileUpload::make('main_image')
+                    ->label('Main Image')
+                    ->imageEditor()
+                    ->deletable()
+                    ->required()
+                    ->preserveFilenames(),
+
+                    Forms\Components\FileUpload::make('alternate_images')
+                    ->imageEditor()
+                    ->deletable()
+                    ->multiple()
+                    ->required()
+                    ->preserveFilenames(),
+
+ 
+                    ])
+                    ->columnSpan(2)
+                    ->columns(2)
+                    ->collapsible(),
+
                 Section::make('Facility Information')
                     ->schema([
                         Grid::make(2)
@@ -46,7 +71,14 @@ class FacilityResource extends Resource
                                 Forms\Components\TextInput::make('name')
                                     ->placeholder('Facility Name Displayed On The Door (e.g., CL1, CL2)')
                                     ->required()
-                                    ->unique('facilities','name')
+                                    ->unique(
+                                        table: 'facilities', 
+                                        column: 'name', 
+                                        ignoreRecord: true
+                                    )
+                                    ->validationMessages([
+                                        'unique' => 'This facility name already exists.',
+                                    ])
                                     ->maxLength(255),
                                 Forms\Components\Select::make('connection_type')
                                     ->options([
@@ -93,16 +125,6 @@ class FacilityResource extends Resource
                                     ->default('HIRAYA'),
                             ]),
                     ]),
-                Section::make('Facility Image')
-                    ->schema([
-                        Forms\Components\FileUpload::make('facility_img')
-                            ->image()
-                            ->label('Facility Image')
-                            //->required()
-                            ->imageEditor()
-                            ->disk('public')
-                            ->directory('facility'),
-                    ]),
                 Section::make('Remarks')
                     ->schema([
                         Forms\Components\RichEditor::make('remarks')
@@ -120,6 +142,169 @@ class FacilityResource extends Resource
         // Define bulk actions
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
+            Tables\Actions\BulkAction::make('bulk_update')
+                ->label('Bulk Update')
+                ->icon('entypo-cycle')
+                ->color('warning')
+                ->requiresConfirmation()
+                ->modalIcon('entypo-cycle')
+                ->modalHeading('Bulk Update Facility Details')
+                ->modalDescription('Select the fields you want to update.')
+                ->form(function (Forms\Form $form) {
+                    return $form->schema([
+                        // Step 1: Select columns to update
+                        Forms\Components\Select::make('monitored_by')
+                            ->label('Monitored By')
+                            ->options(User::all()->pluck('name', 'id'))
+                            ->default(auth()->user()->id)
+                            ->disabled()
+                            ->required(),
+                        Forms\Components\DatePicker::make('monitored_date')
+                            ->label('Monitoring Date')
+                            ->required()
+                            ->disabled()
+                            ->default(now())
+                            ->format('Y-m-d'),
+
+                        Forms\Components\CheckboxList::make('fields_to_update')
+                            ->options([
+                                'main_image' => 'Facility Image',
+                                'connection_type' => 'Connection Type',
+                                'facility_type' => 'Facility Type',
+                                'cooling_tools' => 'Cooling Tools',
+                                'floor_level' => 'Floor Level',
+                                'building' => 'Building',
+                                'remarks' => 'Remarks',
+                            ])
+                            ->columns(2)
+                            ->reactive(), 
+
+                        Forms\Components\FileUpload::make('main_image')
+                            ->label('Main Image')
+                            ->imageEditor()
+                            ->deletable()
+                            ->preserveFilenames()
+                            ->visible(fn ($get) => in_array('main_image', $get('fields_to_update') ?? [])) 
+                            ->required(fn ($get) => in_array('main_image', $get('fields_to_update') ?? [])),
+
+                        Forms\Components\FileUpload::make('alternate_images')
+                            ->label('Alternate Images')
+                            ->imageEditor()
+                            ->deletable()
+                            ->preserveFilenames()
+                            ->visible(fn ($get) => in_array('alternate_images', $get('fields_to_update') ?? [])) 
+                            ->required(fn ($get) => in_array('alternate_images', $get('fields_to_update') ?? [])),
+
+                        Forms\Components\Select::make('connection_type')
+                            ->options([
+                                'None' => 'None',
+                                'Wi-Fi' => 'Wi-Fi',
+                                'Ethernet' => 'Ethernet',
+                                'Both Wi-fi and Ethernet' => 'Both Wi-fi and Ethernet',
+                                'Fiber Optic' => 'Fiber Optic',
+                                'Cellular' => 'Cellular',
+                                'Bluetooth' => 'Bluetooth',
+                                'Satellite' => 'Satellite',
+                                'DSL' => 'DSL',
+                                'Cable' => 'Cable',
+                            ])
+                            ->visible(fn ($get) => in_array('connection_type', $get('fields_to_update') ?? [])) 
+                            ->required(fn ($get) => in_array('connection_type', $get('fields_to_update') ?? [])),
+
+                        Forms\Components\Select::make('facility_type')
+                            ->options([
+                                'Room' => 'Room',
+                                'Office' => 'Office',
+                                'Computer Laboratory' => 'Computer Laboratory',
+                                'Incubation Hub' => 'Incubation Hub',
+                                'Robotic Hub' => 'Robotic Hub',
+                                'Hall' => 'Hall',
+                            ])
+                            ->visible(fn ($get) => in_array('facility_type', $get('fields_to_update') ?? [])) 
+                            ->required(fn ($get) => in_array('facility_type', $get('fields_to_update') ?? [])),
+
+                        Forms\Components\Select::make('cooling_tools')
+                                ->options([
+                                    'None' => 'None',
+                                    'Aircon' => 'Aircon',
+                                    'Ceiling Fan' => 'Ceiling Fan',
+                                    'Both Aircon and Ceiling Fan' => 'Both Aircon and Ceiling Fan',
+                                ])
+                            ->visible(fn ($get) => in_array('cooling_tools', $get('fields_to_update') ?? [])) 
+                            ->required(fn ($get) => in_array('cooling_tools', $get('fields_to_update') ?? [])),
+
+                        Forms\Components\Select::make('floor_level')
+                                ->options([
+                                    '1st Floor' => '1st Floor',
+                                    '2nd Floor' => '2nd Floor',
+                                    '3rd Floor' => '3rd Floor',
+                                    '4th Floor' => '4th Floor',
+                                ])
+                            ->visible(fn ($get) => in_array('floor_level', $get('fields_to_update') ?? [])) 
+                            ->required(fn ($get) => in_array('floor_level', $get('fields_to_update') ?? [])),
+
+                        Forms\Components\TextInput::make('building')
+                                ->required()
+                                ->default('HIRAYA')
+                                ->visible(fn ($get) => in_array('building', $get('fields_to_update') ?? [])) 
+                                ->required(fn ($get) => in_array('building', $get('fields_to_update') ?? [])),
+
+                        Forms\Components\RichEditor::make('remarks')
+                                ->placeholder('Anything that describes the facility (e.g., Computer Laboratory with space for 30 students)')
+                                ->disableToolbarButtons(['attachFiles'])
+                                ->visible(fn ($get) => in_array('remarks', $get('fields_to_update') ?? [])) 
+                                ->required(fn ($get) => in_array('remarks', $get('fields_to_update') ?? [])),
+                        ]);
+                    })
+                    ->action(function (array $data, $records) {
+                        foreach ($records as $record) {
+                            $updateData = [];
+
+                            if (in_array('main_image', $data['fields_to_update'])) {
+                                $updateData['main_image'] = $data['main_image'];
+                            }
+                            if (in_array('alternate_images', $data['fields_to_update'])) {
+                                $updateData['alternate_images'] = $data['alternate_images'];
+                            }
+                            if (in_array('connection_type', $data['fields_to_update'])) {
+                                $updateData['connection_type'] = $data['connection_type'];
+                            }
+                            if (in_array('facility_type', $data['fields_to_update'])) {
+                                $updateData['facility_type'] = $data['facility_type'];
+                            }
+                            if (in_array('cooling_tools', $data['fields_to_update'])) {
+                                $updateData['cooling_tools'] = $data['cooling_tools'];
+                            }
+                            if (in_array('floor_level', $data['fields_to_update'])) {
+                                $updateData['floor_level'] = $data['floor_level'];
+                            }
+                            if (in_array('building', $data['fields_to_update'])) {
+                                $updateData['building'] = $data['building'];
+                            }
+                            if (in_array('remarks', $data['fields_to_update'])) {
+                                $updateData['remarks'] = $data['remarks'];
+                            }
+                            
+
+                            $record->update($updateData);
+
+                            // Insert into Equipment Monitoring
+                            \App\Models\FacilityMonitoring::create([
+                                'facility_id' => $record->id,
+                                'monitored_by' => auth()->user()->id,
+                                'remarks' => $updateData['remarks'] ?? $record->remarks,
+                                'created_at' => now()->setTimezone('Asia/Manila')->format('Y-m-d H:i:s'),
+                            ]);
+
+                        }
+                
+                        \Filament\Notifications\Notification::make()
+                            ->title('Facilities updated successfully!')
+                            ->success()
+                            ->send();
+                    }),
+                
+
             Tables\Actions\BulkAction::make('add_to_Request_list')
                 ->label('Add to Request List')
                 ->icon('heroicon-o-shopping-cart')
@@ -155,6 +340,12 @@ class FacilityResource extends Resource
             For more information, go to the dashboard to download the user manual.')
             ->query(Facility::with('user'))
             ->columns([
+                Tables\Columns\ImageColumn::make('main_image')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->stacked(),
+                Tables\Columns\ImageColumn::make('alternate_images')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->stacked(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Name')
                     ->searchable()
@@ -187,7 +378,14 @@ class FacilityResource extends Resource
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->formatStateUsing(fn (string $state): string => strip_tags($state))
-                    ->html(),
+                    ->limit(50)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = strip_tags($column->getState());
+                        return strlen($state) > $column->getCharacterLimit() ? $state : null;
+                    })
+                    
+                    
+                    ->html(false),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->sortable()
@@ -196,6 +394,19 @@ class FacilityResource extends Resource
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->recordUrl(fn ($record) => route('facility-monitoring-page', ['facility' => $record->id]))
+            ->openRecordUrlInNewTab()
+            ->defaultSort('created_at', 'desc')
+            
+            // ->recordUrl(function ($record) { 
+            //     if ($record->trashed()) { 
+            //     return null; 
+            //     } 
+            //     return
+            //      view('filament.resources.facility-monitoring-modal'); 
+            //     }) 
+            // ->recordUrl(fn ($record) => route('filament.admin.resources.facilities.view', $record))
+
             ->filters([
                 SelectFilter::make('floor_level')
                     ->label('Floor Level')
@@ -244,98 +455,63 @@ class FacilityResource extends Resource
                 ),
             ])
             ->actions([
-                      
-                    
-                    Tables\Actions\ViewAction::make('viewFacilityEquipment')
-                        ->label('View Facility Equipment')
+                    Tables\Actions\ViewAction::make('view')
+                    ->label('')
+                    ->tooltip('View Facility')
+                    ->url(fn (Facility $record) => route('facility-monitoring-page', ['facility' => $record->id]))
+                    ->openUrlInNewTab(),
+                    // Tables\Actions\Action::make('view_monitoring')
+                    //     ->label(' ')
+                    //     ->icon('fas-eye')                       
+                    //     ->color('info')
+                    //     ->modalHeading('')
+                    //     ->modalSubmitAction(false)
+                    //     ->modalCancelAction(false)
+                    //     ->action(fn (Facility $record) => redirect()->route('monitoring.view', ['facility' => $record->id]))
+                    //     ->modalContent(function ($record) {
+                    //         $facility = Facility::with('user')->find($record->id);
+                    //         $monitorings = FacilityMonitoring::where('facility_id', $record->id)->with('user')->get();
+                    //         return view('filament.resources.facility-monitoring-modal', [
+                    //             'facility' => $facility,
+                    //             'monitorings' => $monitorings,
+                    //         ]);
+                    //     }),
+
+                    Tables\Actions\Action::make('viewFacilityEquipment')
+                        ->label('')
                         ->icon('heroicon-o-cog')
-                        ->color('success')
+                        ->color('info')
                         ->modalSubmitAction(false)
                         ->modalCancelAction(false)
                         ->slideOver()
                         ->modalHeading('Equipment List')
+                        ->tooltip('View Facility Equipment')
                         ->modalContent(function ($record) {
                             $equipment = Equipment::where('facility_id', $record->id)->paginate(100);
                             return view('filament.resources.facility-equipment-modal', [
                                 'equipment' => $equipment,
                             ]);
                         }),
-                    /*Tables\Actions\ViewAction::make('view_monitoring')
-                        ->label('View Facility Records')
-                        ->icon('heroicon-o-presentation-chart-line')
-                        ->color('info')
-                        ->modalHeading('Monitoring Records')
-                        ->modalContent(function ($record) {
-                            $facilityId = $record->id;
-                            $monitorings = FacilityMonitoring::where('facility_id', $facilityId)->with('user')->get();
-                            return view('filament.resources.facility-monitoring-modal', [
-                                'monitorings' => $monitorings,
-                            ]);
-                        }),*/
-                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->label('')
+                        ->tooltip('Edit Facility'),
+                    Tables\Actions\DeleteAction::make()
+                        ->label('')
+                        ->tooltip('Delete Facility'),
+                   
+
 
                     Tables\Actions\ActionGroup::make([
-                    //Tables\Actions\EditAction::make()->color('warning'),
 
-                    Tables\Actions\Action::make('update_status')
-                        ->label('Update Status')
-                        ->icon('heroicon-o-plus')
-                        ->color('primary')
-                        ->requiresConfirmation()
-                        ->modalIcon('heroicon-o-check')
-                        ->modalHeading('Add to Monitoring')
-                        ->modalDescription('Confirm to add selected facility to your Monitoring')
-                        ->form(function (Forms\Form $form, $record) {
-                            return $form->schema([
-                                Forms\Components\Select::make('monitored_by')
-                                    ->label('Monitored By')
-                                    ->options(User::all()->pluck('name', 'id'))
-                                    ->default(auth()->user()->id)
-                                    ->disabled()
-                                    ->required(),
-                                Forms\Components\DatePicker::make('monitored_date')
-                                    ->label('Monitoring Date')
-                                    ->required()
-                                    ->default(now())
-                                    ->disabled()
-                                    ->format('Y-m-d'),
-                                Forms\Components\TextInput::make('remarks')
-                                    ->default($record->remarks)
-                                    ->formatStateUsing(fn($state) => strip_tags($state))
-                                    ->label('Remarks'),
-                            ]);
-                        })
-                        ->action(function (array $data, $record) {
-                            $data['facility_id'] = $record->id;
-
-                            if (empty($data['monitored_by'])) {
-                                $data['monitored_by'] = auth()->user()->id;
-                            }
-
-                            if (empty($data['monitored_date'])) {
-                                $data['monitored_date'] = now()->format('Y-m-d');
-                            }
-
-                            FacilityMonitoring::create($data);
-
-                            Facility::where('id', $record->id)
-                                ->update(['remarks' => $data['remarks']]);
-
-                            Notification::make()
-                                ->success()
-                                ->title('Success')
-                                ->body('Selected facility have been added to your monitoring.')
-                                ->send();
-                        })
-                        ->hidden(fn () => $isFaculty),
-                        
-                ])
-            ])
+    
+                    ],)
+                ],  position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make($bulkActions)
                     ->label('Actions'),
             ]);
     }
+   
 
     public static function create(array $data)
     {
@@ -362,8 +538,9 @@ class FacilityResource extends Resource
         return [
             'index' => Pages\ListFacilities::route('/'),
             'create' => Pages\CreateFacility::route('/create'),
-           // 'view' => Pages\ViewFacility::route('/{record}'),
             'edit' => Pages\EditFacility::route('/{record}/edit'),
+            'view' => Pages\ViewFacility::route('/{record}'),
+
         ];
     }
 }

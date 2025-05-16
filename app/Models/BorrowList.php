@@ -16,7 +16,7 @@ class BorrowList extends Model
         'date',
         'purpose',
         'date_and_time_of_use',
-        'college_department_office',
+        'college_department',
         'request_form',
     ];
 
