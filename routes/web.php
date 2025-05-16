@@ -110,7 +110,7 @@ Route::middleware('guest')->group(function(){
 });
 
 Route::middleware('auth')->group(function(){
-    Route::get('/signout', function(){
+    Route::post('/signout', function(){
         auth()->logout();
         return redirect('/');
     });

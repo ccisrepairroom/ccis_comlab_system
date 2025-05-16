@@ -24,6 +24,8 @@ use App\Filament\Widgets\EquipmentsPerFacility;
 use App\Filament\Widgets\FacilityPerFacilityType;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use App\Filament\Pages\Auth\EditProfile;
+use Filament\Navigation\MenuItem;
+
 
 
 
@@ -49,6 +51,15 @@ class AdminPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => Color::Amber,
+            ])
+            ->userMenuItems([
+                'logout' => MenuItem::make()
+                    ->label('Log out')
+                    ->url('/signout'),
+                '/' => MenuItem::make()
+                    ->label('Back to Home')
+                    ->url('/')
+                    ->icon('heroicon-o-arrow-left-circle'),
             ])
 
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

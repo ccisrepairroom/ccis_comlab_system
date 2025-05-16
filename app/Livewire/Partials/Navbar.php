@@ -12,7 +12,7 @@ class Navbar extends Component
     public $total_count=0;
     public function redirectToDashboard()
     {
-        $this->js("window.open('http://127.0.0.1:8000/ccis_erma/management', '_blank')");
+        $this->js("window.open('http://127.0.0.1:8000/ccis_erma/management')");
     }
   
     public function redirectToMyRequests()
