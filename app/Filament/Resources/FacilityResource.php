@@ -21,6 +21,8 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Enums\ActionsPosition;
+
 
 
 class FacilityResource extends Resource
@@ -454,6 +456,8 @@ class FacilityResource extends Resource
             ])
             ->actions([
                     Tables\Actions\ViewAction::make('view')
+                    ->label('')
+                    ->tooltip('View Facility')
                     ->url(fn (Facility $record) => route('facility-monitoring-page', ['facility' => $record->id]))
                     ->openUrlInNewTab(),
                     // Tables\Actions\Action::make('view_monitoring')
@@ -474,83 +478,34 @@ class FacilityResource extends Resource
                     //     }),
 
                     Tables\Actions\Action::make('viewFacilityEquipment')
-                        ->label('Equipment')
+                        ->label('')
                         ->icon('heroicon-o-cog')
                         ->color('info')
                         ->modalSubmitAction(false)
                         ->modalCancelAction(false)
                         ->slideOver()
                         ->modalHeading('Equipment List')
+                        ->tooltip('View Facility Equipment')
                         ->modalContent(function ($record) {
                             $equipment = Equipment::where('facility_id', $record->id)->paginate(100);
                             return view('filament.resources.facility-equipment-modal', [
                                 'equipment' => $equipment,
                             ]);
                         }),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->label('')
+                        ->tooltip('Edit Facility'),
+                    Tables\Actions\DeleteAction::make()
+                        ->label('')
+                        ->tooltip('Delete Facility'),
                    
 
 
                     Tables\Actions\ActionGroup::make([
-                    //Tables\Actions\EditAction::make()->color('warning'),
 
-                    Tables\Actions\Action::make('update_status')
-                        ->label('Update Status')
-                        ->icon('heroicon-o-plus')
-                        ->color('primary')
-                        ->requiresConfirmation()
-                        ->modalIcon('heroicon-o-check')
-                        ->modalHeading('Add to Monitoring')
-                        ->modalDescription('Confirm to add selected facility to your Monitoring')
-                        ->form(function (Forms\Form $form, $record) {
-                            return $form->schema([
-                                Forms\Components\Select::make('monitored_by')
-                                    ->label('Monitored By')
-                                    ->options(User::all()->pluck('name', 'id'))
-                                    ->default(auth()->user()->id)
-                                    ->disabled()
-                                    ->required(),
-                                Forms\Components\DatePicker::make('monitored_date')
-                                    ->label('Monitoring Date')
-                                    ->required()
-                                    ->default(now())
-                                    ->disabled()
-                                    ->format('Y-m-d'),
-                                Forms\Components\TextInput::make('remarks')
-                                    ->default($record->remarks)
-                                    ->formatStateUsing(fn($state) => strip_tags($state))
-                                    ->label('Remarks'),
-                            ]);
-                        })
-                        ->action(function (array $data, $record) {
-                            $data['facility_id'] = $record->id;
-
-                            if (empty($data['monitored_by'])) {
-                                $data['monitored_by'] = auth()->user()->id;
-                            }
-
-                            if (empty($data['monitored_date'])) {
-                                $data['monitored_date'] = now()->format('Y-m-d');
-                            }
-
-                            FacilityMonitoring::create($data);
-
-                            Facility::where('id', $record->id)
-                                ->update(['remarks' => $data['remarks']]);
-
-                            Notification::make()
-                                ->success()
-                                ->title('Success')
-                                ->body('Selected facility have been added to your monitoring.')
-                                ->send();
-                        })
-                        ->hidden(fn () => $isFaculty),
-                        
-
-                        
-                ])
-            ])
+    
+                    ],)
+                ],  position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make($bulkActions)
                     ->label('Actions'),

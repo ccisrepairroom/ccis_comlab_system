@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-//use Pboivin\FilamentPeek\Tables\Actions\ListPreviewAction;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -38,13 +37,11 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('ccis_erma/management')
             //->path('admin')
-            //->login( )
-            ->login()
-            //->passwordReset()
+            // ->login()
             ->brandName('CCIS ERMA')
             ->favicon(asset('images/ccis.png'))
             ->sidebarCollapsibleOnDesktop()
-            ->profile()
+            // ->profile()
             ->brandLogo(asset('images/ccis_orangelogo.png'))
             ->darkModeBrandLogo(asset('images/darklogo.png'))
             ->brandLogoHeight(20)
@@ -61,31 +58,15 @@ class AdminPanelProvider extends PanelProvider
                
             ])
             
-                //Pages\Dashboard::class,
-            //])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
-                //->setNavigationGroup('User Management'),
-                //FilamentEditProfilePlugin::make(),
-                //FilamentPeekPlugin::make()
-                // \EightyNine\Approvals\ApprovalPlugin::make(),
+
 
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
 
-                //\App\Filament\Widgets\TotalUserWidget::class,
-                // Widgets\AccountWidget::class,
-                // Widgets\FilamentInfoWidget::class,
-
-                //App\Filament\Widgets\EquipmentPerFacility::class,
-                //Widgets\EquipmentPerCategory::class,
-                //UserStatsWidget::class,
-                //BorrowStatsWidget::class,
-                //EquipmentsPerCategory::class,
-
-                //EquipmentStatusChart::class,
-                //FacilityPerFacilityType::class,
+                
             ])
             ->middleware([
                 EncryptCookies::class,

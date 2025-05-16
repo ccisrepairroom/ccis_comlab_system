@@ -44,7 +44,7 @@
     <form wire:submit.prevent="save">
         <div class="mb-4">
             <label class="block text-sm font-medium mb-1" for="name">Full Name</label>
-            <input wire:model="name" class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="name" type="text">
+            <input disabled wire:model="name" class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="name" type="text">
             @error('name')
                 <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
             @enderror

@@ -199,9 +199,9 @@
                     <div class="flex justify-end mt-1 mb-5 mr-5">
                     <div x-data="{ openModal: false }">
     <!-- Button to trigger the modal -->
-    <button
+    <button disabled
         @click="openModal = true"
-        class="flex items-center gap-1 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        class=" flex items-center gap-1 px-3 py-1.5 bg-orange-500 text-white text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
     >
         <x-heroicon-o-plus class="w-4 h-4" />Request
     </button>

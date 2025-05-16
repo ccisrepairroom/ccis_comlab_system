@@ -26,6 +26,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Enums\ActionsPosition;
+
 
 
 
@@ -601,10 +603,14 @@ class SuppliesAndMaterialsResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
+                    ->label('')
+                    ->tooltip('View Item')
                     ->url(fn (SuppliesAndMaterials $record) => route('supplies-and-materials-monitoring', ['supply' => $record->id]))
                     ->openUrlInNewTab(),
 
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('')
+                    ->tooltip('Edit Item'),
                 // Tables\Actions\Action::make('AddStock')
                 //     ->icon('heroicon-o-pencil')
                 //     ->color('warning')
@@ -700,12 +706,12 @@ class SuppliesAndMaterialsResource extends Resource
 
                 //     }),
                     Tables\Actions\DeleteAction::make()
-
-                    
+                    ->label('')
+                    ->tooltip('Delete Item')
                     ->hidden(fn () => $isFaculty),
                    
                 
-            ])
+            ], position: ActionsPosition::BeforeCells)
             
             ->bulkActions([
                

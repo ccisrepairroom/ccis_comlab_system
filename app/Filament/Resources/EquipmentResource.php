@@ -1045,10 +1045,7 @@ class EquipmentResource extends Resource
                         ->tooltip('Delete Equipment'),
                      
                     ], position: ActionsPosition::BeforeCells)
-                
-                
-                  
-                    
+  
             
                 ->bulkActions([
 
