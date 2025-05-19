@@ -24,11 +24,6 @@ class ListEquipmentSummaries extends ListRecords
             [
                 Tab::make('All')
                     ->modifyQueryUsing(fn($query) => $query),
-                
-                /*    Tab::make('Returned')
-                    ->modifyQueryUsing(fn($query) => $query->where('availability', 'Returned')),
-                Tab::make('Unreturned')
-                    ->modifyQueryUsing(fn($query) => $query->where('availability', 'Unreturned')),*/
             ],
             $facilities->map(
                 fn($facility) =>

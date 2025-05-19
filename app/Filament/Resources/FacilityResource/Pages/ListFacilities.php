@@ -26,8 +26,8 @@ class ListFacilities extends ListRecords
   
     protected function getHeaderActions(): array
     {
-        $user = auth()->user(); // Retrieve the currently authenticated user
-        $isFaculty = $user->hasRole('faculty'); // Check if the user has the 'panel_user' role
+        $user = auth()->user(); 
+        $isFaculty = $user->hasRole('faculty'); 
         
         $actions = [
             Actions\CreateAction::make()
@@ -35,7 +35,6 @@ class ListFacilities extends ListRecords
         ];
 
         if (!$isFaculty) {
-            // Only add the import action if the user is not a panel_user
             $actions[] = Action::make('importFacility')
                 ->label('Import')
                 ->color('success')
@@ -85,7 +84,6 @@ class ListFacilities extends ListRecords
     }
     protected function getTableQuery(): ?Builder
     {
-        // Get the base query and order it by the latest created_at field
         return parent::getTableQuery()->latest('created_at');
     }
 
@@ -95,7 +93,7 @@ class ListFacilities extends ListRecords
             Tab::make('All')
                 ->badge($this->getAllFacilityCount())
                 ->modifyQueryUsing(function ($query) {
-                    return $query->orderBy('floor_level', 'asc');; // No filtering, display all records
+                    return $query->orderBy('floor_level', 'asc');; 
                 }),
             Tab::make('1st Floor')
                 ->badge($this->getFirstFloorFacilityCount())
@@ -134,13 +132,3 @@ class ListFacilities extends ListRecords
 
 
 
-       /* return [
-            Actions\CreateAction::make(),
-        ];
-    }
-    public function getBreadcrumbs(): array
-    {
-        return [];
-    }
-
-}*/

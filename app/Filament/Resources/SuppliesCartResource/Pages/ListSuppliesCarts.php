@@ -18,35 +18,7 @@ class ListSuppliesCarts extends ListRecords
 {
     protected static string $resource = SuppliesCartResource::class;
 
-    /*protected function getHeaderActions(): array
-    {
-        $user = auth()->user();
-        $isSuperAdmin = $user->hasRole('super_admin'); // Check if the user has the 'super_admin' role
-
-        if ($isSuperAdmin) {
-            $actions[] = Action::make('importSuppliesCart')
-                ->label('Import')
-                ->color('success')
-                ->button()
-                ->form([
-                    FileUpload::make('attachment'),
-                ])
-                ->action(function (array $data) use ($user) {
-                    $file = public_path('storage/' . $data['attachment']);
-
-                    // Pass authenticated user's ID to SuppliesCartImport
-                    Excel::import(new SuppliesCartImport($user->id), $file);
-
-                    Notification::make()
-                        ->title('Supplies Cart Imported')
-                        ->success()
-                        ->send();
-                });
-        }
-
-        return $actions;
-    }*/
-
+  
     public function getBreadcrumbs(): array
     {
         return [];

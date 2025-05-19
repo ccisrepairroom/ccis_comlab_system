@@ -30,61 +30,20 @@ class BorrowedItemsResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-inbox-arrow-down';
     protected static bool $isLazy = false;
-    protected static ?string $navigationGroup = 'Borrowing';
-    protected static ?string $navigationLabel = 'Borrowed Items';
+    protected static ?string $navigationGroup = 'Requests/Borrowing';
+    protected static ?string $navigationLabel = 'Requested Items';
     protected static ?int $navigationSort = 2;
-
-    // public static function getNavigationBadge(): ?string
-    // {
-    //     return static::getModel()::count();
-    // }
     protected static ?string $pollingInterval = '1s';
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::where('request_status', 'Pending')->count();
     }
-    
     public static function getNavigationBadgeColor(): ?string
     {
         return 'info';
     }
     protected static ?string $navigationBadgeTooltip = 'Pending Requests';
 
-
-    
-    /*
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required()
-                    ->default(auth()->id()),
-                Forms\Components\Select::make('borrowed_by')
-                    ->required(),
-                Forms\Components\Select::make('equipment_id')
-                    ->relationship('equipment', 'brand_name')
-                    ->nullable(),
-                Forms\Components\Select::make('facility_id')
-                    ->relationship('facility', 'name')
-                    ->nullable(),
-                Forms\Components\TextInput::make('request_status')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('request_form')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('borrowed_date')
-                    ->required()
-                    ->disabled()
-                    ->default(fn() => now()->format('Y-m-d'))
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('returned_date')
-                    ->required()
-                    ->maxLength(255),
-            ]);
-    }*/
 
     public static function table(Tables\Table $table): Tables\Table
     {
@@ -156,18 +115,16 @@ class BorrowedItemsResource extends Resource
                     throw new \Exception('Received By is required when returning items.');
                 }
 
-                // Get the current date and time for the returned_date
-                $returnedDate = now();  // You can also use \Carbon\Carbon::now() if needed
+                $returnedDate = now();  
 
                 foreach ($records as $record) {
                     $record->update([
                         'status' => 'Returned',
                         'received_by' => $receivedby,
-                        'returned_date' => $returnedDate,  // Set the returned_date
+                        'returned_date' => $returnedDate,  
                     ]);
                 }
 
-                // Send a notification after updating the records
                 Notification::make()
                     ->title('Items Returned')
                     ->success()  
@@ -185,8 +142,7 @@ class BorrowedItemsResource extends Resource
             
 
          ];
-                 // Conditionally add ExportBulkAction
-
+            // Conditionally add ExportBulkAction
             if (!$isFaculty) {
                 $bulkActions[] = ExportBulkAction::make();
             }
@@ -195,21 +151,10 @@ class BorrowedItemsResource extends Resource
             ->description('This page contains the list of all the requested/borrowed equipment and facilities.
             For more information, go to the dashboard to download the user manual.')
             ->columns([
-
-       /* return $table
-            ->modifyQueryUsing(function (Builder $query) {
-                // Check if the authenticated user is a 'panel_user'
-                if (Auth::user() && Auth::user()->hasRole('panel_user')) {
-                    // Filter the records to only show those that belong to the current logged-in user
-                    $query->where('user_id', Auth::id());
-                }
-            })*/
                 Tables\Columns\TextColumn::make('borrowed_date')
                     ->label('Date Requested')
                     ->searchable()
                     ->sortable()
-                    
-                    
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('request_code')
                     ->label('Request Code')    
@@ -242,7 +187,6 @@ class BorrowedItemsResource extends Resource
                         default => 'secondary',  
 
                     }),
-                    //Tables\Columns\TextColumn::make('request_status'),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Created By')
                     ->searchable()
@@ -308,14 +252,6 @@ class BorrowedItemsResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
-
-                // Tables\Columns\TextColumn::make('request_form')
-                // ->label('Signed Request Form')
-                // ->sortable()
-                
-                // ->toggleable(isToggledHiddenByDefault: false)
-                // ->formatStateUsing(fn (string $state): string => basename($state)),
-
                 Tables\Columns\TextColumn::make('purpose')
                 ->searchable()
                 ->toggleable(isToggledHiddenByDefault: false)
@@ -359,10 +295,9 @@ class BorrowedItemsResource extends Resource
                 ->label('Date Created')
                 ->options(
                     BorrowedItems::query()
-                        ->whereNotNull('borrowed_date') // Filter out null values
+                        ->whereNotNull('borrowed_date')
                         ->pluck('borrowed_date', 'borrowed_date')
                         ->mapWithKeys(function ($date) {
-                            // Format date using Carbon
                             return [$date => \Carbon\Carbon::parse($date)->format('F j, Y')];
                         })
                         ->toArray()
@@ -371,7 +306,7 @@ class BorrowedItemsResource extends Resource
                 ->label(' Borrowed By')
                 ->options(
                     BorrowedItems::query()
-                        ->whereNotNull('borrowed_by') // Filter out null values
+                        ->whereNotNull('borrowed_by') 
                         ->distinct()
                         ->select('borrowed_by')
                         ->pluck('borrowed_by', 'borrowed_by')
@@ -381,7 +316,7 @@ class BorrowedItemsResource extends Resource
                 ->label(' Status')
                 ->options(
                     BorrowedItems::query()
-                        ->whereNotNull('status') // Filter out null values
+                        ->whereNotNull('status') 
                         ->distinct()
                         ->select('status')
                         ->pluck('status', 'status')
@@ -393,27 +328,27 @@ class BorrowedItemsResource extends Resource
                     
                     ->options(
                         BorrowedItems::query()
-                            ->whereNotNull('equipment_id') // Filter out null values
+                            ->whereNotNull('equipment_id') 
                             ->pluck('equipment_id', 'equipment_id')
                             
                             ->toArray()
                     ),
-                    SelectFilter::make('facility.name')
-                    ->label('Requested Facility')
-                    
-                    ->options(
-                        BorrowedItems::query()
-                            ->whereNotNull('facility_id') // Filter out null values
-                            ->pluck('facility_id', 'facility_id')
-                            
-                            ->toArray()
-                    ),
+                SelectFilter::make('facility.name')
+                ->label('Requested Facility')
+                
+                ->options(
+                    BorrowedItems::query()
+                        ->whereNotNull('facility_id') 
+                        ->pluck('facility_id', 'facility_id')
+                        
+                        ->toArray()
+                ),
                 
                 SelectFilter::make('start_date_and_time_of_use')
                 ->label(' Start Date and Time of Use')
                 ->options(
                     BorrowedItems::query()
-                        ->whereNotNull('start_date_and_time_of_use') // Filter out null values
+                        ->whereNotNull('start_date_and_time_of_use')
                         ->distinct()
                         ->select('start_date_and_time_of_use')
                         ->pluck('start_date_and_time_of_use', 'start_date_and_time_of_use')
@@ -423,7 +358,7 @@ class BorrowedItemsResource extends Resource
                 ->label(' End Date and Time of Use')
                 ->options(
                     BorrowedItems::query()
-                        ->whereNotNull('end_date_and_time_of_use') // Filter out null values
+                        ->whereNotNull('end_date_and_time_of_use') 
                         ->distinct()
                         ->select('end_date_and_time_of_use')
                         ->pluck('end_date_and_time_of_use', 'end_date_and_time_of_use')
@@ -433,7 +368,7 @@ class BorrowedItemsResource extends Resource
                 ->label('Expected Return Date')
                 ->options(
                     BorrowedItems::query()
-                        ->whereNotNull('expected_return_date') // Filter out null values
+                        ->whereNotNull('expected_return_date') 
                         ->distinct()
                         ->select('expected_return_date')
                         ->pluck('expected_return_date', 'expected_return_date')
@@ -441,35 +376,13 @@ class BorrowedItemsResource extends Resource
                 ),
             ])
             ->actions([
-                // ...\EightyNine\Approvals\Tables\Actions\ApprovalActions::make(
-                //     // define your action here that will appear once approval is completed
-                //     Action::make("Done"),
-                //     [
-                //         Tables\Actions\EditAction::make(),
-                //         Tables\Actions\ViewAction::make()
-                //     ]
-                // ),
-                
-                    
+       
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make($bulkActions)
                     ->label('Actions')
             ]);
             }        
-                
-    // protected static function getTableQuery(): Builder
-    // {
-    //     $query = parent::getTableQuery();
-    //     $user = Auth::user();
-
-    //     // Only show borrows associated with the logged-in user
-    //     if ($user->hasRole('panel_user')) { // Replace 'panel_user' with the actual role
-    //         $query->where('user_id', $user->id);
-    //     }
-
-    //     return $query;
-    // }
             
     public static function getRelations(): array
     {

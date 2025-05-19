@@ -21,13 +21,13 @@ class ListBorrows extends ListRecords
     {
         return [];
     }
-
+    //Order the table based on the latest created record
     protected function getTableQuery(): ?Builder
     {
         return parent::getTableQuery()
-            ->orderBy('created_at', 'desc'); // Order by the latest entries first
+            ->orderBy('created_at', 'desc'); 
     }
-
+    //Tabs displayed above
     public function getTabs(): array
     {
         return array_merge(

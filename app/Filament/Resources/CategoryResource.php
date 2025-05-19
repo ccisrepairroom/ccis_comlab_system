@@ -19,7 +19,6 @@ class CategoryResource extends Resource
     protected static ?string $model = Category::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-funnel';
-    //protected static ?string $navigationGroup = 'Classification';
     protected static ?int $navigationSort = 1;
     protected static ?string $pollingInterval = '1s';
     protected static bool $isLazy = false;
@@ -50,7 +49,7 @@ class CategoryResource extends Resource
             //Tables\Actions\ExportBulkAction::make()
 
          ];
-                 // Conditionally add ExportBulkAction
+            // Conditionally add ExportBulkAction
 
             if (!$isFaculty) {
                 $bulkActions[] = ExportBulkAction::make();
@@ -70,26 +69,13 @@ class CategoryResource extends Resource
                         ->searchable()
                         ->sortable()
                         ->formatStateUsing(function ($state) {
-                            // Format the date and time
                             return $state ? $state->format('F j, Y h:i A') : null;
                         })
                         ->toggleable(isToggledHiddenByDefault: true),
                      
                 ])
                 ->filters([
-                    /*SelectFilter::make('created_at')
-                ->label('Created At')
-                ->options(
-                    Category::query()
-                        ->whereNotNull('created_at') // Filter out null values
-                        ->get(['created_at']) // Fetch the 'created_at' values
-                        ->mapWithKeys(function ($user) {
-                            $date = $user->created_at; // Access the created_at field
-                            $formattedDate = \Carbon\Carbon::parse($date)->format('F j, Y');
-                            return [$date->toDateString() => $formattedDate]; // Use string representation as key
-                        })
-                        ->toArray()
-                ),*/
+                  
                 ])
                 ->actions([
                     Tables\Actions\ActionGroup::make([
@@ -99,7 +85,7 @@ class CategoryResource extends Resource
                 ->bulkActions([
                     Tables\Actions\BulkActionGroup::make($bulkActions)
                     ->label('Actions')
-                ]); // Pass the bulk actions array here
+                ]); 
         }
         
 

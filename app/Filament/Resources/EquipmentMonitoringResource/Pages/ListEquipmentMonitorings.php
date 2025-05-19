@@ -11,12 +11,6 @@ class ListEquipmentMonitorings extends ListRecords
     protected static string $resource = EquipmentMonitoringResource::class;
     protected ?string $heading = 'Equipment Monitoring History';
 
-    /*protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }*/
     public function getBreadcrumbs(): array
     {
         return [];

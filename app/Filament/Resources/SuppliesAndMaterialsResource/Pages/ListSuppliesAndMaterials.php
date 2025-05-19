@@ -23,8 +23,8 @@ class ListSuppliesAndMaterials extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        $user = auth()->user(); // Retrieve the currently authenticated user
-        $isFaculty = $user->hasRole('faculty'); // Check if the user has the 'faculty' role
+        $user = auth()->user(); 
+        $isFaculty = $user->hasRole('faculty'); 
 
         $actions = [
             Actions\CreateAction::make()
@@ -32,7 +32,6 @@ class ListSuppliesAndMaterials extends ListRecords
         ];
 
         if (!$isFaculty) {
-            // Only add the import action if the user is not a faculty
             $actions[] = Action::make('importSupplies')
                 ->label('Import')
                 ->color('success')
@@ -62,30 +61,26 @@ class ListSuppliesAndMaterials extends ListRecords
 
     protected function getCriticalStocksCount(): int
     {
-        // Fetch critical stock items (where quantity <= stocking point)
         $criticalStocks = SuppliesAndMaterials::whereColumn('quantity', '<=', 'stocking_point')
-            ->where('quantity', '>=', 0) // Ensure quantity is not negative
-            ->whereNotNull('quantity') // Ensure quantity is not null
-            ->whereNotNull('stocking_point') // Ensure stocking point is not null
+            ->where('quantity', '>=', 0) 
+            ->whereNotNull('quantity') 
+            ->whereNotNull('stocking_point') 
             ->get();
 
         foreach ($criticalStocks as $stock) {
-            // Check if a notification already exists for this item
             $existingNotification = DB::table('notifications')
-                ->where('type', '=', 'critical_stock_alert') // Specific type for critical stock alerts
+                ->where('type', '=', 'critical_stock_alert') 
                 ->where('data->supplies_and_materials_id', $stock->id)
                 ->exists();
 
             if ($existingNotification) {
-                // If a notification exists, update its timestamp (updated_at)
                 DB::table('notifications')
                     ->where('data->supplies_and_materials_id', $stock->id)
                     ->where('type', '=', 'critical_stock_alert')
                     ->update([
-                        'updated_at' => now() // Update the timestamp to the current date
+                        'updated_at' => now() 
                     ]);
             } else {
-                // Send a new notification only if it does not already exist
                 $recipient = auth()->user();
                 $recipient->notify(
                     Notification::make()
@@ -93,14 +88,14 @@ class ListSuppliesAndMaterials extends ListRecords
                         ->color('danger')
                         ->body("Item '{$stock->item}' is critically low with a quantity of {$stock->quantity}.")
                         ->toDatabase([
-                            'type' => 'critical_stock_alert', // Type for easy identification
-                            'supplies_and_materials_id' => $stock->id, // Associate notification with stock item
+                            'type' => 'critical_stock_alert', 
+                            'supplies_and_materials_id' => $stock->id, 
                         ])
                 );
             }
         }
 
-        return $criticalStocks->count(); // Return the count of critical stocks
+        return $criticalStocks->count(); 
     }
 
     public function getBreadcrumbs(): array
@@ -110,7 +105,6 @@ class ListSuppliesAndMaterials extends ListRecords
 
     protected function query(): Builder
     {
-        // Get the base query and order it by the latest created_at field
         return parent::query()->latest('created_at');
     }
 
@@ -120,13 +114,12 @@ class ListSuppliesAndMaterials extends ListRecords
             Tab::make('All Supplies And Materials')
                 ->badge($this->getAllSuppliesCount()),
             Tab::make('Critical Stocks')
-                ->badge($this->getCriticalStocksCount()) // Add badge count for Critical Stocks
+                ->badge($this->getCriticalStocksCount()) 
                 ->modifyQueryUsing(function ($query) {
-                    // Modify the query to return only critical supplies where quantity <= stocking_point
                     return $query->whereColumn('quantity', '<=', 'stocking_point')
-                        ->where('quantity', '>=', 0) // Ensure quantity is not negative
-                        ->whereNotNull('quantity') // Ensure quantity is not null
-                        ->whereNotNull('stocking_point'); // Ensure stocking point is not null
+                        ->where('quantity', '>=', 0) 
+                        ->whereNotNull('quantity') 
+                        ->whereNotNull('stocking_point'); 
                 }),
         ];
     }

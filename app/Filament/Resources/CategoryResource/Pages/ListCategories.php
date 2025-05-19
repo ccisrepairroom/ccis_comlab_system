@@ -18,8 +18,8 @@ class ListCategories extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        $user = auth()->user(); // Retrieve the currently authenticated user
-        $isPanelUser = $user->hasRole('panel_user'); // Check if the user has the 'panel_user' role
+        $user = auth()->user(); 
+        $isPanelUser = $user->hasRole('panel_user'); 
 
         $actions = [
             Actions\CreateAction::make()
@@ -27,7 +27,6 @@ class ListCategories extends ListRecords
         ];
 
         if (!$isPanelUser) {
-            // Only add the import action if the user is not a panel_user
             $actions[] = Action::make('importCategory')
                 ->label('Import')
                 ->color('success')
@@ -58,7 +57,6 @@ class ListCategories extends ListRecords
 
     protected function getTableQuery(): ?Builder
     {
-        // Get the base query and order it by the latest created_at field
         return parent::getTableQuery()->latest('created_at');
     }
     
@@ -70,14 +68,3 @@ class ListCategories extends ListRecords
 
 
 
-
-       /* return [
-            Actions\CreateAction::make(),
-        ];
-    }
-    public function getBreadcrumbs(): array
-    {
-        return [];
-    }
-
-}*/

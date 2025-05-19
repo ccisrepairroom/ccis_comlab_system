@@ -11,7 +11,7 @@ class CreateSuppliesAndMaterials extends CreateRecord
     protected static string $resource = SuppliesAndMaterialsResource::class;
     protected function getRedirectUrl(): string
     {
-        return SuppliesAndMaterialsResource::getUrl('index'); // Redirect to the index page after creation
+        return SuppliesAndMaterialsResource::getUrl('index'); 
     }
     public function getBreadcrumbs(): array
     {

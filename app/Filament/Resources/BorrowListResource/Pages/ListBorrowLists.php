@@ -23,17 +23,10 @@ class ListBorrowLists extends ListRecords
         return [
             Actions\Action::make('downloadRequestForm')
                 ->label('Download Request Form')
-                //->icon('heroicon-o-download')
                 ->color('primary')
                 ->url(asset('storage/request_form/request_form.pdf'))
                 ->openUrlInNewTab(),
         ];
 
-    // protected function getHeaderActions(): array
-    // {
-    //     return [
-    //         Actions\CreateAction::make(),
-    //     ];
-    // }
     }
 }

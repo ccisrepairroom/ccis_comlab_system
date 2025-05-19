@@ -20,8 +20,8 @@ class ListStockUnits extends ListRecords
 protected static string $resource = StockUnitsResource::class;
 protected function getHeaderActions(): array
 {
-    $user = auth()->user(); // Retrieve the currently authenticated user
-    $isFaculty = $user->hasRole('faculty'); // Check if the user has the 'panel_user' role
+    $user = auth()->user(); 
+    $isFaculty = $user->hasRole('faculty'); 
 
     $actions = [
         Actions\CreateAction::make()
@@ -29,7 +29,6 @@ protected function getHeaderActions(): array
     ];
 
     if (!$isFaculty) {
-        // Only add the import action if the user is not a panel_user
         $actions[] = Action::make('importStockUnit')
             ->label('Import')
             ->color('success')
@@ -59,7 +58,6 @@ public function getBreadcrumbs(): array
 
 protected function getTableQuery(): ?Builder
 {
-    // Get the base query and order it by the latest created_at field
     return parent::getTableQuery()->latest('created_at');
 }
 

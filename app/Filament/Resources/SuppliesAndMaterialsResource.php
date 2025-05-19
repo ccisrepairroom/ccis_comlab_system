@@ -96,10 +96,8 @@ class SuppliesAndMaterialsResource extends Resource
                                     ->required()
                                     ->numeric()
                                     ->minValue(1)
-                                    //->options(array_combine(range(1, 1000), range(1, 1000)))
                                     ->label('Quantity'),
                                 Forms\Components\TextInput::make('stocking_point')
-                                    //->options(array_combine(range(1, 1000), range(1, 1000)))
                                     ->label('Stocking Point')
                                     ->numeric()
                                     ->minValue(0)
@@ -112,7 +110,7 @@ class SuppliesAndMaterialsResource extends Resource
                                     // Check if stocking_point exceeds quantity
                                     if ($state > $quantity) {
                                         // Set error message if stocking_point exceeds quantity
-                                        $set('stocking_point', null);  // Optionally reset the stocking_point
+                                        $set('stocking_point', null);  
                                         Notification::make()
                                             ->danger()
                                             ->title('Try Again')
@@ -154,15 +152,7 @@ class SuppliesAndMaterialsResource extends Resource
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('remarks')
                                     ->label('Remarks'),
-                                    /*Forms\Components\FileUpload::make('item_img')
-                                    ->label('Item Image')
-                                    ->preserveFilenames()
-                                    ->multiple()
-                                    ->imageEditor()
-                                    ->disk('public')
-                                    ->directory('supplies_and_materials'),*/
-                                            
-                                    
+                                     
                             ]),
                     ]),
             ]);
@@ -238,7 +228,6 @@ class SuppliesAndMaterialsResource extends Resource
                         ->required(fn ($get) => in_array('quantity', $get('fields_to_update') ?? [])),
 
                     Forms\Components\TextInput::make('stocking_point')
-                        //->options(array_combine(range(1, 1000), range(1, 1000)))
                         ->label('Stocking Point')
                         ->numeric()
                         ->minValue(0)
@@ -251,7 +240,7 @@ class SuppliesAndMaterialsResource extends Resource
                             // Check if stocking_point exceeds quantity
                             if ($state > $quantity) {
                                 // Set error message if stocking_point exceeds quantity
-                                $set('stocking_point', null);  // Optionally reset the stocking_point
+                                $set('stocking_point', null);  
                                 Notification::make()
                                     ->danger()
                                     ->title('Try Again')
@@ -378,7 +367,7 @@ class SuppliesAndMaterialsResource extends Resource
                             ->title('Error')
                             ->body("Insufficient stock for item {$record->id}. Cannot deduct more than available stock.")
                             ->send();
-                        continue; // Skip this record
+                        continue; 
                     }
 
                     // Log stock change in StockMonitoring table
@@ -389,14 +378,14 @@ class SuppliesAndMaterialsResource extends Resource
                         'current_quantity' => $record->quantity,
                         'quantity_to_add' => $data['quantity_to_add'],
                         'new_quantity' => $newStock,
-                        'supplier' => $data['supplier'],  // Use the new supplier from form
+                        'supplier' => $data['supplier'],  
                         'monitored_date' => $data['monitored_date'],
                     ]);
 
                     // Update the item's stock and supplier
                     $record->update([
                         'quantity' => $newStock,
-                        'supplier' => $data['supplier'],  // Update supplier in the item record
+                        'supplier' => $data['supplier'],  
                     ]);
                 }
 
@@ -452,15 +441,15 @@ class SuppliesAndMaterialsResource extends Resource
                         // Create the SuppliesCart record with the requested_by field from $data
                         SuppliesCart::create([
                             'user_id' => auth()->id(),
-                            'requested_by' => $data['requested_by'], // This is where the value is passed
+                            'requested_by' => $data['requested_by'], 
                             'supplies_and_materials_id' => $record->id,
                             'facility_id' => $record->facility_id,
                             'category_id' => $record->category_id,
                             'stock_unit_id' => $record->stock_unit_id,
-                            'available_quantity' => $record->quantity, // Copy available quantity
+                            'available_quantity' => $record->quantity, 
                             'quantity_requested' => $data['quantity_requested'],
                             'remarks' => $data['remarks'],
-                            'date_requested' => now(), // Use current date as action date
+                            'date_requested' => now(), 
                         ]);
                 
                         // Deduct the requested quantity from available stock
@@ -513,18 +502,10 @@ class SuppliesAndMaterialsResource extends Resource
                 Tables\Columns\TextColumn::make('quantity')
                     ->searchable()
                     ->sortable()
-                    /*->formatStateUsing(function ($record) {
-                        $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
-                        return "{$record->quantity} {$stockUnitDescription}";
-                    })*/
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('stocking_point')
                     ->searchable()
                     ->sortable()
-                    /*->formatStateUsing(function ($record) {
-                        $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
-                        return "{$record->stocking_point} {$stockUnitDescription}";
-                    })*/
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('stockunit.description')
                     ->label('Stock Unit')
@@ -559,14 +540,12 @@ class SuppliesAndMaterialsResource extends Resource
                     ->label('Item')
                     ->options(
                         SuppliesAndMaterials::query()
-                            ->whereNotNull('item') // Filter out null values
+                            ->whereNotNull('item') 
                             ->pluck('item', 'item')
                             ->toArray()
                     ),
                     SelectFilter::make('Category')
                     ->relationship('category','description'),
-                    
-                    //->searchable ()
                     SelectFilter::make('Facility')
                     ->relationship('facility','name'),
                     SelectFilter::make('supplier')
@@ -585,21 +564,7 @@ class SuppliesAndMaterialsResource extends Resource
                             ->pluck('date_acquired', 'date_acquired')
                             ->toArray()
                     ),
-                    /*SelectFilter::make('created_at')
-                    ->label('Created At')
-                    ->options(
-                        SuppliesAndMaterials::query()
-                            ->whereNotNull('created_at') // Filter out null values
-                            ->get(['created_at']) // Fetch the 'created_at' values
-                            ->mapWithKeys(function ($user) {
-                                $date = $user->created_at; // Access the created_at field
-                                $formattedDate = \Carbon\Carbon::parse($date)->format('F j, Y');
-                                return [$date->toDateString() => $formattedDate]; // Use string representation as key
-                            })
-                            ->toArray()
-                    ),*/
-                    
-                    
+                  
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()

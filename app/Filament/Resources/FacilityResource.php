@@ -458,14 +458,6 @@ class FacilityResource extends Resource
             ->openRecordUrlInNewTab()
             ->defaultSort('created_at', 'desc')
             
-            // ->recordUrl(function ($record) { 
-            //     if ($record->trashed()) { 
-            //     return null; 
-            //     } 
-            //     return
-            //      view('filament.resources.facility-monitoring-modal'); 
-            //     }) 
-            // ->recordUrl(fn ($record) => route('filament.admin.resources.facilities.view', $record))
 
             ->filters([
                 SelectFilter::make('floor_level')
@@ -505,11 +497,11 @@ class FacilityResource extends Resource
                 ->options(
                     Facility::query()
                         ->whereNotNull('created_at') // Filter out null values
-                        ->get(['created_at']) // Fetch the 'created_at' values
+                        ->get(['created_at']) 
                         ->mapWithKeys(function ($user) {
-                            $date = $user->created_at; // Access the created_at field
+                            $date = $user->created_at; 
                             $formattedDate = \Carbon\Carbon::parse($date)->format('F j, Y');
-                            return [$date->toDateString() => $formattedDate]; // Use string representation as key
+                            return [$date->toDateString() => $formattedDate]; 
                         })
                         ->toArray()
                 ),
@@ -520,23 +512,6 @@ class FacilityResource extends Resource
                     ->tooltip('View Facility')
                     ->url(fn (Facility $record) => route('facility-monitoring-page', ['facility' => $record->id]))
                     ->openUrlInNewTab(),
-                    // Tables\Actions\Action::make('view_monitoring')
-                    //     ->label(' ')
-                    //     ->icon('fas-eye')                       
-                    //     ->color('info')
-                    //     ->modalHeading('')
-                    //     ->modalSubmitAction(false)
-                    //     ->modalCancelAction(false)
-                    //     ->action(fn (Facility $record) => redirect()->route('monitoring.view', ['facility' => $record->id]))
-                    //     ->modalContent(function ($record) {
-                    //         $facility = Facility::with('user')->find($record->id);
-                    //         $monitorings = FacilityMonitoring::where('facility_id', $record->id)->with('user')->get();
-                    //         return view('filament.resources.facility-monitoring-modal', [
-                    //             'facility' => $facility,
-                    //             'monitorings' => $monitorings,
-                    //         ]);
-                    //     }),
-
                     Tables\Actions\Action::make('viewFacilityEquipment')
                         ->label('')
                         ->icon('heroicon-o-cog')
