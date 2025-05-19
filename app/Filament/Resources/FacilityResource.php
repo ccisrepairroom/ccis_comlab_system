@@ -389,30 +389,6 @@ class FacilityResource extends Resource
                 }
             }),
 
-            Tables\Actions\BulkAction::make('add_to_Request_list')
-                ->label('Add to Request List')
-                ->icon('heroicon-o-shopping-cart')
-                ->action(function (Collection $records) {
-                    foreach ($records as $record) {
-                        RequestList::updateOrCreate(
-                            [
-                                'user_id' => auth()->id(),
-                                'facility_id' => $record->id,
-                            ]
-                        );
-                    }
-
-                    Notification::make()
-                        ->success()
-                        ->title('Success')
-                        ->body('Selected facilities have been added to your request list.')
-                        ->send();
-                })
-                ->color('primary')
-                ->requiresConfirmation()
-                ->modalIcon('heroicon-o-check')
-                ->modalHeading('Add to Request List')
-                ->modalDescription('Confirm to add selected facilities to your request list'),
         ];
 
         if (!$isFaculty) {
