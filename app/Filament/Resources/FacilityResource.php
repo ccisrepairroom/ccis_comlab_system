@@ -7,7 +7,7 @@ use App\Models\Facility;
 use App\Models\Equipment;
 use App\Models\FacilityMonitoring;
 use App\Models\User;
-use App\Models\RequestList;
+use App\Models\BorrowedItems;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -303,7 +303,91 @@ class FacilityResource extends Resource
                             ->success()
                             ->send();
                     }),
-                
+            Tables\Actions\BulkAction::make('add_to_borrowed_items')
+                ->label('Request')
+                ->icon('heroicon-o-plus')
+                ->color('success')
+                ->requiresConfirmation()
+                ->modalIcon('heroicon-o-check')
+                ->modalHeading('Confirm Facility Request')
+                ->modalDescription('Please confirm to request of the selected facility.')
+                ->form([
+                    Forms\Components\Grid::make(['default' => 1])->schema([
+                        Forms\Components\TextInput::make('borrowed_by')
+                            ->required()
+                            ->label('Name')
+                            ->placeholder('Enter your name'),
+                        Forms\Components\TextInput::make('phone_number')
+                            ->required()
+                            ->label('Phone Number')
+                            ->maxLength(15),
+                        Forms\Components\TextArea::make('college_department')
+                            ->required()
+                            ->label('College/Department')
+                            ->placeholder('Enter your department'),
+                        Forms\Components\DateTimePicker::make('expected_return_date')
+                            ->required()
+                            ->label('Expected Return Date')
+                            ->default(now('Asia/Manila'))
+                            ->timezone('Asia/Manila'),
+                        Forms\Components\DateTimePicker::make('start_date_and_time_of_use')
+                            ->required()
+                            ->label('Start Date and Time of Use')
+                            ->default(now('Asia/Manila'))
+                            ->timezone('Asia/Manila'),
+                        Forms\Components\DateTimePicker::make('end_date_and_time_of_use')
+                            ->required()
+                            ->label('End Date and Time of Use')
+                            ->default(now('Asia/Manila'))
+                            ->timezone('Asia/Manila'),
+                        Forms\Components\TextArea::make('purpose')
+                            ->required()
+                            ->label('Purpose'),
+                        Forms\Components\TextArea::make('remarks')
+                            ->label('Remarks'),
+                    ]),
+                ])
+                ->action(function ($data, $records) {
+                    $successfulEntries = false;
+
+                     // Generate unique request code
+                $latestRecord = BorrowedItems::latest()->first();
+                $requestCode = $latestRecord
+                    ? str_pad((int)substr($latestRecord->request_code, 1) + 1, 5, '0', STR_PAD_LEFT)
+                    : '00001';
+
+                  // Loop through each selected equipment record
+                  foreach ($records as $record) {
+                    $facilityId = $record->id;
+
+                    BorrowedItems::create([
+                        'user_id' => auth()->id(),
+                        'borrowed_by' => $data['borrowed_by'],
+                        'phone_number' => $data['phone_number'],
+                        'college_department' => $data['college_department'],
+                        'expected_return_date' => $data['expected_return_date'],
+                        'start_date_and_time_of_use' => $data['start_date_and_time_of_use'],
+                        'end_date_and_time_of_use' => $data['end_date_and_time_of_use'],
+                        'purpose' => $data['purpose'],
+                        'remarks' => $data['remarks'],
+                        'request_code' => $requestCode,
+                        'facility_id' => $facilityId,
+                        'request_status' => 'Pending',
+                        'status' => '------',
+                    ]);
+        
+                    $successfulEntries = true;
+                }
+
+                 // Notify if borrow action was successful
+                 if ($successfulEntries) {
+                    Notification::make()
+                        ->success()
+                        ->title(' Request Submitted')
+                        ->body('The facility has been successfully added to your Requested/Borrowed items.')
+                        ->send();
+                }
+            }),
 
             Tables\Actions\BulkAction::make('add_to_Request_list')
                 ->label('Add to Request List')

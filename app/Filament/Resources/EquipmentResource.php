@@ -59,10 +59,7 @@ class EquipmentResource extends Resource
 
  
     
-    public function query(): Builder
-    {
-        return Equipment::with('stockUnit');
-    }
+   
     protected static ?string $pollingInterval = '1s';
     protected static bool $isLazy = false;
     public static function getNavigationBadge(): ?string
@@ -569,7 +566,7 @@ class EquipmentResource extends Resource
             ->modalHeading('Confirm Borrow Request')
             ->modalDescription('Please confirm to borrow the selected equipment.')
             ->form([
-                Forms\Components\Grid::make(['default' => 2])->schema([
+                Forms\Components\Grid::make(['default' => 1])->schema([
                     Forms\Components\TextInput::make('borrowed_by')
                         ->required()
                         ->label('Name')
