@@ -25,12 +25,12 @@
                 <!-- Contact and Department Info -->
                 <div class="w-full mt-4 flex flex-col items-center">
                     <div class="mb-4 flex items-center justify-center text-gray-700 text-sm">
-                        <x-entypo-mail class="w-5 h-5 mr-2 text-gray-600" />
+                    @svg('entypo-mail', 'w-5 h-5 mr-2 text-gray-600')
                         <span>{{ $email }}</span>
                     </div>
 
                     <div class="mb-4 flex items-center justify-center text-gray-700 text-sm">
-                        <x-entypo-briefcase class="w-5 h-5 mr-2 text-gray-600" />
+                    @svg('entypo-briefcase', 'w-5 h-5 mr-2 text-gray-600')
                         <span style="display: inline;">{{ $designation }}</span> - <span style="display: inline;">{{ $department }}</span> 
                         </div>
                 </div>
@@ -43,8 +43,8 @@
     <h2 class="text-lg font-semibold mb-4">Edit Account Details</h2>
     <form wire:submit.prevent="save">
         <div class="mb-4">
-            <label class="block text-sm font-medium mb-1" for="name">Full Name</label>
-            <input disabled wire:model="name" class="w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="name" type="text">
+            <label class=" block text-sm font-medium mb-1" for="name">Full Name</label>
+            <input disabled wire:model="name" class=" text-gray-500 w-full rounded-lg border py-2 px-3 focus:ring-orange-500 focus:border-orange-500 border-orange-300" id="name" type="text">
             @error('name')
                 <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
             @enderror
