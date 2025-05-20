@@ -28,6 +28,8 @@ use App\Livewire\Auth\ResetPasswordPage;
 use App\Livewire\Auth\MyProfilePage;
 use App\Livewire\SuccessPage;
 use App\Livewire\CancelPage;
+use Illuminate\Support\Facades\Response;
+
 
 
 
@@ -106,7 +108,7 @@ Route::get('/equipment/{equip}', EquipmentDetailPage::class);
 
 
 Route::middleware('guest')->group(function(){
-    Route::get('/signin', LoginPage::class)->middleware('throttle:5,2');
+    Route::get('/signin', LoginPage::class)->middleware('throttle:10,2');
 });
 
 Route::middleware('auth')->group(function(){
