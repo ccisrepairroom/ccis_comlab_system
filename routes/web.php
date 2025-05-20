@@ -106,9 +106,10 @@ Route::get('/equipment/{equip}', EquipmentDetailPage::class);
 
 
 
+//    Route::get('/signin', LoginPage::class)->middleware('throttle:10,2');
 
 Route::middleware('guest')->group(function(){
-    Route::get('/signin', LoginPage::class)->middleware('throttle:10,2');
+    Route::get('/signin', LoginPage::class);
 });
 
 Route::middleware('auth')->group(function(){
