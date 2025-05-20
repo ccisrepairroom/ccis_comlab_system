@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;  // <-- Import Hash facade
 use Spatie\Permission\Models\Role;
-use app\Models\User;
-
+use App\Models\User;  // Fix namespace (App not app)
 
 class UserSeeder extends Seeder
 {
@@ -17,13 +15,13 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name'=> 'SuperAdmin',
-            'email'=> 'superadmin@carsu.edu.ph',
-            'department'=> 'Information System',
-            'designation'=> 'Developer',
-            'password'=> '$2y$12$CrKAI857UyQ/L1Bd01JyjekfUqpoxuB2oJ64UsCFaCeysr95Is6mq',
-            //'remember_token'=> Str::random(10),
+            'name' => 'Main Developer',
+            'email' => 'maindeveloper@gmail.com',
+            'department' => 'Computer Science',
+            'designation' => 'Comlab Adviser',
+            'role_id' => 1,
+            'password' => Hash::make('maindeveloper'),  // <-- Hash the password here
+            //'remember_token' => Str::random(10),
         ])->assignRole('super_admin');
     }
 }
-//pass is ccis capstone members
