@@ -28,9 +28,9 @@ return new class extends Migration
             $table->string('borrowed_date')->nullable()->index('borroweditem_borrowed_date');
             $table->string('returned_date')->nullable()->index('borroweditem_returned_date');
             $table->string('status')->default('Unreturned')->index('borroweditem_status');
-            $table->text('borrowed_by')->nullable()->index('borroweditem_borrowed_by');
-            $table->text('remarks')->nullable()->index('borroweditem_remarks');
-            
+            $table->text('borrowed_by');
+            $table->text('remarks');
+
             $table->timestamps();
         });
     }

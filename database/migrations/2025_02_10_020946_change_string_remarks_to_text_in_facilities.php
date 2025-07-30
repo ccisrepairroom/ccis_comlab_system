@@ -6,23 +6,29 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
+        Schema::table('facilities', function (Blueprint $table) {
+            // Drop the existing index on 'remarks' first
+            $table->dropIndex('fac_remarks');
+        });
+
+        // In a separate schema call, change the column type
         Schema::table('facilities', function (Blueprint $table) {
             $table->text('remarks')->nullable()->change();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('facilities', function (Blueprint $table) {
-            $table->text('remarks')->nullable()->change();
+            // Revert column back to string
+            $table->string('remarks')->nullable()->change();
+        });
+
+        // In a separate schema call, re-add the index
+        Schema::table('facilities', function (Blueprint $table) {
+            $table->index('remarks', 'fac_remarks');
         });
     }
 };

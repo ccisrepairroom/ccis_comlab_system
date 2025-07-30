@@ -30,10 +30,10 @@ return new class extends Migration
             $table->string('date_requested')->default(now()->format('M-d-y'))->index('supcart_date_requested')->nullable(); // Date of the action
             $table->foreignId('stock_unit_id')->nullable()->constrained()->onDelete('cascade')->index('supcart_stock_unit_id_index');
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade')->index('supcart_category_id_index');
-            $table->text('supplier')->nullable()->index('supcart_supplier_index');
-            $table->text('remarks')->nullable()->index('supcart_remarks_index');
+            $table->text('supplier');
+            $table->text('remarks');
             $table->timestamps(); // Created at and updated at timestamps
-            
+
         });
     }
 
