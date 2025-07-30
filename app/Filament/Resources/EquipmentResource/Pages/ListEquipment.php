@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Filament\Notifications\Notification;
 use Filament\Resources\Components\Tab;
 use App\Models\Equipment;
-use App\Models\Borroweditems;
+use App\Models\BorrowedItems;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -22,7 +22,7 @@ class ListEquipment extends ListRecords
     protected static string $resource = EquipmentResource::class;
     protected static ?string $pollingInterval = '1s';
     protected static bool $isLazy = false;
-  
+
     // protected function paginateTableQuery(Builder $query): Paginator
     // {
     //     return $query->simplePaginate(($this->getTableRecordsPerPage() === 'all') ? $query->count() : $this->getTableRecordsPerPage());
@@ -31,9 +31,9 @@ class ListEquipment extends ListRecords
     {
         $user = auth()->user(); // Retrieve the currently authenticated user
         $isFaculty = $user->hasRole('faculty'); // Check if the user has the 'panel_user' role
-        
+
         $actions = [
-           
+
             Actions\Action::make('downloadRequestForm')
                 ->label('Download Request Form')
                 //->icon('heroicon-o-download')
@@ -45,7 +45,7 @@ class ListEquipment extends ListRecords
             $actions[] = Actions\CreateAction::make()
             ->label('Create');
         }
-        
+
 
         if (!$isFaculty) {
             // Only add the import action if the user is not a faculty
@@ -58,7 +58,7 @@ class ListEquipment extends ListRecords
                     ->label('Import an Excel file. Column headers must include: PO Number, Unit Number, Brand Name, Description, Facility, Category, Status,
                      Date Acquired, Supplier, Amount, Estimated Life, Item Number, Property Number, Control Number,  Serial Number, Person Liable, and Remarks.
                      It is okay to have null fields in Excel as long as all the column headers are present.')
-                    
+
                 ])
                 ->action(function (array $data) {
                     $file = public_path('storage/' . $data['attachment']);
@@ -71,7 +71,7 @@ class ListEquipment extends ListRecords
                         ->send();
                 });
         }
-        
+
 
         return $actions;
     }
@@ -98,7 +98,7 @@ class ListEquipment extends ListRecords
             Tab::make('All Equipment')
                 ->badge($this->getAllEquipmentCount())
                 ->modifyQueryUsing(function ($query) {
-                    return $query  ->orderBy('created_at', 'desc') 
+                    return $query  ->orderBy('created_at', 'desc')
                     ->orderBy('category_id');
 
                 }),
