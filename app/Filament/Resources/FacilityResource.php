@@ -14,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\Grid;
 use Filament\Notifications\Notification;
@@ -58,7 +59,7 @@ class FacilityResource extends Resource
                     ->required()
                     ->preserveFilenames(),
 
- 
+
                     ])
                     ->columnSpan(2)
                     ->columns(2)
@@ -72,8 +73,8 @@ class FacilityResource extends Resource
                                     ->placeholder('Facility Name Displayed On The Door (e.g., CL1, CL2)')
                                     ->required()
                                     ->unique(
-                                        table: 'facilities', 
-                                        column: 'name', 
+                                        table: 'facilities',
+                                        column: 'name',
                                         ignoreRecord: true
                                     )
                                     ->validationMessages([
@@ -177,14 +178,14 @@ class FacilityResource extends Resource
                                 'remarks' => 'Remarks',
                             ])
                             ->columns(2)
-                            ->reactive(), 
+                            ->reactive(),
 
                         Forms\Components\FileUpload::make('main_image')
                             ->label('Main Image')
                             ->imageEditor()
                             ->deletable()
                             ->preserveFilenames()
-                            ->visible(fn ($get) => in_array('main_image', $get('fields_to_update') ?? [])) 
+                            ->visible(fn ($get) => in_array('main_image', $get('fields_to_update') ?? []))
                             ->required(fn ($get) => in_array('main_image', $get('fields_to_update') ?? [])),
 
                         Forms\Components\FileUpload::make('alternate_images')
@@ -192,7 +193,7 @@ class FacilityResource extends Resource
                             ->imageEditor()
                             ->deletable()
                             ->preserveFilenames()
-                            ->visible(fn ($get) => in_array('alternate_images', $get('fields_to_update') ?? [])) 
+                            ->visible(fn ($get) => in_array('alternate_images', $get('fields_to_update') ?? []))
                             ->required(fn ($get) => in_array('alternate_images', $get('fields_to_update') ?? [])),
 
                         Forms\Components\Select::make('connection_type')
@@ -208,7 +209,7 @@ class FacilityResource extends Resource
                                 'DSL' => 'DSL',
                                 'Cable' => 'Cable',
                             ])
-                            ->visible(fn ($get) => in_array('connection_type', $get('fields_to_update') ?? [])) 
+                            ->visible(fn ($get) => in_array('connection_type', $get('fields_to_update') ?? []))
                             ->required(fn ($get) => in_array('connection_type', $get('fields_to_update') ?? [])),
 
                         Forms\Components\Select::make('facility_type')
@@ -220,7 +221,7 @@ class FacilityResource extends Resource
                                 'Robotic Hub' => 'Robotic Hub',
                                 'Hall' => 'Hall',
                             ])
-                            ->visible(fn ($get) => in_array('facility_type', $get('fields_to_update') ?? [])) 
+                            ->visible(fn ($get) => in_array('facility_type', $get('fields_to_update') ?? []))
                             ->required(fn ($get) => in_array('facility_type', $get('fields_to_update') ?? [])),
 
                         Forms\Components\Select::make('cooling_tools')
@@ -230,7 +231,7 @@ class FacilityResource extends Resource
                                     'Ceiling Fan' => 'Ceiling Fan',
                                     'Both Aircon and Ceiling Fan' => 'Both Aircon and Ceiling Fan',
                                 ])
-                            ->visible(fn ($get) => in_array('cooling_tools', $get('fields_to_update') ?? [])) 
+                            ->visible(fn ($get) => in_array('cooling_tools', $get('fields_to_update') ?? []))
                             ->required(fn ($get) => in_array('cooling_tools', $get('fields_to_update') ?? [])),
 
                         Forms\Components\Select::make('floor_level')
@@ -240,19 +241,19 @@ class FacilityResource extends Resource
                                     '3rd Floor' => '3rd Floor',
                                     '4th Floor' => '4th Floor',
                                 ])
-                            ->visible(fn ($get) => in_array('floor_level', $get('fields_to_update') ?? [])) 
+                            ->visible(fn ($get) => in_array('floor_level', $get('fields_to_update') ?? []))
                             ->required(fn ($get) => in_array('floor_level', $get('fields_to_update') ?? [])),
 
                         Forms\Components\TextInput::make('building')
                                 ->required()
                                 ->default('HIRAYA')
-                                ->visible(fn ($get) => in_array('building', $get('fields_to_update') ?? [])) 
+                                ->visible(fn ($get) => in_array('building', $get('fields_to_update') ?? []))
                                 ->required(fn ($get) => in_array('building', $get('fields_to_update') ?? [])),
 
                         Forms\Components\RichEditor::make('remarks')
                                 ->placeholder('Anything that describes the facility (e.g., Computer Laboratory with space for 30 students)')
                                 ->disableToolbarButtons(['attachFiles'])
-                                ->visible(fn ($get) => in_array('remarks', $get('fields_to_update') ?? [])) 
+                                ->visible(fn ($get) => in_array('remarks', $get('fields_to_update') ?? []))
                                 ->required(fn ($get) => in_array('remarks', $get('fields_to_update') ?? [])),
                         ]);
                     })
@@ -284,7 +285,7 @@ class FacilityResource extends Resource
                             if (in_array('remarks', $data['fields_to_update'])) {
                                 $updateData['remarks'] = $data['remarks'];
                             }
-                            
+
 
                             $record->update($updateData);
 
@@ -297,7 +298,7 @@ class FacilityResource extends Resource
                             ]);
 
                         }
-                
+
                         \Filament\Notifications\Notification::make()
                             ->title('Facilities updated successfully!')
                             ->success()
@@ -321,7 +322,7 @@ class FacilityResource extends Resource
                             ->required()
                             ->label('Phone Number')
                             ->maxLength(15),
-                        Forms\Components\TextArea::make('college_department')
+                        Forms\Components\Textarea::make('college_department')
                             ->required()
                             ->label('College/Department')
                             ->placeholder('Enter your department'),
@@ -340,10 +341,10 @@ class FacilityResource extends Resource
                             ->label('End Date and Time of Use')
                             ->default(now('Asia/Manila'))
                             ->timezone('Asia/Manila'),
-                        Forms\Components\TextArea::make('purpose')
+                        Forms\Components\Textarea::make('purpose')
                             ->required()
                             ->label('Purpose'),
-                        Forms\Components\TextArea::make('remarks')
+                        Forms\Components\Textarea::make('remarks')
                             ->label('Remarks'),
                     ]),
                 ])
@@ -375,7 +376,7 @@ class FacilityResource extends Resource
                         'request_status' => 'Pending',
                         'status' => '------',
                     ]);
-        
+
                     $successfulEntries = true;
                 }
 
@@ -443,8 +444,8 @@ class FacilityResource extends Resource
                         $state = strip_tags($column->getState());
                         return strlen($state) > $column->getCharacterLimit() ? $state : null;
                     })
-                    
-                    
+
+
                     ->html(false),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
@@ -457,7 +458,7 @@ class FacilityResource extends Resource
             ->recordUrl(fn ($record) => route('facility-monitoring-page', ['facility' => $record->id]))
             ->openRecordUrlInNewTab()
             ->defaultSort('created_at', 'desc')
-            
+
 
             ->filters([
                 SelectFilter::make('floor_level')
@@ -497,11 +498,11 @@ class FacilityResource extends Resource
                 ->options(
                     Facility::query()
                         ->whereNotNull('created_at') // Filter out null values
-                        ->get(['created_at']) 
+                        ->get(['created_at'])
                         ->mapWithKeys(function ($user) {
-                            $date = $user->created_at; 
+                            $date = $user->created_at;
                             $formattedDate = \Carbon\Carbon::parse($date)->format('F j, Y');
-                            return [$date->toDateString() => $formattedDate]; 
+                            return [$date->toDateString() => $formattedDate];
                         })
                         ->toArray()
                 ),
@@ -533,12 +534,12 @@ class FacilityResource extends Resource
                     Tables\Actions\DeleteAction::make()
                         ->label('')
                         ->tooltip('Delete Facility'),
-                   
+
 
 
                     Tables\Actions\ActionGroup::make([
 
-    
+
                     ],)
                 ],  position: ActionsPosition::BeforeCells)
             ->bulkActions([
@@ -546,7 +547,7 @@ class FacilityResource extends Resource
                     ->label('Actions'),
             ]);
     }
-   
+
 
     public static function create(array $data)
     {
