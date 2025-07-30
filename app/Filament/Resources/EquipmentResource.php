@@ -18,6 +18,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Builder;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
@@ -58,21 +59,21 @@ class EquipmentResource extends Resource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         \Log::info($record);
-        
+
         return [
-            'PO Number' => $record->po_number ?? 'Unknown', 
-            'Unit No.' => $record->unit_no ?? 'Unknown', 
+            'PO Number' => $record->po_number ?? 'Unknown',
+            'Unit No.' => $record->unit_no ?? 'Unknown',
             'Brand Name' => $record->brand_name ?? 'Unknown',
-            'Description' => $record->description ?? 'Unknown', 
-            'Category' => $record->category->description ?? 'N/A', 
+            'Description' => $record->description ?? 'Unknown',
+            'Category' => $record->category->description ?? 'N/A',
             'Facility' => $record->facility->name ?? 'N/A',
-            'Serial No.' => $record->serial_no ?? 'N/A', 
-            'Control No.' => $record->control_no ?? 'N/A', 
-            'Property No.' => $record->property_no ?? 'N/A', 
-            'Person Liable' => $record->person_liable ?? 'N/A', 
-            'Date Acquired' => $record->date_acquired ?? 'N/A', 
-            'Remarks' => $record->remarks ?? 'N/A', 
-            
+            'Serial No.' => $record->serial_no ?? 'N/A',
+            'Control No.' => $record->control_no ?? 'N/A',
+            'Property No.' => $record->property_no ?? 'N/A',
+            'Person Liable' => $record->person_liable ?? 'N/A',
+            'Date Acquired' => $record->date_acquired ?? 'N/A',
+            'Remarks' => $record->remarks ?? 'N/A',
+
         ];
     }
     public static function getGloballySearchableAttributes(): array
@@ -91,31 +92,31 @@ class EquipmentResource extends Resource
                     ->imageEditor()
                     ->deletable()
                     ->preserveFilenames(),
-                    
+
                     Forms\Components\FileUpload::make('alternate_images')
                     ->imageEditor()
                     ->deletable()
                     ->multiple()
                     ->preserveFilenames(),
 
-                    
+
 
                     \LaraZeus\Qr\Components\Qr::make('qr_code')
                     // ->asSlideOver()
                     ->optionsColumn('qr_code')
                     ->actionIcon('heroicon-s-building-library'),
- 
+
                     ])
                     ->columnSpan(3)
                     ->columns(3)
                     ->collapsible(),
-                   
-                    
+
+
                 Forms\Components\Section::make('Equipment Details')
                     ->schema([
                         Forms\Components\Grid::make(3)
                             ->schema([
-                                    
+
                                 Forms\Components\TextInput::make('po_number')
                                     ->placeholder('Refer to the inventory sticker.')
                                     ->label('PO Number')
@@ -130,7 +131,7 @@ class EquipmentResource extends Resource
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('description')
                                     ->placeholder('Specifications, e.g., dimensions, weight, power'),
-                                    
+
                                 Forms\Components\Select::make('facility_id')
                                     ->relationship('facility', 'name')
                                     ->searchable()
@@ -142,8 +143,8 @@ class EquipmentResource extends Resource
                                         ->required()
                                         ->maxLength(255)
                                     ]),
-                                       
-                                   
+
+
                                 Forms\Components\Select::make('category_id')
                                     ->relationship('category', 'description')
                                     ->searchable()
@@ -154,8 +155,8 @@ class EquipmentResource extends Resource
                                         ->placeholder('E.g., Monitor, System Unit, AVR/UPS, etc.')
                                         ->required()
                                         ->maxLength(255)
-                                       
-                                    ]),    
+
+                                    ]),
                                 Forms\Components\Select::make('status')
                                     ->options([
                                         'Working' => 'Working',
@@ -185,10 +186,10 @@ class EquipmentResource extends Resource
                                     ->label('Item Number')
                                     ->placeholder('Refer to the Equipment sticker.')
                                     ->maxLength(255),
-                               
+
                                 Forms\Components\TextInput::make('property_no')
                                     ->label('Property Number')
-                                    ->placeholder('Refer to the Equipment sticker.'),   
+                                    ->placeholder('Refer to the Equipment sticker.'),
                                 Forms\Components\TextInput::make('control_no')
                                     ->label('Control Number')
                                     ->placeholder('Refer to the Equipment sticker.')
@@ -197,8 +198,8 @@ class EquipmentResource extends Resource
                                     ->label('Serial Number')
                                     ->placeholder('Refer to the Equipment sticker.')
                                     ->unique(
-                                        table: 'equipment', 
-                                        column: 'serial_no', 
+                                        table: 'equipment',
+                                        column: 'serial_no',
                                         ignoreRecord: true
                                     )
                                     ->validationMessages([
@@ -217,7 +218,7 @@ class EquipmentResource extends Resource
                                     Forms\Components\TextInput::make('email')
                                         ->email()
                                         ->rules([
-                                            'regex:/^[\w\.-]+@carsu\.edu\.ph$/', 
+                                            'regex:/^[\w\.-]+@carsu\.edu\.ph$/',
                                         ])
                                         ->default(''),
                                     Forms\Components\Select::make('roles')
@@ -268,8 +269,8 @@ class EquipmentResource extends Resource
     {
         $user = auth()->user();
         $isFaculty = $user && $user->hasRole('faculty');
-         
-       
+
+
         // Define the bulk actions array
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
@@ -316,8 +317,8 @@ class EquipmentResource extends Resource
                             'remarks' => 'Remarks',
                         ])
                         ->columns(2)
-                        ->reactive(), 
-        
+                        ->reactive(),
+
                     Forms\Components\Select::make('status')
                         ->label('Status')
                         ->options([
@@ -327,17 +328,17 @@ class EquipmentResource extends Resource
                             'lost' => 'Lost',
                             'for disposal' => 'For Disposal',
                             'disposed' => 'Disposed',
-                           
+
                         ])
-                        ->visible(fn ($get) => in_array('status', $get('fields_to_update') ?? [])) 
+                        ->visible(fn ($get) => in_array('status', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('status', $get('fields_to_update') ?? [])),
-        
+
                     Forms\Components\Select::make('facility_id')
                         ->label('Facility')
                         ->options(\App\Models\Facility::all()->pluck('name', 'id'))
                         ->visible(fn ($get) => in_array('facility_id', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('facility_id', $get('fields_to_update') ?? [])),
-        
+
                     Forms\Components\Select::make('category_id')
                         ->label('Category')
                         ->options(\App\Models\Category::all()->pluck('description', 'id'))
@@ -357,12 +358,12 @@ class EquipmentResource extends Resource
                         ->label('Alternate Images')
                         ->visible(fn ($get) => in_array('alternate_images', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('alternate_images', $get('fields_to_update') ?? [])),
-                    
+
                     Forms\Components\TextInput::make('brand_name')
                         ->label('Brand Name')
                         ->visible(fn ($get) => in_array('brand_name', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('brand_name', $get('fields_to_update') ?? [])),
-                    
+
                     Forms\Components\TextInput::make('description')
                         ->placeholder('Specifications, e.g., dimensions, weight, power')
                         ->label('Description')
@@ -373,7 +374,7 @@ class EquipmentResource extends Resource
                         ->label('Date Acquired')
                         ->visible(fn ($get) => in_array('date_acquired', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('date_acquired', $get('fields_to_update') ?? [])),
-                    
+
                     Forms\Components\TextInput::make('supplier')
                         ->label('Supplier')
                         ->visible(fn ($get) => in_array('supplier', $get('fields_to_update') ?? []))
@@ -395,7 +396,7 @@ class EquipmentResource extends Resource
                         ->label('PO Number')
                         ->visible(fn ($get) => in_array('po_number', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('po_number', $get('fields_to_update') ?? [])),
-                        
+
                     Forms\Components\TextInput::make('unit_no')
                         ->label('Unit No.')
                         ->visible(fn ($get) => in_array('unit_no', $get('fields_to_update') ?? []))
@@ -421,13 +422,13 @@ class EquipmentResource extends Resource
                         ->visible(fn ($get) => in_array('serial_no', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('serial_no', $get('fields_to_update') ?? [])),
 
-                    
+
                     Forms\Components\Select::make('user_id')
                         ->label('Person Liable')
                         ->options(\App\Models\User::all()->pluck('name', 'id'))
                         ->visible(fn ($get) => in_array('user_id', $get('fields_to_update') ?? []))
                         ->required(fn ($get) => in_array('user_id', $get('fields_to_update') ?? [])),
-                        
+
                     Forms\Components\Textarea::make('remarks')
                         ->label('Remarks')
                         ->rows(3)
@@ -438,7 +439,7 @@ class EquipmentResource extends Resource
             ->action(function (array $data, $records) {
                 foreach ($records as $record) {
                     $updateData = [];
-        
+
                     if (in_array('status', $data['fields_to_update'])) {
                         $updateData['status'] = $data['status'];
                     }
@@ -496,7 +497,7 @@ class EquipmentResource extends Resource
                     if (in_array('remarks', $data['fields_to_update'])) {
                         $updateData['remarks'] = $data['remarks'];
                     }
-        
+
                     $record->update($updateData);
 
                     // Insert into Equipment Monitoring
@@ -509,7 +510,7 @@ class EquipmentResource extends Resource
                         'created_at' => now()->setTimezone('Asia/Manila')->format('Y-m-d H:i:s'),
                     ]);
                 }
-        
+
                 \Filament\Notifications\Notification::make()
                     ->title('Equipment updated successfully!')
                     ->success()
@@ -533,7 +534,7 @@ class EquipmentResource extends Resource
                         ->required()
                         ->label('Phone Number')
                         ->maxLength(15),
-                    Forms\Components\TextArea::make('college_department')
+                    Forms\Components\Textarea::make('college_department')
                         ->required()
                         ->label('College/Department')
                         ->placeholder('Enter your department'),
@@ -552,10 +553,10 @@ class EquipmentResource extends Resource
                         ->label('End Date and Time of Use')
                         ->default(now('Asia/Manila'))
                         ->timezone('Asia/Manila'),
-                    Forms\Components\TextArea::make('purpose')
+                    Forms\Components\Textarea::make('purpose')
                         ->required()
                         ->label('Purpose'),
-                    Forms\Components\TextArea::make('remarks')
+                    Forms\Components\Textarea::make('remarks')
                         ->label('Remarks'),
                 ]),
             ])
@@ -563,17 +564,17 @@ class EquipmentResource extends Resource
                 $unreturnedItems = [];
                 $nonWorkingItems = [];
                 $successfulEntries = false;
-        
+
                 // Generate unique request code
                 $latestRecord = BorrowedItems::latest()->first();
                 $requestCode = $latestRecord
                     ? str_pad((int)substr($latestRecord->request_code, 1) + 1, 5, '0', STR_PAD_LEFT)
                     : '00001';
-        
+
                 // Loop through each selected equipment record
                 foreach ($records as $record) {
                     $equipmentId = $record->id;
-        
+
                     // Skip if equipment is already borrowed and not yet returned
                     if (BorrowedItems::where('equipment_id', $equipmentId)
                         ->where('status', 'unreturned')
@@ -581,13 +582,13 @@ class EquipmentResource extends Resource
                         $unreturnedItems[] = $record->brand_name;
                         continue;
                     }
-        
+
                     // Skip if equipment is not in working condition
                     if (strtolower($record->status) !== 'working') {
                         $nonWorkingItems[] = $record->brand_name;
                         continue;
                     }
-        
+
                     // Create new BorrowedItems entry for the valid equipment
                     BorrowedItems::create([
                         'user_id' => auth()->id(),
@@ -604,10 +605,10 @@ class EquipmentResource extends Resource
                         'request_status' => 'Pending',
                         'status' => '------',
                     ]);
-        
+
                     $successfulEntries = true;
                 }
-        
+
                 if (count($unreturnedItems)) {
                     Notification::make()
                         ->warning()
@@ -615,7 +616,7 @@ class EquipmentResource extends Resource
                         ->body(implode(', ', $unreturnedItems) . ' is still unreturned.')
                         ->send();
                 }
-        
+
                 if (count($nonWorkingItems)) {
                     Notification::make()
                         ->warning()
@@ -623,7 +624,7 @@ class EquipmentResource extends Resource
                         ->body(implode(', ', $nonWorkingItems) . ' is not working.')
                         ->send();
                 }
-        
+
                 // Notify if borrow action was successful
                 if ($successfulEntries) {
                     Notification::make()
@@ -637,16 +638,16 @@ class EquipmentResource extends Resource
             ->hidden(fn () => $isFaculty)
             ->color('success'),
         ];
-                
+
         // Conditionally add ExportBulkAction
         if (!$isFaculty) {
             //$bulkActions[] = Tables\Actions\DeleteBulkAction::make();
             $bulkActions[] = ExportBulkAction::make();
         }
-        
+
 
         return $table
-            ->description('To borrow, select an equipment. An "Actions" button will appear. Click it and choose "Add to Request List". 
+            ->description('To borrow, select an equipment. An "Actions" button will appear. Click it and choose "Add to Request List".
            For more information, go to the dashboard to download the user manual.')
             ->columns([
                 Tables\Columns\TextColumn::make('borrowedItems.status')
@@ -742,7 +743,7 @@ class EquipmentResource extends Resource
                         'lost' => 'danger',
                         'for disposal' => 'primary',
                         'disposed' => 'danger',
-                        default => 'secondary',  
+                        default => 'secondary',
 
                     })
                     ->toggleable(isToggledHiddenByDefault: false),
@@ -815,13 +816,13 @@ class EquipmentResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 ])
                 ->defaultSort('created_at', 'desc')
-                ->recordAction('view_equipment') 
+                ->recordAction('view_equipment')
                 ->filters([
                     SelectFilter::make('main_image')
                     ->label('Main Image')
                     ->options(
                         Equipment::query()
-                            ->whereNotNull('main_image') 
+                            ->whereNotNull('main_image')
                             ->pluck('main_image', 'main_image')
                             ->toArray()
                     ),
@@ -829,7 +830,7 @@ class EquipmentResource extends Resource
                     ->label('PO Number')
                     ->options(
                         Equipment::query()
-                            ->whereNotNull('po_number') 
+                            ->whereNotNull('po_number')
                             ->pluck('po_number', 'po_number')
                             ->toArray()
                     ),
@@ -837,7 +838,7 @@ class EquipmentResource extends Resource
                     ->label('Brand Name')
                     ->options(
                         Equipment::query()
-                            ->whereNotNull('brand_name') 
+                            ->whereNotNull('brand_name')
                             ->pluck('brand_name', 'brand_name')
                             ->toArray()
                     ),
@@ -849,7 +850,7 @@ class EquipmentResource extends Resource
                     ->label('Unit No.')
                     ->options(
                         Equipment::query()
-                            ->whereNotNull('unit_no') 
+                            ->whereNotNull('unit_no')
                             ->pluck('unit_no', 'unit_no')
                             ->toArray()
                     ),
@@ -857,7 +858,7 @@ class EquipmentResource extends Resource
                     ->label('Status')
                     ->options(
                         Equipment::query()
-                            ->whereNotNull('status') 
+                            ->whereNotNull('status')
                             ->pluck('status', 'status')
                             ->toArray()
                     ),
@@ -865,7 +866,7 @@ class EquipmentResource extends Resource
                     ->label('Date Aquired')
                     ->options(
                         Equipment::query()
-                            ->whereNotNull('date_acquired') 
+                            ->whereNotNull('date_acquired')
                             ->pluck('date_acquired', 'date_acquired')
                             ->toArray()
                     ),
@@ -873,7 +874,7 @@ class EquipmentResource extends Resource
                     ->label('Supplier')
                     ->options(
                         Equipment::query()
-                            ->whereNotNull('supplier') 
+                            ->whereNotNull('supplier')
                             ->pluck('supplier', 'supplier')
                             ->toArray()
                     ),
@@ -881,13 +882,13 @@ class EquipmentResource extends Resource
                     ->label('Description')
                     ->options(
                         Equipment::query()
-                            ->whereNotNull('description') 
+                            ->whereNotNull('description')
                             ->pluck('description', 'description')
                             ->toArray()
-                    ), 
-                       
+                    ),
+
                 ])
-               
+
                 ->actions([
                     Tables\Actions\Action::make('view_equipment')
                     ->label(' ')
@@ -898,11 +899,11 @@ class EquipmentResource extends Resource
                     ->modalCancelAction(false)
                     ->modalHeading('')
                     ->modalContent(function ($record) {
-                        $equipment = $record->load(['facility', 'category']); 
+                        $equipment = $record->load(['facility', 'category']);
                         $monitorings = EquipmentMonitoring::with('facility', 'user')
                             ->where('equipment_id', $record->id)
                             ->get();
-                
+
                         return view('filament.resources.equipment-monitoring-modal', [
                             'equipment' => $equipment,
                             'monitorings' => $monitorings,
@@ -916,16 +917,16 @@ class EquipmentResource extends Resource
                     Tables\Actions\DeleteAction::make('delete_equipment')
                         ->label('')
                         ->tooltip('Delete Equipment'),
-                     
+
                     ], position: ActionsPosition::BeforeCells)
-  
-            
+
+
                 ->bulkActions([
 
                     Tables\Actions\BulkActionGroup::make($bulkActions)
                         ->label('Actions')
                 ]);
-                
+
     }
 
 
@@ -941,7 +942,7 @@ class EquipmentResource extends Resource
         ];
     }
 
-    
+
 
     public static function getPages(): array
     {
