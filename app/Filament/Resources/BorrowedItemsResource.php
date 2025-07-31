@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Notifications\Notification;
+use Filament\Forms\Components\Textarea;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
@@ -61,18 +62,18 @@ class BorrowedItemsResource extends Resource
                 foreach ($records as $record) {
                     $record->update([
                         'request_status' => 'approved',
-                        'status' => 'Unreturned', 
+                        'status' => 'Unreturned',
                     ]);
                 }
                 Notification::make()
                 ->title('Request Approved')
                 ->icon('heroicon-o-check')
-                ->warning() 
+                ->warning()
                 ->body('The selected request(s) have been successfully approved.')
                 ->send();
                 })
-            ->requiresConfirmation() 
-            ->color('success'),  
+            ->requiresConfirmation()
+            ->color('success'),
 
             Tables\Actions\BulkAction::make('reject')
             ->label('Reject Selected')
@@ -87,24 +88,24 @@ class BorrowedItemsResource extends Resource
                     $record->update([
                         'request_status' => 'rejected',
                         'status' => '------',
-                        'remarks' => $remarks,  
+                        'remarks' => $remarks,
                     ]);
                 }
                 Notification::make()
                 ->title('Request Rejected')
-                ->danger()  
+                ->danger()
                 ->body('The selected request(s) have been rejected.')
                 ->send();
             })
             ->form([
-                Forms\Components\TextArea::make('remarks')
+                Forms\Components\Textarea::make('remarks')
                     ->label('Remarks')
-                    ->required()  
+                    ->required()
                     ->placeholder('Enter remarks for rejection...')
                     ->rows(4)
             ])
-            ->requiresConfirmation() 
-            ->color('danger'),  
+            ->requiresConfirmation()
+            ->color('danger'),
             Tables\Actions\BulkAction::make('returned')
             ->label('Mark as Returned')
             ->icon('heroicon-o-check')
@@ -115,31 +116,31 @@ class BorrowedItemsResource extends Resource
                     throw new \Exception('Received By is required when returning items.');
                 }
 
-                $returnedDate = now();  
+                $returnedDate = now();
 
                 foreach ($records as $record) {
                     $record->update([
                         'status' => 'Returned',
                         'received_by' => $receivedby,
-                        'returned_date' => $returnedDate,  
+                        'returned_date' => $returnedDate,
                     ]);
                 }
 
                 Notification::make()
                     ->title('Items Returned')
-                    ->success()  
+                    ->success()
                     ->body('The selected items have been returned.')
                     ->send();
             })
             ->form([
-                Forms\Components\TextArea::make('received_by')
+                Forms\Components\Textarea::make('received_by')
                     ->label('Received By')
-                    ->required()  
+                    ->required()
                     ->placeholder('Enter details...')
                     ->rows(4)
             ])
-            ->color('success'), 
-            
+            ->color('success'),
+
 
          ];
             // Conditionally add ExportBulkAction
@@ -157,12 +158,12 @@ class BorrowedItemsResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('request_code')
-                    ->label('Request Code')    
+                    ->label('Request Code')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('request_status')
-                    ->label('Request Status')    
+                    ->label('Request Status')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable()
@@ -172,7 +173,7 @@ class BorrowedItemsResource extends Resource
                         'approved' => 'success',
                         'pending' => 'info',
                         'rejected' => 'danger',
-                        default => 'secondary',  
+                        default => 'secondary',
 
                     }),
                 Tables\Columns\TextColumn::make('status')
@@ -184,7 +185,7 @@ class BorrowedItemsResource extends Resource
                     ->color(fn(string $state): string => match (strtolower($state)) {
                         'returned' => 'success',
                         'unreturned' => 'danger',
-                        default => 'secondary',  
+                        default => 'secondary',
 
                     }),
                 Tables\Columns\TextColumn::make('user.name')
@@ -193,12 +194,12 @@ class BorrowedItemsResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('borrowed_by')
-                    ->label('Borrower')    
+                    ->label('Borrower')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('phone_number')
-                    ->label('Phone Number')    
+                    ->label('Phone Number')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
@@ -230,7 +231,7 @@ class BorrowedItemsResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
-               
+
                 Tables\Columns\TextColumn::make('equipment.control_no')
                     ->label('Control Number')
                     ->sortable()
@@ -246,7 +247,7 @@ class BorrowedItemsResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
-               
+
                 Tables\Columns\TextColumn::make('equipment.person_liable')
                     ->label('Person_liable')
                     ->sortable()
@@ -286,7 +287,7 @@ class BorrowedItemsResource extends Resource
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault: false)
                 ->searchable(),
-               
+
 
             ])
             ->defaultSort('created_at', 'desc')
@@ -306,7 +307,7 @@ class BorrowedItemsResource extends Resource
                 ->label(' Borrowed By')
                 ->options(
                     BorrowedItems::query()
-                        ->whereNotNull('borrowed_by') 
+                        ->whereNotNull('borrowed_by')
                         ->distinct()
                         ->select('borrowed_by')
                         ->pluck('borrowed_by', 'borrowed_by')
@@ -316,34 +317,34 @@ class BorrowedItemsResource extends Resource
                 ->label(' Status')
                 ->options(
                     BorrowedItems::query()
-                        ->whereNotNull('status') 
+                        ->whereNotNull('status')
                         ->distinct()
                         ->select('status')
                         ->pluck('status', 'status')
-                        
+
                         ->toArray()
                 ),
                 SelectFilter::make('equipment.brand_name')
                     ->label('Requested Equipment')
-                    
+
                     ->options(
                         BorrowedItems::query()
-                            ->whereNotNull('equipment_id') 
+                            ->whereNotNull('equipment_id')
                             ->pluck('equipment_id', 'equipment_id')
-                            
+
                             ->toArray()
                     ),
                 SelectFilter::make('facility.name')
                 ->label('Requested Facility')
-                
+
                 ->options(
                     BorrowedItems::query()
-                        ->whereNotNull('facility_id') 
+                        ->whereNotNull('facility_id')
                         ->pluck('facility_id', 'facility_id')
-                        
+
                         ->toArray()
                 ),
-                
+
                 SelectFilter::make('start_date_and_time_of_use')
                 ->label(' Start Date and Time of Use')
                 ->options(
@@ -358,7 +359,7 @@ class BorrowedItemsResource extends Resource
                 ->label(' End Date and Time of Use')
                 ->options(
                     BorrowedItems::query()
-                        ->whereNotNull('end_date_and_time_of_use') 
+                        ->whereNotNull('end_date_and_time_of_use')
                         ->distinct()
                         ->select('end_date_and_time_of_use')
                         ->pluck('end_date_and_time_of_use', 'end_date_and_time_of_use')
@@ -368,7 +369,7 @@ class BorrowedItemsResource extends Resource
                 ->label('Expected Return Date')
                 ->options(
                     BorrowedItems::query()
-                        ->whereNotNull('expected_return_date') 
+                        ->whereNotNull('expected_return_date')
                         ->distinct()
                         ->select('expected_return_date')
                         ->pluck('expected_return_date', 'expected_return_date')
@@ -376,14 +377,14 @@ class BorrowedItemsResource extends Resource
                 ),
             ])
             ->actions([
-       
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make($bulkActions)
                     ->label('Actions')
             ]);
-            }        
-            
+            }
+
     public static function getRelations(): array
     {
         return [

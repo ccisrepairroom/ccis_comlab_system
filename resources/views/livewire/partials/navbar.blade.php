@@ -6,14 +6,14 @@
 
          <!-- Start Logo Section -->
         <a class="hidden md:flex flex-none" href="/" aria-label="logo">
-                <img src="{{ asset('images/ccislogo1.1.png') }}" alt="CCIS ERMA Logo" class="h-12 md:h-16 lg:h-20 w-auto">
+                <img src="{{ asset('images/logocircle.png') }}" alt="CCIS ERMA Logo" class="h-12 md:h-16 lg:h-20 w-auto">
             </a>
 
         <a class="flex md:hidden flex-none" href="/" aria-label="Brand">
             <img src="{{ asset('images/ermashortlogo.png') }}" alt="SM Supermarket Logo" class="h-12 md:h-16 lg:h-20 w-auto">
         </a>
         <!-- End Logo Section -->
-       
+
 
         <div class="md:hidden">
           <button type="button" class="hs-collapse-toggle flex justify-center items-center w-9 h-9 text-sm font-semibold rounded-lg border border-gray-200 text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" data-hs-collapse="#navbar-collapse-with-animation" aria-controls="navbar-collapse-with-animation" aria-label="Toggle navigation">
@@ -45,7 +45,7 @@
               </button>
 
               <div class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] md:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 md:w-48 hidden z-10 bg-white md:shadow-md rounded-lg p-2 dark:bg-gray-800 md:dark:border dark:border-gray-700 dark:divide-gray-700 before:absolute top-full md:border before:-top-5 before:start-0 before:w-full before:h-5">
-                
+
                 <!-- Equipment Link -->
                 <a href="/equipment" class="cursor-pointer flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm {{ request()->is('equipment') ? 'text-orange-600' : 'text-gray-800' }} hover:bg-gray-100 focus:ring-2 focus:ring-orange-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
                   Equipment
@@ -96,7 +96,7 @@
                 My Dashboard
               </a>
               @endif
-            
+
               <a href="/my-requests" class="cursor-pointer  flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-orange-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
                 My Requests
               </a>

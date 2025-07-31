@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('po_number')->nullable()->index('po_number');
             $table->string('unit_no')->nullable()->index('equip_unit_no');
             $table->string('brand_name')->nullable()->index('equip_brand_name');
-            $table->text('description')->nullable()->index('equip_description');
+            $table->text('description');
             $table->foreignId('facility_id')->nullable()->constrained()->onDelete('cascade')->index('equip_facility_id');
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('cascade')->index('equip_category_id');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade')->index('equip_user_id');
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('control_no')->nullable()->index('equip_control_no');
             $table->string('serial_no')->nullable()->index('equip_serial_no');
             // $table->string('person_liable')->nullable()->index('equip_person_liable');
-            $table->text('remarks')->nullable()->index('equip_remarks');
+            $table->text('remarks');
             $table->timestamps();
         });
     }
